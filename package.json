@@ -1,0 +1,40 @@
+{
+  "name": "employee-manager",
+  "version": "1.0.0",
+  "description": "employee-manager",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development ./empmanager/frontend/src/index.js --output-path ./empmanager/frontend/static/frontend",
+    "build": "webpack --mode production ./empmanager/frontend/src/index.js --output-path ./empmanager/frontend/static/frontend"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dandy24/employee-manager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dandy24/employee-manager/issues"
+  },
+  "homepage": "https://github.com/Dandy24/employee-manager#readme",
+  "devDependencies": {
+    "@babel/core": "^7.14.8",
+    "@babel/preset-env": "^7.14.8",
+    "@babel/preset-react": "^7.14.5",
+    "@babel/preset-typescript": "^7.14.5",
+    "@types/react": "^17.0.15",
+    "@types/react-dom": "^17.0.9",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "ts-loader": "^9.2.4",
+    "webpack": "^5.46.0",
+    "webpack-cli": "^4.7.2"
+  },
+  "dependencies": {
+    "prop-types": "^15.7.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "typescript": "^4.3.5"
+  }
+}
