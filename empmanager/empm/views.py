@@ -14,6 +14,7 @@ def apiOverview(request):
         'Company detail': '/company-detail/<str:pk>/',
         'Company create': '/company-create/',
         'Company delete': '/company-delete/<str:pk>/',
+        'Company update': '/company-update/<str:pk>/',
     }
     return Response(api_urls)
 
@@ -35,6 +36,16 @@ def companyDetail(request,pk):
 def companyCreate(request):
 
     serializer = CompanySerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def companyUpdate(request,pk):
+    company = Company.objects.get(id=pk)
+    serializer = CompanySerializer(instance=company, data=request.data)
 
     if serializer.is_valid():
         serializer.save()
