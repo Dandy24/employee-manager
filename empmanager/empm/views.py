@@ -13,6 +13,7 @@ def apiOverview(request):
         'Company list' : '/company-list/',
         'Company detail': '/company-detail/<str:pk>/',
         'Company create': '/company-create/',
+        'Company delete': '/company-delete/<str:pk>/',
     }
     return Response(api_urls)
 
@@ -39,3 +40,11 @@ def companyCreate(request):
         serializer.save()
 
     return Response(serializer.data)
+
+@api_view(['DELETE','GET'])
+def companyDelete(request, pk):
+
+    company = Company.objects.get(id=pk)
+    company.delete()
+
+    return Response('Company was deleted.')

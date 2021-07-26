@@ -1,6 +1,6 @@
 import {LoadingOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
-import {Descriptions, Space, Spin, Table} from "antd";
+import {Button, Descriptions, Space, Spin, Table} from "antd";
 import DescriptionsItem from "antd/lib/descriptions/Item";
 
 export function CompanyListPage(): JSX.Element {
@@ -8,9 +8,14 @@ export function CompanyListPage(): JSX.Element {
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
     const [isLoading, setIsLoading] = useState(true);
-    const [loadedCompaniesList, setLoadedCompaniesList] = useState<any[]>([])
+    const [loadedCompaniesList, setLoadedCompaniesList] = useState<any[]>([])  //TODO Typescript
 
     const columns = [
+        {
+            title: 'ID společnosti',
+            dataIndex: 'id',
+            key: 'id',
+        },
         {
             title: 'Název společnosti',
             dataIndex: 'name',
@@ -25,7 +30,27 @@ export function CompanyListPage(): JSX.Element {
             title: 'Adresa sídla společnosti',
             dataIndex: 'address',
             key: 'address',
-        }]
+        },
+        {
+            title: 'Akce',
+            key: 'action',
+            render: (record: { id: number }) => (
+                <Space size="middle">
+                    <Button onClick={(e) =>{deleteHandler(record.id)}}>Smazat</Button>
+                </Space>
+            ),
+        },]
+
+    function deleteHandler(id: number){
+        fetch(`http://localhost:8000/api/company-delete/${id}`),
+            {
+            method: 'DELETE',
+            headers: {
+                'Content-type' : 'application/json',
+            }
+        }
+        setIsLoading(true)
+    }
 
     useEffect( () =>
     {
@@ -37,7 +62,7 @@ export function CompanyListPage(): JSX.Element {
                     setIsLoading(false);
                 }
             )
-    }, [])
+    }, [isLoading])
 
     if (isLoading) {
         return (
@@ -48,7 +73,7 @@ export function CompanyListPage(): JSX.Element {
     }
 
     return (
-        <Table columns={columns} dataSource={loadedCompaniesList} />
+        <Table columns={columns} dataSource={loadedCompaniesList}/>
     )
 
 }
