@@ -71,14 +71,14 @@ export function CompanyListPage(): JSX.Element {
             address: values.adresa
         }
 
-        return fetch(`http://localhost:8000/api/company-update/${updatedID}`,
+        fetch(`http://localhost:8000/api/company-update/${updatedID}`,
             {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
                 },
-                body: JSON.stringify(updatedCompany),
-            });
+                body: JSON.stringify(updatedCompany)}
+        );
 
         setIsEditOpen(false)
         setIsLoading(true)
@@ -98,7 +98,7 @@ export function CompanyListPage(): JSX.Element {
                     setIsLoading(false);
                 }
             )
-    }, [isLoading])
+    }, [isLoading, isEditOpen])
 
     if (isLoading) {
         return (
