@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "webpack --mode development ./empmanager/frontend/src/index.js --output-path ./empmanager/frontend/static/frontend",
     "build": "webpack --mode production ./empmanager/frontend/src/index.js --output-path ./empmanager/frontend/static/frontend"
-
   },
   "repository": {
     "type": "git",
@@ -32,9 +31,15 @@
     "webpack-cli": "^4.7.2"
   },
   "dependencies": {
+    "antd": "^4.16.8",
+    "css-loader": "^6.2.0",
+    "formik": "^2.2.9",
+    "formik-antd": "^2.0.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
+    "style-loader": "^3.2.1",
     "typescript": "^4.3.5"
   }
 }
