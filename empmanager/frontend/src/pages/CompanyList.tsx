@@ -1,10 +1,12 @@
 import {LoadingOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
-import {Button, Descriptions, Drawer, Input, Modal, Space, Spin, Table} from "antd";
+import {Button, Descriptions, Drawer, Input, message, Modal, Space, Spin, Table} from "antd";
 import DescriptionsItem from "antd/lib/descriptions/Item";
 import {TextInput} from "../components/form/TextInput";
 import {NumberInput} from "../components/form/NumberInput";
 import {Formik, Form} from "formik";
+import {CompanyForm} from "../components/form/CompanyForm";
+import {CompanyFormik} from "../components/form/CompanyFormik";
 
 export function CompanyListPage(): JSX.Element {
 
@@ -82,6 +84,8 @@ export function CompanyListPage(): JSX.Element {
 
         setIsEditOpen(false)
         setIsLoading(true)
+
+        message.warning('Údaje o společnosti byly upraveny');
     }
 
     function handleModalCancel(){
@@ -131,27 +135,10 @@ export function CompanyListPage(): JSX.Element {
                     </div>
                 }
             >
-                <Formik
-                    initialValues={{
-                        nazev: '',
-                        telefon: 0,
-                        adresa: ''
-
-                    }}
-
-                    onSubmit={updateHandler}>
-
-                    <Form>
-                        <TextInput label='Název firmy' spacesize='large' name="nazev" />
-
-                        <NumberInput label='Telefon' spacesize='large' name="telefon" />
-
-                        <TextInput label='Adresa' spacesize='large' name="adresa" />
-
-                        <Button type="primary" htmlType="submit">Přidat</Button>
-                    </Form>
-
-                </Formik>
+                <CompanyFormik onSubmit={updateHandler} initialName='' initialAddress='' initialPhone={0}>
+                    <CompanyForm companyName='nazev' companyPhone='telefon' companyAddress='adresa'
+                                 companyNameLabel='Název firmy' companyPhoneLabel='Telefon' companyAddressLabel='Adresa'/>
+                </CompanyFormik>
 
             </Drawer>
 

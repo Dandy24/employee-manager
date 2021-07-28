@@ -3,7 +3,8 @@ import {TextInput} from "../components/form/TextInput";
 import {NumberInput} from "../components/form/NumberInput";
 import {Button} from "antd";
 import React from "react";
-import {NewCompanyForm} from "../components/form/NewCompanyForm";
+import {CompanyForm} from "../components/form/CompanyForm";
+import {CompanyFormik} from "../components/form/CompanyFormik";
 
 export function NewCompanyPage(){
 
@@ -31,7 +32,10 @@ export function NewCompanyPage(){
 
     return(
 
-        <NewCompanyForm onSubmit={submitHandler}/>
+        <CompanyFormik onSubmit={submitHandler} initialName='' initialAddress='' initialPhone={0}>
+            <CompanyForm companyName='nazev' companyPhone='telefon' companyAddress='adresa'
+                         companyNameLabel='Název firmy' companyPhoneLabel='Telefon' companyAddressLabel='Adresa'/>
+            </CompanyFormik>
 
     )
 
