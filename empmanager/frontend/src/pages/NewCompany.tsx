@@ -1,12 +1,12 @@
-import {Form, Formik} from "formik";
-import {TextInput} from "../components/form/TextInput";
-import {NumberInput} from "../components/form/NumberInput";
-import {Button} from "antd";
+import {message} from "antd";
 import React from "react";
 import {CompanyForm} from "../components/form/CompanyForm";
 import {CompanyFormik} from "../components/form/CompanyFormik";
+import { useHistory } from 'react-router-dom'
 
 export function NewCompanyPage(){
+
+    const history = useHistory()
 
     function createCompany(company: any): Promise<Response> {
         return fetch('http://localhost:8000/api/company-create',
@@ -27,7 +27,10 @@ export function NewCompanyPage(){
             address: values.adresa
         }
 
-        createCompany(companyData)
+        createCompany(companyData).then(() => {
+            history.replace('')
+            message.success('Společnost byla úspěšně přidána');
+        })
     }
 
     return(
@@ -35,7 +38,7 @@ export function NewCompanyPage(){
         <CompanyFormik onSubmit={submitHandler} initialName='' initialAddress='' initialPhone={0}>
             <CompanyForm companyName='nazev' companyPhone='telefon' companyAddress='adresa'
                          companyNameLabel='Název firmy' companyPhoneLabel='Telefon' companyAddressLabel='Adresa'/>
-            </CompanyFormik>
+        </CompanyFormik>
 
     )
 
