@@ -1,16 +1,15 @@
 import {LoadingOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
 import {Button, Descriptions, Drawer, Input, message, Modal, Space, Spin, Table} from "antd";
-import DescriptionsItem from "antd/lib/descriptions/Item";
-import {TextInput} from "../components/form/TextInput";
-import {NumberInput} from "../components/form/NumberInput";
-import {Formik, Form} from "formik";
 import {CompanyForm} from "../components/form/CompanyForm";
 import {CompanyFormik} from "../components/form/CompanyFormik";
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 export function CompanyListPage(): JSX.Element {
 
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
+    const { confirm } = Modal;
 
     const [isLoading, setIsLoading] = useState(true);
     const [loadedCompaniesList, setLoadedCompaniesList] = useState<any[]>([])  //TODO Typescript
@@ -44,10 +43,24 @@ export function CompanyListPage(): JSX.Element {
             render: (record: { id: number }) => (
                 <Space size="middle">
                     <Button onClick={(e) =>{showEditModal(record)}}>Upravit</Button>
-                    <Button onClick={(e) =>{deleteHandler(record.id)}}>Smazat</Button>
+                    <Button onClick={(e) =>{onCompanyDelete(record.id)}}>Smazat</Button>
                 </Space>
             ),
         },]
+
+    function onCompanyDelete(id: number){
+        confirm({
+            title: 'Opravdu chcete smazat tuto firmu?',
+            icon: <ExclamationCircleOutlined />,
+            content: 'Tuto akci nelze vrátit zpět',
+            okText: 'Ano',
+            okType: 'danger',
+            cancelText: 'Ne',
+            onOk() {
+                deleteHandler(id)
+            },
+        });
+    }
 
     function deleteHandler(id: number){
         fetch(`http://localhost:8000/api/company-delete/${id}`),
