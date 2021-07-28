@@ -12,6 +12,7 @@ class Employee(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(blank=True)
+    phone = models.PositiveIntegerField()
     health_limitations = models.TextField(blank=True)
     active = models.BooleanField(default=True)
     working_category = models.CharField(max_length=1)
