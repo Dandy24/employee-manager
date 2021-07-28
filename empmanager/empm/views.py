@@ -99,3 +99,11 @@ def employeeDetail(request,pk):
     employee = Employee.objects.get(id=pk)
     serializer = EmployeeSerializer(employee, many=False)
     return Response(serializer.data)
+
+@api_view(['DELETE','GET'])
+def employeeDelete(request, pk):
+
+    employee = Employee.objects.get(id=pk)
+    employee.delete()
+
+    return Response('Employee was deleted.')

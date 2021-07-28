@@ -1,10 +1,13 @@
-import {Spin, Table} from "antd";
+import {Button, message, Modal, Space, Spin, Table} from "antd";
 import React, {useEffect, useState} from "react";
-import {LoadingOutlined} from "@ant-design/icons";
+import {ExclamationCircleOutlined, LoadingOutlined} from "@ant-design/icons";
+import {EditDrawer} from "../components/EditDrawer";
 
 export function EmployeeListPage(): JSX.Element{
 
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
+    const { confirm } = Modal;
 
     const [isLoading, setIsLoading] = useState(true);
     const [loadedEmployeesList, setLoadedEmployeesList] = useState<any[]>([])  //TODO Typescript
@@ -43,6 +46,16 @@ export function EmployeeListPage(): JSX.Element{
             key: 'active',
             render: (text: string, row: { active: boolean; }) => <p> {row.active ? 'Ano' : 'Ne'} </p>
         },
+        {
+            title: 'Akce',
+            key: 'action',
+            render: (record: { id: number }) => (
+                <Space size="middle">
+                    <Button onClick={(e) =>{}}>Upravit</Button>
+                    <Button onClick={(e) =>{onEmployeeDelete(record.id)}}>Smazat</Button>
+                </Space>
+            ),
+        },
     ]
 
     useEffect( () =>
@@ -66,6 +79,32 @@ export function EmployeeListPage(): JSX.Element{
             )
 
     }, [isLoading])
+
+    function onEmployeeDelete(id: number){
+        confirm({
+            title: 'Opravdu chcete smazat toho zaměstnance?',
+            icon: <ExclamationCircleOutlined />,
+            content: 'Tuto akci nelze vrátit zpět',
+            okText: 'Ano',
+            okType: 'danger',
+            cancelText: 'Ne',
+            onOk() {
+                deleteHandler(id)
+                message.success("Zaměstnanec byl smazán.")
+            },
+        });
+    }
+
+    function deleteHandler(id: number){
+        fetch(`http://localhost:8000/api/employee-delete/${id}`),
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-type' : 'application/json',
+                }
+            }
+        setIsLoading(true)
+    }
 
     /*function getCompanyName(id:number) {
 
