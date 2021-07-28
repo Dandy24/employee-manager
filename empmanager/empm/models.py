@@ -5,10 +5,13 @@ class Company(models.Model):
     phone = models.IntegerField()
     address = models.CharField(max_length=120)
 
+    def __str__(self):
+        return self.name
+
 class Employee(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    email = models.EmailField(blank=True, unique=True)
+    email = models.EmailField(blank=True)
     health_limitations = models.TextField(blank=True)
     active = models.BooleanField(default=True)
     working_category = models.CharField(max_length=1)

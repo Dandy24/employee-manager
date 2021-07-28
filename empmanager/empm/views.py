@@ -3,8 +3,8 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Company
-from .serializers import CompanySerializer
+from .models import Company, Employee
+from .serializers import CompanySerializer, EmployeeSerializer
 
 @api_view(['GET'])
 def apiOverview(request):
@@ -15,6 +15,11 @@ def apiOverview(request):
         'Company create': '/company-create/',
         'Company delete': '/company-delete/<str:pk>/',
         'Company update': '/company-update/<str:pk>/',
+
+
+        'Employee detail': '/employee-detail/<str:pk>',
+        'Employee list': '/employee-list/',
+        'Employee create': '/employee-create/',
     }
     return Response(api_urls)
 
@@ -59,3 +64,31 @@ def companyDelete(request, pk):
     company.delete()
 
     return Response('Company was deleted.')
+
+
+
+#Employee views
+
+@api_view(['GET'])
+def employeeList(request):
+
+    employees = Employee.objects.all()
+    serializer = EmployeeSerializer(employees, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def employeeCreate(request):
+    serializer = EmployeeSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+
+    return Response(serializer.errors)
+
+@api_view(['GET'])
+def employeeDetail(request,pk):
+
+    employee = Employee.objects.get(id=pk)
+    serializer = EmployeeSerializer(employee, many=False)
+    return Response(serializer.data)

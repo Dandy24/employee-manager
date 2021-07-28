@@ -16,4 +16,9 @@ urlpatterns = [
     path('company-create', views.companyCreate, name='company-create'),
     path('company-delete/<str:pk>', views.companyDelete, name='company-delete'),
     path('company-update/<str:pk>', views.companyUpdate, name='company-update'),
+
+
+    path('employee-list', views.employeeList, name='employee-list'),
+    path('employee-detail/<str:pk>', views.employeeDetail, name='employee-detail'),
+    path('employee-create', views.employeeCreate, name='employee-create'),
 ]
