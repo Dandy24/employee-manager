@@ -1,6 +1,6 @@
 import {Form} from "formik";
-import {TextInput} from "./TextInput";
-import {NumberInput} from "./NumberInput";
+import {TextInput} from "./elements/TextInput";
+import {NumberInput} from "./elements/NumberInput";
 import {Button} from "antd";
 import React from "react";
 

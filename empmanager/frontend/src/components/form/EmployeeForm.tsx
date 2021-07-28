@@ -1,11 +1,11 @@
 import {Form, Formik} from "formik";
 import React from "react";
-import {TextInput} from "./TextInput";
-import {NumberInput} from "./NumberInput";
+import {TextInput} from "./elements/TextInput";
+import {NumberInput} from "./elements/NumberInput";
 import {Button} from "antd";
-import {CategorySelectList} from "./SelectList";
-import {DateSelector} from "./DateSelector";
-import {TextArea} from "./TextArea";
+import {CategorySelectList} from "./elements/SelectList";
+import {DateSelector} from "./elements/DateSelector";
+import {TextArea} from "./elements/TextArea";
 
 export interface EmployeeFormProps{
     onSubmit: (values: any) => void
