@@ -44,6 +44,8 @@ def companyCreate(request):
 
     if serializer.is_valid():
         serializer.save()
+    else:
+        print(serializer.errors)
 
     return Response(serializer.data)
 
@@ -54,6 +56,8 @@ def companyUpdate(request,pk):
 
     if serializer.is_valid():
         serializer.save()
+    else:
+        print(serializer.errors)
 
     return Response(serializer.data)
 
@@ -78,11 +82,14 @@ def employeeList(request):
 
 @api_view(['POST'])
 def employeeCreate(request):
+
     serializer = EmployeeSerializer(data=request.data)
 
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
+    else:
+        print(serializer.errors)
 
     return Response(serializer.errors)
 

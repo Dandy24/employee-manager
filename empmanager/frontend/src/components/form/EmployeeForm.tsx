@@ -7,12 +7,11 @@ import {CategorySelectList} from "./SelectList";
 import {DateSelector} from "./DateSelector";
 import {TextArea} from "./TextArea";
 
+export interface EmployeeFormProps{
+    onSubmit: (values: any) => void
+}
 
-export function EmployeeForm(): JSX.Element{
-
-    function onSubmit(values: any){
-        console.log(values)
-    }
+export function EmployeeForm(props: EmployeeFormProps): JSX.Element{
 
     const categoryOptions = ['A','B','C']
 
@@ -20,15 +19,15 @@ export function EmployeeForm(): JSX.Element{
 
         <Formik
             initialValues={{
-                jmeno: '' ,
-                prijmeni: '',
-                telefon: 0,
+                first_name: '' ,
+                last_name: '',
+                phone: 0,
                 email: '@',
                 category: categoryOptions[0],
                 health_limits: ''
             }}
 
-            onSubmit={onSubmit}>
+            onSubmit={props.onSubmit}>
 
             <Form>
                 <TextInput label='Jméno' spacesize='large' name='first_name' />
