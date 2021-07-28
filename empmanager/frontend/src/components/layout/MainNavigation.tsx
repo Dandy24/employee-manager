@@ -10,6 +10,7 @@ export function MainNavigation(): JSX.Element {
             <Menu theme='dark' mode='horizontal'>
                 <MenuItem key='company-list'><Link to='/'>Seznam firem</Link></MenuItem>
                 <MenuItem key='company-create'><Link to='/new-company'>Přidání nové firmy</Link></MenuItem>
+                <MenuItem key='employee-create'><Link to='/new-employee'>Přidání nového zaměstnance</Link></MenuItem>
             </Menu>
         </Header>
     )
