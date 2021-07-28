@@ -7,6 +7,7 @@ import {CompanyListPage} from '../pages/CompanyList'
 import {NewCompanyPage} from '../pages/NewCompany'
 import { MainNavigation } from '../components/layout/MainNavigation'
 import {NewEmployeePage} from "../pages/NewEmployee";
+import {EmployeeListPage} from "../pages/EmployeeList";
 
 function App(){
 
@@ -25,6 +26,10 @@ function App(){
 
                             <Route path='/new-employee'>
                                 <NewEmployeePage></NewEmployeePage>
+                            </Route>
+
+                            <Route path='/employee-list'>
+                                <EmployeeListPage></EmployeeListPage>
                             </Route>
                         </Switch>
                 </Layout>
