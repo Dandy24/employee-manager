@@ -25,7 +25,7 @@ export function CompanyForm(props: CompanyFormProps): JSX.Element {
 
             <TextInput label={companyAddressLabel} spacesize='large' name={companyAddress} />
 
-            <Button type="primary" htmlType="submit">Přidat</Button>
+            <Button type="primary" htmlType="submit">Uložit</Button>
         </Form>
     )
 

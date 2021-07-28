@@ -1,9 +1,10 @@
 import {LoadingOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
-import {Button, Descriptions, Drawer, Input, message, Modal, Space, Spin, Table} from "antd";
+import {Button, Drawer, message, Modal, Space, Spin, Table} from "antd";
 import {CompanyForm} from "../components/form/CompanyForm";
 import {CompanyFormik} from "../components/form/CompanyFormik";
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import {EditDrawer} from "../components/EditDrawer";
 
 export function CompanyListPage(): JSX.Element {
 
@@ -130,30 +131,15 @@ export function CompanyListPage(): JSX.Element {
 
             <Table columns={columns} dataSource={loadedCompaniesList}/>
 
-            <Drawer
-                title="Upravit firmu"
-                width={720}
-                onClose={handleModalCancel}
-                visible={isEditOpen}
-                bodyStyle={{ paddingBottom: 80 }}
-                footer={
-                    <div
-                        style={{
-                            textAlign: 'right',
-                        }}
-                    >
-                        <Button onClick={handleModalCancel} style={{ marginRight: 8 }}>
-                            Zavřít okno
-                        </Button>
-                    </div>
-                }
-            >
+            <EditDrawer title="Upravit firmu" onClose={handleModalCancel} visible={isEditOpen}
+                        cancelOnClick={handleModalCancel} cancelButtonText="Zavřít okno">
+
                 <CompanyFormik onSubmit={updateHandler} initialName='' initialAddress='' initialPhone={0}>
                     <CompanyForm companyName='nazev' companyPhone='telefon' companyAddress='adresa'
                                  companyNameLabel='Název firmy' companyPhoneLabel='Telefon' companyAddressLabel='Adresa'/>
                 </CompanyFormik>
 
-            </Drawer>
+            </EditDrawer>
 
         </>
     )
