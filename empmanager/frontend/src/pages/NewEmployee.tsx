@@ -2,11 +2,14 @@ import {EmployeeForm} from "../components/form/EmployeeForm";
 import {message} from "antd";
 import {useHistory} from "react-router-dom";
 import moment from "moment";
+import {EmployeeFormik} from "../components/form/EmployeeFormik";
 
 
 export function NewEmployeePage(): JSX.Element{
 
     const history = useHistory()
+
+    const categoryOptions = ['A','B','C']
 
     function createEmployee(employee: any): Promise<Response> {
 
@@ -40,7 +43,12 @@ export function NewEmployeePage(): JSX.Element{
     }
 
     return (
-        <EmployeeForm onSubmit={submitHandler}/>
+        <EmployeeFormik onSubmit={submitHandler} email="@" category={categoryOptions[0]} first_name=""
+                        last_name="" phone={0} health_limits="">
+
+            <EmployeeForm categories={categoryOptions}/>
+
+        </EmployeeFormik>
     )
 
 }

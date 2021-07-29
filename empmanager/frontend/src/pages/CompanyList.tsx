@@ -1,6 +1,6 @@
 import {LoadingOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
-import {Button, Drawer, message, Modal, Space, Spin, Table} from "antd";
+import {Button, message, Modal, Space, Spin, Table} from "antd";
 import {CompanyForm} from "../components/form/CompanyForm";
 import {CompanyFormik} from "../components/form/CompanyFormik";
 import { ExclamationCircleOutlined } from '@ant-design/icons';

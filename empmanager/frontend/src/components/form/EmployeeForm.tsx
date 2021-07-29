@@ -1,4 +1,4 @@
-import {Form, Formik} from "formik";
+import {Form} from "formik";
 import React from "react";
 import {TextInput} from "./elements/TextInput";
 import {NumberInput} from "./elements/NumberInput";
@@ -6,28 +6,31 @@ import {Button} from "antd";
 import {CategorySelectList} from "./elements/SelectList";
 import {DateSelector} from "./elements/DateSelector";
 import {TextArea} from "./elements/TextArea";
+import { Switch, Select } from "formik-antd";
+import {CompanySelectList} from "./elements/CompanySelectList";
 
 export interface EmployeeFormProps{
-    onSubmit: (values: any) => void
+    /*fname: string,
+    fnameLabel: string,
+    lname: string,
+    lnameLabel: string,
+    phone: string,
+    phoneLabel: string,
+    email: string,
+    emailLabel: string,
+    ,*/
+
+    categories: any[]  //TODO fix type
+    activeEdit?: boolean
+    companyEdit?: boolean
+    companiesList?: any[]  //TODO fix type
 }
 
 export function EmployeeForm(props: EmployeeFormProps): JSX.Element{
 
-    const categoryOptions = ['A','B','C']
+    const { categories, activeEdit, companyEdit, companiesList } = props
 
     return (
-
-        <Formik
-            initialValues={{
-                first_name: '' ,
-                last_name: '',
-                phone: 0,
-                email: '@',
-                category: categoryOptions[0],
-                health_limits: ''
-            }}
-
-            onSubmit={props.onSubmit}>
 
             <Form>
                 <TextInput label='Jméno' spacesize='large' name='first_name' />
@@ -38,7 +41,7 @@ export function EmployeeForm(props: EmployeeFormProps): JSX.Element{
 
                 <TextInput label='Email' spacesize='large' name='email' />
 
-                <CategorySelectList categories={categoryOptions} name='category'
+                <CategorySelectList categories={categories} name='category'
                                     label='Kategorizace práce' spacesize='large'/>
 
                 <DateSelector name='med_exam' label='Datum vstupní prohlídky' spacesize='large'/>
@@ -47,10 +50,12 @@ export function EmployeeForm(props: EmployeeFormProps): JSX.Element{
 
                 <TextArea name='health_limits' label='Zdravotní omezení' spacesize='large' rows={3} textareaSize='large' />
 
+                {activeEdit ? <Switch name='active'/> : null}
+
+                {companyEdit && companiesList ? <CompanySelectList companies={companiesList} name='company' label="Firma" spacesize='large'/>: null}
+
                 <Button type="primary" htmlType="submit">Přidat</Button>
             </Form>
-
-        </Formik>
 
     )
 

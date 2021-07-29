@@ -107,3 +107,15 @@ def employeeDelete(request, pk):
     employee.delete()
 
     return Response('Employee was deleted.')
+
+@api_view(['POST'])
+def employeeUpdate(request,pk):
+    employee = Employee.objects.get(id=pk)
+    serializer = EmployeeSerializer(instance=employee, data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+    else:
+        print(serializer.errors)
+
+    return Response(serializer.data)

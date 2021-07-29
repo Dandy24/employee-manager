@@ -2,6 +2,10 @@ import {Button, message, Modal, Space, Spin, Table} from "antd";
 import React, {useEffect, useState} from "react";
 import {ExclamationCircleOutlined, LoadingOutlined} from "@ant-design/icons";
 import {EditDrawer} from "../components/EditDrawer";
+import {CompanyFormik} from "../components/form/CompanyFormik";
+import {EmployeeFormik} from "../components/form/EmployeeFormik";
+import {EmployeeForm} from "../components/form/EmployeeForm";
+import moment from "moment";
 
 export function EmployeeListPage(): JSX.Element{
 
@@ -11,7 +15,11 @@ export function EmployeeListPage(): JSX.Element{
 
     const [isLoading, setIsLoading] = useState(true);
     const [loadedEmployeesList, setLoadedEmployeesList] = useState<any[]>([])  //TODO Typescript
-    //const [loadedCompaniesList, setLoadedCompaniesList] = useState<any[]>([])  //TODO Typescript
+    const [loadedCompaniesList, setLoadedCompaniesList] = useState<any[]>([])  //TODO Typescript
+    const [ isEditVisible, setIsEditVisible ] = useState(false)
+    const [ editedID, setEditedID] = useState<number>()
+
+    const categoryOptions = ['A','B','C']
 
     const columns = [
         {
@@ -51,7 +59,7 @@ export function EmployeeListPage(): JSX.Element{
             key: 'action',
             render: (record: { id: number }) => (
                 <Space size="middle">
-                    <Button onClick={(e) =>{}}>Upravit</Button>
+                    <Button onClick={(e) =>{showEditDrawer(record.id)}}>Upravit</Button>
                     <Button onClick={(e) =>{onEmployeeDelete(record.id)}}>Smazat</Button>
                 </Space>
             ),
@@ -60,15 +68,6 @@ export function EmployeeListPage(): JSX.Element{
 
     useEffect( () =>
     {
-        /*fetch('http://localhost:8000/api/company-list')
-            .then(response => response.json())
-            .then(data =>
-                {
-                    setLoadedCompaniesList(data);
-                    setIsLoading(false);
-                }
-            )*/
-
         fetch('http://localhost:8000/api/employee-list')
             .then(response => response.json())
             .then(data =>
@@ -106,17 +105,6 @@ export function EmployeeListPage(): JSX.Element{
         setIsLoading(true)
     }
 
-    /*function getCompanyName(id:number) {
-
-        fetch(`http://localhost:8000/api/company-detail/${id}`)
-            .then(response => response.json())
-            .then(data =>
-                {
-                    return data.name;
-                }
-            )
-    }*/
-
     if (isLoading) {
         return (
             <div style={{ textAlign: 'center' }}>
@@ -125,11 +113,71 @@ export function EmployeeListPage(): JSX.Element{
         );
     }
 
+    function handleModalCancel(){
+        setIsEditVisible(false)
+    }
+
+    function showEditDrawer(id:number){
+        setIsEditVisible(true)
+        setEditedID(id)
+
+        fetch('http://localhost:8000/api/company-list')
+            .then(response => response.json())
+            .then(data =>
+                {
+                    setLoadedCompaniesList(data);
+                    //setIsLoading(false);
+                }
+            )
+    }
+
+    function updateHandler(values: any){
+
+        //TODO rozsirit na zmenu firmy, pozice atd.
+        const updatedEmployee = {
+            first_name: values.first_name,
+            last_name: values.last_name,
+            phone: values.phone,
+            email: values.email,
+            working_category: values.category,
+            health_limits: values.health_limits,
+            med_exam_date: moment(values.med_exam).format('YYYY-MM-DD'),
+            job_assign_date: moment(values.job_assign).format('YYYY-MM-DD'),
+            active: values.active,
+            company: values.company
+        }
+
+        fetch(`http://localhost:8000/api/employee-update/${editedID}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(updatedEmployee)}
+        );
+
+        setIsEditVisible(false)
+        setIsLoading(true)
+
+        message.warning('Údaje o zaměstnanci byly upraveny.');
+    }
+
     return (
 
         <>
 
-        <Table columns={columns} dataSource={loadedEmployeesList} ></Table>
+            <Table columns={columns} dataSource={loadedEmployeesList}></Table>
+
+            <EditDrawer title="Upravení zaměstnance" onClose={handleModalCancel} visible={isEditVisible}
+                        cancelOnClick={handleModalCancel} cancelButtonText="Zavřít okno">
+
+                <EmployeeFormik first_name="" last_name="" phone={0} email="@" category={categoryOptions[0]} health_limits="" onSubmit={updateHandler}>
+
+                    <EmployeeForm categories={categoryOptions} activeEdit={true} companyEdit={true} companiesList={loadedCompaniesList}/>
+
+                </EmployeeFormik>
+
+            </EditDrawer>
 
         </>
 
