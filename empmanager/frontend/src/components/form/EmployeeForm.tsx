@@ -8,19 +8,12 @@ import {DateSelector} from "./elements/DateSelector";
 import {TextArea} from "./elements/TextArea";
 import { Switch, Select } from "formik-antd";
 import {CompanySelectList} from "./elements/CompanySelectList";
+import {CustomSwitch} from "./elements/CustomSwitch";
 
 export interface EmployeeFormProps{
-    /*fname: string,
-    fnameLabel: string,
-    lname: string,
-    lnameLabel: string,
-    phone: string,
-    phoneLabel: string,
-    email: string,
-    emailLabel: string,
-    ,*/
 
-    categories: any[]  //TODO fix type
+    submitText: string,
+    categories: string[]
     activeEdit?: boolean
     companyEdit?: boolean
     companiesList?: any[]  //TODO fix type
@@ -28,7 +21,7 @@ export interface EmployeeFormProps{
 
 export function EmployeeForm(props: EmployeeFormProps): JSX.Element{
 
-    const { categories, activeEdit, companyEdit, companiesList } = props
+    const { categories, activeEdit, companyEdit, companiesList, submitText } = props
 
     return (
 
@@ -50,11 +43,11 @@ export function EmployeeForm(props: EmployeeFormProps): JSX.Element{
 
                 <TextArea name='health_limits' label='Zdravotní omezení' spacesize='large' rows={3} textareaSize='large' />
 
-                {activeEdit ? <Switch name='active'/> : null}
+                {activeEdit ? <CustomSwitch label="Aktivní" name='active' spacesize='large'/> : null}
 
                 {companyEdit && companiesList ? <CompanySelectList companies={companiesList} name='company' label="Firma" spacesize='large'/>: null}
 
-                <Button type="primary" htmlType="submit">Přidat</Button>
+                <Button type="primary" htmlType="submit">{submitText}</Button>
             </Form>
 
     )

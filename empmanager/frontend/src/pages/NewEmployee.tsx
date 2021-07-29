@@ -3,6 +3,7 @@ import {message} from "antd";
 import {useHistory} from "react-router-dom";
 import moment from "moment";
 import {EmployeeFormik} from "../components/form/EmployeeFormik";
+import {createEmployee} from "../api/apiCalls";
 
 
 export function NewEmployeePage(): JSX.Element{
@@ -10,18 +11,6 @@ export function NewEmployeePage(): JSX.Element{
     const history = useHistory()
 
     const categoryOptions = ['A','B','C']
-
-    function createEmployee(employee: any): Promise<Response> {
-
-        return fetch('http://localhost:8000/api/employee-create',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify(employee),
-            });
-    }
 
     const submitHandler = (values: any): void => {
 
@@ -46,7 +35,7 @@ export function NewEmployeePage(): JSX.Element{
         <EmployeeFormik onSubmit={submitHandler} email="@" category={categoryOptions[0]} first_name=""
                         last_name="" phone={0} health_limits="">
 
-            <EmployeeForm categories={categoryOptions}/>
+            <EmployeeForm categories={categoryOptions} submitText="Přidat"/>
 
         </EmployeeFormik>
     )

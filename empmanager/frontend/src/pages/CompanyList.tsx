@@ -5,6 +5,7 @@ import {CompanyForm} from "../components/form/CompanyForm";
 import {CompanyFormik} from "../components/form/CompanyFormik";
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import {EditDrawer} from "../components/EditDrawer";
+import {deleteCompany, getCompanyList, updateCompany} from "../api/apiCalls";
 
 export function CompanyListPage(): JSX.Element {
 
@@ -64,13 +65,7 @@ export function CompanyListPage(): JSX.Element {
     }
 
     function deleteHandler(id: number){
-        fetch(`http://localhost:8000/api/company-delete/${id}`),
-            {
-                method: 'DELETE',
-                headers: {
-                    'Content-type' : 'application/json',
-                }
-            }
+        deleteCompany(id)
         setIsLoading(true)
     }
 
@@ -87,14 +82,7 @@ export function CompanyListPage(): JSX.Element {
             address: values.adresa
         }
 
-        fetch(`http://localhost:8000/api/company-update/${updatedID}`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify(updatedCompany)}
-        );
+        updateCompany(updatedID, updatedCompany) //TODO Then?
 
         setIsEditOpen(false)
         setIsLoading(true)
@@ -108,8 +96,7 @@ export function CompanyListPage(): JSX.Element {
 
     useEffect( () =>
     {
-        fetch('http://localhost:8000/api/company-list')
-            .then(response => response.json())
+        getCompanyList()
             .then(data =>
                 {
                     setLoadedCompaniesList(data);

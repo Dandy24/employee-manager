@@ -2,10 +2,10 @@ import {Button, message, Modal, Space, Spin, Table} from "antd";
 import React, {useEffect, useState} from "react";
 import {ExclamationCircleOutlined, LoadingOutlined} from "@ant-design/icons";
 import {EditDrawer} from "../components/EditDrawer";
-import {CompanyFormik} from "../components/form/CompanyFormik";
 import {EmployeeFormik} from "../components/form/EmployeeFormik";
 import {EmployeeForm} from "../components/form/EmployeeForm";
 import moment from "moment";
+import {deleteEmployee, getCompanyList, getEmployeeList, updateEmployee} from "../api/apiCalls";
 
 export function EmployeeListPage(): JSX.Element{
 
@@ -68,8 +68,7 @@ export function EmployeeListPage(): JSX.Element{
 
     useEffect( () =>
     {
-        fetch('http://localhost:8000/api/employee-list')
-            .then(response => response.json())
+        getEmployeeList()
             .then(data =>
                 {
                     setLoadedEmployeesList(data);
@@ -78,6 +77,14 @@ export function EmployeeListPage(): JSX.Element{
             )
 
     }, [isLoading])
+
+    if (isLoading) {
+        return (
+            <div style={{ textAlign: 'center' }}>
+                <Spin spinning indicator={antIcon}>Načítá se seznam firem</Spin>
+            </div>
+        );
+    }
 
     function onEmployeeDelete(id: number){
         confirm({
@@ -95,38 +102,20 @@ export function EmployeeListPage(): JSX.Element{
     }
 
     function deleteHandler(id: number){
-        fetch(`http://localhost:8000/api/employee-delete/${id}`),
-            {
-                method: 'DELETE',
-                headers: {
-                    'Content-type' : 'application/json',
-                }
-            }
+        deleteEmployee(id) //TODO Then?
         setIsLoading(true)
     }
 
-    if (isLoading) {
-        return (
-            <div style={{ textAlign: 'center' }}>
-                <Spin spinning indicator={antIcon}>Načítá se seznam firem</Spin>
-            </div>
-        );
-    }
 
-    function handleModalCancel(){
-        setIsEditVisible(false)
-    }
 
     function showEditDrawer(id:number){
         setIsEditVisible(true)
         setEditedID(id)
 
-        fetch('http://localhost:8000/api/company-list')
-            .then(response => response.json())
+        getCompanyList()
             .then(data =>
                 {
                     setLoadedCompaniesList(data);
-                    //setIsLoading(false);
                 }
             )
     }
@@ -147,19 +136,16 @@ export function EmployeeListPage(): JSX.Element{
             company: values.company
         }
 
-        fetch(`http://localhost:8000/api/employee-update/${editedID}`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify(updatedEmployee)}
-        );
+        updateEmployee(editedID, updatedEmployee) //TODO Then?
 
         setIsEditVisible(false)
         setIsLoading(true)
 
         message.warning('Údaje o zaměstnanci byly upraveny.');
+    }
+
+    function handleModalCancel(){
+        setIsEditVisible(false)
     }
 
     return (
@@ -173,7 +159,8 @@ export function EmployeeListPage(): JSX.Element{
 
                 <EmployeeFormik first_name="" last_name="" phone={0} email="@" category={categoryOptions[0]} health_limits="" onSubmit={updateHandler}>
 
-                    <EmployeeForm categories={categoryOptions} activeEdit={true} companyEdit={true} companiesList={loadedCompaniesList}/>
+                    <EmployeeForm categories={categoryOptions} activeEdit={true} companyEdit={true}
+                                  companiesList={loadedCompaniesList} submitText="Uložit"/>
 
                 </EmployeeFormik>
 

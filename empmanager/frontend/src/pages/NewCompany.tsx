@@ -3,21 +3,11 @@ import React from "react";
 import {CompanyForm} from "../components/form/CompanyForm";
 import {CompanyFormik} from "../components/form/CompanyFormik";
 import { useHistory } from 'react-router-dom'
+import {createCompany} from "../api/apiCalls";
 
 export function NewCompanyPage(){
 
     const history = useHistory()
-
-    function createCompany(company: any): Promise<Response> {
-        return fetch('http://localhost:8000/api/company-create',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify(company),
-            });
-    }
 
     const submitHandler = (values: any): void => {
 

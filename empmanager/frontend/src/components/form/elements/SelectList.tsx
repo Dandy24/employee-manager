@@ -19,7 +19,7 @@ export function CategorySelectList(props: SelectListProps): JSX.Element {
                 <label htmlFor={name}>{label}</label>
                 <Select name={name} style={{ width: 200 }}>
                     {categories.map((category) => (
-                        <Select.Option value={category}>{category}</Select.Option>
+                        <Select.Option key={category} value={category}>{category}</Select.Option>
                     ))}
                 </Select>
             </Space>
