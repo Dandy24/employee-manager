@@ -20,7 +20,7 @@ export function NewEmployeePage(): JSX.Element{
             phone: values.phone,
             email: values.email,
             working_category: values.category,
-            health_limits: values.health_limits,
+            health_limitations: values.health_limits,
             med_exam_date: moment(values.med_exam).format('YYYY-MM-DD'),
             job_assign_date: moment(values.job_assign).format('YYYY-MM-DD'),
         }

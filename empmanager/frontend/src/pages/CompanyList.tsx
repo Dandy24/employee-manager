@@ -65,8 +65,11 @@ export function CompanyListPage(): JSX.Element {
     }
 
     function deleteHandler(id: number){
-        deleteCompany(id)
-        setIsLoading(true)
+        deleteCompany(id).then(() =>{
+            setIsLoading(true)
+            message.success("Firma byla úspěšně smazána.")
+        })
+
     }
 
     function showEditModal(record: any){
@@ -87,7 +90,7 @@ export function CompanyListPage(): JSX.Element {
             setIsEditOpen(false)
             setIsLoading(true)
             message.warning('Údaje o společnosti byly upraveny');
-        }) //TODO Then?
+        })
     }
 
     function handleModalCancel(){

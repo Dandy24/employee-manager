@@ -32,13 +32,13 @@ export function updateEmployee(editedID: any, updatedEmployee:any){  //TODO fix 
 
 export function deleteEmployee(id: number) {
 
-    return fetch(`http://localhost:8000/api/employee-delete/${id}`),
+    return fetch(`http://localhost:8000/api/employee-delete/${id}`,
         {
             method: 'DELETE',
             headers: {
                 'Content-type' : 'application/json',
             }
-        }
+        })
 }
 
 
@@ -74,12 +74,12 @@ export function updateCompany(updatedID: any, updatedCompany: any){ //TODO fix u
 
 export function deleteCompany(id:number){
 
-    return fetch(`http://localhost:8000/api/company-delete/${id}`),
+    return fetch(`http://localhost:8000/api/company-delete/${id}`,
         {
             method: 'DELETE',
             headers: {
                 'Content-type' : 'application/json',
             }
-        }
+        })
 }
 
