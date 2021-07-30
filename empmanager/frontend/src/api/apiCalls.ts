@@ -42,7 +42,7 @@ export function deleteEmployee(id: number) {
 }
 
 
-export function getCompanyList(){
+export function getCompanyList() {
 
     return fetch('http://localhost:8000/api/company-list')
         .then(response => response.json())

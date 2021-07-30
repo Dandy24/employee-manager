@@ -3,6 +3,7 @@ import {Input} from "formik-antd";
 import {SpaceSize} from "antd/es/space";
 import {Space} from "antd";
 import {SizeType} from "antd/es/config-provider/SizeContext";
+import {InputWrapper} from "../../layout/form/InputWrapper";
 
 export interface TextAreaProps{
     name: string
@@ -20,12 +21,10 @@ export function TextArea(props: TextAreaProps): JSX.Element{
 
     return(
 
-        <div>
-            <Space size={spacesize}>
+        <InputWrapper>
                 <label htmlFor={name}>{label}</label>
                 <TextArea name={name} rows={rows} size={textareaSize}/>
-            </Space>
-        </div>
+        </InputWrapper>
 
     )
 

@@ -23,7 +23,7 @@ export function EmployeeFormik(props: EmployeeFormikProps): JSX.Element{
             initialValues={{
                 first_name: first_name ,
                 last_name: last_name,
-                phone: phone,
+                //phone: phone,
                 email: email,
                 category: category,
                 health_limits: health_limits

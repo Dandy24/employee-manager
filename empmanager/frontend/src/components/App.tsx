@@ -8,6 +8,7 @@ import {NewCompanyPage} from '../pages/NewCompany'
 import { MainNavigation } from './layout/MainNavigation'
 import {NewEmployeePage} from "../pages/NewEmployee";
 import {EmployeeListPage} from "../pages/EmployeeList";
+import {Content} from "antd/es/layout/layout";
 
 function App(){
 
@@ -15,6 +16,7 @@ function App(){
             <>
                 <Layout>
                     <MainNavigation/>
+                    <Content style={{ padding: '35px 50px' }}>
                         <Switch>
                             <Route path='/' exact>
                                 <CompanyListPage></CompanyListPage>
@@ -32,6 +34,7 @@ function App(){
                                 <EmployeeListPage></EmployeeListPage>
                             </Route>
                         </Switch>
+                    </Content>
                 </Layout>
             </>
         )

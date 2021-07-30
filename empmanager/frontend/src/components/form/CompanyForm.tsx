@@ -1,8 +1,9 @@
 import {Form} from "formik";
 import {TextInput} from "./elements/TextInput";
 import {NumberInput} from "./elements/NumberInput";
-import {Button} from "antd";
+import {Button, Space} from "antd";
 import React from "react";
+import {FormWrapper} from "../layout/form/FormWrapper";
 
 export interface CompanyFormProps{
     companyName: string,
@@ -19,13 +20,18 @@ export function CompanyForm(props: CompanyFormProps): JSX.Element {
 
     return(
         <Form>
-            <TextInput label={companyNameLabel} spacesize='large' name={companyName} />
+            <FormWrapper>
+                <div>
+                    <TextInput label={companyNameLabel} spacesize='large' name={companyName} />
 
-            <NumberInput label={companyPhoneLabel} spacesize='large' name={companyPhone} />
+                    <NumberInput label={companyPhoneLabel} spacesize='large' name={companyPhone} />
 
-            <TextInput label={companyAddressLabel} spacesize='large' name={companyAddress} />
+                    <TextInput label={companyAddressLabel} spacesize='large' name={companyAddress} />
+                </div>
 
-            <Button type="primary" htmlType="submit">Uložit</Button>
+                <Button type="primary" htmlType="submit">Uložit</Button>
+            </FormWrapper>
+
         </Form>
     )
 

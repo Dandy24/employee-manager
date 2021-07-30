@@ -17,7 +17,7 @@ export function CompanyFormik(props: CompanyFormikProps): JSX.Element {
         <Formik
             initialValues={{
                 nazev: initialName ,
-                telefon: initialPhone,
+                //telefon: initialPhone,
                 adresa: initialAddress
 
             }}

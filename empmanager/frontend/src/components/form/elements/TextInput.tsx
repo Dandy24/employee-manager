@@ -2,6 +2,7 @@ import {Space, Alert} from 'antd';
 import { Input } from 'formik-antd';
 import { useField } from 'formik';
 import { SpaceSize } from 'antd/es/space';
+import {InputWrapper} from "../../layout/form/InputWrapper";
 
 export interface TextInputProps{
     label: string,
@@ -15,8 +16,7 @@ export function TextInput(props: TextInputProps): JSX.Element {
     const { label, spacesize, name } = props;
 
     return (
-        <div>
-            <Space size={spacesize}>
+        <InputWrapper>
                 <label htmlFor={name}>{label}</label>
                 <Input name={name} />
                 {meta.touched && meta.error
@@ -27,7 +27,6 @@ export function TextInput(props: TextInputProps): JSX.Element {
                             showIcon
                         />
                     ) : null}
-            </Space>
-        </div>
+        </InputWrapper>
     );
 }
