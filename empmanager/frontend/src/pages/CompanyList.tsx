@@ -13,9 +13,9 @@ export function CompanyListPage(): JSX.Element {
 
     const { confirm } = Modal;
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [loadedCompaniesList, setLoadedCompaniesList] = useState<any[]>([])  //TODO Typescript
-    const [isEditOpen, setIsEditOpen] = useState(false)
+    const [isEditOpen, setIsEditOpen] = useState<boolean>(false)
     const [updatedID, setUpdatedID] = useState(null)
 
     const columns = [
@@ -82,12 +82,12 @@ export function CompanyListPage(): JSX.Element {
             address: values.adresa
         }
 
-        updateCompany(updatedID, updatedCompany) //TODO Then?
-
-        setIsEditOpen(false)
-        setIsLoading(true)
-
-        message.warning('Údaje o společnosti byly upraveny');
+        updateCompany(updatedID, updatedCompany).then(() =>
+        {
+            setIsEditOpen(false)
+            setIsLoading(true)
+            message.warning('Údaje o společnosti byly upraveny');
+        }) //TODO Then?
     }
 
     function handleModalCancel(){

@@ -136,12 +136,11 @@ export function EmployeeListPage(): JSX.Element{
             company: values.company
         }
 
-        updateEmployee(editedID, updatedEmployee) //TODO Then?
-
-        setIsEditVisible(false)
-        setIsLoading(true)
-
-        message.warning('Údaje o zaměstnanci byly upraveny.');
+        updateEmployee(editedID, updatedEmployee).then(() =>{
+            setIsEditVisible(false)
+            setIsLoading(true)
+            message.warning('Údaje o zaměstnanci byly upraveny.');
+        }) //TODO Then?
     }
 
     function handleModalCancel(){
