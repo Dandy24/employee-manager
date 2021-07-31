@@ -18,6 +18,7 @@ export function EmployeeListPage(): JSX.Element{
     const [loadedCompaniesList, setLoadedCompaniesList] = useState<any[]>([])  //TODO Typescript
     const [ isEditVisible, setIsEditVisible ] = useState(false)
     const [ editedID, setEditedID] = useState<number>()
+    const [ editedEmp, setEditedEmp] = useState<any>()
 
     const categoryOptions = ['A','B','C']
 
@@ -35,7 +36,7 @@ export function EmployeeListPage(): JSX.Element{
         {
             title: 'Příjmení',
             dataIndex: 'last_name',
-            key: 'first_name',
+            key: 'last_name',
         },
         {
             title: 'Telefon',
@@ -59,7 +60,8 @@ export function EmployeeListPage(): JSX.Element{
             key: 'action',
             render: (record: { id: number }) => (
                 <Space size="middle">
-                    <Button onClick={(e) =>{showEditDrawer(record.id)}}>Upravit</Button>
+                    <Button onClick={(e) =>{showEditDrawer(record);
+                    setEditedEmp(record)}}>Upravit</Button>
                     <Button onClick={(e) =>{onEmployeeDelete(record.id)}}>Smazat</Button>
                 </Space>
             ),
@@ -96,21 +98,23 @@ export function EmployeeListPage(): JSX.Element{
             cancelText: 'Ne',
             onOk() {
                 deleteHandler(id)
-                message.success("Zaměstnanec byl smazán.")
             },
         });
     }
 
     function deleteHandler(id: number){
-        deleteEmployee(id) //TODO Then?
-        setIsLoading(true)
+        deleteEmployee(id).then(() => {
+            setIsLoading(true)
+            message.success("Zaměstnanec byl smazán.")
+        })
+
     }
 
 
 
-    function showEditDrawer(id:number){
+    function showEditDrawer(record : any){
         setIsEditVisible(true)
-        setEditedID(id)
+        setEditedID(record.id)
 
         getCompanyList()
             .then(data =>
@@ -118,6 +122,10 @@ export function EmployeeListPage(): JSX.Element{
                     setLoadedCompaniesList(data);
                 }
             )
+
+        console.log(record)
+
+        console.log(editedEmp)
     }
 
     function updateHandler(values: any){
@@ -129,7 +137,7 @@ export function EmployeeListPage(): JSX.Element{
             phone: values.phone,
             email: values.email,
             working_category: values.category,
-            health_limits: values.health_limits,
+            health_limitations: values.health_limits,
             med_exam_date: moment(values.med_exam).format('YYYY-MM-DD'),
             job_assign_date: moment(values.job_assign).format('YYYY-MM-DD'),
             active: values.active,
@@ -140,7 +148,7 @@ export function EmployeeListPage(): JSX.Element{
             setIsEditVisible(false)
             setIsLoading(true)
             message.warning('Údaje o zaměstnanci byly upraveny.');
-        }) //TODO Then?
+        })
     }
 
     function handleModalCancel(){
