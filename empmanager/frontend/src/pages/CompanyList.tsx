@@ -17,6 +17,7 @@ export function CompanyListPage(): JSX.Element {
     const [loadedCompaniesList, setLoadedCompaniesList] = useState<any[]>([])  //TODO Typescript
     const [isEditOpen, setIsEditOpen] = useState<boolean>(false)
     const [updatedID, setUpdatedID] = useState(null)
+    //const [editedEmp, setEditedEmp] = useState(null)
 
     const columns = [
         {
@@ -75,6 +76,8 @@ export function CompanyListPage(): JSX.Element {
     function showEditModal(record: any){
         setIsEditOpen(true)
         setUpdatedID(record.id)
+        //setEditedEmp(record)
+
     }
 
     function updateHandler(values: any){
@@ -90,6 +93,10 @@ export function CompanyListPage(): JSX.Element {
             setIsEditOpen(false)
             setIsLoading(true)
             message.warning('Údaje o společnosti byly upraveny');
+        })
+            .catch((error) => {
+            message.error('Údaje o společnosti se nepodařilo upravit.');
+            console.log(error)
         })
     }
 
@@ -115,6 +122,10 @@ export function CompanyListPage(): JSX.Element {
             </div>
         );
     }
+
+    /*useEffect(() =>{              //Hook order error
+        console.log(editedEmp)
+    }, [editedEmp])*/
 
     return (
         <>

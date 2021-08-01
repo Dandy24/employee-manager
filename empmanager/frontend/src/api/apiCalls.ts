@@ -15,19 +15,31 @@ export function createEmployee(employee: any): Promise<Response>{
                 'Content-type': 'application/json',
             },
             body: JSON.stringify(employee),
-        })
+        }).then((response) =>{
+        if(!response.ok){
+            throw Error(response.statusText)
+        }
+        return response
+    })
 }
 
-export function updateEmployee(editedID: any, updatedEmployee:any){  //TODO fix editedID
+export function updateEmployee(editedID: any, updatedEmployee:any) {  //TODO fix editedID
 
-    return  fetch(`http://localhost:8000/api/employee-update/${editedID}`,
+    return fetch(`http://localhost:8000/api/employee-update/${editedID}`,
         {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
             },
             body: JSON.stringify(updatedEmployee)}
-    )
+    ).then((response) =>{
+        if(!response.ok){
+            throw Error(response.statusText)
+        }
+        return response
+    })
+
+
 }
 
 export function deleteEmployee(id: number) {
@@ -57,7 +69,12 @@ export function createCompany(company: any){
                 'Content-type': 'application/json',
             },
             body: JSON.stringify(company),
-        });
+        }).then((response) =>{
+        if(!response.ok){
+            throw Error(response.statusText)
+        }
+        return response
+    })
 }
 
 export function updateCompany(updatedID: any, updatedCompany: any){ //TODO fix updatedID
@@ -69,7 +86,12 @@ export function updateCompany(updatedID: any, updatedCompany: any){ //TODO fix u
                 'Content-type': 'application/json',
             },
             body: JSON.stringify(updatedCompany)}
-    )
+    ).then((response) =>{
+        if(!response.ok){
+            throw Error(response.statusText)
+        }
+        return response
+    })
 }
 
 export function deleteCompany(id:number){

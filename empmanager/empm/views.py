@@ -20,7 +20,10 @@ def apiOverview(request):
         'Employee detail': '/employee-detail/<str:pk>',
         'Employee list': '/employee-list/',
         'Employee create': '/employee-create/',
+        'Employee delete': '/employee-delete/<str:pk>/',
+        'Employee update': '/employee-update/<str:pk>/',
     }
+
     return Response(api_urls)
 
 @api_view(['GET'])
@@ -28,6 +31,7 @@ def companyList(request):
 
     companies = Company.objects.all()
     serializer = CompanySerializer(companies, many=True)
+
     return Response(serializer.data)
 
 @api_view(['GET'])
@@ -35,6 +39,7 @@ def companyDetail(request,pk):
 
     company = Company.objects.get(id=pk)
     serializer = CompanySerializer(company, many=False)
+
     return Response(serializer.data)
 
 @api_view(['POST'])
@@ -45,7 +50,7 @@ def companyCreate(request):
     if serializer.is_valid():
         serializer.save()
     else:
-        print(serializer.errors)
+        raise ValueError
 
     return Response(serializer.data)
 
@@ -57,7 +62,7 @@ def companyUpdate(request,pk):
     if serializer.is_valid():
         serializer.save()
     else:
-        print(serializer.errors)
+        raise ValueError
 
     return Response(serializer.data)
 
@@ -78,6 +83,7 @@ def employeeList(request):
 
     employees = Employee.objects.all()
     serializer = EmployeeSerializer(employees, many=True)
+
     return Response(serializer.data)
 
 @api_view(['POST'])
@@ -89,7 +95,7 @@ def employeeCreate(request):
         serializer.save()
         return Response(serializer.data)
     else:
-        print(serializer.errors)
+        raise ValueError
 
     return Response(serializer.errors)
 
@@ -98,6 +104,7 @@ def employeeDetail(request,pk):
 
     employee = Employee.objects.get(id=pk)
     serializer = EmployeeSerializer(employee, many=False)
+
     return Response(serializer.data)
 
 @api_view(['DELETE','GET'])
@@ -116,6 +123,6 @@ def employeeUpdate(request,pk):
     if serializer.is_valid():
         serializer.save()
     else:
-        print(serializer.errors)
+        raise ValueError
 
     return Response(serializer.data)

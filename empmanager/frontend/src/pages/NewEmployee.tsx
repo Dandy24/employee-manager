@@ -29,6 +29,10 @@ export function NewEmployeePage(): JSX.Element{
             history.replace('employee-list')
             message.success('Zaměstnanec byl úspěšně přidán');
         })
+            .catch((error) => {
+            console.log(error)
+            message.error('Nepodařilo se vytvořit zaměstnance');
+        })
     }
 
     return (

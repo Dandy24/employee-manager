@@ -21,6 +21,10 @@ export function NewCompanyPage(){
             history.replace('')
             message.success('Společnost byla úspěšně přidána');
         })
+            .catch((error) => {
+                message.error('Společnost se nepodařilo vytvořit.');
+                console.log(error)
+            })
     }
 
     return(
