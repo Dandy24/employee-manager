@@ -4,7 +4,7 @@
   "description": "employee-manager",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode development ./empmanager/frontend/src/index.js --output-path ./empmanager/frontend/static/frontend",
+    "dev": "webpack --watch --mode development ./empmanager/frontend/src/index.js --output-path ./empmanager/frontend/static/frontend",
     "build": "webpack --mode production ./empmanager/frontend/src/index.js --output-path ./empmanager/frontend/static/frontend"
   },
   "repository": {
