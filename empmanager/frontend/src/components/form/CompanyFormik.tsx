@@ -1,32 +1,19 @@
-import {Formik} from "formik";
-import React from "react";
+import { Formik } from 'formik';
+import React from 'react';
+import { toJS } from 'mobx';
 
-export interface CompanyFormikProps{
-    onSubmit: (values: any) => void
-    initialName: string,
-    initialPhone: number,
-    initialAddress: string,
-    children: any
+export interface CompanyFormikProps {
+    onSubmit: (values: any) => void;
+    initialValues: any; //TODO type
+    children: any;
 }
 
 export function CompanyFormik(props: CompanyFormikProps): JSX.Element {
+    const { initialValues, onSubmit } = props;
 
-    const { initialName, initialPhone, initialAddress, onSubmit } = props
-
-    return(
-        <Formik
-            initialValues={{
-                nazev: initialName ,
-                //telefon: initialPhone,
-                adresa: initialAddress
-
-            }}
-
-            onSubmit={onSubmit}>
-
+    return (
+        <Formik initialValues={initialValues} onSubmit={onSubmit}>
             {props.children}
-
         </Formik>
-    )
-
+    );
 }

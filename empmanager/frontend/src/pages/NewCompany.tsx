@@ -1,39 +1,48 @@
-import {message} from "antd";
-import React from "react";
-import {CompanyForm} from "../components/form/CompanyForm";
-import {CompanyFormik} from "../components/form/CompanyFormik";
-import { useHistory } from 'react-router-dom'
-import {createCompany} from "../api/apiCalls";
+import { message } from 'antd';
+import React from 'react';
+import { CompanyForm } from '../components/form/CompanyForm';
+import { CompanyFormik } from '../components/form/CompanyFormik';
+import { useHistory } from 'react-router-dom';
+import { RootStore } from '../stores/root-store';
 
-export function NewCompanyPage(){
+interface NewCompanyProps {
+    rootStore: RootStore;
+}
 
-    const history = useHistory()
+export function NewCompanyPage(props: NewCompanyProps): JSX.Element {
+    const history = useHistory();
 
-    const submitHandler = (values: any): void => {
+    const { rootStore } = props;
 
+    const submitHandler = async (values: any): Promise<void> => {
         const companyData = {
-            name: values.nazev,
-            phone: values.telefon,
-            address: values.adresa
-        }
+            name: values.name,
+            phone: values.phone,
+            address: values.address,
+        };
 
-        createCompany(companyData).then(() => {
-            history.replace('')
-            message.success('Společnost byla úspěšně přidána');
-        })
-            .catch((error) => {
-                message.error('Společnost se nepodařilo vytvořit.');
-                console.log(error)
+        await rootStore.companyStore
+            .saveCompany(companyData)
+            .then(() => {
+                history.replace('');
+                message.success('Společnost byla úspěšně přidána');
             })
-    }
+            .catch((error: string) => {
+                message.error('Společnost se nepodařilo vytvořit.');
+                console.log(error);
+            });
+    };
 
-    return(
-
-        <CompanyFormik onSubmit={submitHandler} initialName='' initialAddress='' initialPhone={0}>
-            <CompanyForm companyName='nazev' companyPhone='telefon' companyAddress='adresa'
-                         companyNameLabel='Název firmy' companyPhoneLabel='Telefon' companyAddressLabel='Adresa'/>
+    return (
+        <CompanyFormik onSubmit={submitHandler} initialValues={{}}>
+            <CompanyForm
+                companyName="name"
+                companyPhone="phone"
+                companyAddress="address"
+                companyNameLabel="Název firmy"
+                companyPhoneLabel="Telefon"
+                companyAddressLabel="Adresa"
+            />
         </CompanyFormik>
-
-    )
-
+    );
 }

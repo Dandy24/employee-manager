@@ -1,13 +1,14 @@
 import {EmployeeStore} from "./employee-store";
+import {CompanyStore} from "./company-store";
 
 
 export class RootStore {
     employeeStore: EmployeeStore;
-    //contactModalStore: ContactModalStore;
+    companyStore: CompanyStore;
 
     constructor() {
         this.employeeStore = new EmployeeStore(this);
-        //this.contactModalStore = new ContactModalStore(this);
+        this.companyStore = new CompanyStore(this);
 
         // makeObservable(this, {
         //     contactStore: observable,
