@@ -1,26 +1,27 @@
-import {Button, message, Modal, Space, Spin, Table} from "antd";
-import React, {useEffect, useState} from "react";
-import {ExclamationCircleOutlined, LoadingOutlined} from "@ant-design/icons";
-import {EditDrawer} from "../components/EditDrawer";
-import {EmployeeFormik} from "../components/form/EmployeeFormik";
-import {EmployeeForm} from "../components/form/EmployeeForm";
-import moment from "moment";
-import {deleteEmployee, getCompanyList, getEmployeeList, updateEmployee} from "../api/apiCalls";
+import { Button, message, Modal, Space, Spin, Table } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { ExclamationCircleOutlined, LoadingOutlined } from '@ant-design/icons';
+import { EditDrawer } from '../components/EditDrawer';
+import { EmployeeFormik } from '../components/form/EmployeeFormik';
+import { EmployeeForm } from '../components/form/EmployeeForm';
+import moment from 'moment';
+import { deleteEmployee, getCompanyList, getEmployeeList, updateEmployee } from '../api/apiCalls';
+import { Link } from 'react-router-dom';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 
-export function EmployeeListPage(): JSX.Element{
-
+export function EmployeeListPage(): JSX.Element {
     const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
     const { confirm } = Modal;
 
     const [isLoading, setIsLoading] = useState(true);
-    const [loadedEmployeesList, setLoadedEmployeesList] = useState<any[]>([])  //TODO Typescript
-    const [loadedCompaniesList, setLoadedCompaniesList] = useState<any[]>([])  //TODO Typescript
-    const [ isEditVisible, setIsEditVisible ] = useState(false)
-    const [ editedID, setEditedID] = useState<number>()
-    const [ editedEmp, setEditedEmp] = useState<any>()
+    const [loadedEmployeesList, setLoadedEmployeesList] = useState<any[]>([]); //TODO Typescript
+    const [loadedCompaniesList, setLoadedCompaniesList] = useState<any[]>([]); //TODO Typescript
+    const [isEditVisible, setIsEditVisible] = useState(false);
+    const [editedID, setEditedID] = useState<number>();
+    const [editedEmp, setEditedEmp] = useState<any>();
 
-    const categoryOptions = ['A','B','C']
+    const categoryOptions = ['A', 'B', 'C'];
 
     const columns = [
         {
@@ -53,42 +54,48 @@ export function EmployeeListPage(): JSX.Element{
             title: 'Aktivní',
             dataIndex: 'active',
             key: 'active',
-            render: (text: string, row: { active: boolean; }) => <p> {row.active ? 'Ano' : 'Ne'} </p>
+            render: (text: string, row: { active: boolean }) => <p> {row.active ? 'Ano' : 'Ne'} </p>,
         },
         {
             title: 'Akce',
             key: 'action',
             render: (record: { id: number }) => (
                 <Space size="middle">
-                    <Button onClick={(e) =>{showEditDrawer(record);
-                    setEditedEmp(record)}}>Upravit</Button>
-                    <Button onClick={(e) =>{onEmployeeDelete(record.id)}}>Smazat</Button>
+                    <Button
+                        onClick={(e) => {
+                            showEditDrawer(record);
+                            setEditedEmp(record);
+                        }}
+                    >
+                        Upravit
+                    </Button>
+                    <Button
+                        onClick={(e) => {
+                            onEmployeeDelete(record.id);
+                        }}
+                    >
+                        Smazat
+                    </Button>
+                    <Link to={`/monthly-output/${record.id}`}>
+                        <Button>kok</Button>
+                    </Link>
                 </Space>
             ),
         },
-    ]
+    ];
 
-    useEffect( () =>
-    {
-        getEmployeeList()
-            .then(data =>
-                {
-                    setLoadedEmployeesList(data);
-                    setIsLoading(false);
-                }
-            )
-
-    }, [isLoading])
+    useEffect(() => {
+        getEmployeeList().then((data) => {
+            setLoadedEmployeesList(data);
+            setIsLoading(false);
+        });
+    }, [isLoading]);
 
     if (isLoading) {
-        return (
-            <div style={{ textAlign: 'center' }}>
-                <Spin spinning indicator={antIcon}>Načítá se seznam firem</Spin>
-            </div>
-        );
+        return <LoadingSpinner text="Načítá se seznam zaměstnanců" />;
     }
 
-    function onEmployeeDelete(id: number){
+    function onEmployeeDelete(id: number) {
         confirm({
             title: 'Opravdu chcete smazat toho zaměstnance?',
             icon: <ExclamationCircleOutlined />,
@@ -97,39 +104,32 @@ export function EmployeeListPage(): JSX.Element{
             okType: 'danger',
             cancelText: 'Ne',
             onOk() {
-                deleteHandler(id)
+                deleteHandler(id);
             },
         });
     }
 
-    function deleteHandler(id: number){
+    function deleteHandler(id: number) {
         deleteEmployee(id).then(() => {
-            setIsLoading(true)
-            message.success("Zaměstnanec byl smazán.")
-        })
-
+            setIsLoading(true);
+            message.success('Zaměstnanec byl smazán.');
+        });
     }
 
+    function showEditDrawer(record: any) {
+        setIsEditVisible(true);
+        setEditedID(record.id);
 
+        getCompanyList().then((data) => {
+            setLoadedCompaniesList(data);
+        });
 
-    function showEditDrawer(record : any){
-        setIsEditVisible(true)
-        setEditedID(record.id)
+        console.log(record);
 
-        getCompanyList()
-            .then(data =>
-                {
-                    setLoadedCompaniesList(data);
-                }
-            )
-
-        console.log(record)
-
-        console.log(editedEmp)
+        console.log(editedEmp);
     }
 
-    function updateHandler(values: any){
-
+    function updateHandler(values: any) {
         //TODO rozsirit na zmenu firmy, pozice atd.
         const updatedEmployee = {
             first_name: values.first_name,
@@ -141,45 +141,55 @@ export function EmployeeListPage(): JSX.Element{
             med_exam_date: moment(values.med_exam).format('YYYY-MM-DD'),
             job_assign_date: moment(values.job_assign).format('YYYY-MM-DD'),
             active: values.active,
-            company: values.company
-        }
+            company: values.company,
+        };
 
-        updateEmployee(editedID, updatedEmployee).then((data) =>{
-            //console.log(data)
-            setIsEditVisible(false)
-            setIsLoading(true)
-            message.warning('Údaje o zaměstnanci byly upraveny.');
-        })
-            .catch((error) => {
-                console.log(error)
-                message.error('Údaje o zaměstnanci se nepodařilo upravit.');
+        updateEmployee(editedID, updatedEmployee)
+            .then((data) => {
+                //console.log(data)
+                setIsEditVisible(false);
+                setIsLoading(true);
+                message.warning('Údaje o zaměstnanci byly upraveny.');
             })
+            .catch((error) => {
+                console.log(error);
+                message.error('Údaje o zaměstnanci se nepodařilo upravit.');
+            });
     }
 
-    function handleModalCancel(){
-        setIsEditVisible(false)
+    function handleModalCancel() {
+        setIsEditVisible(false);
     }
 
     return (
-
         <>
-
             <Table columns={columns} dataSource={loadedEmployeesList}></Table>
 
-            <EditDrawer title="Upravení zaměstnance" onClose={handleModalCancel} visible={isEditVisible}
-                        cancelOnClick={handleModalCancel} cancelButtonText="Zavřít okno">
-
-                <EmployeeFormik first_name="" last_name="" phone={0} email="@" category={categoryOptions[0]} health_limits="" onSubmit={updateHandler}>
-
-                    <EmployeeForm categories={categoryOptions} activeEdit={true} companyEdit={true}
-                                  companiesList={loadedCompaniesList} submitText="Uložit"/>
-
+            <EditDrawer
+                title="Upravení zaměstnance"
+                onClose={handleModalCancel}
+                visible={isEditVisible}
+                cancelOnClick={handleModalCancel}
+                cancelButtonText="Zavřít okno"
+            >
+                <EmployeeFormik
+                    first_name=""
+                    last_name=""
+                    phone={0}
+                    email="@"
+                    category={categoryOptions[0]}
+                    health_limits=""
+                    onSubmit={updateHandler}
+                >
+                    <EmployeeForm
+                        categories={categoryOptions}
+                        activeEdit={true}
+                        companyEdit={true}
+                        companiesList={loadedCompaniesList}
+                        submitText="Uložit"
+                    />
                 </EmployeeFormik>
-
             </EditDrawer>
-
         </>
-
-    )
-
+    );
 }

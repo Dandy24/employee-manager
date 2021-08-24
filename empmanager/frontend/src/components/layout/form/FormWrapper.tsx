@@ -1,9 +1,6 @@
-import {Space} from "antd";
+import React from 'react';
+import { Row } from 'antd';
 
-export function FormWrapper(props: {children: any}): JSX.Element{
-    return(
-        <Space direction='vertical' size='large'>
-            {props.children}
-        </Space>
-    )
+export function FormWrapper(props: { children: React.ReactNode }): JSX.Element {
+    return <Row justify="center">{props.children}</Row>;
 }

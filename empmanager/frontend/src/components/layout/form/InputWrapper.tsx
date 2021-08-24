@@ -1,13 +1,10 @@
-import {Space} from "antd";
+import React from 'react';
+import { Space } from 'antd';
 
-export function InputWrapper(props: {children: any}): JSX.Element{
-
-    return(
-        <div style={{padding: '5px 0'}}>
-            <Space size='large'>
-                {props.children}
-            </Space>
+export function InputWrapper(props: { children: React.ReactNode }): JSX.Element {
+    return (
+        <div style={{ padding: '5px 0' }}>
+            <Space size="large">{props.children}</Space>
         </div>
-    )
+    );
 }
-

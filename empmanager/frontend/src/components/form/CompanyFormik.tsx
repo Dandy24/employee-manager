@@ -1,11 +1,10 @@
 import { Formik } from 'formik';
 import React from 'react';
-import { toJS } from 'mobx';
 
 export interface CompanyFormikProps {
     onSubmit: (values: any) => void;
     initialValues: any; //TODO type
-    children: any;
+    children: React.ReactNode;
 }
 
 export function CompanyFormik(props: CompanyFormikProps): JSX.Element {

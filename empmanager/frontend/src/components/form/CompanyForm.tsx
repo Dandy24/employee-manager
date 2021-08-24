@@ -3,7 +3,6 @@ import { TextInput } from './elements/TextInput';
 import { NumberInput } from './elements/NumberInput';
 import { Button, Col, Row, Space } from 'antd';
 import React from 'react';
-import { FormWrapper } from '../layout/form/FormWrapper';
 
 export interface CompanyFormProps {
     companyName: string;

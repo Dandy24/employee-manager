@@ -1,19 +1,17 @@
-import {EmployeeForm} from "../components/form/EmployeeForm";
-import {message} from "antd";
-import {useHistory} from "react-router-dom";
-import moment from "moment";
-import {EmployeeFormik} from "../components/form/EmployeeFormik";
-import {createEmployee} from "../api/apiCalls";
+import React from 'react';
+import { EmployeeForm } from '../components/form/EmployeeForm';
+import { message } from 'antd';
+import { useHistory } from 'react-router-dom';
+import moment from 'moment';
+import { EmployeeFormik } from '../components/form/EmployeeFormik';
+import { createEmployee } from '../api/apiCalls';
 
+export function NewEmployeePage(): JSX.Element {
+    const history = useHistory();
 
-export function NewEmployeePage(): JSX.Element{
-
-    const history = useHistory()
-
-    const categoryOptions = ['A','B','C']
+    const categoryOptions = ['A', 'B', 'C'];
 
     const submitHandler = (values: any): void => {
-
         const employeeData = {
             first_name: values.first_name,
             last_name: values.last_name,
@@ -23,25 +21,30 @@ export function NewEmployeePage(): JSX.Element{
             health_limitations: values.health_limits,
             med_exam_date: moment(values.med_exam).format('YYYY-MM-DD'),
             job_assign_date: moment(values.job_assign).format('YYYY-MM-DD'),
-        }
+        };
 
-        createEmployee(employeeData).then(() => {
-            history.replace('employee-list')
-            message.success('Zaměstnanec byl úspěšně přidán');
-        })
+        createEmployee(employeeData)
+            .then(() => {
+                history.replace('employee-list');
+                message.success('Zaměstnanec byl úspěšně přidán');
+            })
             .catch((error) => {
-            console.log(error)
-            message.error('Nepodařilo se vytvořit zaměstnance');
-        })
-    }
+                console.log(error);
+                message.error('Nepodařilo se vytvořit zaměstnance');
+            });
+    };
 
     return (
-        <EmployeeFormik onSubmit={submitHandler} email="@" category={categoryOptions[0]} first_name=""
-                        last_name="" phone={0} health_limits="">
-
-            <EmployeeForm categories={categoryOptions} submitText="Přidat"/>
-
+        <EmployeeFormik
+            onSubmit={submitHandler}
+            email="@"
+            category={categoryOptions[0]}
+            first_name=""
+            last_name=""
+            phone={0}
+            health_limits=""
+        >
+            <EmployeeForm categories={categoryOptions} submitText="Přidat" />
         </EmployeeFormik>
-    )
-
+    );
 }
