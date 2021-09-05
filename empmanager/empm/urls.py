@@ -1,5 +1,3 @@
-from rest_framework import routers
-from .api import EmployeeViewSet
 from django.urls import path
 from . import views
 

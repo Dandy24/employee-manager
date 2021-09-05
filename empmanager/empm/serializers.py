@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Employee, Company
+from .models import Employee, Company, Monthly_output
 
 #Company serializer
 class CompanySerializer(serializers.ModelSerializer):
