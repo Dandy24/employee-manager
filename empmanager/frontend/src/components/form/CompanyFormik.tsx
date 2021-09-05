@@ -1,5 +1,6 @@
 import { Formik } from 'formik';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 
 export interface CompanyFormikProps {
     onSubmit: (values: any) => void;
@@ -7,7 +8,7 @@ export interface CompanyFormikProps {
     children: React.ReactNode;
 }
 
-export function CompanyFormik(props: CompanyFormikProps): JSX.Element {
+export const CompanyFormik: React.FC<CompanyFormikProps> = observer((props: CompanyFormikProps): JSX.Element => {
     const { initialValues, onSubmit } = props;
 
     return (
@@ -15,4 +16,4 @@ export function CompanyFormik(props: CompanyFormikProps): JSX.Element {
             {props.children}
         </Formik>
     );
-}
+});

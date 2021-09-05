@@ -1,5 +1,5 @@
 import { RootStore } from './root-store';
-import { action, makeObservable, observable, runInAction, toJS } from 'mobx';
+import { action, makeObservable, observable, runInAction } from 'mobx';
 import { createCompany, deleteCompany, getCompanyList, updateCompany } from '../api/apiCalls';
 import { message } from 'antd';
 
@@ -22,6 +22,8 @@ export class CompanyStore {
             fetchAllCompanies: action,
             closeModal: action,
             openToEdit: action,
+            addCompany: action,
+            editCompany: action,
             deleteCompany: action,
         });
     }
@@ -55,12 +57,32 @@ export class CompanyStore {
         }
     }
 
-    async saveCompany(company: any): Promise<void> {
+    async editCompany(company: any): Promise<void> {
         if (this.company.id) {
-            await updateCompany(company, this.company.id); //TODO dat to ID pryc nejak
-        } else {
-            await createCompany(company);
+            await updateCompany(company, this.company.id)
+                .then(() => {
+                    message.warning('Údaje o společnosti byly upraveny');
+                })
+                .catch((error) => {
+                    message.error('Údaje o společnosti se nepodařilo upravit.');
+                    console.log(error);
+                }); //TODO dat to ID pryc nejak
         }
+        await this.fetchAllCompanies();
+        runInAction(() => {
+            this.closeModal();
+        });
+    }
+
+    async addCompany(company: any): Promise<void> {
+        await createCompany(company)
+            .then(() => {
+                message.success('Spolecnost byla uspesne vytvorena');
+            })
+            .catch((error) => {
+                message.error('Spolecnost se nepodarilo vytvorit');
+                console.log(error);
+            });
         await this.fetchAllCompanies();
         runInAction(() => {
             this.closeModal();

@@ -11,8 +11,9 @@ import { EmployeeListPage } from '../pages/EmployeeList';
 import { Content } from 'antd/es/layout/layout';
 import { MonthlyReview } from '../pages/MonthlyReview';
 import { useRootStore } from '../stores/root-store-provider';
+import { observer } from 'mobx-react-lite';
 
-function App() {
+const App: React.FC = observer(() => {
     const rootStore = useRootStore();
 
     return (
@@ -30,11 +31,11 @@ function App() {
                         </Route>
 
                         <Route path="/new-employee">
-                            <NewEmployeePage></NewEmployeePage>
+                            <NewEmployeePage rootStore={rootStore}></NewEmployeePage>
                         </Route>
 
                         <Route path="/employee-list">
-                            <EmployeeListPage></EmployeeListPage>
+                            <EmployeeListPage rootStore={rootStore}></EmployeeListPage>
                         </Route>
 
                         <Route path="/monthly-output/:id" exact>
@@ -45,5 +46,6 @@ function App() {
             </Layout>
         </>
     );
-}
+});
+
 export default App;

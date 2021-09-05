@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { message, Modal, Table } from 'antd';
+import { Modal, Table } from 'antd';
 import { CompanyForm } from '../components/form/CompanyForm';
 import { CompanyFormik } from '../components/form/CompanyFormik';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -15,7 +15,7 @@ interface CompanyListProps {
 
 export const CompanyListPage: React.FC<CompanyListProps> = observer((props: CompanyListProps): JSX.Element => {
     const { rootStore } = props;
-    const { companyStore, employeeStore } = rootStore;
+    const { companyStore } = rootStore;
 
     const { confirm } = Modal;
 
@@ -42,15 +42,7 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
             address: values.address,
         };
 
-        await companyStore
-            .saveCompany(updatedCompany)
-            .then(() => {
-                message.warning('Údaje o společnosti byly upraveny');
-            })
-            .catch((error) => {
-                message.error('Údaje o společnosti se nepodařilo upravit.');
-                console.log(error);
-            });
+        await companyStore.editCompany(updatedCompany);
     }
 
     useEffect(() => {

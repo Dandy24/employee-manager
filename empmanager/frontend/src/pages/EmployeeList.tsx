@@ -1,195 +1,101 @@
-import { Button, message, Modal, Space, Spin, Table } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { ExclamationCircleOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Modal, Table } from 'antd';
+import React, { useEffect } from 'react';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { EditDrawer } from '../components/EditDrawer';
 import { EmployeeFormik } from '../components/form/EmployeeFormik';
 import { EmployeeForm } from '../components/form/EmployeeForm';
 import moment from 'moment';
-import { deleteEmployee, getCompanyList, getEmployeeList, updateEmployee } from '../api/apiCalls';
-import { Link } from 'react-router-dom';
 import { LoadingSpinner } from '../components/LoadingSpinner';
+import { RootStore } from '../stores/root-store';
+import { EmployeeTableColumns } from '../components/tableColumns/EmployeeTableColumns';
+import { observer } from 'mobx-react-lite';
 
-export function EmployeeListPage(): JSX.Element {
-    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-
-    const { confirm } = Modal;
-
-    const [isLoading, setIsLoading] = useState(true);
-    const [loadedEmployeesList, setLoadedEmployeesList] = useState<any[]>([]); //TODO Typescript
-    const [loadedCompaniesList, setLoadedCompaniesList] = useState<any[]>([]); //TODO Typescript
-    const [isEditVisible, setIsEditVisible] = useState(false);
-    const [editedID, setEditedID] = useState<number>();
-    const [editedEmp, setEditedEmp] = useState<any>();
-
-    const categoryOptions = ['A', 'B', 'C'];
-
-    const columns = [
-        {
-            title: 'ID zaměstnance',
-            dataIndex: 'id',
-            key: 'id',
-        },
-        {
-            title: 'Jméno',
-            dataIndex: 'first_name',
-            key: 'first_name',
-        },
-        {
-            title: 'Příjmení',
-            dataIndex: 'last_name',
-            key: 'last_name',
-        },
-        {
-            title: 'Telefon',
-            dataIndex: 'phone',
-            key: 'phone',
-        },
-        {
-            title: 'Firma',
-            dataIndex: 'company',
-            key: 'company',
-            //render: (text: string, row: { company: number; }) => <p> {getCompanyName(row.company)} </p>
-        },
-        {
-            title: 'Aktivní',
-            dataIndex: 'active',
-            key: 'active',
-            render: (text: string, row: { active: boolean }) => <p> {row.active ? 'Ano' : 'Ne'} </p>,
-        },
-        {
-            title: 'Akce',
-            key: 'action',
-            render: (record: { id: number }) => (
-                <Space size="middle">
-                    <Button
-                        onClick={(e) => {
-                            showEditDrawer(record);
-                            setEditedEmp(record);
-                        }}
-                    >
-                        Upravit
-                    </Button>
-                    <Button
-                        onClick={(e) => {
-                            onEmployeeDelete(record.id);
-                        }}
-                    >
-                        Smazat
-                    </Button>
-                    <Link to={`/monthly-output/${record.id}`}>
-                        <Button>kok</Button>
-                    </Link>
-                </Space>
-            ),
-        },
-    ];
-
-    useEffect(() => {
-        getEmployeeList().then((data) => {
-            setLoadedEmployeesList(data);
-            setIsLoading(false);
-        });
-    }, [isLoading]);
-
-    if (isLoading) {
-        return <LoadingSpinner text="Načítá se seznam zaměstnanců" />;
-    }
-
-    function onEmployeeDelete(id: number) {
-        confirm({
-            title: 'Opravdu chcete smazat toho zaměstnance?',
-            icon: <ExclamationCircleOutlined />,
-            content: 'Tuto akci nelze vrátit zpět',
-            okText: 'Ano',
-            okType: 'danger',
-            cancelText: 'Ne',
-            onOk() {
-                deleteHandler(id);
-            },
-        });
-    }
-
-    function deleteHandler(id: number) {
-        deleteEmployee(id).then(() => {
-            setIsLoading(true);
-            message.success('Zaměstnanec byl smazán.');
-        });
-    }
-
-    function showEditDrawer(record: any) {
-        setIsEditVisible(true);
-        setEditedID(record.id);
-
-        getCompanyList().then((data) => {
-            setLoadedCompaniesList(data);
-        });
-
-        console.log(record);
-
-        console.log(editedEmp);
-    }
-
-    function updateHandler(values: any) {
-        //TODO rozsirit na zmenu firmy, pozice atd.
-        const updatedEmployee = {
-            first_name: values.first_name,
-            last_name: values.last_name,
-            phone: values.phone,
-            email: values.email,
-            working_category: values.category,
-            health_limitations: values.health_limits,
-            med_exam_date: moment(values.med_exam).format('YYYY-MM-DD'),
-            job_assign_date: moment(values.job_assign).format('YYYY-MM-DD'),
-            active: values.active,
-            company: values.company,
-        };
-
-        updateEmployee(editedID, updatedEmployee)
-            .then((data) => {
-                //console.log(data)
-                setIsEditVisible(false);
-                setIsLoading(true);
-                message.warning('Údaje o zaměstnanci byly upraveny.');
-            })
-            .catch((error) => {
-                console.log(error);
-                message.error('Údaje o zaměstnanci se nepodařilo upravit.');
-            });
-    }
-
-    function handleModalCancel() {
-        setIsEditVisible(false);
-    }
-
-    return (
-        <>
-            <Table columns={columns} dataSource={loadedEmployeesList}></Table>
-
-            <EditDrawer
-                title="Upravení zaměstnance"
-                onClose={handleModalCancel}
-                visible={isEditVisible}
-                cancelOnClick={handleModalCancel}
-                cancelButtonText="Zavřít okno"
-            >
-                <EmployeeFormik
-                    first_name=""
-                    last_name=""
-                    phone={0}
-                    email="@"
-                    category={categoryOptions[0]}
-                    health_limits=""
-                    onSubmit={updateHandler}
-                >
-                    <EmployeeForm
-                        categories={categoryOptions}
-                        activeEdit={true}
-                        companyEdit={true}
-                        companiesList={loadedCompaniesList}
-                        submitText="Uložit"
-                    />
-                </EmployeeFormik>
-            </EditDrawer>
-        </>
-    );
+interface EmployeeListPageProps {
+    rootStore: RootStore;
 }
+
+export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
+    (props: EmployeeListPageProps): JSX.Element => {
+        const { rootStore } = props;
+
+        const { employeeStore } = rootStore;
+
+        const { confirm } = Modal;
+
+        const categoryOptions = ['A', 'B', 'C'];
+
+        const columns = EmployeeTableColumns(employeeStore, rootStore.companyStore, onEmployeeDelete);
+
+        async function onEmployeeDelete(id: number) {
+            confirm({
+                title: 'Opravdu chcete smazat toho zaměstnance?',
+                icon: <ExclamationCircleOutlined />,
+                content: 'Tuto akci nelze vrátit zpět',
+                okText: 'Ano',
+                okType: 'danger',
+                cancelText: 'Ne',
+                async onOk() {
+                    await employeeStore.deleteEmployee(id);
+                },
+            });
+        }
+
+        async function updateHandler(values: any) {
+            //TODO rozsirit na zmenu firmy, pozice atd.
+            const updatedEmployee = {
+                first_name: values.first_name,
+                last_name: values.last_name,
+                phone: values.phone,
+                email: values.email,
+                working_category: values.working_category,
+                health_limitations: values.health_limitations,
+                med_exam_date: moment(values.med_exam_date).format('YYYY-MM-DD'),
+                job_assign_date: moment(values.job_assign_date).format('YYYY-MM-DD'),
+                active: values.active,
+                company: values.company,
+            };
+
+            console.log(updatedEmployee);
+
+            await employeeStore.editEmployee(updatedEmployee);
+        }
+
+        useEffect(() => {
+            (async () => {
+                await employeeStore.fetchAllEmployees();
+            })();
+        }, []); // was [isLoading]
+
+        if (employeeStore.loadingEmployees) {
+            return <LoadingSpinner text="Načítá se seznam zaměstnanců" />;
+        }
+
+        return (
+            <>
+                <Table columns={columns} dataSource={employeeStore.employees} />
+
+                <EditDrawer
+                    title="Upravení zaměstnance"
+                    onClose={() => {
+                        employeeStore.closeModal();
+                    }}
+                    visible={employeeStore.isEditOpen}
+                    cancelOnClick={() => {
+                        employeeStore.closeModal();
+                    }}
+                    cancelButtonText="Zavřít okno"
+                >
+                    <EmployeeFormik initialValues={employeeStore.employee} onSubmit={updateHandler}>
+                        <EmployeeForm
+                            categories={categoryOptions}
+                            activeEdit={true}
+                            employeeEdit={true}
+                            companiesList={rootStore.companyStore.companies}
+                            submitText="Uložit"
+                        />
+                    </EmployeeFormik>
+                </EditDrawer>
+            </>
+        );
+    },
+);

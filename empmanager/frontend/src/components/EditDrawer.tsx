@@ -1,5 +1,6 @@
 import { Button, Drawer } from 'antd';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 
 export interface EditDrawerProps {
     title: string;
@@ -10,7 +11,7 @@ export interface EditDrawerProps {
     children: any;
 }
 
-export function EditDrawer(props: EditDrawerProps): JSX.Element {
+export const EditDrawer: React.FC<EditDrawerProps> = observer((props: EditDrawerProps): JSX.Element => {
     const { title, onClose, visible, cancelOnClick, cancelButtonText } = props;
 
     return (
@@ -35,4 +36,4 @@ export function EditDrawer(props: EditDrawerProps): JSX.Element {
             {props.children}
         </Drawer>
     );
-}
+});

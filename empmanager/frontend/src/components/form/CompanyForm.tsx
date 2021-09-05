@@ -3,6 +3,7 @@ import { TextInput } from './elements/TextInput';
 import { NumberInput } from './elements/NumberInput';
 import { Button, Col, Row, Space } from 'antd';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 
 export interface CompanyFormProps {
     companyName: string;
@@ -13,13 +14,12 @@ export interface CompanyFormProps {
     companyAddressLabel: string;
 }
 
-export function CompanyForm(props: CompanyFormProps): JSX.Element {
+export const CompanyForm: React.FC<CompanyFormProps> = observer((props: CompanyFormProps): JSX.Element => {
     const { companyName, companyPhone, companyAddress, companyAddressLabel, companyNameLabel, companyPhoneLabel } =
         props;
 
     return (
         <Form>
-            {/*<FormWrapper>*/}
             <Row justify="center">
                 <Col span={12}>
                     <TextInput label={companyNameLabel} spacesize="large" name={companyName} />
@@ -42,7 +42,6 @@ export function CompanyForm(props: CompanyFormProps): JSX.Element {
                     </Button>
                 </Col>
             </Row>
-            {/*</FormWrapper>*/}
         </Form>
     );
-}
+});

@@ -3,10 +3,10 @@ from .api import EmployeeViewSet
 from django.urls import path
 from . import views
 
-#router = routers.DefaultRouter()
-#router.register('api/employees', EmployeeViewSet, 'employees')
+# router = routers.DefaultRouter()
+# router.register('api/employees', EmployeeViewSet, 'employees')
 
-#urlpatterns = router.urls
+# urlpatterns = router.urls
 
 
 urlpatterns = [

@@ -1,15 +1,15 @@
-import { message } from 'antd';
 import React from 'react';
 import { CompanyForm } from '../components/form/CompanyForm';
 import { CompanyFormik } from '../components/form/CompanyFormik';
 import { useHistory } from 'react-router-dom';
 import { RootStore } from '../stores/root-store';
+import { observer } from 'mobx-react-lite';
 
 interface NewCompanyProps {
     rootStore: RootStore;
 }
 
-export function NewCompanyPage(props: NewCompanyProps): JSX.Element {
+export const NewCompanyPage: React.FC<NewCompanyProps> = observer((props: NewCompanyProps): JSX.Element => {
     const history = useHistory();
 
     const { rootStore } = props;
@@ -21,16 +21,9 @@ export function NewCompanyPage(props: NewCompanyProps): JSX.Element {
             address: values.address,
         };
 
-        await rootStore.companyStore
-            .saveCompany(companyData)
-            .then(() => {
-                history.replace('');
-                message.success('Společnost byla úspěšně přidána');
-            })
-            .catch((error: string) => {
-                message.error('Společnost se nepodařilo vytvořit.');
-                console.log(error);
-            });
+        await rootStore.companyStore.addCompany(companyData).then(() => {
+            history.replace('');
+        });
     };
 
     return (
@@ -45,4 +38,4 @@ export function NewCompanyPage(props: NewCompanyProps): JSX.Element {
             />
         </CompanyFormik>
     );
-}
+});

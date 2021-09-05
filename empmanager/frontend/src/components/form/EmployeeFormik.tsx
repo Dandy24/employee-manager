@@ -1,33 +1,27 @@
 import React from 'react';
 import { Formik } from 'formik';
+import { observer } from 'mobx-react-lite';
 
 export interface EmployeeFormikProps {
-    first_name: string;
-    last_name: string;
-    phone: number;
-    email: string;
-    category: string;
-    health_limits: string;
+    // first_name: string;
+    // last_name: string;
+    // phone: number;
+    // email: string;
+    // category: string;
+    // health_limits: string;
+    initialValues: any;
     onSubmit: (values: any) => void;
     children: React.ReactNode;
 }
 
-export function EmployeeFormik(props: EmployeeFormikProps): JSX.Element {
-    const { first_name, last_name, phone, email, category, health_limits, onSubmit } = props;
+export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: EmployeeFormikProps): JSX.Element => {
+    const { initialValues, onSubmit } = props;
+
+    //console.log(initialValues);
 
     return (
-        <Formik
-            initialValues={{
-                first_name: first_name,
-                last_name: last_name,
-                //phone: phone,
-                email: email,
-                category: category,
-                health_limits: health_limits,
-            }}
-            onSubmit={onSubmit}
-        >
+        <Formik initialValues={initialValues} onSubmit={onSubmit}>
             {props.children}
         </Formik>
     );
-}
+});

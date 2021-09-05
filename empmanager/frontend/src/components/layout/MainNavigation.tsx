@@ -3,8 +3,9 @@ import { Header } from 'antd/es/layout/layout';
 import { Menu } from 'antd';
 import MenuItem from 'antd/es/menu/MenuItem';
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
-export function MainNavigation(): JSX.Element {
+export const MainNavigation: React.FC = observer((): JSX.Element => {
     return (
         <Header>
             <Menu theme="dark" mode="horizontal">
@@ -23,4 +24,4 @@ export function MainNavigation(): JSX.Element {
             </Menu>
         </Header>
     );
-}
+});

@@ -1,6 +1,5 @@
-import {EmployeeStore} from "./employee-store";
-import {CompanyStore} from "./company-store";
-
+import { EmployeeStore } from './employee-store';
+import { CompanyStore } from './company-store';
 
 export class RootStore {
     employeeStore: EmployeeStore;

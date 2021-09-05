@@ -1,50 +1,54 @@
 import React from 'react';
 import { EmployeeForm } from '../components/form/EmployeeForm';
-import { message } from 'antd';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 import { EmployeeFormik } from '../components/form/EmployeeFormik';
-import { createEmployee } from '../api/apiCalls';
+import { observer } from 'mobx-react-lite';
+import { RootStore } from '../stores/root-store';
 
-export function NewEmployeePage(): JSX.Element {
+interface NewEmployeePageProps {
+    rootStore: RootStore;
+}
+
+export const NewEmployeePage: React.FC<NewEmployeePageProps> = observer((props: NewEmployeePageProps): JSX.Element => {
+    const { rootStore } = props;
+
+    const { employeeStore } = rootStore;
+
     const history = useHistory();
 
     const categoryOptions = ['A', 'B', 'C'];
 
-    const submitHandler = (values: any): void => {
+    const submitHandler = async (values: any): Promise<void> => {
         const employeeData = {
             first_name: values.first_name,
             last_name: values.last_name,
             phone: values.phone,
             email: values.email,
-            working_category: values.category,
-            health_limitations: values.health_limits,
-            med_exam_date: moment(values.med_exam).format('YYYY-MM-DD'),
-            job_assign_date: moment(values.job_assign).format('YYYY-MM-DD'),
+            working_category: values.working_category,
+            health_limitations: values.health_limitations,
+            med_exam_date: moment(values.med_exam_date).format('YYYY-MM-DD'),
+            job_assign_date: moment(values.job_assign_date).format('YYYY-MM-DD'),
         };
 
-        createEmployee(employeeData)
-            .then(() => {
-                history.replace('employee-list');
-                message.success('Zaměstnanec byl úspěšně přidán');
-            })
-            .catch((error) => {
-                console.log(error);
-                message.error('Nepodařilo se vytvořit zaměstnance');
-            });
+        await employeeStore.addEmployee(employeeData).then(() => {
+            history.replace('employee-list');
+        });
     };
 
     return (
         <EmployeeFormik
             onSubmit={submitHandler}
-            email="@"
-            category={categoryOptions[0]}
-            first_name=""
-            last_name=""
-            phone={0}
-            health_limits=""
+            initialValues={{
+                email: '@',
+                category: categoryOptions[0],
+                first_name: '',
+                last_name: '',
+                phone: 0,
+                health_limits: '',
+            }}
         >
             <EmployeeForm categories={categoryOptions} submitText="Přidat" />
         </EmployeeFormik>
     );
-}
+});
