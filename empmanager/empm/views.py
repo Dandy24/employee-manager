@@ -46,24 +46,25 @@ def companyCreate(request):
 
     if serializer.is_valid():
         serializer.save()
+        return Response(serializer.data)
     else:
         print(serializer.errors)
         raise ValueError
 
-    return Response(serializer.data)
 
 
-@api_view(['POST'])
+
+@api_view(['PUT'])
 def companyUpdate(request, pk):
     company = Company.objects.get(id=pk)
     serializer = CompanySerializer(instance=company, data=request.data)
 
     if serializer.is_valid():
         serializer.save()
+        return Response(serializer.data)
     else:
+        print(serializer.errors)
         raise ValueError
-
-    return Response(serializer.data)
 
 
 @api_view(['DELETE', 'GET'])
