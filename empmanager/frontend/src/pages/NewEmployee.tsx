@@ -5,6 +5,7 @@ import moment from 'moment';
 import { EmployeeFormik } from '../components/form/EmployeeFormik';
 import { observer } from 'mobx-react-lite';
 import { RootStore } from '../stores/root-store';
+import { WorkingCategoryEnum } from '../models/enums/working-category-enum';
 
 interface NewEmployeePageProps {
     rootStore: RootStore;
@@ -16,8 +17,6 @@ export const NewEmployeePage: React.FC<NewEmployeePageProps> = observer((props: 
     const { employeeStore } = rootStore;
 
     const history = useHistory();
-
-    const categoryOptions = ['A', 'B', 'C'];
 
     const submitHandler = async (values: any): Promise<void> => {
         const employeeData = {
@@ -41,14 +40,14 @@ export const NewEmployeePage: React.FC<NewEmployeePageProps> = observer((props: 
             onSubmit={submitHandler}
             initialValues={{
                 email: '@',
-                category: categoryOptions[0],
+                category: WorkingCategoryEnum.A,
                 first_name: '',
                 last_name: '',
                 phone: 0,
                 health_limits: '',
             }}
         >
-            <EmployeeForm categories={categoryOptions} submitText="Přidat" />
+            <EmployeeForm submitText="Přidat" />
         </EmployeeFormik>
     );
 });

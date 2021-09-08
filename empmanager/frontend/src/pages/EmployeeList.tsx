@@ -22,8 +22,6 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
 
         const { confirm } = Modal;
 
-        const categoryOptions = ['A', 'B', 'C'];
-
         const columns = EmployeeTableColumns(employeeStore, rootStore.companyStore, onEmployeeDelete);
 
         async function onEmployeeDelete(id: number) {
@@ -87,7 +85,6 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                 >
                     <EmployeeFormik initialValues={employeeStore.employee} onSubmit={updateHandler}>
                         <EmployeeForm
-                            categories={categoryOptions}
                             activeEdit={true}
                             employeeEdit={true}
                             companiesList={rootStore.companyStore.companies}
