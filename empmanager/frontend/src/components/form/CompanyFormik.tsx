@@ -1,10 +1,11 @@
 import { Formik } from 'formik';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { CompanyDto } from '../../models/dtos/company-dto';
 
 export interface CompanyFormikProps {
-    onSubmit: (values: any) => void;
-    initialValues: any; //TODO type
+    onSubmit: (values: CompanyDto) => void;
+    initialValues: CompanyDto; //TODO type
     children: React.ReactNode;
 }
 

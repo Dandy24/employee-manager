@@ -1,5 +1,6 @@
 import { toJS } from 'mobx';
 import { CompanyEntity } from '../models/entities/company-entity';
+import { CompanyDto } from '../models/dtos/company-dto';
 
 export function getEmployeeList() {
     return fetch('http://localhost:8000/api/employee-list').then((response) => response.json());
@@ -26,7 +27,7 @@ export function updateEmployee(editedID: any, updatedEmployee: any) {
     //TODO fix editedID
 
     return fetch(`http://localhost:8000/api/employee-update/${editedID}`, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'Content-type': 'application/json',
         },
@@ -56,7 +57,7 @@ export function getCompanyList(): Promise<CompanyEntity[]> {
         });
 }
 
-export function createCompany(company: any): Promise<CompanyEntity> {
+export function createCompany(company: CompanyDto): Promise<CompanyEntity> {
     return fetch('http://localhost:8000/api/company-create', {
         method: 'POST',
         headers: {
@@ -71,7 +72,7 @@ export function createCompany(company: any): Promise<CompanyEntity> {
         });
 }
 
-export function updateCompany(updatedCompany: any, updatedID: number): Promise<CompanyEntity> {
+export function updateCompany(updatedCompany: CompanyDto, updatedID: number): Promise<CompanyEntity> {
     return fetch(`http://localhost:8000/api/company-update/${updatedID}`, {
         method: 'PUT',
         headers: {

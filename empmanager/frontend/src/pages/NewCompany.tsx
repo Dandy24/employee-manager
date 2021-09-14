@@ -4,6 +4,7 @@ import { CompanyFormik } from '../components/form/CompanyFormik';
 import { useHistory } from 'react-router-dom';
 import { RootStore } from '../stores/root-store';
 import { observer } from 'mobx-react-lite';
+import { CompanyDto } from '../models/dtos/company-dto';
 
 interface NewCompanyProps {
     rootStore: RootStore;
@@ -14,7 +15,7 @@ export const NewCompanyPage: React.FC<NewCompanyProps> = observer((props: NewCom
 
     const { rootStore } = props;
 
-    const submitHandler = async (values: any): Promise<void> => {
+    const submitHandler = async (values: CompanyDto): Promise<void> => {
         const companyData = {
             name: values.name,
             phone: values.phone,
@@ -27,7 +28,7 @@ export const NewCompanyPage: React.FC<NewCompanyProps> = observer((props: NewCom
     };
 
     return (
-        <CompanyFormik onSubmit={submitHandler} initialValues={{}}>
+        <CompanyFormik onSubmit={submitHandler} initialValues={new CompanyDto()}>
             <CompanyForm
                 companyName="name"
                 companyPhone="phone"

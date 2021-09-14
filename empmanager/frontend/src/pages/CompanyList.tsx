@@ -8,6 +8,8 @@ import { LoadingSpinner } from '../components/LoadingSpinner';
 import { RootStore } from '../stores/root-store';
 import { observer } from 'mobx-react-lite';
 import { CompanyTableColumns } from '../components/tableColumns/CompanyTableColumns';
+import { CompanyDto } from '../models/dtos/company-dto';
+import { CompanyEntity } from '../models/entities/company-entity';
 
 interface CompanyListProps {
     rootStore: RootStore;
@@ -17,11 +19,13 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
     const { rootStore } = props;
     const { companyStore } = rootStore;
 
+    rootStore.setActivePage('company-list');
+
     const { confirm } = Modal;
 
     const columns = CompanyTableColumns(companyStore, onCompanyDelete);
 
-    async function onCompanyDelete(company: any) {
+    async function onCompanyDelete(company: CompanyEntity) {
         confirm({
             title: 'Opravdu chcete smazat tuto firmu?',
             icon: <ExclamationCircleOutlined />,
@@ -30,12 +34,12 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
             okType: 'danger',
             cancelText: 'Ne',
             async onOk() {
-                await companyStore.deleteCompany(company);
+                await companyStore.deleteCompany(company.id);
             },
         });
     }
 
-    async function updateHandler(values: any) {
+    async function updateHandler(values: CompanyDto) {
         const updatedCompany = {
             name: values.name,
             phone: values.phone,

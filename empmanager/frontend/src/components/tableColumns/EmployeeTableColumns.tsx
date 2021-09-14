@@ -8,7 +8,7 @@ import { CompanyStore } from '../../stores/company-store';
 export function EmployeeTableColumns(
     employeeStore: EmployeeStore,
     companyStore: CompanyStore,
-    onEmployeeDelete: (arg0: any) => void,
+    onEmployeeDelete: (arg0: number) => void,
 ): ColumnsType<any> {
     return [
         {

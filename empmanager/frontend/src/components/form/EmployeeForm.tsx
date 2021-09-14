@@ -10,12 +10,13 @@ import { CompanySelectList } from './elements/CompanySelectList';
 import { CustomSwitch } from './elements/CustomSwitch';
 import { observer } from 'mobx-react-lite';
 import { WorkingCategoryEnum } from '../../models/enums/working-category-enum';
+import { CompanyEntity } from '../../models/entities/company-entity';
 
 export interface EmployeeFormProps {
     submitText: string;
     activeEdit?: boolean;
     employeeEdit?: boolean;
-    companiesList?: any[]; //TODO fix type
+    companiesList?: CompanyEntity[]; //TODO fix type
 }
 
 export const EmployeeForm: React.FC<EmployeeFormProps> = observer((props: EmployeeFormProps): JSX.Element => {

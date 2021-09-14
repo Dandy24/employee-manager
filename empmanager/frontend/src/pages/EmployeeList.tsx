@@ -9,6 +9,7 @@ import { LoadingSpinner } from '../components/LoadingSpinner';
 import { RootStore } from '../stores/root-store';
 import { EmployeeTableColumns } from '../components/tableColumns/EmployeeTableColumns';
 import { observer } from 'mobx-react-lite';
+import { EmployeeDto } from '../models/dtos/employee-dto';
 
 interface EmployeeListPageProps {
     rootStore: RootStore;
@@ -21,6 +22,8 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
         const { employeeStore } = rootStore;
 
         const { confirm } = Modal;
+
+        rootStore.setActivePage('employee-list');
 
         const columns = EmployeeTableColumns(employeeStore, rootStore.companyStore, onEmployeeDelete);
 
@@ -38,7 +41,7 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
             });
         }
 
-        async function updateHandler(values: any) {
+        async function updateHandler(values: EmployeeDto) {
             //TODO rozsirit na zmenu firmy, pozice atd.
             const updatedEmployee = {
                 first_name: values.first_name,

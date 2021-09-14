@@ -8,7 +8,7 @@ export interface EditDrawerProps {
     visible: boolean;
     cancelOnClick: () => void;
     cancelButtonText: string;
-    children: any;
+    children: React.ReactNode;
 }
 
 export const EditDrawer: React.FC<EditDrawerProps> = observer((props: EditDrawerProps): JSX.Element => {

@@ -2,6 +2,7 @@ import { RootStore } from './root-store';
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import { createEmployee, deleteEmployee, getEmployeeList, updateEmployee } from '../api/apiCalls';
 import { message } from 'antd';
+import { EmployeeDto } from '../models/dtos/employee-dto';
 
 export class EmployeeStore {
     employees: any[] = []; //TODO type  Employee[]
@@ -71,7 +72,7 @@ export class EmployeeStore {
         });
     }
 
-    async addEmployee(employee: any): Promise<void> {
+    async addEmployee(employee: EmployeeDto): Promise<void> {
         await createEmployee(employee)
             .then(() => {
                 message.success('Zaměstnanec byl úspěšně přidán');
@@ -87,7 +88,6 @@ export class EmployeeStore {
     }
 
     async deleteEmployee(id: number): Promise<void> {
-        //TODO type
         await deleteEmployee(id);
         runInAction(() => {
             this.loadingEmployees = true;
