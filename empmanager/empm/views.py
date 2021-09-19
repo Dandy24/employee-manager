@@ -1,8 +1,9 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from drf_yasg.utils import swagger_auto_schema
 
-from .models import Company, Employee, Monthly_output
-from .serializers import CompanySerializer, EmployeeSerializer, Monthly_outputSerializer
+from .models import Company, Employee
+from .serializers import CompanySerializer, EmployeeSerializer
 
 
 @api_view(['GET'])
@@ -40,33 +41,35 @@ def companyDetail(request, pk):
     return Response(serializer.data)
 
 
+@swagger_auto_schema(methods=['post'], request_body=CompanySerializer)
 @api_view(['POST'])
 def companyCreate(request):
     serializer = CompanySerializer(data=request.data)
 
     if serializer.is_valid():
         serializer.save()
+        return Response(serializer.data)
     else:
         print(serializer.errors)
         raise ValueError
 
-    return Response(serializer.data)
 
 
-@api_view(['POST'])
+
+@api_view(['PUT'])
 def companyUpdate(request, pk):
     company = Company.objects.get(id=pk)
     serializer = CompanySerializer(instance=company, data=request.data)
 
     if serializer.is_valid():
         serializer.save()
+        return Response(serializer.data)
     else:
+        print(serializer.errors)
         raise ValueError
 
-    return Response(serializer.data)
 
-
-@api_view(['DELETE', 'GET'])
+@api_view(['DELETE']) #,GET ?
 def companyDelete(request, pk):
     company = Company.objects.get(id=pk)
     company.delete()
@@ -84,6 +87,7 @@ def employeeList(request):
     return Response(serializer.data)
 
 
+@swagger_auto_schema(methods=['post'], request_body=EmployeeSerializer)
 @api_view(['POST'])
 def employeeCreate(request):
     serializer = EmployeeSerializer(data=request.data)
@@ -103,7 +107,7 @@ def employeeDetail(request, pk):
     return Response(serializer.data)
 
 
-@api_view(['DELETE', 'GET'])
+@api_view(['DELETE']) #,GET ?
 def employeeDelete(request, pk):
     employee = Employee.objects.get(id=pk)
     employee.delete()
@@ -111,7 +115,8 @@ def employeeDelete(request, pk):
     return Response('Employee was deleted.')
 
 
-@api_view(['POST'])
+@swagger_auto_schema(methods=['put'], request_body=EmployeeSerializer)
+@api_view(['PUT'])
 def employeeUpdate(request, pk):
     employee = Employee.objects.get(id=pk)
     serializer = EmployeeSerializer(instance=employee, data=request.data)
@@ -122,4 +127,4 @@ def employeeUpdate(request, pk):
         print(serializer.errors)
         raise ValueError
 
-    return Response(serializer.data)
+    return Response(serializer.data)
