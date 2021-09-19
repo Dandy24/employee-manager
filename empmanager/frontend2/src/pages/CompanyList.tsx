@@ -7,6 +7,8 @@ import { EditDrawer } from '../components/EditDrawer';
 import { RootStore } from '../stores/root-store';
 import { observer } from 'mobx-react-lite';
 import { CompanyTableColumns } from '../components/tableColumns/CompanyTableColumns';
+import { CompanyEntity } from '../models/entities/company-entity';
+import { CompanyDto } from '../models/dtos/company-dto';
 
 interface CompanyListProps {
     rootStore: RootStore;
@@ -22,7 +24,7 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
 
     const columns = CompanyTableColumns(companyStore, onCompanyDelete);
 
-    async function onCompanyDelete(company: any) {
+    async function onCompanyDelete(company: CompanyEntity) {
         confirm({
             title: 'Opravdu chcete smazat tuto firmu?',
             icon: <ExclamationCircleOutlined />,
@@ -36,7 +38,7 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
         });
     }
 
-    async function updateHandler(values: any) {
+    async function updateHandler(values: CompanyDto) {
         const updatedCompany = {
             name: values.name,
             phone: values.phone,

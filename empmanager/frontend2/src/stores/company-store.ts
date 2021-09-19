@@ -3,9 +3,10 @@ import { action, makeObservable, observable, runInAction } from 'mobx';
 import { createCompany, deleteCompany, getCompanyList, updateCompany } from '../api/apiCalls';
 import { message } from 'antd';
 import { CompanyEntity } from '../models/entities/company-entity';
+import { CompanyDto } from '../models/dtos/company-dto';
 
 export class CompanyStore {
-    companies: any[] = []; //TODO type  Employee[]
+    companies: CompanyEntity[] = []; //TODO type  Employee[]
     company: any = {};
     loadingCompanies = false;
     isEditOpen = false;
@@ -49,11 +50,7 @@ export class CompanyStore {
         this.isEditOpen = false;
     }
 
-    openToAdd() {
-        //TODO
-    }
-
-    openToEdit(company: any): void {
+    openToEdit(company: CompanyEntity): void {
         const comp = this.companies.find((c) => c.id === company.id);
         this.isEditOpen = true;
         if (comp) {
@@ -65,7 +62,7 @@ export class CompanyStore {
         }
     }
 
-    async editCompany(company: any): Promise<void> {
+    async editCompany(company: CompanyDto): Promise<void> {
         if (this.company.id) {
             const updatedCompany = await updateCompany(company, this.company.id)
                 .then(() => {
@@ -88,7 +85,7 @@ export class CompanyStore {
         });
     }
 
-    async addCompany(company: any): Promise<void> {
+    async addCompany(company: CompanyDto): Promise<void> {
         await createCompany(company)
             .then(() => {
                 message.success('Spolecnost byla uspesne vytvorena');
@@ -103,7 +100,7 @@ export class CompanyStore {
         });
     }
 
-    async deleteCompany(company: any): Promise<void> {
+    async deleteCompany(company: CompanyEntity): Promise<void> {
         //TODO type
         await deleteCompany(company.id).catch(() => {
             message.error('Firmu se nepodařilo smazat.');
@@ -118,11 +115,11 @@ export class CompanyStore {
         });
     }
 
-    updateCompany(updatedCompany: any): void {
+    updateCompany(updatedCompany: CompanyEntity): void {
         runInAction(() => {
             const updatedCompanyIndex = this.companies.findIndex((company) => company.id === updatedCompany.id);
             if (updatedCompanyIndex !== -1) {
-                this.companies[updatedCompanyIndex] = updatedCompanyIndex;
+                this.companies[updatedCompanyIndex] = updatedCompany;
             }
         });
     }
