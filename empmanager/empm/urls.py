@@ -36,6 +36,6 @@ urlpatterns = [
     path('employee-delete/<str:pk>', views.employeeDelete, name='employee-delete'),
     path('employee-update/<str:pk>', views.employeeUpdate, name='employee-update'),
 
-    path('monthly-output-list/<str:pk>', views.MonthlyOutputByEmployeeID, name='monthly-output-list'),
-    path('monthly-output-create', views.MonthlyOutputCreate, name='monthly-output-create'),
+    #path('monthly-output-list/<str:pk>', views.MonthlyOutputByEmployeeID, name='monthly-output-list'),
+    #path('monthly-output-create', views.MonthlyOutputCreate, name='monthly-output-create'),
 ]

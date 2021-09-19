@@ -1,16 +1,8 @@
 import { toJS } from 'mobx';
-<<<<<<< Updated upstream:empmanager/frontend/src/api/apiCalls.ts
-import { CompanyEntity } from '../models/entities/company-entity';
-import { CompanyDto } from '../models/dtos/company-dto';
-=======
-<<<<<<< Updated upstream:empmanager/frontend/src/api/apiCalls.ts
-=======
 import { CompanyEntity } from '../models/entities/company-entity';
 import { CompanyDto } from '../models/dtos/company-dto';
 import { EmployeeEntity } from '../models/entities/employee-entity';
 import { EmployeeDto } from '../models/dtos/employee-dto';
->>>>>>> Stashed changes:empmanager/frontend2/src/api/apiCalls.ts
->>>>>>> Stashed changes:empmanager/frontend2/src/api/apiCalls.ts
 
 export function getEmployeeList(): Promise<EmployeeEntity[]> {
     return fetch('http://localhost:8000/api/employee-list').then((response) => response.json());

@@ -9,7 +9,6 @@ import { MainNavigation } from './layout/MainNavigation';
 import { NewEmployeePage } from '../pages/NewEmployee';
 import { EmployeeListPage } from '../pages/EmployeeList';
 import { Content } from 'antd/es/layout/layout';
-import { MonthlyReview } from '../pages/MonthlyReview';
 import { useRootStore } from '../stores/root-store-provider';
 import { observer } from 'mobx-react-lite';
 
@@ -38,9 +37,9 @@ const App: React.FC = observer(() => {
                             <EmployeeListPage rootStore={rootStore}></EmployeeListPage>
                         </Route>
 
-                        <Route path="/monthly-output/:id" exact>
-                            <MonthlyReview></MonthlyReview>
-                        </Route>
+                        {/*<Route path="/monthly-output/:id" exact>*/}
+                        {/*    <MonthlyReview></MonthlyReview>*/}
+                        {/*</Route>*/}
                     </Switch>
                 </Content>
             </Layout>

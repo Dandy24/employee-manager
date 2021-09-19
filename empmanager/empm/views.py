@@ -2,8 +2,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 
-from .models import Company, Employee, Monthly_output
-from .serializers import CompanySerializer, EmployeeSerializer, Monthly_outputSerializer
+from .models import Company, Employee
+from .serializers import CompanySerializer, EmployeeSerializer
 
 
 @api_view(['GET'])
@@ -127,4 +127,4 @@ def employeeUpdate(request, pk):
         print(serializer.errors)
         raise ValueError
 
-    return Response(serializer.data)
+    return Response(serializer.data)

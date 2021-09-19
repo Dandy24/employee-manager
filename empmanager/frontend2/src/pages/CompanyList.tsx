@@ -18,6 +18,8 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
 
     const { confirm } = Modal;
 
+    rootStore.setActivePage('company-list');
+
     const columns = CompanyTableColumns(companyStore, onCompanyDelete);
 
     async function onCompanyDelete(company: any) {

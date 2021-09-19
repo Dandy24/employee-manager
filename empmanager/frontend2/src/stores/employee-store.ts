@@ -2,15 +2,8 @@ import { RootStore } from './root-store';
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import { createEmployee, deleteEmployee, getEmployeeList, updateEmployee } from '../api/apiCalls';
 import { message } from 'antd';
-<<<<<<< Updated upstream:empmanager/frontend/src/stores/employee-store.ts
-import { EmployeeDto } from '../models/dtos/employee-dto';
-=======
-<<<<<<< Updated upstream:empmanager/frontend/src/stores/employee-store.ts
-=======
 import { EmployeeDto } from '../models/dtos/employee-dto';
 import { EmployeeEntity } from '../models/entities/employee-entity';
->>>>>>> Stashed changes:empmanager/frontend2/src/stores/employee-store.ts
->>>>>>> Stashed changes:empmanager/frontend2/src/stores/employee-store.ts
 
 export class EmployeeStore {
     employees: EmployeeEntity[] = []; //TODO type  Employee[]

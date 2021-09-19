@@ -18,19 +18,9 @@ export const NewEmployeePage: React.FC<NewEmployeePageProps> = observer((props: 
 
     const history = useHistory();
 
-<<<<<<< Updated upstream:empmanager/frontend/src/pages/NewEmployee.tsx
-    const submitHandler = async (values: EmployeeDto): Promise<void> => {
-=======
-<<<<<<< Updated upstream:empmanager/frontend/src/pages/NewEmployee.tsx
-    const categoryOptions = ['A', 'B', 'C'];
-
-    const submitHandler = async (values: any): Promise<void> => {
-=======
     rootStore.setActivePage('employee-create');
 
     const submitHandler = async (values: EmployeeDto): Promise<void> => {
->>>>>>> Stashed changes:empmanager/frontend2/src/pages/NewEmployee.tsx
->>>>>>> Stashed changes:empmanager/frontend2/src/pages/NewEmployee.tsx
         const employeeData = {
             first_name: values.first_name,
             last_name: values.last_name,

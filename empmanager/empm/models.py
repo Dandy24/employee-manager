@@ -27,7 +27,3 @@ class Employee(models.Model):
         on_delete=models.SET_NULL,
         null=True
     )
-
-        on_delete=models.CASCADE,
-        null=True
-    )

@@ -9,15 +9,7 @@ import { TextArea } from './elements/TextArea';
 import { CompanySelectList } from './elements/CompanySelectList';
 import { CustomSwitch } from './elements/CustomSwitch';
 import { observer } from 'mobx-react-lite';
-<<<<<<< Updated upstream:empmanager/frontend/src/components/form/EmployeeForm.tsx
-import { WorkingCategoryEnum } from '../../models/enums/working-category-enum';
 import { CompanyEntity } from '../../models/entities/company-entity';
-=======
-<<<<<<< Updated upstream:empmanager/frontend/src/components/form/EmployeeForm.tsx
-=======
-import { CompanyEntity } from '../../models/entities/company-entity';
->>>>>>> Stashed changes:empmanager/frontend2/src/components/form/EmployeeForm.tsx
->>>>>>> Stashed changes:empmanager/frontend2/src/components/form/EmployeeForm.tsx
 
 export interface EmployeeFormProps {
     submitText: string;

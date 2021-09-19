@@ -15,17 +15,9 @@ export const NewCompanyPage: React.FC<NewCompanyProps> = observer((props: NewCom
 
     const { rootStore } = props;
 
-<<<<<<< Updated upstream:empmanager/frontend/src/pages/NewCompany.tsx
-    const submitHandler = async (values: CompanyDto): Promise<void> => {
-=======
-<<<<<<< Updated upstream:empmanager/frontend/src/pages/NewCompany.tsx
-    const submitHandler = async (values: any): Promise<void> => {
-=======
     rootStore.setActivePage('company-create');
 
     const submitHandler = async (values: CompanyDto): Promise<void> => {
->>>>>>> Stashed changes:empmanager/frontend2/src/pages/NewCompany.tsx
->>>>>>> Stashed changes:empmanager/frontend2/src/pages/NewCompany.tsx
         const companyData = {
             name: values.name,
             phone: values.phone,

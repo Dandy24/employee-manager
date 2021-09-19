@@ -21,6 +21,8 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
 
         const { confirm } = Modal;
 
+        rootStore.setActivePage('employee-list');
+
         const columns = EmployeeTableColumns(employeeStore, rootStore.companyStore, onEmployeeDelete);
 
         async function onEmployeeDelete(id: number) {
