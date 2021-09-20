@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { CompanyEntity } from '../../../models/entities/company-entity';
 
 export interface CompanySelectListProps extends SelectProps<any> {
-    companies: CompanyEntity[]; //TODO fix type
+    companies: CompanyEntity[];
     name: string;
     label: string;
     //spacesize: SpaceSize      Obsolete

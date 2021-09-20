@@ -6,8 +6,8 @@ import { CompanyEntity } from '../models/entities/company-entity';
 import { CompanyDto } from '../models/dtos/company-dto';
 
 export class CompanyStore {
-    companies: CompanyEntity[] = []; //TODO type  Employee[]
-    company: any = {};
+    companies: CompanyEntity[] = [];
+    company: CompanyEntity;
     loadingCompanies = false;
     isEditOpen = false;
     private rootStore: RootStore;
@@ -101,7 +101,6 @@ export class CompanyStore {
     }
 
     async deleteCompany(company: CompanyEntity): Promise<void> {
-        //TODO type
         await deleteCompany(company.id).catch(() => {
             message.error('Firmu se nepodařilo smazat.');
         });

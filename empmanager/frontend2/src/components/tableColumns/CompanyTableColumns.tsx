@@ -7,7 +7,7 @@ import { CompanyEntity } from '../../models/entities/company-entity';
 export function CompanyTableColumns(
     companyStore: CompanyStore,
     onCompanyDelete: (arg0: CompanyEntity) => void,
-): ColumnsType<any> {
+): ColumnsType<CompanyEntity> {
     return [
         {
             title: 'ID společnosti',

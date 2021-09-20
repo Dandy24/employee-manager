@@ -96,6 +96,7 @@ def employeeCreate(request):
         serializer.save()
         return Response(serializer.data)
     else:
+        print(serializer.errors)
         raise ValueError
 
 

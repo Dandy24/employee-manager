@@ -1,4 +1,3 @@
-import { toJS } from 'mobx';
 import { CompanyEntity } from '../models/entities/company-entity';
 import { CompanyDto } from '../models/dtos/company-dto';
 import { EmployeeEntity } from '../models/entities/employee-entity';
@@ -98,6 +97,6 @@ export function deleteCompany(id: number): Promise<Response> {
     });
 }
 
-export function getMonthlyOutput(id: number) {
-    return fetch(`http://localhost:8000/api/monthly-output-list/${id}`).then((response) => response.json());
-}
+// export function getMonthlyOutput(id: number) {
+//     return fetch(`http://localhost:8000/api/monthly-output-list/${id}`).then((response) => response.json());
+// }

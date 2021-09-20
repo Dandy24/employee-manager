@@ -15,7 +15,7 @@ export interface EmployeeFormProps {
     submitText: string;
     activeEdit?: boolean;
     employeeEdit?: boolean;
-    companiesList?: CompanyEntity[]; //TODO fix type
+    companiesList?: CompanyEntity[];
 }
 
 export const EmployeeForm: React.FC<EmployeeFormProps> = observer((props: EmployeeFormProps): JSX.Element => {

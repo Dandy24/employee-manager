@@ -6,7 +6,7 @@ import { EmployeeDto } from '../models/dtos/employee-dto';
 import { EmployeeEntity } from '../models/entities/employee-entity';
 
 export class EmployeeStore {
-    employees: EmployeeEntity[] = []; //TODO type  Employee[]
+    employees: EmployeeEntity[] = [];
     employee: any = {};
     loadingEmployees = false;
     isEditOpen = false;
