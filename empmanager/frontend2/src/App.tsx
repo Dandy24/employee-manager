@@ -3,13 +3,13 @@ import 'antd/dist/antd.css';
 import { Layout } from 'antd';
 import { Route, Switch } from 'react-router-dom';
 
-import { CompanyListPage } from '../pages/CompanyList';
-import { NewCompanyPage } from '../pages/NewCompany';
-import { MainNavigation } from './layout/MainNavigation';
-import { NewEmployeePage } from '../pages/NewEmployee';
-import { EmployeeListPage } from '../pages/EmployeeList';
-import { Content } from 'antd/es/layout/layout';
-import { useRootStore } from '../stores/root-store-provider';
+import { CompanyListPage } from './pages/CompanyList';
+import { NewCompanyPage } from './pages/NewCompany';
+import { MainNavigation } from './components/layout/MainNavigation';
+import { NewEmployeePage } from './pages/NewEmployee';
+import { EmployeeListPage } from './pages/EmployeeList';
+import { Content } from 'antd/lib/layout/layout';
+import { useRootStore } from './stores/root-store-provider';
 import { observer } from 'mobx-react-lite';
 
 const App: React.FC = observer(() => {

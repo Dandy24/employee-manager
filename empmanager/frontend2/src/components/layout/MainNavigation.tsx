@@ -1,10 +1,10 @@
 import React from 'react';
-import { Header } from 'antd/es/layout/layout';
 import { Menu } from 'antd';
-import MenuItem from 'antd/es/menu/MenuItem';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useRootStore } from '../../stores/root-store-provider';
+import { Header } from 'antd/lib/layout/layout';
+import MenuItem from 'antd/lib/menu/MenuItem';
 
 export const MainNavigation: React.FC = observer((): JSX.Element => {
     const rootStore = useRootStore();
