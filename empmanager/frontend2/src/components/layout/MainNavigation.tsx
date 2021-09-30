@@ -10,16 +10,20 @@ export const MainNavigation: React.FC = observer((): JSX.Element => {
     const rootStore = useRootStore();
 
     return (
-        <Header>
+        <Header data-testid="main-header">
             <Menu theme="dark" mode="horizontal" selectedKeys={[rootStore.activePage]}>
-                <MenuItem key="company-list">
-                    <Link to="/">Seznam firem</Link>
+                <MenuItem key="company-list" data-testid="menu-company-list-item">
+                    <Link to="/" data-testid="menu-company-list-item-link">
+                        Seznam firem
+                    </Link>
                 </MenuItem>
                 <MenuItem key="company-create">
                     <Link to="/new-company">Přidání nové firmy</Link>
                 </MenuItem>
                 <MenuItem key="employee-list">
-                    <Link to="/employee-list">Seznam zaměstnanců</Link>
+                    <Link to="/employee-list" data-testid="menu-employee-list-item-link">
+                        Seznam zaměstnanců
+                    </Link>
                 </MenuItem>
                 <MenuItem key="employee-create">
                     <Link to="/new-employee">Přidání nového zaměstnance</Link>
