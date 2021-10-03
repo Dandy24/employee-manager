@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert } from 'antd';
-import { Input } from 'formik-antd';
+import Field, { Input } from 'formik-antd';
 import { useField } from 'formik';
 import { SpaceSize } from 'antd/es/space';
 import { InputWrapper } from '../../layout/form/InputWrapper';
@@ -18,10 +18,16 @@ export const TextInput: React.FC<TextInputProps> = observer((props: TextInputPro
     const { label, spacesize, name } = props;
 
     return (
-        <InputWrapper>
-            <label htmlFor={name}>{label}</label>
-            <Input name={name} />
-            {meta.touched && meta.error ? <Alert message={meta.error} type="error" showIcon /> : null}
-        </InputWrapper>
+        // <InputWrapper data-testid="text-input">
+        <div data-testid="text-input">
+            <label htmlFor={name} data-testid="text-input-label">
+                {label}
+            </label>
+            <Input name={name} data-testid="text-input-field" />
+            {meta.touched && meta.error ? (
+                <Alert message={meta.error} type="error" showIcon data-testid="text-input-error" />
+            ) : null}
+        </div>
+        // </InputWrapper>
     );
 });

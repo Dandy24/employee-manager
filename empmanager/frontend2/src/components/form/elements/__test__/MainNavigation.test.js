@@ -1,7 +1,11 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { MainNavigation } from '../../../layout/MainNavigation';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
+import App from '../../../../App';
+import { RootStore } from '../../../../stores/root-store';
+import { RootStoreProvider } from '../../../../stores/root-store-provider';
 
 test('Menu displays on page correctly', () => {
     const { getByTestId } = render(
@@ -28,17 +32,33 @@ test('Menu items display correctly in menu', () => {
 });
 
 test('Menu items link correctly redirects to right page', () => {
+    Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: jest.fn().mockImplementation((query) => ({
+            matches: false,
+            media: query,
+            onchange: null,
+            addListener: jest.fn(), // deprecated
+            removeListener: jest.fn(), // deprecated
+            addEventListener: jest.fn(),
+            removeEventListener: jest.fn(),
+            dispatchEvent: jest.fn(),
+        })),
+    });
+
     const { getByTestId } = render(
-        <MemoryRouter>
-            <MainNavigation />
-        </MemoryRouter>,
+        <RootStoreProvider rootStore={new RootStore()}>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </RootStoreProvider>,
     );
 
-    const EmployeeLinkEl = getByTestId('menu-employee-list-item-link');
+    const employeeLinkEl = getByTestId('menu-employee-list-item-link');
 
-    fireEvent.click(EmployeeLinkEl, { button: 0 });
+    act(() => {
+        userEvent.click(employeeLinkEl);
+    });
 
-    //expect(screen.getByText('kok')).toBeInTheDocument();
-
-    expect(location.pathname).toBe('/employee-list');
+    expect(screen.getByText('ID zaměstnance')).toBeInTheDocument();
 });
