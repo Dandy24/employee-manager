@@ -1,11 +1,11 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import { MainNavigation } from '../../../layout/MainNavigation';
+import { MainNavigation } from '../MainNavigation';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
-import App from '../../../../App';
-import { RootStore } from '../../../../stores/root-store';
-import { RootStoreProvider } from '../../../../stores/root-store-provider';
+import App from '../../../App';
+import { RootStore } from '../../../stores/root-store';
+import { RootStoreProvider } from '../../../stores/root-store-provider';
 
 test('Menu displays on page correctly', () => {
     const { getByTestId } = render(
@@ -32,6 +32,9 @@ test('Menu items display correctly in menu', () => {
 });
 
 test('Menu items link correctly redirects to right page', () => {
+    // Defining missing window.matchMedia() property from JSDOM, to prevent Jest from crashing
+    // https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
+
     Object.defineProperty(window, 'matchMedia', {
         writable: true,
         value: jest.fn().mockImplementation((query) => ({
