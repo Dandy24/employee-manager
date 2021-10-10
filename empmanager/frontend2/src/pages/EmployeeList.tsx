@@ -77,6 +77,7 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                     loading={employeeStore.loadingEmployees}
                     columns={columns}
                     dataSource={employeeStore.employees}
+                    data-testid="employee-list-table"
                 />
 
                 <EditDrawer
