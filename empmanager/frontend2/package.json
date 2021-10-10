@@ -41,6 +41,7 @@
     "eslint-plugin-react": "^7.25.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-testing-library": "^4.12.4",
+    "jest-fetch-mock": "^3.0.3",
     "lint-staged": "^11.0.0",
     "prettier": "^2.2.1",
     "ts-loader": "^9.2.4",
@@ -70,5 +71,8 @@
     "yup": "^0.32.9",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.2"
+  },
+  "jest": {
+    "resetMocks": false
   }
 }

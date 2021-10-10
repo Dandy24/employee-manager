@@ -13,7 +13,6 @@ export class EmployeeEntity {
     public working_category: WorkingCategoryEnum;
     public med_exam_date: Date;
     public job_assign_date: Date;
-    public address: string;
     public company: CompanyEntity | null;
 
     constructor() {
@@ -28,7 +27,6 @@ export class EmployeeEntity {
             working_category: observable,
             med_exam_date: observable,
             job_assign_date: observable,
-            address: observable,
             company: observable,
         });
     }

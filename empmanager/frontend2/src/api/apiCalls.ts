@@ -3,8 +3,20 @@ import { CompanyDto } from '../models/dtos/company-dto';
 import { EmployeeEntity } from '../models/entities/employee-entity';
 import { EmployeeDto } from '../models/dtos/employee-dto';
 
-export function getEmployeeList(): Promise<EmployeeEntity[]> {
-    return fetch('http://localhost:8000/api/employee-list').then((response) => response.json());
+export async function getEmployeeList(): Promise<EmployeeEntity[] | Error> {
+    //TODO check if Error return type is working properly
+    // return
+    // fetch('http://localhost:8000/api/employee-list')
+    //     .then((response) => response.json())
+    //     .catch(() => {
+    //         throw Error('Unable to load list of employees');
+    //     });
+
+    try {
+        return await fetch('http://localhost:8000/api/employee-list').then((response) => response.json());
+    } catch (e) {
+        return Error('Unable to load list of employees');
+    }
 }
 
 //Employee detail
