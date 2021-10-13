@@ -23,5 +23,6 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "types": ["cypress", "@percy/cypress"]
 }
