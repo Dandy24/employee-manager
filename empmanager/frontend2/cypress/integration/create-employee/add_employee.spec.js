@@ -1,9 +1,13 @@
-describe('example to-do app', () => {
+describe('employee creating process', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000/new-employee');
     });
 
     it('Fill the form correctly', () => {
+        /** Take page snapshot image and compare it to the previous one, to find any potencial styling changes **/
+
+        cy.document().toMatchImageSnapshot();
+
         /** Test if correct menu tab is colored **/
 
         cy.get('[data-testid=menu-new-employee-item]')

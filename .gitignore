@@ -159,3 +159,5 @@ yarn-debug.log*
 yarn-error.log*
 
 /cypress/integration/docs/
+
+empmanager/frontend2/cypress/integration/create-employee/__image_snapshots__/
