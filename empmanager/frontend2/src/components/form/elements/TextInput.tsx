@@ -19,7 +19,7 @@ export const TextInput: React.FC<TextInputProps> = observer((props: TextInputPro
 
     return (
         // <InputWrapper data-testid="text-input">
-        <div data-testid="text-input">
+        <div data-testid={`${name}-text-input`}>
             <label htmlFor={name} data-testid="text-input-label">
                 {label}
             </label>

@@ -18,10 +18,14 @@ export const NumberInput: React.FC<NumberInputProps> = observer((props: NumberIn
     const { label, spacesize, name } = props;
 
     return (
-        <InputWrapper>
-            <label htmlFor={name}>{label}</label>
-            <InputNumber {...props} />
-            {meta.touched && meta.error ? <Alert message={meta.error} type="error" showIcon /> : null}
-        </InputWrapper>
+        <div data-testid={`${name}-number-input`}>
+            <label htmlFor={name} data-testid="number-input-label">
+                {label}
+            </label>
+            <InputNumber {...props} data-testid="number-input-field" />
+            {meta.touched && meta.error ? (
+                <Alert message={meta.error} type="error" showIcon data-testid="number-input-error" />
+            ) : null}
+        </div>
     );
 });
