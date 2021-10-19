@@ -54,8 +54,6 @@ test('Get list of employees correctly', async () => {
     expect(fetch.Response().statusText).toEqual('OK');
     expect(responseEmployees).toEqual(employees);
     expect(responseEmployees).toHaveLength(2);
-    //expect(employees[0]).toBeInstanceOf(EmployeeEntity);
-    //expect(responseEmployees).toBeInstanceOf(Array);
 });
 
 test('Get empty list of employees', async () => {
@@ -71,25 +69,16 @@ test('Get empty list of employees', async () => {
     expect(fetch.Response().statusText).toEqual('OK');
     expect(responseEmployees).toEqual([]);
     expect(responseEmployees).toHaveLength(0);
-    //expect(employees[0]).toBeInstanceOf(EmployeeEntity);
-    //expect(responseEmployees).toBeInstanceOf(Array);
 });
 
 test('Fail getting list of employees', async () => {
-    fetchMock.mockReject(() => Promise.reject('Unable to load list of employees'));
+    fetchMock.mockReject(new Error('Unable to load list of employees'));
 
-    const responseEmployees = await getEmployeeList();
-
-    expect(fetch).toHaveBeenCalledWith('http://localhost:8000/api/employee-list');
-    expect(fetch).toHaveBeenCalledTimes(1);
-    //expect(fetch.Response().status).not.toEqual(200);
-
-    //TODO find out why no Error is thrown
-    //expect(fetch).toThrowError('Unable to load list of employees');
-    //expect(fetch.Response().errors).not.toBeNull();
-
-    //expect(responseEmployees).toHaveErrorMessage('Unable to load list of employees');
-    //expect(responseEmployees.message).toBe('Unable to load list of employees');
+    try {
+        await getEmployeeList();
+    } catch (e) {
+        await expect(fetch).rejects.toThrow('Unable to load list of employees');
+    }
 });
 
 /* Test POSTing (creating) a new employee */
@@ -136,9 +125,6 @@ test('Add a new employee to the list', async () => {
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(createdEmployee.id).toBeDefined();
     expect(fetch.Response().status).toEqual(200);
-
-    //expect(createdEmployee).toBe(createdEmp);
-    //expect(createdEmployee).toBeInstanceOf(EmployeeEntity);
 });
 
 test('Fail creating employee', async () => {
@@ -155,14 +141,13 @@ test('Fail creating employee', async () => {
         company: null,
     };
 
-    //fetchMock.mockResponseOnce(JSON.stringify(createdEmp), { status: 200 });
-    fetchMock.mockReject(() => Promise.reject('Unable to create employee'));
+    fetchMock.mockReject(new Error('Unable to create employee'));
 
-    const createdEmployee = await createEmployee(employee);
-
-    console.log(createdEmployee);
-
-    expect(fetch).toThrowError();
+    try {
+        await createEmployee(employee);
+    } catch (e) {
+        await expect(fetch).rejects.toThrowError('Unable to create employee');
+    }
 });
 
 test('Update employee', async () => {
@@ -196,7 +181,6 @@ test('Update employee', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(editedEmp), { status: 200 });
 
     const editedResponse = await updateEmployee(19, editedEmp);
-    console.log(editedResponse);
 
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith('http://localhost:8000/api/employee-update/19', {

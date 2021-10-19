@@ -28,7 +28,6 @@ export async function createEmployee(employee: EmployeeDto): Promise<EmployeeEnt
     } else {
         const error = new Error('Unable to create employee');
         return Promise.reject(error);
-        //throw new Error('Unable to create employee');
     }
 }
 
