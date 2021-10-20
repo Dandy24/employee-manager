@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextInput snapshot matches the previous one 1`] = `
+<DocumentFragment>
+  <form
+    action="#"
+  >
+    <div
+      data-testid="name-text-input"
+    >
+      <label
+        data-testid="text-input-label"
+        for="name"
+      >
+        Nazev firmy
+      </label>
+      <input
+        class="ant-input"
+        data-testid="text-input-field"
+        name="name"
+        type="text"
+        value=""
+      />
+    </div>
+  </form>
+</DocumentFragment>
+`;

@@ -1,0 +1,132 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Menu snapshot matches the previous one 1`] = `
+<DocumentFragment>
+  <header
+    class="ant-layout-header"
+    data-testid="main-header"
+  >
+    <ul
+      class="ant-menu-overflow ant-menu ant-menu-root ant-menu-horizontal ant-menu-dark"
+      data-menu-list="true"
+      role="menu"
+      tabindex="0"
+    >
+      <li
+        class="ant-menu-overflow-item ant-menu-item ant-menu-item-only-child"
+        data-menu-id="rc-menu-uuid-test-company-list"
+        data-testid="menu-company-list-item"
+        role="menuitem"
+        style="opacity: 1; order: 0;"
+        tabindex="-1"
+      >
+        <span
+          class="ant-menu-title-content"
+        >
+          <a
+            data-testid="menu-company-list-item-link"
+            href="/"
+          >
+            Seznam firem
+          </a>
+        </span>
+      </li>
+      <li
+        class="ant-menu-overflow-item ant-menu-item ant-menu-item-only-child"
+        role="menuitem"
+        style="opacity: 1; order: 1;"
+        tabindex="-1"
+      >
+        <span
+          class="ant-menu-title-content"
+        >
+          <a
+            href="/new-company"
+          >
+            Přidání nové firmy
+          </a>
+        </span>
+      </li>
+      <li
+        class="ant-menu-overflow-item ant-menu-item ant-menu-item-only-child"
+        data-testid="menu-employee-list-item"
+        role="menuitem"
+        style="opacity: 1; order: 2;"
+        tabindex="-1"
+      >
+        <span
+          class="ant-menu-title-content"
+        >
+          <a
+            data-testid="menu-employee-list-item-link"
+            href="/employee-list"
+          >
+            Seznam zaměstnanců
+          </a>
+        </span>
+      </li>
+      <li
+        class="ant-menu-overflow-item ant-menu-item ant-menu-item-only-child"
+        data-testid="menu-new-employee-item"
+        role="menuitem"
+        style="opacity: 1; order: 3;"
+        tabindex="-1"
+      >
+        <span
+          class="ant-menu-title-content"
+        >
+          <a
+            data-testid="menu-new-employee-item-link"
+            href="/new-employee"
+          >
+            Přidání nového zaměstnance
+          </a>
+        </span>
+      </li>
+      <li
+        aria-hidden="true"
+        class="ant-menu-overflow-item ant-menu-overflow-item-rest ant-menu-submenu ant-menu-submenu-horizontal"
+        role="none"
+        style="opacity: 0; height: 0px; overflow-y: hidden; order: 9007199254740991; pointer-events: none; position: absolute;"
+      >
+        <div
+          aria-controls="rc-menu-uuid-test-rc-menu-more-popup"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ant-menu-submenu-title"
+          data-menu-id="rc-menu-uuid-test-rc-menu-more"
+          role="menuitem"
+          tabindex="-1"
+        >
+          <span
+            aria-label="ellipsis"
+            class="anticon anticon-ellipsis"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="ellipsis"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M176 511a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0zm280 0a56 56 0 10112 0 56 56 0 10-112 0z"
+              />
+            </svg>
+          </span>
+          <i
+            class="ant-menu-submenu-arrow"
+          />
+        </div>
+      </li>
+    </ul>
+    <div
+      aria-hidden="true"
+      style="display: none;"
+    />
+  </header>
+</DocumentFragment>
+`;
