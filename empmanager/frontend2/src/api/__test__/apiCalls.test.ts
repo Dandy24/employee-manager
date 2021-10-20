@@ -4,12 +4,8 @@ import { WorkingCategoryEnum } from '../../models/enums/working-category-enum';
 import moment from 'moment';
 import { EmployeeDto } from '../../models/dtos/employee-dto';
 
-jest.mock('../../models/dtos/employee-dto');
-jest.mock('../../models/entities/employee-entity');
-
 beforeEach(() => {
     fetchMock.resetMocks();
-    EmployeeEntity.mockClear();
 });
 
 /* Test GETing list of employees */
@@ -74,11 +70,7 @@ test('Get empty list of employees', async () => {
 test('Fail getting list of employees', async () => {
     fetchMock.mockReject(new Error('Unable to load list of employees'));
 
-    try {
-        await getEmployeeList();
-    } catch (e) {
-        await expect(fetch).rejects.toThrow('Unable to load list of employees');
-    }
+    await expect(getEmployeeList()).rejects.toThrowError('Unable to load list of employees')
 });
 
 /* Test POSTing (creating) a new employee */
@@ -143,11 +135,14 @@ test('Fail creating employee', async () => {
 
     fetchMock.mockReject(new Error('Unable to create employee'));
 
-    try {
-        await createEmployee(employee);
-    } catch (e) {
-        await expect(fetch).rejects.toThrowError('Unable to create employee');
-    }
+    // try {
+    //     await createEmployee(employee);
+    // } catch (e) {
+    //     await expect(fetch).rejects.toThrowError('Unable to create employee');
+    // }
+
+    await expect(createEmployee(employee)).rejects.toThrowError('Unable to create employee')
+
 });
 
 test('Update employee', async () => {
