@@ -3,11 +3,12 @@ describe('employee creating process', () => {
         cy.visit('http://localhost:3000/new-employee');
     });
 
-    it('Fill the form correctly', () => {
+    it('Matches the image snapshot', () => {
         /** Take page snapshot image and compare it to the previous one, to find any potencial styling changes **/
-
         cy.document().toMatchImageSnapshot();
+    });
 
+    it('Fill the form correctly', () => {
         /** Test if correct menu tab is colored **/
 
         cy.get('[data-testid=menu-new-employee-item]')
