@@ -3,51 +3,65 @@ import { CompanyDto } from '../models/dtos/company-dto';
 import { EmployeeEntity } from '../models/entities/employee-entity';
 import { EmployeeDto } from '../models/dtos/employee-dto';
 
-export function getEmployeeList(): Promise<EmployeeEntity[]> {
-    return fetch('http://localhost:8000/api/employee-list').then((response) => response.json());
+export async function getEmployeeList(): Promise<EmployeeEntity[]> {
+    const response = await fetch('http://localhost:8000/api/employee-list');
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error('Unable to load list of employees');
+        return Promise.reject(error);
+    }
 }
 
 //Employee detail
 
-export function createEmployee(employee: EmployeeDto): Promise<EmployeeEntity> {
-    return fetch('http://localhost:8000/api/employee-create', {
+export async function createEmployee(employee: EmployeeDto): Promise<EmployeeEntity> {
+    const response = await fetch('http://localhost:8000/api/employee-create', {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
         },
         body: JSON.stringify(employee),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            return data;
-        });
+    });
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error('Unable to create employee');
+        return Promise.reject(error);
+    }
 }
 
-export function updateEmployee(editedID: number, updatedEmployee: EmployeeDto): Promise<EmployeeEntity> {
+export async function updateEmployee(editedID: number, updatedEmployee: EmployeeDto): Promise<EmployeeEntity> {
     //TODO fix editedID
 
-    return fetch(`http://localhost:8000/api/employee-update/${editedID}`, {
+    const response = await fetch(`http://localhost:8000/api/employee-update/${editedID}`, {
         method: 'PUT',
         headers: {
             'Content-type': 'application/json',
         },
         body: JSON.stringify(updatedEmployee),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            return data;
-        });
+    });
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error('Unable to edit employee');
+        return Promise.reject(error);
+    }
 }
 
-export function deleteEmployee(id: number): Promise<Response> {
-    return fetch(`http://localhost:8000/api/employee-delete/${id}`, {
+export async function deleteEmployee(id: number): Promise<Response> {
+    const response = await fetch(`http://localhost:8000/api/employee-delete/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-type': 'application/json',
         },
     });
+    if (response.ok) {
+        return response;
+    } else {
+        const error = new Error('Unable to delete employee');
+        return Promise.reject(error);
+    }
 }
 
 export function getCompanyList(): Promise<CompanyEntity[]> {
