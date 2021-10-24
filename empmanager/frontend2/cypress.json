@@ -1,0 +1,7 @@
+{
+  "projectId": "d1utdu",
+  "ignoreTestFiles": [
+    "**/__snapshots__/*",
+    "**/__image_snapshots__/*"
+  ]
+}

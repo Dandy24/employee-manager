@@ -54,7 +54,7 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = observer((props: Employ
                     ) : null}
 
                     <Col span={12} offset={9} style={{ marginTop: '3vh' }}>
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" data-testid="submit-button">
                             {submitText}
                         </Button>
                     </Col>

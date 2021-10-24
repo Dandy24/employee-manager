@@ -16,19 +16,33 @@ export const CategorySelectList: React.FC<SelectListProps> = observer((props: Se
     const { name, label, spacesize } = props;
 
     return (
-        <InputWrapper>
-            <label htmlFor={name}>{label}</label>
-            <Select name={name} style={{ width: 200 }}>
-                <Select.Option key={WorkingCategoryEnum.A} value={WorkingCategoryEnum.A}>
+        <div data-testid={`${name}-category-select`}>
+            <label htmlFor={name} data-testid="category-select-label">
+                {label}
+            </label>
+            <Select name={name} style={{ width: 200 }} data-testid="category-select-input">
+                <Select.Option
+                    key={WorkingCategoryEnum.A}
+                    value={WorkingCategoryEnum.A}
+                    data-testid={`category-select-option-${WorkingCategoryEnum.A}`}
+                >
                     {WorkingCategoryEnum.A}
                 </Select.Option>
-                <Select.Option key={WorkingCategoryEnum.B} value={WorkingCategoryEnum.B}>
+                <Select.Option
+                    key={WorkingCategoryEnum.B}
+                    value={WorkingCategoryEnum.B}
+                    data-testid={`category-select-option-${WorkingCategoryEnum.B}`}
+                >
                     {WorkingCategoryEnum.B}
                 </Select.Option>
-                <Select.Option key={WorkingCategoryEnum.C} value={WorkingCategoryEnum.C}>
+                <Select.Option
+                    key={WorkingCategoryEnum.C}
+                    value={WorkingCategoryEnum.C}
+                    data-testid={`category-select-option-${WorkingCategoryEnum.C}`}
+                >
                     {WorkingCategoryEnum.C}
                 </Select.Option>
             </Select>
-        </InputWrapper>
+        </div>
     );
 });
