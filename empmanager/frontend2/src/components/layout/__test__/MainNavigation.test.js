@@ -7,6 +7,16 @@ import App from '../../../App';
 import { RootStore } from '../../../stores/root-store';
 import { RootStoreProvider } from '../../../stores/root-store-provider';
 
+test('Menu snapshot matches the previous one', () => {
+    const {asFragment} = render(
+        <BrowserRouter>
+            <MainNavigation />
+        </BrowserRouter>,
+    )
+
+    expect(asFragment()).toMatchSnapshot();
+});
+
 test('Menu displays on page correctly', () => {
     const { getByTestId } = render(
         <BrowserRouter>

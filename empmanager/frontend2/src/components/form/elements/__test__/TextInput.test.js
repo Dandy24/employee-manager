@@ -7,6 +7,23 @@ import userEvent from '@testing-library/user-event';
 import { RootStoreProvider, useRootStore } from '../../../../stores/root-store-provider';
 import { NewCompanyValidationSchema } from '../../CompanyFormik';
 
+test('TextInput snapshot matches the previous one', async () => {
+    const { asFragment } = render(
+        <Formik
+            validationSchema={NewCompanyValidationSchema}
+            initialValues={{
+                name: '',
+            }}
+        >
+            <Form>
+                <TextInput label="Nazev firmy" spacesize="large" name="name" />
+            </Form>
+        </Formik>,
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+});
+
 test('Test correct value in text input after user types', async () => {
     const { getByTestId, getByLabelText, findByTestId } = render(
         <Formik
