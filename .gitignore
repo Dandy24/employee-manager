@@ -159,3 +159,4 @@ yarn-debug.log*
 yarn-error.log*
 
 frontend2/cypress/integration/docs/
+frontend2/cypress/videos/
