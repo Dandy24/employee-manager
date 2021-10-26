@@ -4,7 +4,7 @@ import { EmployeeEntity } from '../models/entities/employee-entity';
 import { EmployeeDto } from '../models/dtos/employee-dto';
 
 export async function getEmployeeList(): Promise<EmployeeEntity[]> {
-    const response = await fetch('http://localhost:8000/api/employee-list');
+    const response = await fetch(`http://localhost:8000/api/employee-list`);
     if (response.ok) {
         return await response.json();
     } else {
@@ -16,7 +16,7 @@ export async function getEmployeeList(): Promise<EmployeeEntity[]> {
 //Employee detail
 
 export async function createEmployee(employee: EmployeeDto): Promise<EmployeeEntity> {
-    const response = await fetch('http://localhost:8000/api/employee-create', {
+    const response = await fetch(`http://localhost:8000/api/employee-create`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
@@ -65,7 +65,7 @@ export async function deleteEmployee(id: number): Promise<Response> {
 }
 
 export function getCompanyList(): Promise<CompanyEntity[]> {
-    return fetch('http://localhost:8000/api/company-list')
+    return fetch(`http://localhost:8000/api/company-list`)
         .then((response) => response.json())
         .then((data) => {
             return data;
@@ -73,7 +73,7 @@ export function getCompanyList(): Promise<CompanyEntity[]> {
 }
 
 export function createCompany(company: CompanyDto): Promise<CompanyEntity> {
-    return fetch('http://localhost:8000/api/company-create', {
+    return fetch(`http://localhost:8000/api/company-create`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
