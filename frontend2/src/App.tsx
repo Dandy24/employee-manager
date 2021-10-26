@@ -11,7 +11,7 @@ import { EmployeeListPage } from './pages/EmployeeList';
 import { Content } from 'antd/lib/layout/layout';
 import { useRootStore } from './stores/root-store-provider';
 import { observer } from 'mobx-react-lite';
-// import { ShiftManagerPage } from './pages/ShiftManager';
+import { ShiftManagerPage } from './pages/ShiftManager';
 
 const App: React.FC = observer(() => {
     const rootStore = useRootStore();
@@ -38,9 +38,9 @@ const App: React.FC = observer(() => {
                             <EmployeeListPage rootStore={rootStore}></EmployeeListPage>
                         </Route>
 
-                        {/*<Route path="/shift-manager">*/}
-                        {/*    <ShiftManagerPage rootStore={rootStore}></ShiftManagerPage>*/}
-                        {/*</Route>*/}
+                        <Route path="/shift-manager">
+                            <ShiftManagerPage rootStore={rootStore}></ShiftManagerPage>
+                        </Route>
 
                         {/*<Route path="/monthly-output/:id" exact>*/}
                         {/*    <MonthlyReview></MonthlyReview>*/}
