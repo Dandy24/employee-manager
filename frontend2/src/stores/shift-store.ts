@@ -1,8 +1,9 @@
 import { RootStore } from './root-store';
 import { action, makeObservable, observable } from 'mobx';
+import { EmployeeEntity } from '../models/entities/employee-entity';
 
 export class ShiftStore {
-    employees: any[];
+    employees: EmployeeEntity[] = [];
     shift: any[];
     private rootStore: RootStore;
 
@@ -26,25 +27,25 @@ export class ShiftStore {
         this.shift = [];
     }
 
-    addToShift(employee: any[]): void {
+    addToShift(employee: EmployeeEntity): void {
         this.shift.push(employee);
         console.log(this.shift);
     }
 
-    removeFromShift(index): void {
+    removeFromShift(index: number): void {
         this.shift.splice(index, 1);
     }
 
-    setEmployees(employees: any[]): void {
+    setEmployees(employees: EmployeeEntity[]): void {
         this.employees = employees;
     }
 
-    addEmployee(employee: any[]): void {
+    addEmployee(employee: EmployeeEntity): void {
         this.employees.push(employee);
         console.log(this.employees);
     }
 
-    removeEmployee(index): void {
+    removeEmployee(index: number): void {
         this.employees.splice(index, 1);
     }
 }

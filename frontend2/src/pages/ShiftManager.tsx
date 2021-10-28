@@ -23,7 +23,7 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
             })();
         }, []);
 
-        const kok = (event: any) => {
+        const dragEndHandler = (event: any) => {
             console.log(event);
 
             if (event.destination) {
@@ -52,7 +52,7 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
         return (
             <>
                 <Row justify="space-between">
-                    <DragDropContext onDragEnd={kok}>
+                    <DragDropContext onDragEnd={dragEndHandler}>
                         <Col span={10}>
                             <EmpTable />
                         </Col>

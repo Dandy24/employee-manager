@@ -1,9 +1,7 @@
-import React, { useCallback, useReducer } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { RootStore } from '../../stores/root-store';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useTable } from 'react-table';
-import produce from 'immer';
 import { useRootStore } from '../../stores/root-store-provider';
 import { EmployeeTableColumns } from '../../components/tableColumns/EmployeeTableColumns';
 
@@ -25,10 +23,11 @@ export const ShiftTable: React.FC = observer((): JSX.Element => {
     return (
         <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
             <thead>
-                {headerGroups.map((headerGroup) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map((column) => (
+                {headerGroups.map((headerGroup, index) => (
+                    <tr {...headerGroup.getHeaderGroupProps()} key={`shift-table-thead-tr-${index}`}>
+                        {headerGroup.headers.map((column, index) => (
                             <th
+                                key={`shift-table-thead-th-${index}`}
                                 {...column.getHeaderProps()}
                                 style={{
                                     borderBottom: 'solid 3px red',
@@ -47,21 +46,23 @@ export const ShiftTable: React.FC = observer((): JSX.Element => {
             <Droppable droppableId="shift-table">
                 {(provided, snapshot) => (
                     <tbody {...getTableBodyProps()} ref={provided.innerRef} {...provided.droppableProps}>
-                        {rows.map((row) => {
+                        {rows.map((row, index) => {
                             prepareRow(row);
                             return (
                                 <Draggable draggableId={row.id.toString()} key={row.id} index={row.index}>
                                     {(provided, snapshot) => {
                                         return (
                                             <tr
+                                                key={`shift-table-tbody-tr-${index}`}
                                                 {...row.getRowProps()}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
                                                 ref={provided.innerRef}
                                             >
-                                                {row.cells.map((cell) => {
+                                                {row.cells.map((cell, index) => {
                                                     return (
                                                         <td
+                                                            key={`shift-table-tbody-td-${index}`}
                                                             {...cell.getCellProps()}
                                                             style={{
                                                                 padding: '10px',
