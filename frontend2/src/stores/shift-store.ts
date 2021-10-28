@@ -1,5 +1,5 @@
 import { RootStore } from './root-store';
-import { action, makeObservable, observable, runInAction } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 
 export class ShiftStore {
     employees: any[];
@@ -13,39 +13,35 @@ export class ShiftStore {
             employees: observable,
             shift: observable,
 
-            setEmployees: action,
             addToShift: action,
+            removeFromShift: action,
+
+            setEmployees: action,
+            addEmployee: action,
             removeEmployee: action,
         });
 
-        this.employees = [
-            {
-                id: 1,
-                col1: 'Hello',
-                col2: 'World',
-            },
-            {
-                id: 2,
-                col1: 'react-table',
-                col2: 'rocks',
-            },
-            {
-                id: 3,
-                col1: 'whatever',
-                col2: 'you want',
-            },
-        ];
+        this.employees = [...rootStore.employeeStore.employees];
 
         this.shift = [];
+    }
+
+    addToShift(employee: any[]): void {
+        this.shift.push(employee);
+        console.log(this.shift);
+    }
+
+    removeFromShift(index): void {
+        this.shift.splice(index, 1);
     }
 
     setEmployees(employees: any[]): void {
         this.employees = employees;
     }
 
-    addToShift(employee: any[]): void {
-        this.shift.push(employee);
-        console.log(this.shift);
+    addEmployee(employee: any[]): void {
+        this.employees.push(employee);
+        console.log(this.employees);
     }
 
     removeEmployee(index): void {

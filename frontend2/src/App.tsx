@@ -41,10 +41,6 @@ const App: React.FC = observer(() => {
                         <Route path="/shift-manager">
                             <ShiftManagerPage rootStore={rootStore}></ShiftManagerPage>
                         </Route>
-
-                        {/*<Route path="/monthly-output/:id" exact>*/}
-                        {/*    <MonthlyReview></MonthlyReview>*/}
-                        {/*</Route>*/}
                     </Switch>
                 </Content>
             </Layout>

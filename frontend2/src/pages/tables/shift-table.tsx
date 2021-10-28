@@ -5,29 +5,16 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useTable } from 'react-table';
 import produce from 'immer';
 import { useRootStore } from '../../stores/root-store-provider';
+import { EmployeeTableColumns } from '../../components/tableColumns/EmployeeTableColumns';
 
 export const ShiftTable: React.FC = observer((): JSX.Element => {
     const rootStore = useRootStore();
 
     const data = [...rootStore.shiftStore.shift];
 
-    const columns = React.useMemo(
-        () => [
-            {
-                Header: 'ID',
-                accessor: 'id', // accessor is the "key" in the data
-            },
-            {
-                Header: 'Column 1',
-                accessor: 'col1',
-            },
-            {
-                Header: 'Column 2',
-                accessor: 'col2',
-            },
-        ],
-        [],
-    );
+    const cols = EmployeeTableColumns(rootStore.employeeStore, rootStore.companyStore);
+
+    const columns = React.useMemo(() => cols.map((col) => ({ ...col, accessor: col.key, Header: col.title })), []);
 
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
         columns,
