@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Col, Row } from 'antd';
+import { Button, Col, Row } from 'antd';
 import { RootStore } from '../stores/root-store';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { EmpTable } from './tables/employee-table';
@@ -22,6 +22,10 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                 rootStore.shiftStore.setEmployees(rootStore.employeeStore.employees);
             })();
         }, []);
+
+        const saveShift = async () => {
+            await rootStore.shiftStore.saveShift();
+        };
 
         const dragEndHandler = (event: any) => {
             console.log(event);
@@ -59,6 +63,7 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
 
                         <Col span={10}>
                             <ShiftTable />
+                            <Button onClick={saveShift}>Ulozit</Button>
                         </Col>
                     </DragDropContext>
                 </Row>

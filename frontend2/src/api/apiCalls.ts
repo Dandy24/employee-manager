@@ -111,6 +111,19 @@ export function deleteCompany(id: number): Promise<Response> {
     });
 }
 
-// export function getMonthlyOutput(id: number) {
-//     return fetch(`http://localhost:8000/api/monthly-output-list/${id}`).then((response) => response.json());
-// }
+export async function createShift(shift: any): Promise<any> {
+    console.log(shift);
+    const response = await fetch(`http://localhost:8000/api/shift-create`, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(shift),
+    });
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error('Unable to create shift');
+        return Promise.reject(error);
+    }
+}
