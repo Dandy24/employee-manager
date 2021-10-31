@@ -8,7 +8,7 @@ import { EmployeeTableColumns } from '../../components/tableColumns/EmployeeTabl
 export const ShiftTable: React.FC = observer((): JSX.Element => {
     const rootStore = useRootStore();
 
-    const data = [...rootStore.shiftStore.shift];
+    const data = [...rootStore.shiftStore.shiftEmployees];
 
     const cols = EmployeeTableColumns(rootStore.employeeStore, rootStore.companyStore);
 
@@ -17,39 +17,46 @@ export const ShiftTable: React.FC = observer((): JSX.Element => {
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
         columns,
         data: data,
-        initialState: [],
+        //initialState: [],
     });
 
     return (
-        <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
-            <thead>
-                {headerGroups.map((headerGroup, index) => (
-                    <tr {...headerGroup.getHeaderGroupProps()} key={`shift-table-thead-tr-${index}`}>
-                        {headerGroup.headers.map((column, index) => (
-                            <th
-                                key={`shift-table-thead-th-${index}`}
-                                {...column.getHeaderProps()}
-                                style={{
-                                    borderBottom: 'solid 3px red',
-                                    background: 'aliceblue',
-                                    color: 'black',
-                                    fontWeight: 'bold',
-                                }}
-                            >
-                                {column.render('Header')}
-                            </th>
+        <Droppable droppableId="shift-table">
+            {(provided, snapshot) => (
+                <table
+                    {...getTableProps()}
+                    style={{ border: 'solid 1px blue', backgroundColor: snapshot.isDraggingOver ? 'lightblue' : null }}
+                >
+                    <thead>
+                        {headerGroups.map((headerGroup, index) => (
+                            <tr {...headerGroup.getHeaderGroupProps()} key={`shift-table-thead-tr-${index}`}>
+                                {headerGroup.headers.map((column, index) => (
+                                    <th
+                                        key={`shift-table-thead-th-${index}`}
+                                        {...column.getHeaderProps()}
+                                        style={{
+                                            borderBottom: 'solid 3px red',
+                                            background: 'aliceblue',
+                                            color: 'black',
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        {column.render('Header')}
+                                    </th>
+                                ))}
+                            </tr>
                         ))}
-                    </tr>
-                ))}
-            </thead>
+                    </thead>
 
-            <Droppable droppableId="shift-table">
-                {(provided, snapshot) => (
                     <tbody {...getTableBodyProps()} ref={provided.innerRef} {...provided.droppableProps}>
                         {rows.map((row, index) => {
                             prepareRow(row);
                             return (
-                                <Draggable draggableId={row.id.toString()} key={row.id} index={row.index}>
+                                <Draggable
+                                    draggableId={'shift-table-' + row.id.toString()}
+                                    key={row.id}
+                                    index={row.index}
+                                >
                                     {(provided, snapshot) => {
                                         return (
                                             <tr
@@ -82,8 +89,8 @@ export const ShiftTable: React.FC = observer((): JSX.Element => {
                         })}
                         {provided.placeholder}
                     </tbody>
-                )}
-            </Droppable>
-        </table>
+                </table>
+            )}
+        </Droppable>
     );
 });

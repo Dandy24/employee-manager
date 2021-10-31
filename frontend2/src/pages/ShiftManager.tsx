@@ -36,19 +36,33 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                         event.destination.droppableId === 'shift-table' &&
                         event.source.droppableId === 'employee-table'
                     ) {
-                        rootStore.shiftStore.addToShift(rootStore.shiftStore.employees[event.source.index]);
+                        rootStore.shiftStore.addToShift(
+                            rootStore.shiftStore.employees[event.source.index],
+                            event.source.index,
+                            event.destination.index,
+                        );
                         rootStore.shiftStore.removeEmployee(event.source.index);
                     } else {
-                        rootStore.shiftStore.addEmployee(rootStore.shiftStore.shift[event.source.index]);
+                        rootStore.shiftStore.addEmployee(rootStore.shiftStore.shiftEmployees[event.source.index]);
                         rootStore.shiftStore.removeFromShift(event.source.index);
                     }
                 } else {
-                    const items = [...rootStore.shiftStore.employees];
+                    if (event.destination.droppableId === 'shift-table') {
+                        const items = [...rootStore.shiftStore.shiftEmployees];
 
-                    const [reorderedItem] = items.splice(event.source.index, 1);
-                    items.splice(event.destination.index, 0, reorderedItem);
+                        const [reorderedItem] = items.splice(event.source.index, 1);
+                        items.splice(event.destination.index, 0, reorderedItem);
 
-                    rootStore.shiftStore.setEmployees(items);
+                        rootStore.shiftStore.setShiftEmployees(items);
+                    }
+                    if (event.source.droppableId === 'employee-table') {
+                        const items = [...rootStore.shiftStore.employees];
+
+                        const [reorderedItem] = items.splice(event.source.index, 1);
+                        items.splice(event.destination.index, 0, reorderedItem);
+
+                        rootStore.shiftStore.setEmployees(items);
+                    }
                 }
             }
         };

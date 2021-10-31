@@ -8,6 +8,7 @@ import moment from 'moment';
 
 export class ShiftStore {
     employees: EmployeeEntity[] = [];
+    shiftEmployees: EmployeeEntity[];
     shift: any[];
     private rootStore: RootStore;
 
@@ -16,12 +17,13 @@ export class ShiftStore {
 
         makeObservable(this, {
             employees: observable,
-            shift: observable,
+            shiftEmployees: observable,
 
             addToShift: action,
             removeFromShift: action,
             clearShift: action,
             saveShift: action,
+            setShiftEmployees: action,
 
             setEmployees: action,
             addEmployee: action,
@@ -30,20 +32,35 @@ export class ShiftStore {
 
         this.employees = [...rootStore.employeeStore.employees];
 
-        this.shift = [];
+        this.shiftEmployees = [];
     }
 
-    addToShift(employee: EmployeeEntity): void {
-        this.shift.push(employee);
-        console.log(this.shift);
+    addToShift(employee: EmployeeEntity, sourceIndex?: number, destinationIndex?: number): void {
+        // if (this.shiftEmployees.length === 0) {
+        this.shiftEmployees.push(employee);
+        // } else {
+        //     console.log(sourceIndex, destinationIndex);
+        //     const items = [...this.shiftEmployees];
+        //
+        //     const [reorderedItem] = items.splice(sourceIndex, 1);
+        //     items.splice(destinationIndex, 0, reorderedItem);
+        //
+        //     this.setShiftEmployees(items);
+        // }
+        //
+        // console.log(this.shiftEmployees);
     }
 
     removeFromShift(index: number): void {
-        this.shift.splice(index, 1);
+        this.shiftEmployees.splice(index, 1);
     }
 
     clearShift(): void {
-        this.shift = [];
+        this.shiftEmployees = [];
+    }
+
+    setShiftEmployees(shift: EmployeeEntity[]): void {
+        this.shiftEmployees = shift;
     }
 
     async saveShift(): Promise<void> {
@@ -51,8 +68,8 @@ export class ShiftStore {
         const shift = new ShiftDto();
         shift.time = 'ranni';
         shift.date = moment().format('YYYY-MM-DD');
-        shift.company = toJS(this.rootStore.companyStore.companies.find((comp) => comp.id === 3).id);
-        shift.employees = toJS(this.shift.map((shift) => shift.id));
+        shift.companyID = toJS(this.rootStore.companyStore.companies.find((comp) => comp.id === 3).id);
+        shift.employeeIDs = toJS(this.shiftEmployees.map((shift) => shift.id));
         await createShift(shift);
         this.clearShift(); //TODO trigger this only if createShift was successfull (Exception wasnt thrown)
     }

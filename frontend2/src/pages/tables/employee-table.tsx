@@ -10,14 +10,14 @@ export const EmpTable: React.FC = observer((): JSX.Element => {
 
     const data = [...rootStore.shiftStore.employees];
 
-    const cols = EmployeeTableColumns(rootStore.employeeStore, rootStore.companyStore);
+    const cols = EmployeeTableColumns(rootStore.employeeStore, rootStore.companyStore, null, true);
 
     const columns = React.useMemo(() => cols.map((col) => ({ ...col, accessor: col.key, Header: col.title })), []);
 
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
         columns,
         data: data,
-        initialState: rootStore.shiftStore.employees,
+        //initialState: rootStore.shiftStore.employees,
     });
 
     return (
@@ -49,7 +49,11 @@ export const EmpTable: React.FC = observer((): JSX.Element => {
                         {rows.map((row, index) => {
                             prepareRow(row);
                             return (
-                                <Draggable draggableId={row.id.toString()} key={row.id} index={row.index}>
+                                <Draggable
+                                    draggableId={'employee-table-' + row.id.toString()}
+                                    key={row.id}
+                                    index={row.index}
+                                >
                                     {(provided, snapshot) => {
                                         return (
                                             <tr

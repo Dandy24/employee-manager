@@ -5,12 +5,14 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 import { CompanyStore } from '../../stores/company-store';
 import { EmployeeEntity } from '../../models/entities/employee-entity';
+import { Column } from 'react-table';
 
 export function EmployeeTableColumns(
     employeeStore: EmployeeStore,
     companyStore: CompanyStore,
     onEmployeeDelete?: (arg0: number) => void,
-): ColumnsType<EmployeeEntity> {
+    shiftManager?: boolean,
+): ColumnsType<EmployeeEntity> | Array<Column> {
     return [
         {
             title: 'ID zaměstnance',
