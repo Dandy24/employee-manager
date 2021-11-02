@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Modal, Table } from 'antd';
+import { Avatar, Modal, Table, Image, Divider, Typography, Row } from 'antd';
 import { CompanyForm } from '../components/form/CompanyForm';
 import { CompanyFormik } from '../components/form/CompanyFormik';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -9,6 +9,9 @@ import { observer } from 'mobx-react-lite';
 import { CompanyTableColumns } from '../components/tableColumns/CompanyTableColumns';
 import { CompanyEntity } from '../models/entities/company-entity';
 import { CompanyDto } from '../models/dtos/company-dto';
+import { SearchComponent } from '../components/search/search-component';
+import Title from 'antd/es/typography/Title';
+import { SearchResultItem } from '../components/search/search-result';
 
 interface CompanyListProps {
     rootStore: RootStore;
@@ -58,8 +61,19 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
     //     return <LoadingSpinner text="Načítá se seznam firem" />;
     // }
 
+    const createSearchableList = (companies: CompanyEntity[]) => {
+        const searchable = companies.map((company) => ({
+            ...company,
+            value: company.name,
+            label: <SearchResultItem row={company} />,
+        }));
+        return searchable;
+    };
+
     return (
         <>
+            <SearchComponent options={createSearchableList(companyStore.companies)} />
+
             <Table
                 rowKey="id"
                 loading={companyStore.loadingCompanies}
