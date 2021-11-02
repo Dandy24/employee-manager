@@ -10,7 +10,7 @@ export class CompanyStore {
     company: CompanyEntity;
     loadingCompanies = false;
     isEditOpen = false;
-    private rootStore: RootStore;
+    rootStore: RootStore;
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;

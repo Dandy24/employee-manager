@@ -12,6 +12,7 @@ import { CompanyDto } from '../models/dtos/company-dto';
 import { SearchComponent } from '../components/search/search-component';
 import Title from 'antd/es/typography/Title';
 import { SearchResultItem } from '../components/search/search-result';
+import { toJS } from 'mobx';
 
 interface CompanyListProps {
     rootStore: RootStore;
@@ -54,6 +55,7 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
     useEffect(() => {
         (async () => {
             await companyStore.fetchAllCompanies();
+            rootStore.searchStore.createSearchableCompanies(companyStore.companies);
         })();
     }, []);
 
@@ -61,18 +63,10 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
     //     return <LoadingSpinner text="Načítá se seznam firem" />;
     // }
 
-    const createSearchableList = (companies: CompanyEntity[]) => {
-        const searchable = companies.map((company) => ({
-            ...company,
-            value: company.name,
-            label: <SearchResultItem row={company} />,
-        }));
-        return searchable;
-    };
-
     return (
         <>
-            <SearchComponent options={createSearchableList(companyStore.companies)} />
+            {/*{console.log(toJS(rootStore.searchStore.searchableCompanies))}*/}
+            <SearchComponent options={toJS(rootStore.searchStore.searchableCompanies)} />
 
             <Table
                 rowKey="id"

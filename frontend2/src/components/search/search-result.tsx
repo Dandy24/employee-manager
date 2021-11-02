@@ -1,13 +1,14 @@
-import { observer } from 'mobx-react-lite';
 import { Avatar, Divider, Image, Row } from 'antd';
 import Title from 'antd/es/typography/Title';
 import React from 'react';
+import { EmployeeEntity } from '../../models/entities/employee-entity';
+import { CompanyEntity } from '../../models/entities/company-entity';
 
 export interface SearchResultItemProps {
-    row: any;
+    row: CompanyEntity; //| EmployeeEntity;
 }
 
-export const SearchResultItem: React.FC<SearchResultItemProps> = observer((props: SearchResultItemProps) => {
+export const SearchResultItem = (props: any) => {
     const { row } = props;
 
     return (
@@ -23,8 +24,8 @@ export const SearchResultItem: React.FC<SearchResultItemProps> = observer((props
                 }
             />
             <Divider type="vertical" />
-            <Title level={5}>{row.name}</Title>
+            <Title level={5}>{props.name}</Title>
             {/*  TODO add some more info  */}
         </Row>
     );
-});
+};
