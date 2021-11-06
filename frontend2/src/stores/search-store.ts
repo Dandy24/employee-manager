@@ -2,11 +2,11 @@ import { CompanyEntity } from '../models/entities/company-entity';
 import { RootStore } from './root-store';
 import { action, makeObservable, observable } from 'mobx';
 import { SearchResultItem } from '../components/search/search-result';
-import React from 'react';
+import { SearchableCompanyEntity } from '../models/entities/searchable-company-entity';
 
 export class SearchStore {
-    searchableCompanies: any; // TODO Entity SearchableItem
-    searchableEmployees: any;
+    searchableCompanies: SearchableCompanyEntity[]; // TODO Entity SearchableItem
+    // searchableEmployees: any;
     loading = false;
     private rootStore: RootStore;
 
@@ -15,7 +15,7 @@ export class SearchStore {
 
         makeObservable(this, {
             searchableCompanies: observable,
-            searchableEmployees: observable,
+            // searchableEmployees: observable,
             loading: observable,
 
             createSearchableCompanies: action,
@@ -23,13 +23,13 @@ export class SearchStore {
         });
     }
 
-    setSearchableCompanies(companies: CompanyEntity[]): void {
+    setSearchableCompanies(companies: SearchableCompanyEntity[]): void {
         this.searchableCompanies = companies;
     }
 
     createSearchableCompanies = (companies: CompanyEntity[]): void => {
         const searchable = companies.map((company) => ({
-            ...company,
+            company,
             value: company.name,
             label: SearchResultItem(company),
         }));

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Avatar, Modal, Table, Image, Divider, Typography, Row } from 'antd';
+import { Modal, Table } from 'antd';
 import { CompanyForm } from '../components/form/CompanyForm';
 import { CompanyFormik } from '../components/form/CompanyFormik';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -10,8 +10,6 @@ import { CompanyTableColumns } from '../components/tableColumns/CompanyTableColu
 import { CompanyEntity } from '../models/entities/company-entity';
 import { CompanyDto } from '../models/dtos/company-dto';
 import { SearchComponent } from '../components/search/search-component';
-import Title from 'antd/es/typography/Title';
-import { SearchResultItem } from '../components/search/search-result';
 import { toJS } from 'mobx';
 
 interface CompanyListProps {
@@ -65,7 +63,6 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
 
     return (
         <>
-            {/*{console.log(toJS(rootStore.searchStore.searchableCompanies))}*/}
             <SearchComponent options={toJS(rootStore.searchStore.searchableCompanies)} />
 
             <Table

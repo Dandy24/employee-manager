@@ -1,15 +1,14 @@
 import { Avatar, Divider, Image, Row } from 'antd';
 import Title from 'antd/es/typography/Title';
 import React from 'react';
-import { EmployeeEntity } from '../../models/entities/employee-entity';
 import { CompanyEntity } from '../../models/entities/company-entity';
 
-export interface SearchResultItemProps {
-    row: CompanyEntity; //| EmployeeEntity;
-}
+// export interface SearchResultItemProps {
+//     row: CompanyEntity; //| EmployeeEntity;
+// }
 
-export const SearchResultItem = (props: any) => {
-    const { row } = props;
+export const SearchResultItem = (row: CompanyEntity): JSX.Element => {
+    // const { row } = props;
 
     return (
         <Row>
@@ -24,7 +23,7 @@ export const SearchResultItem = (props: any) => {
                 }
             />
             <Divider type="vertical" />
-            <Title level={5}>{props.name}</Title>
+            <Title level={5}>{row.name}</Title>
             {/*  TODO add some more info  */}
         </Row>
     );

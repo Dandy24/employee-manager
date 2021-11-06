@@ -1,21 +1,21 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { AutoComplete } from 'antd';
+import { SearchableCompanyEntity } from '../../models/entities/searchable-company-entity';
 
 export interface SearchComponentProps {
-    options: any; // EmployeeEntity[] | CompanyEntity[];
+    options: SearchableCompanyEntity[]; // | SearchableEmployeeEntity[];
 }
 
 export const SearchComponent: React.FC<SearchComponentProps> = observer((props: SearchComponentProps) => {
     const { options } = props;
 
     const searchHandler = (value, option) => {
-        console.log(option);
+        // console.log(option);
     };
 
     return (
         <>
-            {console.log(options)}
             <AutoComplete
                 style={{
                     width: 400,

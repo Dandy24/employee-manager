@@ -9,8 +9,6 @@ import { RootStore } from '../stores/root-store';
 import { EmployeeTableColumns } from '../components/tableColumns/EmployeeTableColumns';
 import { observer } from 'mobx-react-lite';
 import { EmployeeDto } from '../models/dtos/employee-dto';
-import { SearchComponent } from '../components/search/search-component';
-import { CompanyEntity } from '../models/entities/company-entity';
 
 interface EmployeeListPageProps {
     rootStore: RootStore;
