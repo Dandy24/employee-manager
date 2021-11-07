@@ -1,17 +1,15 @@
-import { Avatar, Divider, Image, Row } from 'antd';
-import Title from 'antd/es/typography/Title';
+import { Avatar, Button, Divider, Image, Row } from 'antd';
 import React from 'react';
 import { CompanyEntity } from '../../models/entities/company-entity';
+import Title from 'antd/lib/typography/Title';
 
 // export interface SearchResultItemProps {
 //     row: CompanyEntity; //| EmployeeEntity;
 // }
 
-export const SearchResultItem = (row: CompanyEntity): JSX.Element => {
-    // const { row } = props;
-
+export const SearchResultItem = (row: CompanyEntity, index: number): JSX.Element => {
     return (
-        <Row>
+        <Row data-testid={`search-item-${index}`}>
             <Avatar
                 src={
                     <Image

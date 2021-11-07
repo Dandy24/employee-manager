@@ -7,6 +7,7 @@ import { SearchableCompanyEntity } from '../models/entities/searchable-company-e
 export class SearchStore {
     searchableCompanies: SearchableCompanyEntity[]; // TODO Entity SearchableItem
     // searchableEmployees: any;
+    // selectedCompany: any;
     loading = false;
     private rootStore: RootStore;
 
@@ -16,10 +17,12 @@ export class SearchStore {
         makeObservable(this, {
             searchableCompanies: observable,
             // searchableEmployees: observable,
+            // selectedCompany: observable,
             loading: observable,
 
             createSearchableCompanies: action,
             setSearchableCompanies: action,
+            // setSelectedCompany: action,
         });
     }
 
@@ -27,11 +30,15 @@ export class SearchStore {
         this.searchableCompanies = companies;
     }
 
+    // setSelectedCompany(company: any): void {
+    //     this.selectedCompany = company;
+    // }
+
     createSearchableCompanies = (companies: CompanyEntity[]): void => {
-        const searchable = companies.map((company) => ({
+        const searchable = companies.map((company, index) => ({
             company,
             value: company.name,
-            label: SearchResultItem(company),
+            label: SearchResultItem(company, index),
         }));
         this.setSearchableCompanies(searchable);
     };

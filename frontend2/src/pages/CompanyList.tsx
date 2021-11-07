@@ -70,6 +70,7 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
                 loading={companyStore.loadingCompanies}
                 columns={columns}
                 dataSource={companyStore.companies}
+                data-testid="company-table"
             />
 
             <EditDrawer

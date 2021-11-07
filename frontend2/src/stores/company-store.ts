@@ -4,6 +4,7 @@ import { createCompany, deleteCompany, getCompanyList, updateCompany } from '../
 import { message } from 'antd';
 import { CompanyEntity } from '../models/entities/company-entity';
 import { CompanyDto } from '../models/dtos/company-dto';
+import { SearchableCompanyEntity } from '../models/entities/searchable-company-entity';
 
 export class CompanyStore {
     companies: CompanyEntity[] = [];
@@ -31,18 +32,25 @@ export class CompanyStore {
         });
     }
 
-    async fetchAllCompanies(): Promise<void> {
+    async fetchAllCompanies(filter: SearchableCompanyEntity = null): Promise<void> {
         runInAction(() => {
             this.loadingCompanies = true;
             this.companies = [];
         });
-        await getCompanyList().then((data) =>
-            runInAction(() => {
-                this.companies = data;
-            }),
-        );
+
+        const companies = await getCompanyList();
+
+        let filteredCompanies;
+
+        if (filter?.company) {
+            filteredCompanies = companies.filter(
+                (comp) => comp.name === filter.company.name || comp.address === filter.company.address,
+            );
+        }
+
         runInAction(() => {
             this.loadingCompanies = false;
+            this.companies = filteredCompanies ? filteredCompanies : companies;
         });
     }
 
