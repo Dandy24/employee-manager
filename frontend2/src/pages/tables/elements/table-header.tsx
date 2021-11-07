@@ -10,6 +10,8 @@ export interface TableHeaderProps {
 export const TableHeader: React.FC<TableHeaderProps> = observer((props: TableHeaderProps) => {
     const { headerGroups, type } = props;
 
+    /** TODO spread to more logical independent components **/
+
     return (
         <thead>
             {headerGroups.map((headerGroup, index) => (

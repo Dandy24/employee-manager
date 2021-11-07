@@ -16,6 +16,8 @@ export interface TableBodyProps {
 export const TableBody: React.FC<TableBodyProps> = observer((props: TableBodyProps) => {
     const { providedDroppable, tableBodyProps, rows, prepareRow, type } = props;
 
+    /** TODO spread to more logical independent components **/
+
     return (
         <tbody {...tableBodyProps} ref={providedDroppable.innerRef} {...providedDroppable.droppableProps}>
             {rows.map((row, index) => {
