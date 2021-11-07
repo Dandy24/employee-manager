@@ -3,6 +3,7 @@ import React from 'react';
 import { ColumnsType } from 'antd/lib/table/interface';
 import { CompanyStore } from '../../stores/company-store';
 import { CompanyEntity } from '../../models/entities/company-entity';
+import { Link } from 'react-router-dom';
 
 export function CompanyTableColumns(
     companyStore: CompanyStore,
@@ -48,6 +49,9 @@ export function CompanyTableColumns(
                     >
                         Smazat
                     </Button>
+                    <Link to={`/shift-calendar/${record.id}`}>
+                        <Button>Kalendář směn</Button>
+                    </Link>
                 </Space>
             ),
         },
