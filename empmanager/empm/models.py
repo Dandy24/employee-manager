@@ -1,5 +1,3 @@
-from datetime import date
-
 from django.db import models
 
 
@@ -27,3 +25,17 @@ class Employee(models.Model):
         on_delete=models.SET_NULL,
         null=True
     )
+
+    def __str__(self):
+        return self.first_name + self.last_name
+
+
+class Shift(models.Model):
+    date = models.DateField()
+    time = models.TextField(max_length=50)
+    company = models.ForeignKey(
+        'Company',
+        on_delete=models.CASCADE,
+        null=False
+    )
+    employees = models.ManyToManyField("Employee")

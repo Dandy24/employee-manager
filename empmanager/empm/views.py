@@ -2,8 +2,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 
-from .models import Company, Employee
-from .serializers import CompanySerializer, EmployeeSerializer
+from .models import Company, Employee, Shift
+from .serializers import CompanySerializer, EmployeeSerializer, ShiftSerializer
 
 
 @api_view(['GET'])
@@ -54,8 +54,6 @@ def companyCreate(request):
         raise ValueError
 
 
-
-
 @api_view(['PUT'])
 def companyUpdate(request, pk):
     company = Company.objects.get(id=pk)
@@ -69,7 +67,7 @@ def companyUpdate(request, pk):
         raise ValueError
 
 
-@api_view(['DELETE']) #,GET ?
+@api_view(['DELETE'])  # ,GET ?
 def companyDelete(request, pk):
     company = Company.objects.get(id=pk)
     company.delete()
@@ -108,7 +106,7 @@ def employeeDetail(request, pk):
     return Response(serializer.data)
 
 
-@api_view(['DELETE']) #,GET ?
+@api_view(['DELETE'])  # ,GET ?
 def employeeDelete(request, pk):
     employee = Employee.objects.get(id=pk)
     employee.delete()
@@ -129,3 +127,40 @@ def employeeUpdate(request, pk):
         raise ValueError
 
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def shiftList(request):
+    shift = Shift.objects.all()
+    serializer = ShiftSerializer(shift, many=True)
+
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def shiftListForCompany(request, companyID):
+    shift = Shift.objects.filter(company_id__exact=companyID)
+    serializer = ShiftSerializer(shift, many=True)
+
+    return Response(serializer.data)
+
+## TODO
+@api_view(['GET'])
+def shiftListForEmployee(request, employeeID):
+    shift = Shift.objects.filter(employees__shift__employees__in=employeeID)
+    serializer = ShiftSerializer(shift, many=True)
+
+    return Response(serializer.data)
+
+@swagger_auto_schema(methods=['post'], request_body=ShiftSerializer)
+@api_view(['POST'])
+def shiftCreate(request):
+    print(request.data)
+    serializer = ShiftSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        print(serializer.errors)
+        raise ValueError
+
