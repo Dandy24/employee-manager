@@ -127,3 +127,13 @@ export async function createShift(shift: any): Promise<any> {
         return Promise.reject(error);
     }
 }
+
+export async function getShiftListForCompany(companyId: number): Promise<any> {
+    const response = await fetch(`http://localhost:8000/api/shift-list-company/${companyId}`);
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error(`Unable to load shift list for company ${companyId}`);
+        return Promise.reject(error);
+    }
+}

@@ -1,7 +1,7 @@
 import { RootStore } from './root-store';
-import { action, makeObservable, observable, toJS } from 'mobx';
+import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
 import { EmployeeEntity } from '../models/entities/employee-entity';
-import { createShift } from '../api/apiCalls';
+import { createShift, getShiftListForCompany } from '../api/apiCalls';
 import { ShiftEntity } from '../models/entities/shift-entity';
 import { ShiftDto } from '../models/dtos/shift-dto';
 import moment from 'moment';
@@ -10,15 +10,25 @@ export class ShiftStore {
     employees: EmployeeEntity[] = [];
     shiftEmployees: EmployeeEntity[];
     shift: any[];
+    shiftList: ShiftEntity[];
+
+    isShiftSelectOpen = false;
+
     private rootStore: RootStore;
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
 
         makeObservable(this, {
+            isShiftSelectOpen: observable,
+            setShiftSelectOpen: action,
+
             employees: observable,
             shiftEmployees: observable,
+            shiftList: observable,
 
+            getShiftList: action,
+            getShiftForDateTime: action,
             addToShift: action,
             removeFromShift: action,
             clearShift: action,
@@ -33,6 +43,28 @@ export class ShiftStore {
         this.employees = [...rootStore.employeeStore.employees];
 
         this.shiftEmployees = [];
+    }
+
+    setShiftSelectOpen(open: boolean): void {
+        this.isShiftSelectOpen = open;
+    }
+
+    getShiftForDateTime(date: any, time: any): ShiftEntity {
+        return this.shiftList?.find((shift) => shift.date === date && shift.time == time);
+    }
+
+    getShiftsForDate(date: any): ShiftEntity[] {
+        return this.shiftList?.filter((shift) => shift.date === date);
+    }
+
+    async getShiftList(companyId: number): Promise<void> {
+        const shifts = await getShiftListForCompany(companyId);
+        console.log(shifts);
+        if (shifts) {
+            runInAction(() => {
+                this.shiftList = shifts;
+            });
+        }
     }
 
     addToShift(employee: EmployeeEntity, sourceIndex?: number, destinationIndex?: number): void {
