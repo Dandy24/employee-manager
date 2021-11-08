@@ -13,6 +13,16 @@ export async function getEmployeeList(): Promise<EmployeeEntity[]> {
     }
 }
 
+export async function getEmployeeListForCompany(companyId: number): Promise<EmployeeEntity[]> {
+    const response = await fetch(`http://localhost:8000/api/employee-list/${companyId}`);
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error('Unable to load list of employees');
+        return Promise.reject(error);
+    }
+}
+
 //Employee detail
 
 export async function createEmployee(employee: EmployeeDto): Promise<EmployeeEntity> {

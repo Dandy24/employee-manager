@@ -5,6 +5,9 @@ import { RootStore } from '../stores/root-store';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { EmpTable } from './tables/employee-table';
 import { ShiftTable } from './tables/shift-table';
+import { useParams } from 'react-router-dom';
+import { parse } from '@babel/core';
+import { toJS } from 'mobx';
 
 interface ShiftManagerPageProps {
     rootStore: RootStore;
@@ -12,13 +15,20 @@ interface ShiftManagerPageProps {
 
 export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
     (props: ShiftManagerPageProps): JSX.Element => {
+        const { shiftId } = useParams<{ shiftId: string }>();
         const { rootStore } = props;
 
         rootStore.setActivePage('shift-manager');
 
         useEffect(() => {
             (async () => {
-                await rootStore.employeeStore.fetchAllEmployees();
+                console.log(toJS(rootStore.shiftStore.shiftList));
+                console.log(parseInt(shiftId));
+                const shift = rootStore.shiftStore.shiftList.find((shift) => shift.id === parseInt(shiftId));
+                rootStore.shiftStore.setShift(shift);
+                // @ts-ignore
+                await rootStore.employeeStore.fetchAllEmployees(shift.company);
+                console.log(rootStore.employeeStore.employees);
                 rootStore.shiftStore.setEmployees(rootStore.employeeStore.employees);
             })();
         }, []);
@@ -66,6 +76,8 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                 }
             }
         };
+
+        // console.log(rootStore.shiftStore.shift);
 
         return (
             <>

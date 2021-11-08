@@ -84,6 +84,21 @@ def employeeList(request):
 
     return Response(serializer.data)
 
+@api_view(['GET'])
+def employeeListForCompany(request, pk):
+    employees = Employee.objects.filter(company_id__exact=pk)
+    serializer = EmployeeSerializer(employees, many=True)
+
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def employeeListForShift(request, pk):
+    shift = Shift.objects.get(id=pk)
+    # employees = Employee.objects.select_related()
+    employees = shift.employees
+    serializer = EmployeeSerializer(employees, many=True)
+
+    return Response(serializer.data)
 
 @swagger_auto_schema(methods=['post'], request_body=EmployeeSerializer)
 @api_view(['POST'])
@@ -137,6 +152,13 @@ def shiftList(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def shiftDetail(request, pk):
+    shift = Shift.objects.get(id=pk)
+    serializer = ShiftSerializer(shift, many=False)
+
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def shiftListForCompany(request, companyID):
     shift = Shift.objects.filter(company_id__exact=companyID)
     serializer = ShiftSerializer(shift, many=True)
@@ -163,4 +185,3 @@ def shiftCreate(request):
     else:
         print(serializer.errors)
         raise ValueError
-

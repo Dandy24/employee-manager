@@ -9,7 +9,7 @@ import moment from 'moment';
 export class ShiftStore {
     employees: EmployeeEntity[] = [];
     shiftEmployees: EmployeeEntity[];
-    shift: any[];
+    shift: ShiftEntity;
     shiftList: ShiftEntity[];
 
     isShiftSelectOpen = false;
@@ -27,7 +27,7 @@ export class ShiftStore {
             shiftEmployees: observable,
             shiftList: observable,
 
-            getShiftList: action,
+            loadShiftList: action,
             getShiftForDateTime: action,
             addToShift: action,
             removeFromShift: action,
@@ -49,6 +49,14 @@ export class ShiftStore {
         this.isShiftSelectOpen = open;
     }
 
+    setShift(shift: ShiftEntity): void {
+        this.shift = shift;
+    }
+
+    loadShift(shiftId: number): void {
+        // this.shift = this.shiftList.find((shift) => shift.id === shiftId);
+    }
+
     getShiftForDateTime(date: any, time: any): ShiftEntity {
         return this.shiftList?.find((shift) => shift.date === date && shift.time == time);
     }
@@ -57,9 +65,9 @@ export class ShiftStore {
         return this.shiftList?.filter((shift) => shift.date === date);
     }
 
-    async getShiftList(companyId: number): Promise<void> {
+    async loadShiftList(companyId: number): Promise<void> {
         const shifts = await getShiftListForCompany(companyId);
-        console.log(shifts);
+        // console.log(shifts);
         if (shifts) {
             runInAction(() => {
                 this.shiftList = shifts;
@@ -112,7 +120,7 @@ export class ShiftStore {
 
     addEmployee(employee: EmployeeEntity): void {
         this.employees.push(employee);
-        console.log(this.employees);
+        // console.log(this.employees);
     }
 
     removeEmployee(index: number): void {

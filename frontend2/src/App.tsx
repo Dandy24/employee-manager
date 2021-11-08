@@ -43,6 +43,10 @@ const App: React.FC = observer(() => {
                             <ShiftCalendarPage rootStore={rootStore}></ShiftCalendarPage>
                         </Route>
 
+                        <Route path="/shift-manager/:shiftId">
+                            <ShiftManagerPage rootStore={rootStore}></ShiftManagerPage>
+                        </Route>
+
                         <Route path="/shift-manager">
                             <ShiftManagerPage rootStore={rootStore}></ShiftManagerPage>
                         </Route>

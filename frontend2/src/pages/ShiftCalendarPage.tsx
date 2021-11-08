@@ -12,10 +12,10 @@ export interface ShiftCalendarPageProps {
 export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((props: ShiftCalendarPageProps) => {
     const { companyId } = useParams<{ companyId: string }>();
     const { rootStore } = props;
-    console.log(companyId);
+    //console.log(companyId);
 
     useEffect(() => {
-        rootStore.shiftStore.getShiftList(parseInt(companyId));
+        rootStore.shiftStore.loadShiftList(parseInt(companyId));
     }, []);
 
     const dateCellRender = (value) => {
@@ -35,7 +35,7 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
 
     const selectShiftHandler = (value) => {
         rootStore.shiftStore.setShiftSelectOpen(true);
-        console.log(value);
+        // console.log(value);
     };
 
     return (
@@ -56,7 +56,7 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                     dataSource={rootStore.shiftStore.shiftList}
                     renderItem={(item) => (
                         <List.Item>
-                            <Link to={`/shift-calendar/${item.id}`}>{item.time}</Link>
+                            <Link to={`/shift-manager/${item.id}`}>{item.time}</Link>
                         </List.Item>
                     )}
                 />
