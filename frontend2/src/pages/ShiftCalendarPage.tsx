@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react-lite';
 import { Link, useParams } from 'react-router-dom';
-import { Badge, Calendar, List, Modal } from 'antd';
+import { Badge, Button, Calendar, List, Modal, Space } from 'antd';
 import React, { useEffect } from 'react';
 import { RootStore } from '../stores/root-store';
 import moment from 'moment';
 import { ShiftTypeEnum } from '../models/enums/shift-type-enum';
-
+import { PlusOutlined } from '@ant-design/icons';
 export interface ShiftCalendarPageProps {
     rootStore: RootStore;
 }
@@ -18,18 +18,33 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
         rootStore.shiftStore.loadShiftList(parseInt(companyId));
     }, []);
 
-    const dateCellRender = (value) => {
+    const dateCellRender = (value: moment.Moment) => {
         const date = moment(value).format('YYYY-MM-DD');
         const todayShift = rootStore.shiftStore.getShiftsForDate(date);
         return (
-            <ul style={{ listStyle: 'none' }} onDoubleClick={selectShiftHandler}>
-                {todayShift?.map((shift) => (
-                    <li key={`shift-${shift.date}-${shift.time}`}>
-                        <Badge status={'error'} text={shift.companyID} />
-                        {shift.time}
-                    </li>
-                ))}
-            </ul>
+            <div className="ant-picker-cell-inner ant-picker-calendar-date" onDoubleClick={selectShiftHandler}>
+                <div className="ant-picker-calendar-date-value">26</div>
+                <div className="ant-picker-calendar-date-content">
+                    <ul style={{ listStyle: 'none' }}>
+                        {todayShift?.map((shift) => (
+                            <li key={`shift-${shift.date}-${shift.time}`}>
+                                <Badge status={'error'} text={shift.companyID} />
+                                {shift.time}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+            // <div onDoubleClick={selectShiftHandler} style={{ height: '82.5%', width: '100%' }}>
+            //     <ul style={{ listStyle: 'none' }}>
+            //         {todayShift?.map((shift) => (
+            //             <li key={`shift-${shift.date}-${shift.time}`}>
+            //                 <Badge status={'error'} text={shift.companyID} />
+            //                 {shift.time}
+            //             </li>
+            //         ))}
+            //     </ul>
+            // </div>
         );
     };
 
@@ -37,13 +52,35 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
         rootStore.shiftStore.setShiftSelectOpen(true);
     };
 
+    const handleNewShift = (e) => {
+        // console.log(rootStore.calendarStore.selectedDate);
+    };
+
+    const selectDateHandler = (date: moment.Moment) => {
+        rootStore.calendarStore.setSelectedDate(date);
+    };
+
     return (
         <>
-            <Calendar dateCellRender={dateCellRender} />
+            <Calendar
+                // dateCellRender={dateCellRender}
+                dateFullCellRender={dateCellRender}
+                onSelect={selectDateHandler}
+            />
             <Modal
                 visible={rootStore.shiftStore.isShiftSelectOpen}
-                title="Vyberte druh směny"
+                title={`Seznam smen pro ${rootStore.calendarStore.formattedDate}`}
                 centered
+                footer={
+                    <Space>
+                        <Button icon={<PlusOutlined />} type="primary" size="large" onClick={handleNewShift}>
+                            Pridat smenu
+                        </Button>
+                        <Button size="large" onClick={() => rootStore.shiftStore.setShiftSelectOpen(false)}>
+                            Zavrit
+                        </Button>
+                    </Space>
+                }
                 onOk={() => rootStore.shiftStore.setShiftSelectOpen(false)}
                 onCancel={() => rootStore.shiftStore.setShiftSelectOpen(false)}
             >

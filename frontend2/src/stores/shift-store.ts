@@ -30,7 +30,7 @@ export class ShiftStore {
 
             loadShiftList: action,
             getShiftById: action,
-            getShiftForDateTime: action,
+            // getShiftForDateTime: action,
             addToShift: action,
             removeFromShift: action,
             clearShift: action,
@@ -55,11 +55,11 @@ export class ShiftStore {
         this.shift = this.shiftList.find((shift) => shift.id === shiftId);
     }
 
-    getShiftForDateTime(date: any, time: any): ShiftEntity {
-        return this.shiftList?.find((shift) => shift.date === date && shift.time == time);
-    }
+    // getShiftForDateTime(date: string, time: any): ShiftEntity {
+    //     return this.shiftList?.find((shift) => shift.date === date && shift.time == time);
+    // }
 
-    getShiftsForDate(date: any): ShiftEntity[] {
+    getShiftsForDate(date: string): ShiftEntity[] {
         return this.shiftList?.filter((shift) => shift.date === date);
     }
 
