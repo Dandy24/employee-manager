@@ -1,5 +1,5 @@
 import { RootStore } from './root-store';
-import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
+import { action, makeObservable, observable, runInAction, toJS } from 'mobx';
 import { EmployeeEntity } from '../models/entities/employee-entity';
 import { createShift, getEmployeeListForShift, getShiftListForCompany, updateShift } from '../api/apiCalls';
 import { ShiftEntity } from '../models/entities/shift-entity';
@@ -8,7 +8,7 @@ import moment from 'moment';
 import { ShiftTypeEnum } from '../models/enums/shift-type-enum';
 
 export class ShiftStore {
-    employees: EmployeeEntity[] = [];
+    availableEmployees: EmployeeEntity[] = [];
     shiftEmployees: EmployeeEntity[];
     shift: ShiftEntity;
     shiftList: ShiftEntity[];
@@ -24,7 +24,7 @@ export class ShiftStore {
             isShiftSelectOpen: observable,
             setShiftSelectOpen: action,
 
-            employees: observable,
+            availableEmployees: observable,
             shiftEmployees: observable,
             shiftList: observable,
 
@@ -42,7 +42,7 @@ export class ShiftStore {
             removeEmployee: action,
         });
 
-        this.employees = [...rootStore.employeeStore.employees];
+        //this.availableEmployees = [...rootStore.employeeStore.employees];
 
         this.shiftEmployees = [];
     }
@@ -51,12 +51,8 @@ export class ShiftStore {
         this.isShiftSelectOpen = open;
     }
 
-    setShift(shift: ShiftEntity): void {
-        this.shift = shift;
-    }
-
-    loadShift(shiftId: number): void {
-        // this.shift = this.shiftList.find((shift) => shift.id === shiftId);
+    setShift(shiftId: number): void {
+        this.shift = this.shiftList.find((shift) => shift.id === shiftId);
     }
 
     getShiftForDateTime(date: any, time: any): ShiftEntity {
@@ -109,13 +105,12 @@ export class ShiftStore {
     }
 
     async saveShift(updatedShift: ShiftEntity): Promise<void> {
-        await this.rootStore.companyStore.fetchAllCompanies(); //TODO vyhodit to idealne a to radeji zkusit loadnout v useEffectu
+        // await this.rootStore.companyStore.fetchAllCompanies(); //TODO vyhodit to idealne a to radeji zkusit loadnout v useEffectu
         if (this.shift.id) {
-            // console.log(updatedShift);
-            // console.log(this.shiftEmployees);
             const employeeIDs = this.shiftEmployees.map((emp) => emp.id);
             const shift: ShiftDto = { ...updatedShift, employeeIDs };
             console.log(shift);
+            // await updateShift(this.shift.id, updatedShift);
             await updateShift(this.shift.id, updatedShift);
         } else {
             const shift = new ShiftDto();
@@ -128,28 +123,19 @@ export class ShiftStore {
             await createShift(shift);
         }
 
-        // const shift = new ShiftDto();
-        // shift.time = ShiftTypeEnum.Rano;
-        // shift.date = moment().format('YYYY-MM-DD');
-        // //shift.companyID = toJS(this.rootStore.companyStore.companies.find((comp) => comp.id === 3).id);
-        // shift.companyID = toJS(this.shift.companyID);
-        // // shift.employeeIDs = toJS(this.shiftEmployees.map((shift) => shift.id));
-        // shift.employeeIDs = this.shift.employeeIDs;
-        // await createShift(shift);
         this.clearShift(); //TODO trigger this only if createShift was successfull (Exception wasnt thrown)
     }
 
     setEmployees(employees: EmployeeEntity[]): void {
-        this.employees = employees;
+        this.availableEmployees = employees;
     }
 
     addEmployee(employee: EmployeeEntity): void {
-        this.employees.push(employee);
-        // console.log(this.employees);
+        this.availableEmployees.push(employee);
     }
 
     removeEmployee(index: number): void {
-        this.employees.splice(index, 1);
+        this.availableEmployees.splice(index, 1);
     }
 
     async loadShiftEmployees(shiftId: number): Promise<void> {
@@ -157,5 +143,10 @@ export class ShiftStore {
         runInAction(() => {
             this.shiftEmployees = loadedEmployees;
         });
+    }
+
+    async loadAvailableEmployees(): Promise<void> {
+        await this.rootStore.employeeStore.fetchAllEmployees(this.shift.companyID);
+        this.setEmployees([...this.rootStore.employeeStore.employees]);
     }
 }

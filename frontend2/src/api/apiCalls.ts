@@ -133,7 +133,7 @@ export function deleteCompany(id: number): Promise<Response> {
     });
 }
 
-export async function createShift(shift: any): Promise<any> {
+export async function createShift(shift: ShiftDto): Promise<ShiftEntity> {
     console.log(shift);
     const response = await fetch(`http://localhost:8000/api/shift-create`, {
         method: 'POST',
@@ -166,17 +166,7 @@ export async function updateShift(shiftID: number, updatedShift: ShiftDto): Prom
     }
 }
 
-// export async function getShiftListById(shiftId: number): Promise<EmployeeEntity[]> {
-//     const response = await fetch(`http://localhost:8000/api/employee-list/${companyId}`);
-//     if (response.ok) {
-//         return await response.json();
-//     } else {
-//         const error = new Error('Unable to load list of employees');
-//         return Promise.reject(error);
-//     }
-// }
-
-export async function getShiftListForCompany(companyId: number): Promise<any> {
+export async function getShiftListForCompany(companyId: number): Promise<ShiftEntity[]> {
     const response = await fetch(`http://localhost:8000/api/shift-list-company/${companyId}`);
     if (response.ok) {
         return await response.json();
