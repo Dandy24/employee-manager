@@ -42,7 +42,6 @@ export class EmployeeStore {
             this.employees = [];
         });
         if (companyId) {
-            console.log('pozoooooooor');
             await getEmployeeListForCompany(companyId).then((data) =>
                 runInAction(() => {
                     this.employees = data;

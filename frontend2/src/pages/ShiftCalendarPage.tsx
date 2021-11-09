@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite';
 import { Link, useParams } from 'react-router-dom';
-import { Badge, Button, Calendar, List, Modal, Typography } from 'antd';
+import { Badge, Calendar, List, Modal } from 'antd';
 import React, { useEffect } from 'react';
 import { RootStore } from '../stores/root-store';
 import moment from 'moment';
+import { ShiftTypeEnum } from '../models/enums/shift-type-enum';
 
 export interface ShiftCalendarPageProps {
     rootStore: RootStore;
@@ -12,7 +13,6 @@ export interface ShiftCalendarPageProps {
 export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((props: ShiftCalendarPageProps) => {
     const { companyId } = useParams<{ companyId: string }>();
     const { rootStore } = props;
-    //console.log(companyId);
 
     useEffect(() => {
         rootStore.shiftStore.loadShiftList(parseInt(companyId));
@@ -35,7 +35,6 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
 
     const selectShiftHandler = (value) => {
         rootStore.shiftStore.setShiftSelectOpen(true);
-        // console.log(value);
     };
 
     return (
@@ -43,7 +42,7 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
             <Calendar dateCellRender={dateCellRender} />
             <Modal
                 visible={rootStore.shiftStore.isShiftSelectOpen}
-                title="Vertically centered modal dialog"
+                title="Vyberte druh směny"
                 centered
                 onOk={() => rootStore.shiftStore.setShiftSelectOpen(false)}
                 onCancel={() => rootStore.shiftStore.setShiftSelectOpen(false)}
@@ -52,7 +51,6 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                     // header={<div>Header</div>}
                     // footer={<div>Footer</div>}
                     // bordered
-                    // dataSource={rootStore.shiftStore.shiftList}
                     dataSource={rootStore.shiftStore.shiftList}
                     renderItem={(item) => (
                         <List.Item>

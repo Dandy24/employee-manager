@@ -8,6 +8,7 @@ import { ShiftTable } from './tables/shift-table';
 import { useParams } from 'react-router-dom';
 import { parse } from '@babel/core';
 import { toJS } from 'mobx';
+import { getEmployeeListForShift } from '../api/apiCalls';
 
 interface ShiftManagerPageProps {
     rootStore: RootStore;
@@ -22,19 +23,17 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
 
         useEffect(() => {
             (async () => {
-                console.log(toJS(rootStore.shiftStore.shiftList));
-                console.log(parseInt(shiftId));
                 const shift = rootStore.shiftStore.shiftList.find((shift) => shift.id === parseInt(shiftId));
                 rootStore.shiftStore.setShift(shift);
-                // @ts-ignore
-                await rootStore.employeeStore.fetchAllEmployees(shift.company);
-                console.log(rootStore.employeeStore.employees);
+                await rootStore.employeeStore.fetchAllEmployees(shift.companyID);
+                await rootStore.shiftStore.loadShiftEmployees(parseInt(shiftId));
                 rootStore.shiftStore.setEmployees(rootStore.employeeStore.employees);
             })();
         }, []);
 
         const saveShift = async () => {
-            await rootStore.shiftStore.saveShift();
+            //await rootStore.shiftStore.saveShift(rootStore.shiftStore.getShiftById(parseInt(shiftId)));
+            await rootStore.shiftStore.saveShift(rootStore.shiftStore.shift);
         };
 
         const dragEndHandler = (event: any) => {
@@ -76,8 +75,6 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                 }
             }
         };
-
-        // console.log(rootStore.shiftStore.shift);
 
         return (
             <>

@@ -24,7 +24,7 @@ class ShiftSerializer(serializers.ModelSerializer):
     ## TODO ????????????????
     class Meta:
         model = Shift
-        fields = ('id', 'time', 'date', 'employees', 'company')
+        fields = ('id', 'time', 'date', 'employeeIDs', 'companyID')
 
     # def create(self, validated_data):
     #     employees_data = validated_data.pop('employees')

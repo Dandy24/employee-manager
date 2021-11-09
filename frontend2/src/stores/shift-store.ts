@@ -1,10 +1,11 @@
 import { RootStore } from './root-store';
 import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
 import { EmployeeEntity } from '../models/entities/employee-entity';
-import { createShift, getShiftListForCompany } from '../api/apiCalls';
+import { createShift, getEmployeeListForShift, getShiftListForCompany, updateShift } from '../api/apiCalls';
 import { ShiftEntity } from '../models/entities/shift-entity';
 import { ShiftDto } from '../models/dtos/shift-dto';
 import moment from 'moment';
+import { ShiftTypeEnum } from '../models/enums/shift-type-enum';
 
 export class ShiftStore {
     employees: EmployeeEntity[] = [];
@@ -28,6 +29,7 @@ export class ShiftStore {
             shiftList: observable,
 
             loadShiftList: action,
+            getShiftById: action,
             getShiftForDateTime: action,
             addToShift: action,
             removeFromShift: action,
@@ -65,9 +67,12 @@ export class ShiftStore {
         return this.shiftList?.filter((shift) => shift.date === date);
     }
 
+    getShiftById(shiftId: number): ShiftEntity {
+        return this.shiftList.find((shift) => shift.id === shiftId);
+    }
+
     async loadShiftList(companyId: number): Promise<void> {
         const shifts = await getShiftListForCompany(companyId);
-        // console.log(shifts);
         if (shifts) {
             runInAction(() => {
                 this.shiftList = shifts;
@@ -103,14 +108,34 @@ export class ShiftStore {
         this.shiftEmployees = shift;
     }
 
-    async saveShift(): Promise<void> {
+    async saveShift(updatedShift: ShiftEntity): Promise<void> {
         await this.rootStore.companyStore.fetchAllCompanies(); //TODO vyhodit to idealne a to radeji zkusit loadnout v useEffectu
-        const shift = new ShiftDto();
-        shift.time = 'ranni';
-        shift.date = moment().format('YYYY-MM-DD');
-        shift.companyID = toJS(this.rootStore.companyStore.companies.find((comp) => comp.id === 3).id);
-        shift.employeeIDs = toJS(this.shiftEmployees.map((shift) => shift.id));
-        await createShift(shift);
+        if (this.shift.id) {
+            // console.log(updatedShift);
+            // console.log(this.shiftEmployees);
+            const employeeIDs = this.shiftEmployees.map((emp) => emp.id);
+            const shift: ShiftDto = { ...updatedShift, employeeIDs };
+            console.log(shift);
+            await updateShift(this.shift.id, updatedShift);
+        } else {
+            const shift = new ShiftDto();
+            shift.time = ShiftTypeEnum.Rano;
+            shift.date = moment().format('YYYY-MM-DD');
+            //shift.companyID = toJS(this.rootStore.companyStore.companies.find((comp) => comp.id === 3).id);
+            shift.companyID = toJS(this.shift.companyID);
+            // shift.employeeIDs = toJS(this.shiftEmployees.map((shift) => shift.id));
+            shift.employeeIDs = this.shift.employeeIDs;
+            await createShift(shift);
+        }
+
+        // const shift = new ShiftDto();
+        // shift.time = ShiftTypeEnum.Rano;
+        // shift.date = moment().format('YYYY-MM-DD');
+        // //shift.companyID = toJS(this.rootStore.companyStore.companies.find((comp) => comp.id === 3).id);
+        // shift.companyID = toJS(this.shift.companyID);
+        // // shift.employeeIDs = toJS(this.shiftEmployees.map((shift) => shift.id));
+        // shift.employeeIDs = this.shift.employeeIDs;
+        // await createShift(shift);
         this.clearShift(); //TODO trigger this only if createShift was successfull (Exception wasnt thrown)
     }
 
@@ -125,5 +150,12 @@ export class ShiftStore {
 
     removeEmployee(index: number): void {
         this.employees.splice(index, 1);
+    }
+
+    async loadShiftEmployees(shiftId: number): Promise<void> {
+        const loadedEmployees = await getEmployeeListForShift(shiftId);
+        runInAction(() => {
+            this.shiftEmployees = loadedEmployees;
+        });
     }
 }

@@ -2,6 +2,8 @@ import { CompanyEntity } from '../models/entities/company-entity';
 import { CompanyDto } from '../models/dtos/company-dto';
 import { EmployeeEntity } from '../models/entities/employee-entity';
 import { EmployeeDto } from '../models/dtos/employee-dto';
+import { ShiftDto } from '../models/dtos/shift-dto';
+import { ShiftEntity } from '../models/entities/shift-entity';
 
 export async function getEmployeeList(): Promise<EmployeeEntity[]> {
     const response = await fetch(`http://localhost:8000/api/employee-list`);
@@ -15,6 +17,16 @@ export async function getEmployeeList(): Promise<EmployeeEntity[]> {
 
 export async function getEmployeeListForCompany(companyId: number): Promise<EmployeeEntity[]> {
     const response = await fetch(`http://localhost:8000/api/employee-list/${companyId}`);
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error('Unable to load list of employees');
+        return Promise.reject(error);
+    }
+}
+
+export async function getEmployeeListForShift(shiftId: number): Promise<EmployeeEntity[]> {
+    const response = await fetch(`http://localhost:8000/api/employee-list-shift/${shiftId}`);
     if (response.ok) {
         return await response.json();
     } else {
@@ -137,6 +149,32 @@ export async function createShift(shift: any): Promise<any> {
         return Promise.reject(error);
     }
 }
+
+export async function updateShift(shiftID: number, updatedShift: ShiftDto): Promise<ShiftEntity> {
+    const response = await fetch(`http://localhost:8000/api/shift-update/${shiftID}`, {
+        method: 'PUT',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(updatedShift),
+    });
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error('Unable to update shift');
+        return Promise.reject(error);
+    }
+}
+
+// export async function getShiftListById(shiftId: number): Promise<EmployeeEntity[]> {
+//     const response = await fetch(`http://localhost:8000/api/employee-list/${companyId}`);
+//     if (response.ok) {
+//         return await response.json();
+//     } else {
+//         const error = new Error('Unable to load list of employees');
+//         return Promise.reject(error);
+//     }
+// }
 
 export async function getShiftListForCompany(companyId: number): Promise<any> {
     const response = await fetch(`http://localhost:8000/api/shift-list-company/${companyId}`);

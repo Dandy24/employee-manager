@@ -84,6 +84,7 @@ def employeeList(request):
 
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 def employeeListForCompany(request, pk):
     employees = Employee.objects.filter(company_id__exact=pk)
@@ -91,14 +92,16 @@ def employeeListForCompany(request, pk):
 
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 def employeeListForShift(request, pk):
     shift = Shift.objects.get(id=pk)
     # employees = Employee.objects.select_related()
-    employees = shift.employees
+    employees = shift.employeeIDs
     serializer = EmployeeSerializer(employees, many=True)
 
     return Response(serializer.data)
+
 
 @swagger_auto_schema(methods=['post'], request_body=EmployeeSerializer)
 @api_view(['POST'])
@@ -151,6 +154,7 @@ def shiftList(request):
 
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 def shiftDetail(request, pk):
     shift = Shift.objects.get(id=pk)
@@ -158,12 +162,14 @@ def shiftDetail(request, pk):
 
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 def shiftListForCompany(request, companyID):
-    shift = Shift.objects.filter(company_id__exact=companyID)
+    shift = Shift.objects.filter(companyID_id__exact=companyID)
     serializer = ShiftSerializer(shift, many=True)
 
     return Response(serializer.data)
+
 
 ## TODO
 @api_view(['GET'])
@@ -172,6 +178,7 @@ def shiftListForEmployee(request, employeeID):
     serializer = ShiftSerializer(shift, many=True)
 
     return Response(serializer.data)
+
 
 @swagger_auto_schema(methods=['post'], request_body=ShiftSerializer)
 @api_view(['POST'])
@@ -185,3 +192,19 @@ def shiftCreate(request):
     else:
         print(serializer.errors)
         raise ValueError
+
+
+@swagger_auto_schema(methods=['put'], request_body=ShiftSerializer)
+@api_view(['PUT'])
+def shiftUpdate(request, pk):
+    shift = Shift.objects.get(id=pk)
+    serializer = EmployeeSerializer(instance=shift, data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+    else:
+        print(serializer.errors)
+        print(serializer.data)
+        raise ValueError
+
+    return Response(serializer.data)

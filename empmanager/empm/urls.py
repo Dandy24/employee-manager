@@ -32,7 +32,7 @@ urlpatterns = [
 
     path('employee-list', views.employeeList, name='employee-list'),
     path('employee-list/<str:pk>', views.employeeListForCompany, name='employee-list-company'),
-    path('employee-list/<str:pk>', views.employeeListForShift, name='employee-list-shift'),
+    path('employee-list-shift/<str:pk>', views.employeeListForShift, name='employee-list-shift'),
     path('employee-detail/<str:pk>', views.employeeDetail, name='employee-detail'),
     path('employee-create', views.employeeCreate, name='employee-create'),
     path('employee-delete/<str:pk>', views.employeeDelete, name='employee-delete'),
@@ -43,6 +43,7 @@ urlpatterns = [
     path('shift-list-company/<str:companyID>', views.shiftListForCompany, name='shift-list-company'),
     path('shift-list-employee/<str:employeeID>', views.shiftListForEmployee, name='shift-list-employee'),
     path('shift-create', views.shiftCreate, name='shift-create'),
+    path('shift-update/<str:pk>', views.shiftUpdate, name='shift-update'),
 
     #path('monthly-output-list/<str:pk>', views.MonthlyOutputByEmployeeID, name='monthly-output-list'),
     #path('monthly-output-create', views.MonthlyOutputCreate, name='monthly-output-create'),
