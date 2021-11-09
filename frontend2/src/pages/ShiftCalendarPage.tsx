@@ -1,10 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import { Link, useParams } from 'react-router-dom';
-import { Badge, Button, Calendar, List, Modal, Space } from 'antd';
+import { Badge, Button, Calendar, Empty, List, Modal, Space } from 'antd';
 import React, { useEffect } from 'react';
 import { RootStore } from '../stores/root-store';
 import moment from 'moment';
-import { ShiftTypeEnum } from '../models/enums/shift-type-enum';
 import { PlusOutlined } from '@ant-design/icons';
 export interface ShiftCalendarPageProps {
     rootStore: RootStore;
@@ -20,10 +19,11 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
 
     const dateCellRender = (value: moment.Moment) => {
         const date = moment(value).format('YYYY-MM-DD');
+        const day = moment(value).format('DD');
         const todayShift = rootStore.shiftStore.getShiftsForDate(date);
         return (
             <div className="ant-picker-cell-inner ant-picker-calendar-date" onDoubleClick={selectShiftHandler}>
-                <div className="ant-picker-calendar-date-value">26</div>
+                <div className="ant-picker-calendar-date-value">{day}</div>
                 <div className="ant-picker-calendar-date-content">
                     <ul style={{ listStyle: 'none' }}>
                         {todayShift?.map((shift) => (
@@ -35,20 +35,11 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                     </ul>
                 </div>
             </div>
-            // <div onDoubleClick={selectShiftHandler} style={{ height: '82.5%', width: '100%' }}>
-            //     <ul style={{ listStyle: 'none' }}>
-            //         {todayShift?.map((shift) => (
-            //             <li key={`shift-${shift.date}-${shift.time}`}>
-            //                 <Badge status={'error'} text={shift.companyID} />
-            //                 {shift.time}
-            //             </li>
-            //         ))}
-            //     </ul>
-            // </div>
         );
     };
 
     const selectShiftHandler = (value) => {
+        // rootStore.calendarStore.setSelectedDate(value);
         rootStore.shiftStore.setShiftSelectOpen(true);
     };
 
@@ -62,11 +53,7 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
 
     return (
         <>
-            <Calendar
-                // dateCellRender={dateCellRender}
-                dateFullCellRender={dateCellRender}
-                onSelect={selectDateHandler}
-            />
+            <Calendar dateFullCellRender={dateCellRender} onSelect={selectDateHandler} />
             <Modal
                 visible={rootStore.shiftStore.isShiftSelectOpen}
                 title={`Seznam smen pro ${rootStore.calendarStore.formattedDate}`}
@@ -85,10 +72,10 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                 onCancel={() => rootStore.shiftStore.setShiftSelectOpen(false)}
             >
                 <List
-                    // header={<div>Header</div>}
-                    // footer={<div>Footer</div>}
-                    // bordered
-                    dataSource={rootStore.shiftStore.shiftList}
+                    locale={{
+                        emptyText: <Empty description="Replace this text" image="https://joeschmoe.io/api/v1/random" />,
+                    }}
+                    dataSource={rootStore.shiftStore.getShiftsForDate(rootStore.calendarStore.stringDate)}
                     renderItem={(item) => (
                         <List.Item>
                             <Link to={`/shift-manager/${item.id}`}>{item.time}</Link>

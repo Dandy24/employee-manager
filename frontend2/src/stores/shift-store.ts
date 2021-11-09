@@ -12,6 +12,7 @@ export class ShiftStore {
     shiftEmployees: EmployeeEntity[];
     shift: ShiftEntity;
     shiftList: ShiftEntity[];
+    shiftListForDay: ShiftEntity[];
 
     isShiftSelectOpen = false;
 
@@ -27,9 +28,11 @@ export class ShiftStore {
             availableEmployees: observable,
             shiftEmployees: observable,
             shiftList: observable,
+            shiftListForDay: observable,
 
             loadShiftList: action,
             getShiftById: action,
+            getShiftsForDate: action,
             // getShiftForDateTime: action,
             addToShift: action,
             removeFromShift: action,
