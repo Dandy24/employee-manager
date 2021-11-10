@@ -1,3 +1,5 @@
+from copy import copy
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
@@ -198,13 +200,41 @@ def shiftCreate(request):
 @api_view(['PUT'])
 def shiftUpdate(request, pk):
     shift = Shift.objects.get(id=pk)
-    serializer = EmployeeSerializer(instance=shift, data=request.data)
+
+    # print(request.data)
+    requestEmployeeList = request.data['employeeIDs']
+
+    employees = []
+
+    emp = {}
+
+    for employee in requestEmployeeList:
+        emp = Employee.objects.get(id=employee)
+        employees.append(emp)
+        emp = {}
+
+    print(employees)
+
+    serializedShift = copy(request.data)
+
+    print(serializedShift)
+
+    serializedShift['employeeIDs'] = employees
+
+    serializer = EmployeeSerializer(instance=shift, data=serializedShift)
 
     if serializer.is_valid():
         serializer.save()
     else:
         print(serializer.errors)
-        print(serializer.data)
         raise ValueError
 
     return Response(serializer.data)
+
+
+@api_view(['DELETE'])  # ,GET ?
+def shiftDelete(request, pk):
+    shift = Shift.objects.get(id=pk)
+    shift.delete()
+
+    return Response('Shift was deleted.')

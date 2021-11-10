@@ -166,6 +166,15 @@ export async function updateShift(shiftID: number, updatedShift: ShiftDto): Prom
     }
 }
 
+export function deleteShift(shiftId: number): Promise<Response> {
+    return fetch(`http://localhost:8000/api/shift-delete/${shiftId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-type': 'application/json',
+        },
+    });
+}
+
 export async function getShiftListForCompany(companyId: number): Promise<ShiftEntity[]> {
     const response = await fetch(`http://localhost:8000/api/shift-list-company/${companyId}`);
     if (response.ok) {

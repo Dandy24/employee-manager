@@ -1,11 +1,18 @@
 import { RootStore } from './root-store';
 import { action, makeObservable, observable, runInAction, toJS } from 'mobx';
 import { EmployeeEntity } from '../models/entities/employee-entity';
-import { createShift, getEmployeeListForShift, getShiftListForCompany, updateShift } from '../api/apiCalls';
+import {
+    createShift,
+    deleteShift,
+    getEmployeeListForShift,
+    getShiftListForCompany,
+    updateShift,
+} from '../api/apiCalls';
 import { ShiftEntity } from '../models/entities/shift-entity';
 import { ShiftDto } from '../models/dtos/shift-dto';
 import moment from 'moment';
 import { ShiftTypeEnum } from '../models/enums/shift-type-enum';
+import { message } from 'antd';
 
 export class ShiftStore {
     availableEmployees: EmployeeEntity[] = [];
@@ -63,6 +70,7 @@ export class ShiftStore {
     // }
 
     getShiftsForDate(date: string): ShiftEntity[] {
+        this.shiftListForDay = this.shiftList?.filter((shift) => shift.date === date);
         return this.shiftList?.filter((shift) => shift.date === date);
     }
 
@@ -83,14 +91,15 @@ export class ShiftStore {
         // if (this.shiftEmployees.length === 0) {
         this.shiftEmployees.push(employee);
         // } else {
-        //     console.log(sourceIndex, destinationIndex);
-        //     const items = [...this.shiftEmployees];
+
+        // console.log(sourceIndex, destinationIndex);
+        // const items = [...this.shiftEmployees];
         //
-        //     const [reorderedItem] = items.splice(sourceIndex, 1);
-        //     items.splice(destinationIndex, 0, reorderedItem);
+        // const [reorderedItem] = items.splice(destinationIndex, 1);
+        // items.splice(destinationIndex + 1, 0, reorderedItem);
         //
-        //     this.setShiftEmployees(items);
-        // }
+        // this.setShiftEmployees(items);
+        // // }
         //
         // console.log(this.shiftEmployees);
     }
@@ -151,5 +160,15 @@ export class ShiftStore {
     async loadAvailableEmployees(): Promise<void> {
         await this.rootStore.employeeStore.fetchAllEmployees(this.shift.companyID);
         this.setEmployees([...this.rootStore.employeeStore.employees]);
+    }
+
+    async deleteShift(shiftId: number): Promise<void> {
+        try {
+            await deleteShift(shiftId);
+        } catch (e) {
+            message.error('Nepodarilo se smazat smenu');
+        } finally {
+            // this.rootStore.shiftStore.getShiftsForDate(this.rootStore.calendarStore.stringDate);
+        }
     }
 }

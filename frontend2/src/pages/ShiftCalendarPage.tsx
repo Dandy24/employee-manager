@@ -1,10 +1,11 @@
 import { observer } from 'mobx-react-lite';
 import { Link, useParams } from 'react-router-dom';
-import { Badge, Button, Calendar, Empty, List, Modal, Space } from 'antd';
+import { Badge, Button, Calendar, Col, Empty, List, Modal, Row, Space } from 'antd';
 import React, { useEffect } from 'react';
 import { RootStore } from '../stores/root-store';
 import moment from 'moment';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import Title from 'antd/lib/typography/Title';
 export interface ShiftCalendarPageProps {
     rootStore: RootStore;
 }
@@ -15,7 +16,7 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
 
     useEffect(() => {
         rootStore.shiftStore.loadShiftList(parseInt(companyId));
-    }, []);
+    }, [rootStore.shiftStore, rootStore.shiftStore.shiftList]);
 
     const dateCellRender = (value: moment.Moment) => {
         const date = moment(value).format('YYYY-MM-DD');
@@ -51,6 +52,11 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
         rootStore.calendarStore.setSelectedDate(date);
     };
 
+    const handleDelete = async (shiftId: number) => {
+        await rootStore.shiftStore.deleteShift(shiftId);
+        // rootStore.shiftStore.setShiftSelectOpen(true);
+    };
+
     return (
         <>
             <Calendar dateFullCellRender={dateCellRender} onSelect={selectDateHandler} />
@@ -78,7 +84,22 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                     dataSource={rootStore.shiftStore.getShiftsForDate(rootStore.calendarStore.stringDate)}
                     renderItem={(item) => (
                         <List.Item>
-                            <Link to={`/shift-manager/${item.id}`}>{item.time}</Link>
+                            <Row justify="space-between">
+                                <Col span={20} flex="auto">
+                                    <Title level={5}>
+                                        <Link to={`/shift-manager/${item.id}`}>{item.time}</Link>
+                                    </Title>
+                                </Col>
+                                <Col span={4}>
+                                    <Button
+                                        size="large"
+                                        icon={<DeleteOutlined />}
+                                        type="primary"
+                                        danger
+                                        onClick={() => handleDelete(item.id)}
+                                    />
+                                </Col>
+                            </Row>
                         </List.Item>
                     )}
                 />
