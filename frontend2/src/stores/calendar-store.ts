@@ -2,6 +2,8 @@ import { RootStore } from './root-store';
 import { action, computed, makeObservable, observable } from 'mobx';
 import moment from 'moment';
 
+/** TODO REFACTOR !!! **/
+
 export class CalendarStore {
     selectedDate: moment.Moment;
 

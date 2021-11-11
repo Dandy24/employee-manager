@@ -1,5 +1,5 @@
 export enum ShiftTypeEnum {
-    Rano = 'rano',
+    Rano = 'ranni',
     Odpoledne = 'odpoledne',
     Vecer = 'vecer',
 }

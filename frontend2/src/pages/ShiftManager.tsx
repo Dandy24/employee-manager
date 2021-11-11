@@ -11,6 +11,8 @@ interface ShiftManagerPageProps {
     rootStore: RootStore;
 }
 
+/** TODO REFACTOR !!! **/
+
 export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
     (props: ShiftManagerPageProps): JSX.Element => {
         const { id } = useParams<{ id: string }>();
@@ -21,18 +23,20 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
 
         useEffect(() => {
             (async () => {
-                // const shift = rootStore.shiftStore.shiftList.find((shift) => shift.id === shiftId);
-                rootStore.shiftStore.setShift(shiftId);
+                if (shiftId) {
+                    rootStore.shiftStore.setShift(shiftId);
+                    await rootStore.shiftStore.loadShiftEmployees(shiftId);
+                }
+
                 await rootStore.shiftStore.loadAvailableEmployees();
-                // await rootStore.employeeStore.fetchAllEmployees(rootStore.shiftStore.shift.companyID);
-                await rootStore.shiftStore.loadShiftEmployees(shiftId);
-                // rootStore.shiftStore.setEmployees(rootStore.employeeStore.employees);
             })();
         }, []);
 
         const saveShift = async () => {
             await rootStore.shiftStore.saveShift(rootStore.shiftStore.shift);
         };
+
+        console.log(rootStore.shiftStore.shift);
 
         const dragEndHandler = (event: any) => {
             console.log(event);

@@ -14,12 +14,15 @@ import moment from 'moment';
 import { ShiftTypeEnum } from '../models/enums/shift-type-enum';
 import { message } from 'antd';
 
+/** TODO REFACTOR !!! **/
+
 export class ShiftStore {
     availableEmployees: EmployeeEntity[] = [];
     shiftEmployees: EmployeeEntity[];
     shift: ShiftEntity;
     shiftList: ShiftEntity[];
     shiftListForDay: ShiftEntity[];
+    isEditOpen = false;
 
     isShiftSelectOpen = false;
 
@@ -31,6 +34,8 @@ export class ShiftStore {
         makeObservable(this, {
             isShiftSelectOpen: observable,
             setShiftSelectOpen: action,
+
+            isEditOpen: observable,
 
             availableEmployees: observable,
             shiftEmployees: observable,
@@ -44,8 +49,11 @@ export class ShiftStore {
             addToShift: action,
             removeFromShift: action,
             clearShift: action,
+            addShift: action,
             saveShift: action,
             setShiftEmployees: action,
+
+            openToAdd: action,
 
             setEmployees: action,
             addEmployee: action,
@@ -125,14 +133,15 @@ export class ShiftStore {
             // await updateShift(this.shift.id, updatedShift);
             await updateShift(this.shift.id, updatedShift);
         } else {
-            const shift = new ShiftDto();
-            shift.time = ShiftTypeEnum.Rano;
-            shift.date = moment().format('YYYY-MM-DD');
-            //shift.companyID = toJS(this.rootStore.companyStore.companies.find((comp) => comp.id === 3).id);
-            shift.companyID = toJS(this.shift.companyID);
-            // shift.employeeIDs = toJS(this.shiftEmployees.map((shift) => shift.id));
-            shift.employeeIDs = this.shift.employeeIDs;
-            await createShift(shift);
+            // const shift = new ShiftDto();
+            // shift.time = ShiftTypeEnum.Rano;
+            // shift.date = moment().format('YYYY-MM-DD');
+            // shift.companyID = toJS(this.shift.companyID);
+            this.shift.employeeIDs = this.shiftEmployees.map((emp) => emp.id);
+            runInAction(() => {
+                this.isEditOpen = false;
+            });
+            await createShift(this.shift);
         }
 
         this.clearShift(); //TODO trigger this only if createShift was successfull (Exception wasnt thrown)
@@ -170,5 +179,16 @@ export class ShiftStore {
         } finally {
             // this.rootStore.shiftStore.getShiftsForDate(this.rootStore.calendarStore.stringDate);
         }
+    }
+
+    openToAdd(): void {
+        this.shift = new ShiftEntity();
+        this.isEditOpen = true;
+    }
+
+    addShift(time: any, companyId: number) {
+        this.shift.time = time;
+        this.shift.date = this.rootStore.calendarStore.stringDate;
+        this.shift.companyID = companyId;
     }
 }
