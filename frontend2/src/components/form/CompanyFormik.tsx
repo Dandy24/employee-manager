@@ -10,15 +10,27 @@ export interface CompanyFormikProps {
     children: React.ReactNode;
 }
 
-export const NewCompanyValidationSchema = yup.object({
-    name: yup.number().typeError('Not a number').required('Missing'),
+export const CompanyValidationSchema = yup.object({
+    name: yup
+        .string()
+        .typeError('Spatne zadane jmeno')
+        .required('Pole musí být vyplněné')
+        .max(50, 'Maximalni povolena delka prekrocena'),
+    phone: yup
+        .string()
+        .typeError('Pole musí být vyplněné')
+        .required('Pole musí být vyplněné')
+        .matches(/^[0-9]+$/, 'Povoleny jsou pouze číslice')
+        .min(12, 'Číslo musí mít 12 číslic')
+        .max(12, 'Číslo musí mít 12 číslic'),
+    address: yup.string().typeError('Spatna adresa').required('Pole musí být vyplněné'),
 });
 
 export const CompanyFormik: React.FC<CompanyFormikProps> = observer((props: CompanyFormikProps): JSX.Element => {
     const { initialValues, onSubmit } = props;
 
     return (
-        <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={NewCompanyValidationSchema}>
+        <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={CompanyValidationSchema}>
             {props.children}
         </Formik>
     );
