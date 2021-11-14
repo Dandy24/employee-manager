@@ -1,4 +1,4 @@
-import { Avatar, Button, Divider, Image, Row } from 'antd';
+import { Avatar, Divider, Image, Row } from 'antd';
 import React from 'react';
 import { CompanyEntity } from '../../models/entities/company-entity';
 import Title from 'antd/lib/typography/Title';

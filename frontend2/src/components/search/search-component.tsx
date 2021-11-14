@@ -1,8 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { AutoComplete, Button } from 'antd';
+import { AutoComplete } from 'antd';
 import { SearchableCompanyEntity } from '../../models/entities/searchable-company-entity';
-import { DisconnectOutlined } from '@ant-design/icons';
 import { EmptyResults } from './empty-results';
 import { useRootStore } from '../../stores/root-store-provider';
 
@@ -16,8 +15,6 @@ export const SearchComponent: React.FC<SearchComponentProps> = observer((props: 
     const rootStore = useRootStore();
 
     const searchHandler = async (value, option) => {
-        // rootStore.searchStore.setSelectedCompany(option);
-        // console.log(option);
         await rootStore.companyStore.fetchAllCompanies(option); //TODO make component not call BE fetch on every search. Use and filter already fetched data instead
     };
 
