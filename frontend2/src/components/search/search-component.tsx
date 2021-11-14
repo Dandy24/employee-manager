@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { AutoComplete } from 'antd';
+import { AutoComplete, Input } from 'antd';
 import { SearchableCompanyEntity } from '../../models/entities/searchable-company-entity';
 import { EmptyResults } from './empty-results';
 import { useRootStore } from '../../stores/root-store-provider';
@@ -14,15 +14,25 @@ export const SearchComponent: React.FC<SearchComponentProps> = observer((props: 
 
     const rootStore = useRootStore();
 
-    const searchHandler = async (value, option) => {
-        await rootStore.companyStore.fetchAllCompanies(option); //TODO make component not call BE fetch on every search. Use and filter already fetched data instead
+    const searchHandler = async (value, option?) => {
+        //TODO make component not call BE fetch on every search. Use and filter already fetched data instead (make a copy of array and pass it as options?)
+        await rootStore.companyStore.fetchAllCompanies(value, undefined);
+    };
+
+    const selectHandler = async (value, option) => {
+        //TODO make component not call BE fetch on every search. Use and filter already fetched data instead (make a copy of array and pass it as options?)
+        await rootStore.companyStore.fetchAllCompanies(undefined, option);
+    };
+
+    const resetHandler = async () => {
+        await rootStore.companyStore.fetchAllCompanies();
     };
 
     return (
         <>
             <AutoComplete
                 style={{
-                    width: 400,
+                    width: 600,
                 }}
                 data-testid="search-bar"
                 options={options}
@@ -31,8 +41,12 @@ export const SearchComponent: React.FC<SearchComponentProps> = observer((props: 
                 filterOption={(inputValue, option) =>
                     option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                 }
-                onSelect={searchHandler}
-            />
+                onSelect={selectHandler}
+                allowClear
+                onClear={resetHandler}
+            >
+                <Input.Search size="large" onSearch={searchHandler} enterButton />
+            </AutoComplete>
         </>
     );
 });
