@@ -4,6 +4,7 @@ import { AutoComplete, Input } from 'antd';
 import { SearchableCompanyEntity } from '../../models/entities/searchable-company-entity';
 import { EmptyResults } from './empty-results';
 import { useRootStore } from '../../stores/root-store-provider';
+import { CloseCircleOutlined } from '@ant-design/icons';
 
 export interface SearchComponentProps {
     options: SearchableCompanyEntity[]; // | SearchableEmployeeEntity[];
@@ -37,7 +38,6 @@ export const SearchComponent: React.FC<SearchComponentProps> = observer((props: 
                 data-testid="search-bar"
                 options={options}
                 notFoundContent={<EmptyResults />}
-                placeholder="Vyhledejte firmu"
                 filterOption={(inputValue, option) =>
                     option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                 }
@@ -45,7 +45,13 @@ export const SearchComponent: React.FC<SearchComponentProps> = observer((props: 
                 allowClear
                 onClear={resetHandler}
             >
-                <Input.Search size="large" onSearch={searchHandler} enterButton />
+                <Input.Search
+                    size="large"
+                    placeholder="Vyhledejte firmu"
+                    onSearch={searchHandler}
+                    enterButton
+                    style={{ width: '108%' }}
+                />
             </AutoComplete>
         </>
     );
