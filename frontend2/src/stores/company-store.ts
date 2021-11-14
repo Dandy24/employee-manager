@@ -32,7 +32,7 @@ export class CompanyStore {
         });
     }
 
-    async fetchAllCompanies(filter: SearchableCompanyEntity = null): Promise<void> {
+    async fetchAllCompanies(filter?: string, selected?: SearchableCompanyEntity): Promise<void> {
         runInAction(() => {
             this.loadingCompanies = true;
             this.companies = [];
@@ -42,9 +42,20 @@ export class CompanyStore {
 
         let filteredCompanies;
 
-        if (filter?.company) {
+        if (filter) {
             filteredCompanies = companies.filter(
-                (comp) => comp.name === filter.company.name || comp.address === filter.company.address,
+                (comp) =>
+                    filter.toLowerCase().includes(comp.name.toLowerCase()) ||
+                    comp.name.toLowerCase().includes(filter.toLowerCase()) ||
+                    filter.toLowerCase().includes(comp.address.toLowerCase()) ||
+                    comp.address.toLowerCase().includes(filter.toLowerCase()) ||
+                    filter.includes(comp.phone.toString()),
+            );
+        }
+
+        if (selected?.company) {
+            filteredCompanies = companies.filter(
+                (comp) => comp.name === selected.company.name || comp.address === selected.company.address,
             );
         }
 

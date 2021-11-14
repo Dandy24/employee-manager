@@ -28,7 +28,7 @@ export class SearchStore {
     createSearchableCompanies = (companies: CompanyEntity[]): void => {
         const searchable = companies.map((company, index) => ({
             company,
-            value: company.name,
+            value: `${company.name} | ${company.phone} | ${company.address}`,
             label: SearchResultItem(company, index),
         }));
         this.setSearchableCompanies(searchable);

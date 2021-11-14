@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Modal, Table } from 'antd';
+import { Col, Modal, Row, Table } from 'antd';
 import { CompanyForm } from '../components/form/CompanyForm';
 import { CompanyFormik } from '../components/form/CompanyFormik';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -63,7 +63,11 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
 
     return (
         <>
-            <SearchComponent options={toJS(rootStore.searchStore.searchableCompanies)} />
+            <Row justify="center">
+                <Col>
+                    <SearchComponent options={toJS(rootStore.searchStore.searchableCompanies)} />
+                </Col>
+            </Row>
 
             <Table
                 rowKey="id"

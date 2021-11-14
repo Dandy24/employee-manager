@@ -21,8 +21,9 @@ export const SearchResultItem = (row: CompanyEntity, index: number): JSX.Element
                 }
             />
             <Divider type="vertical" />
-            <Title level={5}>{row.name}</Title>
-            {/*  TODO add some more info  */}
+            <Title level={5}>
+                {row.name} <Divider type={'vertical'} /> {row.phone} <Divider type={'vertical'} /> {row.address}
+            </Title>
         </Row>
     );
 };
