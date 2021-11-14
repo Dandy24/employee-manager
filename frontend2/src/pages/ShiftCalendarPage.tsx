@@ -19,13 +19,17 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
     const { companyId } = useParams<{ companyId: string }>();
     const { rootStore } = props;
 
+    rootStore.calendarStore.setActiveCompanyId(parseInt(companyId));
+
     useEffect(() => {
         rootStore.shiftStore.loadShiftList(parseInt(companyId));
     }, []);
 
-    const selectShiftHandler = (): void => {
+    const selectShiftHandler = (date): void => {
         // rootStore.calendarStore.setSelectedDate(value);
+        rootStore.shiftStore.setShiftsForDate(date);
         rootStore.calendarStore.setShiftSelectOpen(true);
+        console.log(rootStore.shiftStore.shiftListForDay);
     };
 
     const selectDateHandler = (date: moment.Moment) => {
@@ -33,7 +37,8 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
     };
 
     const handleDelete = async (shiftId: number) => {
-        await rootStore.shiftStore.deleteShift(shiftId);
+        await rootStore.shiftStore.deleteShift(shiftId, parseInt(companyId));
+        console.log(rootStore.shiftStore.shiftListForDay);
     };
 
     const getCalendarDateCell = (date: moment.Moment): React.ReactNode => {
@@ -61,7 +66,8 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                                 <Empty description="Replace this text" image="https://joeschmoe.io/api/v1/random" />
                             ),
                         }}
-                        dataSource={rootStore.shiftStore.getShiftsForDate(rootStore.calendarStore.stringDate)}
+                        // dataSource={rootStore.shiftStore.getShiftsForDate(rootStore.calendarStore.stringDate)}
+                        dataSource={rootStore.shiftStore.shiftListForDay}
                         renderItem={(item) => (
                             <CalendarShiftListItemEdit item={item} rootStore={rootStore} handleDelete={handleDelete} />
                         )}

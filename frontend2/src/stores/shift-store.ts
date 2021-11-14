@@ -41,6 +41,8 @@ export class ShiftStore {
             shiftList: observable,
             shiftListForDay: observable,
 
+            setShiftsForDate: action,
+
             loadShiftList: action,
             getShiftById: action,
             getShiftsForDate: action,
@@ -76,8 +78,13 @@ export class ShiftStore {
     }
 
     getShiftsForDate(date: string): ShiftEntity[] {
+        // this.shiftListForDay = this.shiftList?.filter((shift) => shift.date === date);
+        //return this.shiftList?.filter((shift) => shift.date === date);
+        return this.shiftListForDay;
+    }
+
+    setShiftsForDate(date) {
         this.shiftListForDay = this.shiftList?.filter((shift) => shift.date === date);
-        return this.shiftList?.filter((shift) => shift.date === date);
     }
 
     getShiftById(shiftId: number): ShiftEntity {
@@ -163,13 +170,14 @@ export class ShiftStore {
         this.setEmployees([...this.rootStore.employeeStore.employees]);
     }
 
-    async deleteShift(shiftId: number): Promise<void> {
+    async deleteShift(shiftId: number, companyId): Promise<void> {
         try {
             await deleteShift(shiftId);
         } catch (e) {
             message.error('Nepodarilo se smazat smenu');
         } finally {
-            // this.rootStore.shiftStore.getShiftsForDate(this.rootStore.calendarStore.stringDate);
+            await this.loadShiftList(companyId);
+            this.rootStore.shiftStore.setShiftsForDate(this.rootStore.calendarStore.stringDate);
         }
     }
 

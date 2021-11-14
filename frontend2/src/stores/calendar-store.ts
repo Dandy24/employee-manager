@@ -7,6 +7,8 @@ import moment from 'moment';
 export class CalendarStore {
     selectedDate: moment.Moment;
 
+    activeCompanyId: number;
+
     isEditOpen = false;
     isShiftSelectOpen = false;
 
@@ -21,12 +23,19 @@ export class CalendarStore {
             setShiftSelectOpen: action,
             setShiftEditOpen: action,
 
+            activeCompanyId: observable,
+            setActiveCompanyId: action,
+
             selectedDate: observable,
             setSelectedDate: action,
 
             formattedDate: computed,
             stringDate: computed,
         });
+    }
+
+    setActiveCompanyId(companyId: number) {
+        this.activeCompanyId = companyId;
     }
 
     setShiftSelectOpen(open: boolean): void {
