@@ -9,6 +9,8 @@ import { observer } from 'mobx-react-lite';
 import { CompanyTableColumns } from '../components/tableColumns/CompanyTableColumns';
 import { CompanyEntity } from '../models/entities/company-entity';
 import { CompanyDto } from '../models/dtos/company-dto';
+import { SearchComponent } from '../components/search/search-component';
+import { toJS } from 'mobx';
 
 interface CompanyListProps {
     rootStore: RootStore;
@@ -51,6 +53,7 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
     useEffect(() => {
         (async () => {
             await companyStore.fetchAllCompanies();
+            rootStore.searchStore.createSearchableCompanies(companyStore.companies);
         })();
     }, []);
 
@@ -60,11 +63,14 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
 
     return (
         <>
+            <SearchComponent options={toJS(rootStore.searchStore.searchableCompanies)} />
+
             <Table
                 rowKey="id"
                 loading={companyStore.loadingCompanies}
                 columns={columns}
                 dataSource={companyStore.companies}
+                data-testid="company-table"
             />
 
             <EditDrawer

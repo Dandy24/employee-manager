@@ -11,18 +11,21 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": false,
-    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
+    "strict": false,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
   },
   "include": [
     "src"
   ],
-  "types": ["cypress", "@percy/cypress"]
+  "types": [
+    "cypress",
+    "@percy/cypress"
+  ]
 }
