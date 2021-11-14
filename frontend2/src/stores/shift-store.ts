@@ -1,5 +1,5 @@
 import { RootStore } from './root-store';
-import { action, makeObservable, observable, runInAction, toJS } from 'mobx';
+import { action, makeObservable, observable, runInAction } from 'mobx';
 import { EmployeeEntity } from '../models/entities/employee-entity';
 import {
     createShift,
@@ -10,9 +10,8 @@ import {
 } from '../api/apiCalls';
 import { ShiftEntity } from '../models/entities/shift-entity';
 import { ShiftDto } from '../models/dtos/shift-dto';
-import moment from 'moment';
-import { ShiftTypeEnum } from '../models/enums/shift-type-enum';
 import { message } from 'antd';
+import { ShiftTypeEnum } from '../models/enums/shift-type-enum';
 
 /** TODO REFACTOR !!! **/
 
@@ -22,9 +21,9 @@ export class ShiftStore {
     shift: ShiftEntity;
     shiftList: ShiftEntity[];
     shiftListForDay: ShiftEntity[];
-    isEditOpen = false;
-
-    isShiftSelectOpen = false;
+    // isEditOpen = false;
+    //
+    // isShiftSelectOpen = false;
 
     private rootStore: RootStore;
 
@@ -32,10 +31,10 @@ export class ShiftStore {
         this.rootStore = rootStore;
 
         makeObservable(this, {
-            isShiftSelectOpen: observable,
-            setShiftSelectOpen: action,
-
-            isEditOpen: observable,
+            // isShiftSelectOpen: observable,
+            // isEditOpen: observable,
+            // setShiftSelectOpen: action,
+            // setShiftEditOpen: action,
 
             availableEmployees: observable,
             shiftEmployees: observable,
@@ -45,7 +44,6 @@ export class ShiftStore {
             loadShiftList: action,
             getShiftById: action,
             getShiftsForDate: action,
-            // getShiftForDateTime: action,
             addToShift: action,
             removeFromShift: action,
             clearShift: action,
@@ -65,17 +63,17 @@ export class ShiftStore {
         this.shiftEmployees = [];
     }
 
-    setShiftSelectOpen(open: boolean): void {
-        this.isShiftSelectOpen = open;
-    }
+    // setShiftSelectOpen(open: boolean): void {
+    //     this.isShiftSelectOpen = open;
+    // }
+    //
+    // setShiftEditOpen(open: boolean): void {
+    //     this.isEditOpen = open;
+    // }
 
     setShift(shiftId: number): void {
         this.shift = this.shiftList.find((shift) => shift.id === shiftId);
     }
-
-    // getShiftForDateTime(date: string, time: any): ShiftEntity {
-    //     return this.shiftList?.find((shift) => shift.date === date && shift.time == time);
-    // }
 
     getShiftsForDate(date: string): ShiftEntity[] {
         this.shiftListForDay = this.shiftList?.filter((shift) => shift.date === date);
@@ -125,21 +123,15 @@ export class ShiftStore {
     }
 
     async saveShift(updatedShift: ShiftEntity): Promise<void> {
-        // await this.rootStore.companyStore.fetchAllCompanies(); //TODO vyhodit to idealne a to radeji zkusit loadnout v useEffectu
         if (this.shift.id) {
             const employeeIDs = this.shiftEmployees.map((emp) => emp.id);
             const shift: ShiftDto = { ...updatedShift, employeeIDs };
             console.log(shift);
-            // await updateShift(this.shift.id, updatedShift);
             await updateShift(this.shift.id, updatedShift);
         } else {
-            // const shift = new ShiftDto();
-            // shift.time = ShiftTypeEnum.Rano;
-            // shift.date = moment().format('YYYY-MM-DD');
-            // shift.companyID = toJS(this.shift.companyID);
             this.shift.employeeIDs = this.shiftEmployees.map((emp) => emp.id);
             runInAction(() => {
-                this.isEditOpen = false;
+                this.rootStore.calendarStore.isEditOpen = false;
             });
             await createShift(this.shift);
         }
@@ -183,10 +175,10 @@ export class ShiftStore {
 
     openToAdd(): void {
         this.shift = new ShiftEntity();
-        this.isEditOpen = true;
+        this.rootStore.calendarStore.isEditOpen = true;
     }
 
-    addShift(time: any, companyId: number) {
+    addShift(time: ShiftTypeEnum, companyId: number): void {
         this.shift.time = time;
         this.shift.date = this.rootStore.calendarStore.stringDate;
         this.shift.companyID = companyId;

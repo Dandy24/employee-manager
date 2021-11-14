@@ -7,20 +7,34 @@ import moment from 'moment';
 export class CalendarStore {
     selectedDate: moment.Moment;
 
+    isEditOpen = false;
+    isShiftSelectOpen = false;
+
     private rootStore: RootStore;
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
 
         makeObservable(this, {
+            isShiftSelectOpen: observable,
+            isEditOpen: observable,
+            setShiftSelectOpen: action,
+            setShiftEditOpen: action,
+
             selectedDate: observable,
             setSelectedDate: action,
 
             formattedDate: computed,
             stringDate: computed,
         });
+    }
 
-        // this.selectedDate = moment().format('YYYY-MM-DD');
+    setShiftSelectOpen(open: boolean): void {
+        this.isShiftSelectOpen = open;
+    }
+
+    setShiftEditOpen(open: boolean): void {
+        this.isEditOpen = open;
     }
 
     setSelectedDate(date: moment.Moment): void {

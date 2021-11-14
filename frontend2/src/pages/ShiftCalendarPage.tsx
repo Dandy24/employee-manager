@@ -1,13 +1,14 @@
 import { observer } from 'mobx-react-lite';
-import { Link, useParams } from 'react-router-dom';
-import { Badge, Button, Calendar, Col, Empty, List, Modal, Row, Select, Space } from 'antd';
+import { useParams } from 'react-router-dom';
+import { Calendar, Empty, List, Modal } from 'antd';
 import React, { useEffect } from 'react';
 import { RootStore } from '../stores/root-store';
 import moment from 'moment';
-import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-import Title from 'antd/lib/typography/Title';
 import { ShiftTypeEnum } from '../models/enums/shift-type-enum';
-import Text from 'antd/lib/typography/Text';
+import { CalendarDateCell } from '../components/calendar/calendar-date-cell/calendar-date-cell';
+import { ModalFooter } from '../components/calendar/modal-footer/modal-footer';
+import { CalendarShiftListItemEdit } from '../components/calendar/calendar-shift-list/item/edit-item';
+import { CalendarShiftListItemAdd } from '../components/calendar/calendar-shift-list/item/add-item';
 export interface ShiftCalendarPageProps {
     rootStore: RootStore;
 }
@@ -18,42 +19,13 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
     const { companyId } = useParams<{ companyId: string }>();
     const { rootStore } = props;
 
-    // useEffect(() => {
-    //     rootStore.shiftStore.loadShiftList(parseInt(companyId));
-    // }, [rootStore.shiftStore, rootStore.shiftStore.shiftList]);
-
     useEffect(() => {
         rootStore.shiftStore.loadShiftList(parseInt(companyId));
     }, []);
 
-    const dateCellRender = (value: moment.Moment) => {
-        const date = moment(value).format('YYYY-MM-DD');
-        const day = moment(value).format('DD');
-        const todayShift = rootStore.shiftStore.getShiftsForDate(date);
-        return (
-            <div className="ant-picker-cell-inner ant-picker-calendar-date" onDoubleClick={selectShiftHandler}>
-                <div className="ant-picker-calendar-date-value">{day}</div>
-                <div className="ant-picker-calendar-date-content">
-                    <ul style={{ listStyle: 'none' }}>
-                        {todayShift?.map((shift) => (
-                            <li key={`shift-${shift.date}-${shift.time}`}>
-                                <Badge status={'error'} />
-                                {shift.time}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-        );
-    };
-
-    const selectShiftHandler = (value) => {
+    const selectShiftHandler = (): void => {
         // rootStore.calendarStore.setSelectedDate(value);
-        rootStore.shiftStore.setShiftSelectOpen(true);
-    };
-
-    const handleNewShift = (e) => {
-        rootStore.shiftStore.openToAdd();
+        rootStore.calendarStore.setShiftSelectOpen(true);
     };
 
     const selectDateHandler = (date: moment.Moment) => {
@@ -62,30 +34,27 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
 
     const handleDelete = async (shiftId: number) => {
         await rootStore.shiftStore.deleteShift(shiftId);
-        // rootStore.shiftStore.setShiftSelectOpen(true);
+    };
+
+    const getCalendarDateCell = (date: moment.Moment): React.ReactNode => {
+        return CalendarDateCell(date, rootStore.shiftStore, selectShiftHandler);
     };
 
     return (
         <>
-            <Calendar dateFullCellRender={dateCellRender} onSelect={selectDateHandler} />
+            <Calendar dateFullCellRender={getCalendarDateCell} onSelect={selectDateHandler} />
             <Modal
-                visible={rootStore.shiftStore.isShiftSelectOpen}
+                visible={rootStore.calendarStore.isShiftSelectOpen}
                 title={`Seznam smen pro ${rootStore.calendarStore.formattedDate}`}
                 centered
-                footer={
-                    <Space>
-                        <Button icon={<PlusOutlined />} type="primary" size="large" onClick={handleNewShift}>
-                            Pridat smenu
-                        </Button>
-                        <Button size="large" onClick={() => rootStore.shiftStore.setShiftSelectOpen(false)}>
-                            Zavrit
-                        </Button>
-                    </Space>
-                }
-                onOk={() => rootStore.shiftStore.setShiftSelectOpen(false)}
-                onCancel={() => rootStore.shiftStore.setShiftSelectOpen(false)}
+                footer={<ModalFooter store={rootStore} showIcon />}
+                onOk={() => rootStore.calendarStore.setShiftSelectOpen(false)}
+                onCancel={() => {
+                    rootStore.calendarStore.setShiftSelectOpen(false);
+                    rootStore.calendarStore.setShiftEditOpen(false);
+                }}
             >
-                {!rootStore.shiftStore.isEditOpen && (
+                {!rootStore.calendarStore.isEditOpen ? (
                     <List
                         locale={{
                             emptyText: (
@@ -94,31 +63,10 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                         }}
                         dataSource={rootStore.shiftStore.getShiftsForDate(rootStore.calendarStore.stringDate)}
                         renderItem={(item) => (
-                            <List.Item>
-                                <Row justify="space-between">
-                                    <Col span={20} flex="auto">
-                                        <Title level={5}>
-                                            <Link to={`/shift-manager/${item.id}`}>{item.time}</Link>
-                                        </Title>
-                                    </Col>
-                                    <Col span={4}>
-                                        <Button
-                                            size="large"
-                                            icon={<DeleteOutlined />}
-                                            type="primary"
-                                            danger
-                                            onClick={() => handleDelete(item.id)}
-                                        />
-                                    </Col>
-                                </Row>
-                            </List.Item>
+                            <CalendarShiftListItemEdit item={item} rootStore={rootStore} handleDelete={handleDelete} />
                         )}
                     />
-                )}
-
-                {console.log(rootStore.shiftStore.shiftList)}
-
-                {rootStore.shiftStore.isEditOpen && (
+                ) : (
                     <List
                         locale={{
                             emptyText: (
@@ -127,43 +75,7 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                         }}
                         dataSource={Object.entries(ShiftTypeEnum)}
                         renderItem={(item) => (
-                            <List.Item>
-                                <Row justify="space-between">
-                                    {rootStore.shiftStore.shiftList.find(
-                                        (shift) =>
-                                            shift.time === item[1] && shift.date === rootStore.calendarStore.stringDate,
-                                    ) ? (
-                                        <Col span={20} flex="auto">
-                                            <Title level={5}>
-                                                <Text disabled>{item[0]}</Text>
-                                            </Title>
-                                        </Col>
-                                    ) : (
-                                        <Col span={20} flex="auto">
-                                            <Title level={5}>
-                                                <Link
-                                                    to={`/shift-manager`}
-                                                    onClick={() =>
-                                                        rootStore.shiftStore.addShift(item[1], parseInt(companyId))
-                                                    }
-                                                >
-                                                    {item[0]}
-                                                </Link>
-                                            </Title>
-                                        </Col>
-                                    )}
-
-                                    {/*<Col span={4}>*/}
-                                    {/*    <Button*/}
-                                    {/*        size="large"*/}
-                                    {/*        icon={<DeleteOutlined />}*/}
-                                    {/*        type="primary"*/}
-                                    {/*        danger*/}
-                                    {/*        onClick={() => handleDelete(1)}*/}
-                                    {/*    />*/}
-                                    {/*</Col>*/}
-                                </Row>
-                            </List.Item>
+                            <CalendarShiftListItemAdd item={item} rootStore={rootStore} companyId={companyId} />
                         )}
                     />
                 )}
