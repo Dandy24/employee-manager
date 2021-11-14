@@ -24,15 +24,15 @@ export const CalendarShiftListItemEdit: React.FC<CalendarShiftListItemProps> = o
 
         return (
             <List.Item>
-                <Row justify="space-between">
-                    <Col span={20} flex="auto">
+                <Row justify="space-between" style={{ width: '100%' }}>
+                    <Col span={10}>
                         <Title level={5}>
                             <Link onClick={onLinkClick} to={`/shift-manager/${item.id}`}>
                                 {item.time}
                             </Link>
                         </Title>
                     </Col>
-                    <Col span={4}>
+                    <Col>
                         <Button
                             size="large"
                             icon={<DeleteOutlined />}

@@ -3,16 +3,10 @@ import { Badge } from 'antd';
 import React from 'react';
 import { ShiftStore } from '../../../stores/shift-store';
 
-// export interface CalendarDateCellProps {
-//     selectedDate: moment.Moment;
-//     store: ShiftStore;
-//     shiftSelectHandler: () => void;
-// }
-
 export function CalendarDateCell(
     selectedDate: moment.Moment,
     store: ShiftStore,
-    shiftSelectHandler: (date) => void,
+    shiftSelectHandler: (date: string) => void,
 ): React.ReactNode {
     const date = moment(selectedDate).format('YYYY-MM-DD');
     const day = moment(date).format('DD');

@@ -17,7 +17,7 @@ export const CalendarShiftList: React.FC<CalendarShiftListProps> = observer((pro
             locale={{
                 emptyText: <Empty description="Replace this text" image="https://joeschmoe.io/api/v1/random" />,
             }}
-            dataSource={rootStore.shiftStore.getShiftsForDate(rootStore.calendarStore.stringDate)}
+            // dataSource={rootStore.shiftStore.getShiftsForDate(rootStore.calendarStore.stringDate)}
             // renderItem={(item) => (
             //     <CalendarShiftListItem
             //         item={item}

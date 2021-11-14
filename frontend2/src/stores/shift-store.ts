@@ -21,9 +21,6 @@ export class ShiftStore {
     shift: ShiftEntity;
     shiftList: ShiftEntity[];
     shiftListForDay: ShiftEntity[];
-    // isEditOpen = false;
-    //
-    // isShiftSelectOpen = false;
 
     private rootStore: RootStore;
 
@@ -31,11 +28,6 @@ export class ShiftStore {
         this.rootStore = rootStore;
 
         makeObservable(this, {
-            // isShiftSelectOpen: observable,
-            // isEditOpen: observable,
-            // setShiftSelectOpen: action,
-            // setShiftEditOpen: action,
-
             availableEmployees: observable,
             shiftEmployees: observable,
             shiftList: observable,
@@ -45,7 +37,6 @@ export class ShiftStore {
 
             loadShiftList: action,
             getShiftById: action,
-            getShiftsForDate: action,
             addToShift: action,
             removeFromShift: action,
             clearShift: action,
@@ -65,25 +56,11 @@ export class ShiftStore {
         this.shiftEmployees = [];
     }
 
-    // setShiftSelectOpen(open: boolean): void {
-    //     this.isShiftSelectOpen = open;
-    // }
-    //
-    // setShiftEditOpen(open: boolean): void {
-    //     this.isEditOpen = open;
-    // }
-
     setShift(shiftId: number): void {
         this.shift = this.shiftList.find((shift) => shift.id === shiftId);
     }
 
-    getShiftsForDate(date: string): ShiftEntity[] {
-        // this.shiftListForDay = this.shiftList?.filter((shift) => shift.date === date);
-        //return this.shiftList?.filter((shift) => shift.date === date);
-        return this.shiftListForDay;
-    }
-
-    setShiftsForDate(date) {
+    setShiftsForDate(date: string): void {
         this.shiftListForDay = this.shiftList?.filter((shift) => shift.date === date);
     }
 
@@ -170,7 +147,7 @@ export class ShiftStore {
         this.setEmployees([...this.rootStore.employeeStore.employees]);
     }
 
-    async deleteShift(shiftId: number, companyId): Promise<void> {
+    async deleteShift(shiftId: number, companyId: number): Promise<void> {
         try {
             await deleteShift(shiftId);
         } catch (e) {

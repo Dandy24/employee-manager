@@ -25,7 +25,7 @@ export const CalendarShiftListItemAdd: React.FC<CalendarShiftListItemAddProps> =
 
         return (
             <List.Item>
-                <Row justify="space-between">
+                <Row justify="space-between" style={{ width: '100%' }}>
                     {rootStore.shiftStore.shiftList.find(
                         (shift) => shift.time === item[1] && shift.date === rootStore.calendarStore.stringDate,
                     ) ? (

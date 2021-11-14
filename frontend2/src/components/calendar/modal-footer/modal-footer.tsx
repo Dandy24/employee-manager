@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { Button, Space } from 'antd';
+import { Button, Col, Row, Space } from 'antd';
 import { PlusOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import React from 'react';
 import { RootStore } from '../../../stores/root-store';
@@ -25,20 +25,29 @@ export const ModalFooter: React.FC<ModalFooterProps> = observer((props: ModalFoo
     };
 
     return (
-        <Space>
-            {!store.calendarStore.isEditOpen ? (
-                <Button icon={showIcon ? <PlusOutlined /> : null} type="primary" size="large" onClick={handleNewShift}>
-                    Pridat smenu
-                </Button>
-            ) : (
-                <Button icon={showIcon ? <ArrowLeftOutlined /> : null} type="primary" size="large" onClick={goBack}>
-                    Zpet
-                </Button>
-            )}
+        <Row justify="space-between">
+            <Col>
+                {!store.calendarStore.isEditOpen ? (
+                    <Button
+                        icon={showIcon ? <PlusOutlined /> : null}
+                        type="primary"
+                        size="large"
+                        onClick={handleNewShift}
+                    >
+                        Pridat smenu
+                    </Button>
+                ) : (
+                    <Button icon={showIcon ? <ArrowLeftOutlined /> : null} type="primary" size="large" onClick={goBack}>
+                        Zpet
+                    </Button>
+                )}
+            </Col>
 
-            <Button size="large" onClick={handleCancel}>
-                Zavrit
-            </Button>
-        </Space>
+            <Col>
+                <Button size="large" onClick={handleCancel}>
+                    Zavrit
+                </Button>
+            </Col>
+        </Row>
     );
 });
