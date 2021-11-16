@@ -1,6 +1,6 @@
 import { ColumnsType } from 'antd/lib/table/interface';
 import { EmployeeStore } from '../../stores/employee-store';
-import { Button, Space } from 'antd';
+import { Button, Space, Tag } from 'antd';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import { CompanyStore } from '../../stores/company-store';
@@ -48,6 +48,11 @@ export function EmployeeTableColumns(
             dataIndex: 'active',
             key: 'active',
             render: (text: string, row: { active: boolean }) => <p> {row.active ? 'Ano' : 'Ne'} </p>,
+            Cell: ({ value }) => (
+                <Tag style={{ width: '60%', textAlign: 'center' }} color={value ? '#87d068' : '#f50'}>
+                    {value ? 'Ano' : 'Ne'}
+                </Tag>
+            ),
         },
         {
             title: 'Akce',

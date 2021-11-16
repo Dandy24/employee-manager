@@ -19,7 +19,12 @@ export const TableBody: React.FC<TableBodyProps> = observer((props: TableBodyPro
     /** TODO spread to more logical independent components **/
 
     return (
-        <tbody {...tableBodyProps} ref={providedDroppable.innerRef} {...providedDroppable.droppableProps}>
+        <tbody
+            {...tableBodyProps}
+            ref={providedDroppable.innerRef}
+            {...providedDroppable.droppableProps}
+            className="ant-table-tbody"
+        >
             {rows.map((row, index) => {
                 prepareRow(row);
                 return (
@@ -32,17 +37,19 @@ export const TableBody: React.FC<TableBodyProps> = observer((props: TableBodyPro
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                     ref={provided.innerRef}
+                                    className="ant-table-row ant-table-row-level-0"
                                 >
                                     {row.cells.map((cell, index) => {
                                         return (
                                             <td
                                                 key={`${type}-tbody-td-${index}`}
                                                 {...cell.getCellProps()}
-                                                style={{
-                                                    padding: '10px',
-                                                    border: 'solid 1px gray',
-                                                    background: 'papayawhip',
-                                                }}
+                                                // style={{
+                                                //     padding: '10px',
+                                                //     border: 'solid 1px gray',
+                                                //     background: 'papayawhip',
+                                                // }}
+                                                className="ant-table-cell"
                                             >
                                                 {cell.render('Cell')}
                                             </td>
