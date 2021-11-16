@@ -1,3 +1,5 @@
+from copy import copy
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
@@ -85,6 +87,24 @@ def employeeList(request):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
+def employeeListForCompany(request, pk):
+    employees = Employee.objects.filter(company_id__exact=pk)
+    serializer = EmployeeSerializer(employees, many=True)
+
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def employeeListForShift(request, pk):
+    shift = Shift.objects.get(id=pk)
+    # employees = Employee.objects.select_related()
+    employees = shift.employeeIDs
+    serializer = EmployeeSerializer(employees, many=True)
+
+    return Response(serializer.data)
+
+
 @swagger_auto_schema(methods=['post'], request_body=EmployeeSerializer)
 @api_view(['POST'])
 def employeeCreate(request):
@@ -136,12 +156,22 @@ def shiftList(request):
 
     return Response(serializer.data)
 
+
+@api_view(['GET'])
+def shiftDetail(request, pk):
+    shift = Shift.objects.get(id=pk)
+    serializer = ShiftSerializer(shift, many=False)
+
+    return Response(serializer.data)
+
+
 @api_view(['GET'])
 def shiftListForCompany(request, companyID):
-    shift = Shift.objects.filter(company_id__exact=companyID)
+    shift = Shift.objects.filter(companyID_id__exact=companyID)
     serializer = ShiftSerializer(shift, many=True)
 
     return Response(serializer.data)
+
 
 ## TODO
 @api_view(['GET'])
@@ -150,6 +180,7 @@ def shiftListForEmployee(request, employeeID):
     serializer = ShiftSerializer(shift, many=True)
 
     return Response(serializer.data)
+
 
 @swagger_auto_schema(methods=['post'], request_body=ShiftSerializer)
 @api_view(['POST'])
@@ -164,3 +195,46 @@ def shiftCreate(request):
         print(serializer.errors)
         raise ValueError
 
+
+@swagger_auto_schema(methods=['put'], request_body=ShiftSerializer)
+@api_view(['PUT'])
+def shiftUpdate(request, pk):
+    shift = Shift.objects.get(id=pk)
+
+    # print(request.data)
+    requestEmployeeList = request.data['employeeIDs']
+
+    employees = []
+
+    emp = {}
+
+    for employee in requestEmployeeList:
+        emp = Employee.objects.get(id=employee)
+        employees.append(emp)
+        emp = {}
+
+    print(employees)
+
+    serializedShift = copy(request.data)
+
+    print(serializedShift)
+
+    serializedShift['employeeIDs'] = employees
+
+    serializer = EmployeeSerializer(instance=shift, data=serializedShift)
+
+    if serializer.is_valid():
+        serializer.save()
+    else:
+        print(serializer.errors)
+        raise ValueError
+
+    return Response(serializer.data)
+
+
+@api_view(['DELETE'])  # ,GET ?
+def shiftDelete(request, pk):
+    shift = Shift.objects.get(id=pk)
+    shift.delete()
+
+    return Response('Shift was deleted.')

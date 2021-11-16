@@ -1,6 +1,12 @@
 import { RootStore } from './root-store';
 import { action, makeObservable, observable, runInAction } from 'mobx';
-import { createEmployee, deleteEmployee, getEmployeeList, updateEmployee } from '../api/apiCalls';
+import {
+    createEmployee,
+    deleteEmployee,
+    getEmployeeList,
+    getEmployeeListForCompany,
+    updateEmployee,
+} from '../api/apiCalls';
 import { message } from 'antd';
 import { EmployeeDto } from '../models/dtos/employee-dto';
 import { EmployeeEntity } from '../models/entities/employee-entity';
@@ -30,16 +36,25 @@ export class EmployeeStore {
         });
     }
 
-    async fetchAllEmployees(): Promise<void> {
+    async fetchAllEmployees(companyId: number = null, shiftId: number = null): Promise<void> {
         runInAction(() => {
             this.loadingEmployees = true;
             this.employees = [];
         });
-        await getEmployeeList().then((data) =>
-            runInAction(() => {
-                this.employees = data;
-            }),
-        );
+        if (companyId) {
+            await getEmployeeListForCompany(companyId).then((data) =>
+                runInAction(() => {
+                    this.employees = data;
+                }),
+            );
+        } else {
+            await getEmployeeList().then((data) =>
+                runInAction(() => {
+                    this.employees = data;
+                }),
+            );
+        }
+
         runInAction(() => {
             this.loadingEmployees = false;
         });

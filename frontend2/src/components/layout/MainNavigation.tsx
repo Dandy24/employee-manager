@@ -30,11 +30,11 @@ export const MainNavigation: React.FC = observer((): JSX.Element => {
                         Přidání nového zaměstnance
                     </Link>
                 </MenuItem>
-                <MenuItem key="shift-manager" data-testid="menu-shift-manager-item">
-                    <Link to="/shift-manager" data-testid="menu-shift-manager-item-link">
-                        Plánovač směn
-                    </Link>
-                </MenuItem>
+                {/*<MenuItem key="shift-manager" data-testid="menu-shift-manager-item">*/}
+                {/*    <Link to="/shift-manager" data-testid="menu-shift-manager-item-link">*/}
+                {/*        Plánovač směn*/}
+                {/*    </Link>*/}
+                {/*</MenuItem>*/}
             </Menu>
         </Header>
     );

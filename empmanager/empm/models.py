@@ -33,9 +33,9 @@ class Employee(models.Model):
 class Shift(models.Model):
     date = models.DateField()
     time = models.TextField(max_length=50)
-    company = models.ForeignKey(
+    companyID = models.ForeignKey(
         'Company',
         on_delete=models.CASCADE,
         null=False
     )
-    employees = models.ManyToManyField("Employee")
+    employeeIDs = models.ManyToManyField("Employee")

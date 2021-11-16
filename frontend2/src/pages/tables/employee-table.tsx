@@ -11,7 +11,7 @@ import { TableBody } from './elements/table-body';
 export const EmpTable: React.FC = observer((): JSX.Element => {
     const rootStore = useRootStore();
 
-    const data = [...rootStore.shiftStore.employees];
+    const data = [...rootStore.shiftStore.availableEmployees];
 
     const cols = EmployeeTableColumns(rootStore.employeeStore, rootStore.companyStore, null, true);
 
