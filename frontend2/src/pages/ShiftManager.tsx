@@ -7,6 +7,7 @@ import { EmpTable } from './tables/employee-table';
 import { ShiftTable } from './tables/shift-table';
 import { useParams } from 'react-router-dom';
 import { dragEndHandler } from '../services/drag-end-handler';
+import { SwapOutlined } from '@ant-design/icons';
 
 interface ShiftManagerPageProps {
     rootStore: RootStore;
@@ -43,11 +44,15 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
             <>
                 <Row justify="space-between">
                     <DragDropContext onDragEnd={onDragEnd}>
-                        <Col span={10}>
+                        <Col span={11}>
                             <EmpTable />
                         </Col>
 
-                        <Col span={10}>
+                        <Col style={{ marginTop: '10%' }}>
+                            <SwapOutlined />
+                        </Col>
+
+                        <Col span={11}>
                             <ShiftTable />
                         </Col>
                     </DragDropContext>

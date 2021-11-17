@@ -14,11 +14,15 @@ export const EmpTable: React.FC = observer((): JSX.Element => {
 
     const data = [...rootStore.shiftStore.availableEmployees];
 
-    const cols = EmployeeTableColumns(rootStore.employeeStore, rootStore.companyStore, null, true).filter(
-        (col) => col.key !== 'action',
-    );
+    const cols = EmployeeTableColumns(rootStore.employeeStore, rootStore.companyStore, null, true);
+    //.filter(
+    //(col) => col.key !== 'action',);
 
-    const columns = React.useMemo(() => cols.map((col) => ({ ...col, accessor: col.key, Header: col.title })), []);
+    const columns = React.useMemo(
+        () =>
+            cols.map((col) => ({ ...col, accessor: col.key, Header: col.title })).filter((col) => col.key !== 'action'),
+        [],
+    );
 
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
         {

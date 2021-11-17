@@ -50,6 +50,7 @@ export const TableBody: React.FC<TableBodyProps> = observer((props: TableBodyPro
                                                 //     background: 'papayawhip',
                                                 // }}
                                                 className="ant-table-cell"
+                                                style={{ width: '100%' }}
                                             >
                                                 {cell.render('Cell')}
                                             </td>

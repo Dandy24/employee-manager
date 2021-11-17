@@ -15,7 +15,7 @@ export const TableHeader: React.FC<TableHeaderProps> = observer((props: TableHea
     return (
         <thead className="ant-table-thead">
             {headerGroups.map((headerGroup, index) => (
-                <tr {...headerGroup.getHeaderGroupProps()} key={`${type}-thead-tr-${index}`}>
+                <tr {...headerGroup.getHeaderGroupProps()} key={`${type}-thead-tr-${index}`} style={{ width: '100%' }}>
                     {headerGroup.headers.map((column) => (
                         <th
                             key={`${type}-thead-th-${index}`}
