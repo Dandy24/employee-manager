@@ -49,7 +49,7 @@ export function EmployeeTableColumns(
             key: 'active',
             render: (text: string, row: { active: boolean }) => <p> {row.active ? 'Ano' : 'Ne'} </p>,
             Cell: ({ value }) => (
-                <Tag style={{ width: '60%', textAlign: 'center' }} color={value ? '#87d068' : '#f50'}>
+                <Tag style={{ width: '75%', textAlign: 'center' }} color={value ? '#87d068' : '#f50'}>
                     {value ? 'Ano' : 'Ne'}
                 </Tag>
             ),

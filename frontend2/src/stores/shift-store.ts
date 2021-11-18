@@ -32,6 +32,7 @@ export class ShiftStore {
             shiftEmployees: observable,
             shiftList: observable,
             shiftListForDay: observable,
+            shift: observable,
 
             setShiftsForDate: action,
 
@@ -43,6 +44,7 @@ export class ShiftStore {
             addShift: action,
             saveShift: action,
             setShiftEmployees: action,
+            deleteShift: action,
 
             openToAdd: action,
 
