@@ -5,17 +5,10 @@ import { RootStore } from '../stores/root-store';
 import { DragDropContext, DropResult, ResponderProvided } from 'react-beautiful-dnd';
 import { EmpTable } from './tables/employee-table';
 import { ShiftTable } from './tables/shift-table';
-import { Redirect, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { dragEndHandler } from '../services/drag-end-handler';
-import {
-    CalendarOutlined,
-    ExclamationCircleOutlined,
-    HomeOutlined,
-    SwapOutlined,
-    UserOutlined,
-} from '@ant-design/icons';
+import { CalendarOutlined, ExclamationCircleOutlined, HomeOutlined, SwapOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { CompanyEntity } from '../models/entities/company-entity';
 
 interface ShiftManagerPageProps {
     rootStore: RootStore;
@@ -42,10 +35,6 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
             })();
         }, []);
 
-        const company = rootStore.companyStore.companies.find(
-            (comp) => comp.id === rootStore.shiftStore.shift?.companyID,
-        );
-
         const saveShift = async () => {
             await rootStore.shiftStore.saveShift(rootStore.shiftStore.shift);
         };
@@ -59,8 +48,11 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                 okType: 'danger',
                 cancelText: 'Ne',
                 async onOk() {
-                    await rootStore.shiftStore.deleteShift(rootStore.shiftStore.shift.id, company.id);
-                    window.location.pathname = `/shift-calendar/${company?.id}`;
+                    await rootStore.shiftStore.deleteShift(
+                        rootStore.shiftStore.shift.id,
+                        rootStore.calendarStore.activeCompanyId,
+                    );
+                    window.location.pathname = `/shift-calendar/${rootStore.calendarStore.activeCompanyId}`;
                 },
             });
         };
@@ -77,14 +69,18 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                             <Breadcrumb.Item href="/">
                                 <HomeOutlined />
                             </Breadcrumb.Item>
-                            <Breadcrumb.Item href={`/shift-calendar/${company?.id}`}>
+                            <Breadcrumb.Item href={`/shift-calendar/${rootStore.calendarStore.activeCompanyId}`}>
                                 <CalendarOutlined />
                                 <span>{`Kalendar smen`}</span>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>{`Smena c. ${rootStore.shiftStore.shift?.id}`}</Breadcrumb.Item>
                         </Breadcrumb>
                     }
-                    title={company?.name}
+                    title={
+                        rootStore.companyStore.companies.find(
+                            (comp) => comp.id === rootStore.calendarStore.activeCompanyId,
+                        )?.name
+                    }
                     subTitle={moment(rootStore.shiftStore.shift?.date).format('MMMM Do YYYY')}
                     tags={<Tag color="blue">{rootStore.shiftStore.shift?.time}</Tag>}
                     ghost={false}

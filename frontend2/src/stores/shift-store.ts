@@ -46,8 +46,6 @@ export class ShiftStore {
             setShiftEmployees: action,
             deleteShift: action,
 
-            openToAdd: action,
-
             setEmployees: action,
             addEmployee: action,
             removeEmployee: action,
@@ -158,11 +156,6 @@ export class ShiftStore {
             await this.loadShiftList(companyId);
             this.rootStore.shiftStore.setShiftsForDate(this.rootStore.calendarStore.stringDate);
         }
-    }
-
-    openToAdd(): void {
-        this.shift = new ShiftEntity();
-        this.rootStore.calendarStore.isEditOpen = true;
     }
 
     addShift(time: ShiftTypeEnum, companyId: number): void {
