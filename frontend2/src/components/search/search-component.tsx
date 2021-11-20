@@ -51,6 +51,7 @@ export const SearchComponent: React.FC<SearchComponentProps> = observer((props: 
                     onSearch={searchHandler}
                     enterButton
                     style={{ width: '108%' }}
+                    data-testid={'search-button'}
                 />
             </AutoComplete>
         </>

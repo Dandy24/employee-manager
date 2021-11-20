@@ -24,6 +24,7 @@ export function CompanyTableColumns(
             title: 'Telefonní číslo',
             dataIndex: 'phone',
             key: 'phone',
+            render: (text, record: CompanyEntity) => <p>{`+${record.phone}`}</p>,
         },
         {
             title: 'Adresa sídla společnosti',
