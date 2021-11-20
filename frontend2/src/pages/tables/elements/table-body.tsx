@@ -8,7 +8,7 @@ export interface TableBodyProps {
     // providedDraggable: DraggableProvided;
     providedDroppable: DroppableProvided;
     tableBodyProps: any; //TableBodyProps;
-    rows: Row<EmployeeEntity>[];
+    rows: Row<object>[];
     prepareRow: (row: Row<any>) => void;
     type: 'shift-table' | 'employee-table';
 }
