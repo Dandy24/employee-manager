@@ -1,6 +1,7 @@
 import { RootStore } from './root-store';
 import { action, computed, makeObservable, observable } from 'mobx';
 import moment from 'moment';
+import { ShiftEntity } from '../models/entities/shift-entity';
 
 export class CalendarStore {
     selectedDate: moment.Moment;
@@ -26,6 +27,8 @@ export class CalendarStore {
 
             selectedDate: observable,
             setSelectedDate: action,
+
+            openToAdd: action,
 
             formattedDate: computed,
             stringDate: computed,
@@ -58,5 +61,10 @@ export class CalendarStore {
 
     get stringDate(): string {
         return moment(this.selectedDate).format('YYYY-MM-DD');
+    }
+
+    openToAdd(): void {
+        this.rootStore.shiftStore.shift = new ShiftEntity();
+        this.isEditOpen = true;
     }
 }

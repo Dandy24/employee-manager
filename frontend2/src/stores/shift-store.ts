@@ -32,6 +32,7 @@ export class ShiftStore {
             shiftEmployees: observable,
             shiftList: observable,
             shiftListForDay: observable,
+            shift: observable,
 
             setShiftsForDate: action,
 
@@ -43,8 +44,7 @@ export class ShiftStore {
             addShift: action,
             saveShift: action,
             setShiftEmployees: action,
-
-            openToAdd: action,
+            deleteShift: action,
 
             setEmployees: action,
             addEmployee: action,
@@ -156,11 +156,6 @@ export class ShiftStore {
             await this.loadShiftList(companyId);
             this.rootStore.shiftStore.setShiftsForDate(this.rootStore.calendarStore.stringDate);
         }
-    }
-
-    openToAdd(): void {
-        this.shift = new ShiftEntity();
-        this.rootStore.calendarStore.isEditOpen = true;
     }
 
     addShift(time: ShiftTypeEnum, companyId: number): void {

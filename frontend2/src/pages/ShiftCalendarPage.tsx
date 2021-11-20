@@ -1,14 +1,15 @@
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
-import { Calendar, Empty, List, Modal } from 'antd';
+import { Breadcrumb, Button, Calendar, Empty, List, Modal, PageHeader, Tag } from 'antd';
 import React, { useEffect } from 'react';
 import { RootStore } from '../stores/root-store';
 import moment from 'moment';
 import { ShiftTypeEnum } from '../models/enums/shift-type-enum';
 import { CalendarDateCell } from '../components/calendar/calendar-date-cell/calendar-date-cell';
-import { ModalFooter } from '../components/calendar/modal-footer/modal-footer';
 import { CalendarShiftListItemEdit } from '../components/calendar/calendar-shift-list/item/edit-item';
 import { CalendarShiftListItemAdd } from '../components/calendar/calendar-shift-list/item/add-item';
+import { CalendarModal } from '../components/calendar/modal/calendar-modal';
+import { CalendarOutlined, HomeOutlined } from '@ant-design/icons';
 export interface ShiftCalendarPageProps {
     rootStore: RootStore;
 }
@@ -44,18 +45,37 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
 
     return (
         <>
+            <PageHeader
+                breadcrumb={
+                    <Breadcrumb>
+                        <Breadcrumb.Item href="/">
+                            <HomeOutlined />
+                        </Breadcrumb.Item>
+                        <Breadcrumb.Item>
+                            <CalendarOutlined />
+                            <span>{`Kalendar smen`}</span>
+                        </Breadcrumb.Item>
+                    </Breadcrumb>
+                }
+                title={
+                    rootStore.companyStore.companies.find((comp) => comp.id === rootStore.calendarStore.activeCompanyId)
+                        ?.name
+                }
+                //subTitle={moment(rootStore.shiftStore.shift?.date).format('MMMM Do YYYY')}
+                //tags={<Tag color="blue">{rootStore.shiftStore.shift?.time}</Tag>}
+                ghost={false}
+                // extra={[
+                //     <Button onClick={saveShift} type="primary">
+                //         Uložit
+                //     </Button>,
+                //     <Button onClick={handleDelete} danger type="primary">
+                //         Smazat
+                //     </Button>,
+                // ]}
+            />
+            <div style={{ padding: '1.5%' }}></div>
             <Calendar dateFullCellRender={getCalendarDateCell} onSelect={selectDateHandler} />
-            <Modal
-                visible={rootStore.calendarStore.isShiftSelectOpen}
-                title={`Seznam smen pro ${rootStore.calendarStore.formattedDate}`}
-                centered
-                footer={<ModalFooter store={rootStore} showIcon />}
-                onOk={() => rootStore.calendarStore.setShiftSelectOpen(false)}
-                onCancel={() => {
-                    rootStore.calendarStore.setShiftSelectOpen(false);
-                    rootStore.calendarStore.setShiftEditOpen(false);
-                }}
-            >
+            <CalendarModal store={rootStore.calendarStore}>
                 {!rootStore.calendarStore.isEditOpen ? (
                     <List
                         locale={{
@@ -81,7 +101,7 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                         )}
                     />
                 )}
-            </Modal>
+            </CalendarModal>
         </>
     );
 });

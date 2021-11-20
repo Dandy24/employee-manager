@@ -1,33 +1,33 @@
 import { observer } from 'mobx-react-lite';
-import { Button, Col, Row, Space } from 'antd';
+import { Button, Col, Row } from 'antd';
 import { PlusOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import React from 'react';
-import { RootStore } from '../../../stores/root-store';
+import { CalendarStore } from '../../../../stores/calendar-store';
 
 export interface ModalFooterProps {
     showIcon: boolean;
-    store: RootStore;
+    store: CalendarStore;
 }
 
 export const ModalFooter: React.FC<ModalFooterProps> = observer((props: ModalFooterProps) => {
     const { showIcon, store } = props;
 
     const handleNewShift = () => {
-        store.shiftStore.openToAdd();
+        store.openToAdd();
     };
 
     const handleCancel = () => {
-        store.calendarStore.setShiftSelectOpen(false);
+        store.setShiftSelectOpen(false);
     };
 
     const goBack = () => {
-        store.calendarStore.setShiftEditOpen(false);
+        store.setShiftEditOpen(false);
     };
 
     return (
         <Row justify="space-between">
             <Col>
-                {!store.calendarStore.isEditOpen ? (
+                {!store.isEditOpen ? (
                     <Button
                         icon={showIcon ? <PlusOutlined /> : null}
                         type="primary"
