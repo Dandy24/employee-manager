@@ -4,9 +4,12 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from django.db import connection
+from rest_framework.test import APIRequestFactory
 
 from .models import Company, Employee, Shift
 from .serializers import CompanySerializer, EmployeeSerializer, ShiftSerializer
+
+from django.db import connection
 
 
 @api_view(['GET'])
@@ -249,3 +252,13 @@ def deleteCompanyTable(request):
     cursor.execute("delete from sqlite_sequence where name='empm_company'")
 
     return Response('All companies were deleted')
+
+
+@api_view(['DELETE'])
+def deleteShiftTable(request):
+    cursor = connection.cursor()
+
+    Shift.objects.all().delete()
+    cursor.execute("delete from sqlite_sequence where name='empm_shift'")
+
+    return Response('All shifts were deleted')

@@ -193,3 +193,12 @@ export async function deleteCompanyTable(): Promise<Response> {
         },
     });
 }
+
+export async function deleteAllShifts(): Promise<void> {
+    await fetch(`http://localhost:8000/api/delete-shift-table`, {
+        method: 'DELETE',
+        headers: {
+            'Content-type': 'application/json',
+        },
+    });
+}
