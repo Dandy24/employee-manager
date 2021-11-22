@@ -110,17 +110,24 @@ export class ShiftStore {
         if (this.shift.id) {
             const employeeIDs = this.shiftEmployees.map((emp) => emp.id);
             const shift: ShiftDto = { ...updatedShift, employeeIDs };
-            console.log(shift);
-            await updateShift(this.shift.id, updatedShift);
+            try {
+                await updateShift(this.shift.id, shift);
+                this.clearShift();
+            } catch (e) {
+                message.error('Smenu se nepodarilo aktualizovat');
+            }
         } else {
             this.shift.employeeIDs = this.shiftEmployees.map((emp) => emp.id);
             runInAction(() => {
                 this.rootStore.calendarStore.isEditOpen = false;
             });
-            await createShift(this.shift);
+            try {
+                await createShift(this.shift);
+                this.clearShift();
+            } catch (e) {
+                message.error('Smenu se nepodarilo vytvorit');
+            }
         }
-
-        this.clearShift(); //TODO trigger this only if createShift was successfull (Exception wasnt thrown)
     }
 
     setEmployees(employees: EmployeeEntity[]): void {
