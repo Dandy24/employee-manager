@@ -24,6 +24,9 @@ export const TableBody: React.FC<TableBodyProps> = observer((props: TableBodyPro
             ref={providedDroppable.innerRef}
             {...providedDroppable.droppableProps}
             className="ant-table-tbody"
+            data-testid={
+                'employee-table-body'
+            } /** TODO make variable after merging to one component with shift table **/
         >
             {rows.map((row, index) => {
                 prepareRow(row);

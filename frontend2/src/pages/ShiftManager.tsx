@@ -66,7 +66,7 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
             <div>
                 <PageHeader
                     breadcrumb={
-                        <Breadcrumb>
+                        <Breadcrumb data-testid="shift-manager-header-breadcrumb">
                             <Breadcrumb.Item href="/">
                                 <HomeOutlined />
                             </Breadcrumb.Item>
@@ -86,6 +86,7 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                             (comp) => comp.id === rootStore.calendarStore.activeCompanyId,
                         )?.name
                     }
+                    data-testid="shift-manager-header"
                     subTitle={moment(rootStore.shiftStore.shift?.date).format('MMMM Do YYYY')}
                     tags={<Tag color="blue">{rootStore.shiftStore.shift?.time}</Tag>}
                     ghost={false}

@@ -38,11 +38,11 @@ export const CalendarShiftListItemAdd: React.FC<CalendarShiftListItemAddProps> =
                         </Col>
                     ) : (
                         <Col span={20} flex="auto">
-                            <Title level={5}>
-                                <Link to={`/shift-manager`} data-testid={`new-shift-${item[0]}`} onClick={onLinkClick}>
+                            <Link to={`/shift-manager`} data-testid={`new-shift-${item[0]}`} onClick={onLinkClick}>
+                                <Title style={{ color: '#1890ff' }} level={5}>
                                     {item[0]}
-                                </Link>
-                            </Title>
+                                </Title>
+                            </Link>
                         </Col>
                     )}
                 </Row>
