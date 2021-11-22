@@ -184,3 +184,12 @@ export async function getShiftListForCompany(companyId: number): Promise<ShiftEn
         return Promise.reject(error);
     }
 }
+
+export async function deleteCompanyTable(): Promise<Response> {
+    return fetch(`http://localhost:8000/api/company-table-delete`, {
+        method: 'DELETE',
+        headers: {
+            'Content-type': 'application/json',
+        },
+    });
+}

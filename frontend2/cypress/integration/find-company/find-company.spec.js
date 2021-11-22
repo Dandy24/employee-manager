@@ -1,9 +1,12 @@
+import { createCompany, deleteCompanyTable } from '../../../src/api/apiCalls';
+
 describe('proccess of finding company through search box', () => {
     beforeEach(() => {
+        /** UNCOMMENT THIS TO DELETE COMPANY TABLE IN EACH TEST RUN **/
+        // deleteCompanyTable();
+        createCompany({ name: 'Company For Test', address: 'Example Address 123, Test', phone: 420123456789 });
         cy.visit('http://localhost:3000');
     });
-
-    /** Rewrite using variables and aliases: https://docs.cypress.io/guides/core-concepts/variables-and-aliases **/
 
     it('Matches the image snapshot', () => {
         /** Take page snapshot image and compare it to the previous one, to find any potencial styling changes **/
@@ -49,12 +52,11 @@ describe('proccess of finding company through search box', () => {
         /** Check lenght of search options list **/
         cy.get('.rc-virtual-list-holder-inner').find('[data-testid^=search-item-]').should('have.length', 1);
 
-        /** ?????????????????????????????????? **/
         cy.get('[data-testid=search-item-1] > h5').should('contain.text', 'Dan zxczxc 123 17. listopadu 639/24');
     });
 
     it('check autocomplete multiple record with similair keywords', function () {
-        cy.get('[data-testid=search-bar]').type('17. listopadu'); //type('Dan');
+        cy.get('[data-testid=search-bar]').type('17. listopadu');
         //
         /** Check lenght of search options list **/
         cy.get('.rc-virtual-list-holder-inner').find('[data-testid^=search-item-]').should('have.length', 3);
@@ -100,26 +102,6 @@ describe('proccess of finding company through search box', () => {
         /** check table filtered rows **/
         cy.get('[data-testid=company-table]').find('tr').should('have.length', 5);
     });
-
-    // it('check autocomplete reccommendations', () => {
-    //     cy.get('[data-testid=search-bar]').click(); //type('Dan');
-    //
-    //     /** Check lenght of search options list **/
-    //     cy.get('.rc-virtual-list-holder-inner').find('[data-testid^=search-item-]').should('have.length', 4);
-    //
-    //     /** Check if option will disappear if it doesn't met filter **/
-    //     cy.get('[data-testid=search-bar]').type('a');
-    //
-    //     cy.get('.rc-virtual-list-holder-inner').find('[data-testid^=search-item-]').should('have.length', 2);
-    //
-    //     cy.get('[data-testid=search-bar]').type('g');
-    //     cy.get('.rc-virtual-list-holder-inner').should('contain.text', 'Swagger');
-    //
-    //     cy.get('[data-testid=search-bar]').type('{backspace}');
-    //     cy.get('.rc-virtual-list-holder-inner').find('[data-testid^=search-item-]').should('have.length', 2);
-    //
-    //     cy.get('.rc-virtual-list-holder-inner').should('contain.text', 'Swagger').and('contain.text', 'Dan');
-    // });
 
     // it('check showing no results', () => {
     //     //     //cy.find('[data-testid=search-item-0]');
