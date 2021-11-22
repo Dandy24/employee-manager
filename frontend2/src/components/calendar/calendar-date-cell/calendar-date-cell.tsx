@@ -15,7 +15,7 @@ export function CalendarDateCell(
         <div className="ant-picker-cell-inner ant-picker-calendar-date" onDoubleClick={() => shiftSelectHandler(date)}>
             <div className="ant-picker-calendar-date-value">{day}</div>
             <div className="ant-picker-calendar-date-content">
-                <ul style={{ listStyle: 'none' }}>
+                <ul style={{ listStyle: 'none' }} data-testid={`shift-list-for-${date}`}>
                     {todayShift?.map((shift) => (
                         <li key={`shift-${shift.date}-${shift.time}`}>
                             <Badge status={'error'} />

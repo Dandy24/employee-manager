@@ -33,6 +33,7 @@ export const ModalFooter: React.FC<ModalFooterProps> = observer((props: ModalFoo
                         type="primary"
                         size="large"
                         onClick={handleNewShift}
+                        data-testid="shift-add-button"
                     >
                         Pridat smenu
                     </Button>

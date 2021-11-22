@@ -23,6 +23,7 @@ export const CalendarModal: React.FC<CalendarModalProps> = observer((props: Cale
                 store.setShiftSelectOpen(false);
                 store.setShiftEditOpen(false);
             }}
+            data-testid="selected-day-modal"
         >
             {children}
         </Modal>

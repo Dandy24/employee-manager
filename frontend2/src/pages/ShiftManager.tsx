@@ -74,7 +74,11 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                                 <CalendarOutlined />
                                 <span>{`Kalendar smen`}</span>
                             </Breadcrumb.Item>
-                            <Breadcrumb.Item>{`Smena c. ${rootStore.shiftStore.shift?.id}`}</Breadcrumb.Item>
+                            <Breadcrumb.Item>
+                                {rootStore.shiftStore.shift?.id
+                                    ? 'Smena c. ' + rootStore.shiftStore.shift.id
+                                    : 'Nová směna'}
+                            </Breadcrumb.Item>
                         </Breadcrumb>
                     }
                     title={

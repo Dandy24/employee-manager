@@ -23,7 +23,7 @@ export const CalendarShiftListItemEdit: React.FC<CalendarShiftListItemProps> = o
         };
 
         return (
-            <List.Item>
+            <List.Item data-testid={`shift-${item.time}`}>
                 <Row justify="space-between" style={{ width: '100%' }}>
                     <Col span={10}>
                         <Title level={5}>
