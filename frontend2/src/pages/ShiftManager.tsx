@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import { dragEndHandler } from '../services/drag-end-handler';
 import { CalendarOutlined, ExclamationCircleOutlined, HomeOutlined, SwapOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import { ShiftSubmitResult } from '../components/shift-manager/shift-submit-result';
 
 interface ShiftManagerPageProps {
     rootStore: RootStore;
@@ -85,7 +86,7 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                     tags={<Tag color="blue">{rootStore.shiftStore.shift?.time}</Tag>}
                     ghost={false}
                     extra={[
-                        <Button onClick={saveShift} type="primary">
+                        <Button onClick={saveShift} type="primary" disabled={rootStore.shiftStore.isSubmitted}>
                             Uložit
                         </Button>,
                         <Button onClick={handleDelete} danger type="primary">
@@ -109,6 +110,11 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                         </Col>
                     </DragDropContext>
                 </Row>
+                {rootStore.shiftStore.isSubmitted && (
+                    <Row>
+                        <ShiftSubmitResult store={rootStore.shiftStore} />
+                    </Row>
+                )}
             </div>
         );
     },

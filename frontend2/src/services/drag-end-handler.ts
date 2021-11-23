@@ -1,16 +1,50 @@
 import { ShiftStore } from '../stores/shift-store';
 import { DropResult } from 'react-beautiful-dnd';
+import { message } from 'antd';
+
+export const isValid = (sourceDroppableId: number, destinationDroppableId: number, store: ShiftStore) => {
+    /** Check whether the employee is in the different shift on the same day **/
+    if (
+        store.shiftListForDay.find(
+            (shift) =>
+                shift.employeeIDs.includes(store.availableEmployees[sourceDroppableId]?.id) &&
+                shift.time !== store.shift.time,
+        )
+    ) {
+        const employee = store.shiftListForDay.find((shift) =>
+            shift.employeeIDs.includes(store.availableEmployees[sourceDroppableId]?.id),
+        );
+        message.error(`Zamestnanec se v tento den jiz nachazi na smene ${employee.time}`);
+        return false;
+    }
+    /** Check whether the selected employee isnt inactive **/
+    if (!store.availableEmployees[sourceDroppableId]?.active) {
+        message.error(`Zamestnanec je neaktivni`);
+        return false;
+    }
+
+    /** CHECK IF SELECTED EMPLOYEE ISNT ALREADY IN THE CURRENT SHIFT **/
+    if (store.shift.employeeIDs.includes(store.availableEmployees[sourceDroppableId]?.id)) {
+        message.error(`Tento zamestnanec uz na teto smene je`);
+        return false;
+    }
+    /** TODO IF IS MAXIMUM SHIFT CAPATITY REACHED???? CONSIDER ADDING ATTRIBUTE TO THE TABLE **/
+
+    return true;
+};
 
 export const dragEndHandler = (event: DropResult, store: ShiftStore): void => {
     if (event.destination) {
         if (event.destination.droppableId !== event.source.droppableId) {
             if (event.destination.droppableId === 'shift-table' && event.source.droppableId === 'employee-table') {
-                store.addToShift(
-                    store.availableEmployees[event.source.index],
-                    event.source.index,
-                    event.destination.index,
-                );
-                store.removeEmployee(event.source.index);
+                if (isValid(event.source.index, event.destination.index, store)) {
+                    store.addToShift(
+                        store.availableEmployees[event.source.index],
+                        event.source.index,
+                        event.destination.index,
+                    );
+                    store.removeEmployee(event.source.index);
+                }
             } else {
                 store.addEmployee(store.shiftEmployees[event.source.index]);
                 store.removeFromShift(event.source.index);
