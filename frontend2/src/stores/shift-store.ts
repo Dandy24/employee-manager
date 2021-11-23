@@ -22,7 +22,11 @@ export class ShiftStore {
     shiftList: ShiftEntity[];
     shiftListForDay: ShiftEntity[];
 
-    private rootStore: RootStore;
+    shiftEditResult?: 'success' | 'error';
+    isSubmitted = false;
+
+    /** FIXME should probably be changed back to private, might cause errors **/
+    rootStore: RootStore;
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
@@ -49,6 +53,9 @@ export class ShiftStore {
             setEmployees: action,
             addEmployee: action,
             removeEmployee: action,
+
+            shiftEditResult: observable,
+            isSubmitted: observable,
         });
 
         //this.availableEmployees = [...rootStore.employeeStore.employees];
@@ -113,9 +120,12 @@ export class ShiftStore {
             try {
                 await updateShift(this.shift.id, shift);
                 this.clearShift();
+                this.setShiftEditResult('success');
             } catch (e) {
                 message.error('Smenu se nepodarilo aktualizovat');
+                this.setShiftEditResult('error');
             }
+            this.setIsShiftSubmitted(true);
         } else {
             this.shift.employeeIDs = this.shiftEmployees.map((emp) => emp.id);
             runInAction(() => {
@@ -124,9 +134,12 @@ export class ShiftStore {
             try {
                 await createShift(this.shift);
                 this.clearShift();
+                this.setShiftEditResult('success');
             } catch (e) {
                 message.error('Smenu se nepodarilo vytvorit');
+                this.setShiftEditResult('error');
             }
+            this.setIsShiftSubmitted(true);
         }
     }
 
@@ -169,5 +182,17 @@ export class ShiftStore {
         this.shift.time = time;
         this.shift.date = this.rootStore.calendarStore.stringDate;
         this.shift.companyID = companyId;
+    }
+
+    setShiftEditResult(result: 'success' | 'error'): void {
+        runInAction(() => {
+            this.shiftEditResult = result;
+        });
+    }
+
+    setIsShiftSubmitted(submitted: boolean): void {
+        runInAction(() => {
+            this.isSubmitted = submitted;
+        });
     }
 }
