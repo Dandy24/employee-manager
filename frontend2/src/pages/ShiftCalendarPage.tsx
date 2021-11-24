@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Breadcrumb, Button, Calendar, Empty, List, Modal, PageHeader, Tag } from 'antd';
 import React, { useEffect } from 'react';
 import { RootStore } from '../stores/root-store';
@@ -61,8 +61,10 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
             <PageHeader
                 breadcrumb={
                     <Breadcrumb>
-                        <Breadcrumb.Item href="/">
-                            <HomeOutlined />
+                        <Breadcrumb.Item>
+                            <Link to={'/'}>
+                                <HomeOutlined />
+                            </Link>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
                             <CalendarOutlined />

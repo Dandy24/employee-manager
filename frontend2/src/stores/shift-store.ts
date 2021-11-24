@@ -114,6 +114,10 @@ export class ShiftStore {
     }
 
     async saveShift(updatedShift: ShiftEntity): Promise<void> {
+        if (this.shiftEmployees.length < 1) {
+            message.error(`Smena nema zadne zamestnance`);
+            return;
+        }
         if (this.shift.id) {
             const employeeIDs = this.shiftEmployees.map((emp) => emp.id);
             const shift: ShiftDto = { ...updatedShift, employeeIDs };

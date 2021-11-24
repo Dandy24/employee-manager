@@ -5,7 +5,7 @@ import { RootStore } from '../stores/root-store';
 import { DragDropContext, DropResult, ResponderProvided } from 'react-beautiful-dnd';
 import { EmpTable } from './tables/employee-table';
 import { ShiftTable } from './tables/shift-table';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { dragEndHandler } from '../services/drag-end-handler';
 import { CalendarOutlined, ExclamationCircleOutlined, HomeOutlined, SwapOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -67,12 +67,16 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                 <PageHeader
                     breadcrumb={
                         <Breadcrumb data-testid="shift-manager-header-breadcrumb">
-                            <Breadcrumb.Item href="/">
-                                <HomeOutlined />
+                            <Breadcrumb.Item>
+                                <Link to={'/'}>
+                                    <HomeOutlined />
+                                </Link>
                             </Breadcrumb.Item>
-                            <Breadcrumb.Item href={`/shift-calendar/${rootStore.calendarStore.activeCompanyId}`}>
-                                <CalendarOutlined />
-                                <span>{`Kalendar smen`}</span>
+                            <Breadcrumb.Item>
+                                <Link to={`/shift-calendar/${rootStore.calendarStore.activeCompanyId}`}>
+                                    <CalendarOutlined />
+                                    <span>{`Kalendar smen`}</span>
+                                </Link>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>
                                 {rootStore.shiftStore.shift?.id

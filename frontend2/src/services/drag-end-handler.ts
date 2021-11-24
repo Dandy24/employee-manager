@@ -24,7 +24,7 @@ export const isValid = (sourceDroppableId: number, destinationDroppableId: numbe
     }
 
     /** CHECK IF SELECTED EMPLOYEE ISNT ALREADY IN THE CURRENT SHIFT **/
-    if (store.shift.employeeIDs.includes(store.availableEmployees[sourceDroppableId]?.id)) {
+    if (store.shift.employeeIDs?.includes(store.availableEmployees[sourceDroppableId]?.id)) {
         message.error(`Tento zamestnanec uz na teto smene je`);
         return false;
     }
