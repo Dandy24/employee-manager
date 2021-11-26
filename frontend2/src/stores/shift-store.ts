@@ -185,6 +185,7 @@ export class ShiftStore {
     }
 
     addShift(time: ShiftTypeEnum, companyId: number): void {
+        this.shiftEmployees = [];
         this.shift.time = time;
         this.shift.date = this.rootStore.calendarStore.stringDate;
         this.shift.companyID = companyId;
