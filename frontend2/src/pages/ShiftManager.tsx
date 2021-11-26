@@ -105,7 +105,7 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                         >
                             Uložit
                         </Button>,
-                        <Button onClick={handleDelete} danger type="primary">
+                        <Button data-testid={'delete-shift-button'} onClick={handleDelete} danger type="primary">
                             Smazat
                         </Button>,
                     ]}

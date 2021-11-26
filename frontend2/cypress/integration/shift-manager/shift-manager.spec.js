@@ -156,4 +156,23 @@ describe('shift validation', () => {
             'ranni',
         );
     });
+
+    /** Open existing shift, edit and save **/
+    it('checks delete existing shift from shift manager', () => {
+        cy.get('[data-testid=shift-ranni]').find('a').click();
+
+        cy.get('[data-testid=delete-shift-button]').click();
+
+        cy.get('.ant-modal-body').should('be.visible');
+        cy.get('.ant-modal-confirm-title').should('have.text', 'Opravdu chcete smazat tuto smenu?');
+
+        cy.get('.ant-modal-confirm-btns > .ant-btn-dangerous').click();
+
+        cy.get('main > .ant-picker-calendar-full').should('exist').and('be.visible');
+
+        cy.get('[title="2021-11-15"] > .ant-picker-cell-inner > .ant-picker-calendar-date-content').should(
+            'not.contain.text',
+            'ranni',
+        );
+    });
 });
