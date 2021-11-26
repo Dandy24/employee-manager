@@ -48,8 +48,12 @@ export function EmployeeTableColumns(
             dataIndex: 'active',
             key: 'active',
             render: (text: string, row: { active: boolean }) => <p> {row.active ? 'Ano' : 'Ne'} </p>,
-            Cell: ({ value }) => (
-                <Tag style={{ width: '75%', textAlign: 'center' }} color={value ? '#87d068' : '#f50'}>
+            Cell: ({ value, row }) => (
+                <Tag
+                    style={{ width: '75%', textAlign: 'center' }}
+                    color={value ? '#87d068' : '#f50'}
+                    data-testid={value ? `employee-${row.index}-active-tag` : `employee-${row.index}-inactive-tag`}
+                >
                     {value ? 'Ano' : 'Ne'}
                 </Tag>
             ),
