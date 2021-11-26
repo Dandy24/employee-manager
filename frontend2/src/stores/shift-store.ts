@@ -116,6 +116,8 @@ export class ShiftStore {
     async saveShift(updatedShift: ShiftEntity): Promise<void> {
         if (this.shiftEmployees.length < 1) {
             message.error(`Smena nema zadne zamestnance`);
+            this.setShiftEditResult('error');
+            this.setIsShiftSubmitted(true);
             return;
         }
         if (this.shift.id) {

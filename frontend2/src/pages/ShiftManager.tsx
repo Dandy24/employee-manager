@@ -95,7 +95,14 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                     tags={<Tag color="blue">{rootStore.shiftStore.shift?.time}</Tag>}
                     ghost={false}
                     extra={[
-                        <Button onClick={saveShift} type="primary" disabled={rootStore.shiftStore.isSubmitted}>
+                        <Button
+                            onClick={saveShift}
+                            data-testid={'submit-shift-button'}
+                            type="primary"
+                            disabled={
+                                rootStore.shiftStore.isSubmitted && rootStore.shiftStore.shiftEditResult === 'success'
+                            }
+                        >
                             Uložit
                         </Button>,
                         <Button onClick={handleDelete} danger type="primary">

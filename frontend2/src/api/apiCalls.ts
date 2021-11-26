@@ -94,6 +94,14 @@ export function getCompanyList(): Promise<CompanyEntity[]> {
         });
 }
 
+export function getCompanyById(companyId: number): Promise<CompanyEntity[]> {
+    return fetch(`http://localhost:8000/api/company-detail/${companyId}`)
+        .then((response) => response.json())
+        .then((data) => {
+            return data;
+        });
+}
+
 export function createCompany(company: CompanyDto): Promise<CompanyEntity> {
     return fetch(`http://localhost:8000/api/company-create`, {
         method: 'POST',

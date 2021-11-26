@@ -26,6 +26,8 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
     rootStore.calendarStore.setActiveCompanyId(parseInt(companyId));
 
     useEffect(() => {
+        /** FIXME this throws cypress ResizeObserver error **/
+        //rootStore.companyStore.fetchAllCompanies();
         rootStore.shiftStore.loadShiftList(rootStore.calendarStore.activeCompanyId);
     }, []);
 
