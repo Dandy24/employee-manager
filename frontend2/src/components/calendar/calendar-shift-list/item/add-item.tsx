@@ -18,6 +18,7 @@ export const CalendarShiftListItemAdd: React.FC<CalendarShiftListItemAddProps> =
         const { item, rootStore, companyId } = props;
 
         const onLinkClick = () => {
+            rootStore.shiftStore.setIsShiftSubmitted(false);
             rootStore.shiftStore.addShift(item[1], parseInt(companyId));
             rootStore.calendarStore.setShiftEditOpen(false);
             rootStore.calendarStore.setShiftSelectOpen(false);

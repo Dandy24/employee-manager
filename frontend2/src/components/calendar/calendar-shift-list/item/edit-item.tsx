@@ -20,6 +20,7 @@ export const CalendarShiftListItemEdit: React.FC<CalendarShiftListItemProps> = o
         const onLinkClick = () => {
             rootStore.calendarStore.setShiftEditOpen(false);
             rootStore.calendarStore.setShiftSelectOpen(false);
+            rootStore.shiftStore.setIsShiftSubmitted(false);
         };
 
         return (
