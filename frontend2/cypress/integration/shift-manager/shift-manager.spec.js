@@ -30,7 +30,7 @@ describe('shift validation', () => {
     //     cy.get('[data-testid=header-company-name]').should('have.text', 'Example Company');
     // });
 
-    it('assigning employees to shift and succesfully saving', () => {
+    it('creates new shift, assigns employees and successfully saves', () => {
         cy.get('[data-testid=shift-add-button]').click();
         cy.get('[data-testid=new-shift-Odpoledne]').click();
 
@@ -125,8 +125,8 @@ describe('shift validation', () => {
     });
 
     /** FIXME PUT API call is currently broken **/
-    /** Open existing shift, edit and save **/
-    it('check submitting invalid shift', () => {
+    /** Open existing shift and save without changing anything **/
+    it('check submitting existing shift without changing anything', () => {
         cy.get('[data-testid=shift-ranni]').find('a').click();
 
         // cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 5);
@@ -157,7 +157,59 @@ describe('shift validation', () => {
         );
     });
 
-    /** Open existing shift, edit and save **/
+    /** FIXME PUT API call is currently broken **/
+    /** Open existing shift, edit, save and reopen shift to check if shift data are correct **/
+    it('Check opening existing shift, editing, saving and reopening000000000000000 shift to check if shift data are correct', () => {
+        cy.get('[data-testid=shift-vecer]').find('a').click();
+
+        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 4).and('not.contain.text', 19);
+        cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 2).and('contain.text', 19);
+
+        cy.dragAndDrop('[data-testid=shift-table-row-0]', '[data-testid=employee-table-body]');
+        // eslint-disable-next-line testing-library/await-async-utils,cypress/no-unnecessary-waiting
+        cy.wait(500);
+        cy.dragAndDrop('[data-testid=employee-table-row-0]', '[data-testid=shift-table-body]');
+        // eslint-disable-next-line testing-library/await-async-utils,cypress/no-unnecessary-waiting
+        cy.wait(500);
+
+        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 4).and('contain.text', 19);
+        cy.get('[data-testid=shift-table-body]')
+            .find('tr')
+            .should('have.length', 2)
+            .and('not.contain.text', 19)
+            .and('contain.text', 'Godula');
+
+        cy.get('[data-testid=submit-shift-button]').click();
+
+        /** FIXME PUT API call **/
+        // cy.get('.ant-result-success').should('be.visible');
+        // cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se podařilo úspěšně vytvořit.');
+        // cy.get('[data-testid=shift-submit-result-subtitle]').should(
+        //     'have.text',
+        //     'Směna je naplánována na 2021-11-15 ranni',
+        // );
+
+        cy.get('[data-testid=back-to-calendar-button]').click();
+
+        cy.get('[title="2021-11-15"] > .ant-picker-cell-inner > .ant-picker-calendar-date-content').should(
+            'contain.text',
+            'vecer',
+        );
+
+        cy.get('[title="2021-11-15"]').dblclick();
+        cy.get('[data-testid=shift-vecer]').find('a').click();
+
+        /** Verify that both tables are the same as before exiting the manager   **/
+        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 4).and('contain.text', 19);
+        cy.get('[data-testid=shift-table-body]')
+            .find('tr')
+            .should('have.length', 2)
+            .and('not.contain.text', 19)
+            .and('contain.text', 'Godula');
+    });
+
+    /** FIXME SHIFTS NOT LOADING UNLESS CLICKED ON CALENDAR (ShiftCalendarPage useEffect commented line) **/
+    /** Open existing shift and delete it **/
     it('checks delete existing shift from shift manager', () => {
         cy.get('[data-testid=shift-ranni]').find('a').click();
 

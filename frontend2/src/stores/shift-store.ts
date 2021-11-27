@@ -170,7 +170,10 @@ export class ShiftStore {
 
     async loadAvailableEmployees(): Promise<void> {
         await this.rootStore.employeeStore.fetchAllEmployees(this.shift.companyID);
-        this.setEmployees([...this.rootStore.employeeStore.employees]);
+        /** DONT SHOW EMPLOYEES THAT ARE ALREADY IN THE CURRENTLY EDITED SHIFT **/
+        this.setEmployees(
+            [...this.rootStore.employeeStore.employees].filter((emp) => !this.shift.employeeIDs?.includes(emp.id)),
+        );
     }
 
     async deleteShift(shiftId: number, companyId: number): Promise<void> {
