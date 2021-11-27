@@ -26,10 +26,10 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
     rootStore.calendarStore.setActiveCompanyId(parseInt(companyId));
 
     useEffect(() => {
-        /** FIXME this throws cypress ResizeObserver error **/
-        //rootStore.companyStore.fetchAllCompanies();
-        rootStore.shiftStore.loadShiftList(rootStore.calendarStore.activeCompanyId);
-    }, []);
+        (async () => {
+            await rootStore.shiftStore.loadShiftList(rootStore.calendarStore.activeCompanyId);
+        })();
+    }, [rootStore.shiftStore.shiftList]);
 
     const selectShiftHandler = (date): void => {
         rootStore.shiftStore.setShiftsForDate(date);

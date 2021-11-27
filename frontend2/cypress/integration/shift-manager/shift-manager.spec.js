@@ -227,4 +227,6 @@ describe('shift validation', () => {
             'ranni',
         );
     });
+
+    /** TODO test sorting and filtering - IMPLEMENT useSortBy & useGlobalFilter to react-table **/
 });
