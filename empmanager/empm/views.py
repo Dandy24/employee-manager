@@ -262,3 +262,12 @@ def deleteShiftTable(request):
     cursor.execute("delete from sqlite_sequence where name='empm_shift'")
 
     return Response('All shifts were deleted')
+
+@api_view(['DELETE'])
+def deleteEmployeeTable(request):
+    cursor = connection.cursor()
+
+    Shift.objects.all().delete()
+    cursor.execute("delete from sqlite_sequence where name='empm_employee'")
+
+    return Response('All employees were deleted')

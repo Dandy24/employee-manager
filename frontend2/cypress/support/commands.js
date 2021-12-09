@@ -24,6 +24,8 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+import 'cypress-wait-until';
+
 Cypress.Commands.add('dragAndDrop', (subject, target) => {
     Cypress.log({
         name: 'DRAGNDROP',

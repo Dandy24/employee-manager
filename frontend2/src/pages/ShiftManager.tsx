@@ -100,7 +100,9 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                             data-testid={'submit-shift-button'}
                             type="primary"
                             disabled={
-                                rootStore.shiftStore.isSubmitted && rootStore.shiftStore.shiftEditResult === 'success'
+                                (rootStore.shiftStore.isSubmitted &&
+                                    rootStore.shiftStore.shiftEditResult === 'success') ||
+                                rootStore.shiftStore.shiftEmployees.length === 0
                             }
                         >
                             Uložit
