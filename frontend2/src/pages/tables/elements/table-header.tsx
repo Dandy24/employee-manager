@@ -13,7 +13,7 @@ export const TableHeader: React.FC<TableHeaderProps> = observer((props: TableHea
     /** TODO spread to more logical independent components **/
 
     return (
-        <thead className="ant-table-thead">
+        <thead className="ant-table-thead" data-testid={`${type}-thead`}>
             {headerGroups.map((headerGroup, index) => (
                 <tr {...headerGroup.getHeaderGroupProps()} key={`${type}-thead-tr-${index}`} style={{ width: '100%' }}>
                     {headerGroup.headers.map((column) => (

@@ -27,6 +27,7 @@ export const ShiftTable: React.FC = observer((): JSX.Element => {
             {(provided, snapshot) => (
                 <table
                     {...getTableProps()}
+                    data-testid={'shift-table'}
                     style={{ border: 'solid 1px blue', backgroundColor: snapshot.isDraggingOver ? 'lightblue' : null }}
                 >
                     <TableHeader headerGroups={headerGroups} type="shift-table" />

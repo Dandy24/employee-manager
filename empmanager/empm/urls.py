@@ -46,8 +46,8 @@ urlpatterns = [
     path('shift-update/<str:pk>', views.shiftUpdate, name='shift-update'),
     path('shift-delete/<str:pk>', views.shiftDelete, name='shift-delete'),
 
-
-
+    path('delete-employee-table', views.deleteEmployeeTable, name='delete-employee-table'),
+    path('delete-shift-table', views.deleteShiftTable, name='delete-shift-table'),
     path('company-table-delete', views.deleteCompanyTable, name='company-table-delete'),
 
     #path('monthly-output-list/<str:pk>', views.MonthlyOutputByEmployeeID, name='monthly-output-list'),

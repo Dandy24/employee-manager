@@ -50,7 +50,7 @@ export function CompanyTableColumns(
                     >
                         Smazat
                     </Button>
-                    <Link to={`/shift-calendar/${record.id}`}>
+                    <Link data-testid={`company-calendar-button-${record.id}`} to={`/shift-calendar/${record.id}`}>
                         <Button>Kalendář směn</Button>
                     </Link>
                 </Space>

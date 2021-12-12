@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Breadcrumb, Button, Calendar, Empty, List, Modal, PageHeader, Tag } from 'antd';
 import React, { useEffect } from 'react';
 import { RootStore } from '../stores/root-store';
@@ -9,7 +9,8 @@ import { CalendarDateCell } from '../components/calendar/calendar-date-cell/cale
 import { CalendarShiftListItemEdit } from '../components/calendar/calendar-shift-list/item/edit-item';
 import { CalendarShiftListItemAdd } from '../components/calendar/calendar-shift-list/item/add-item';
 import { CalendarModal } from '../components/calendar/modal/calendar-modal';
-import { CalendarOutlined, HomeOutlined } from '@ant-design/icons';
+import { CalendarOutlined, ExclamationCircleOutlined, HomeOutlined } from '@ant-design/icons';
+import { CompanyEntity } from '../models/entities/company-entity';
 export interface ShiftCalendarPageProps {
     rootStore: RootStore;
 }
@@ -20,11 +21,15 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
     const { companyId } = useParams<{ companyId: string }>();
     const { rootStore } = props;
 
+    const { confirm } = Modal;
+
     rootStore.calendarStore.setActiveCompanyId(parseInt(companyId));
 
     useEffect(() => {
-        rootStore.shiftStore.loadShiftList(rootStore.calendarStore.activeCompanyId);
-    }, []);
+        (async () => {
+            await rootStore.shiftStore.loadShiftList(rootStore.calendarStore.activeCompanyId);
+        })();
+    }, [rootStore.shiftStore.shiftList]);
 
     const selectShiftHandler = (date): void => {
         rootStore.shiftStore.setShiftsForDate(date);
@@ -36,7 +41,17 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
     };
 
     const handleDelete = async (shiftId: number) => {
-        await rootStore.shiftStore.deleteShift(shiftId, rootStore.calendarStore.activeCompanyId);
+        confirm({
+            title: 'Opravdu chcete smazat tuto smenu?',
+            icon: <ExclamationCircleOutlined />,
+            content: 'Tuto akci nelze vrátit zpět',
+            okText: 'Ano',
+            okType: 'danger',
+            cancelText: 'Ne',
+            async onOk() {
+                await rootStore.shiftStore.deleteShift(shiftId, rootStore.calendarStore.activeCompanyId);
+            },
+        });
     };
 
     const getCalendarDateCell = (date: moment.Moment): React.ReactNode => {
@@ -48,8 +63,10 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
             <PageHeader
                 breadcrumb={
                     <Breadcrumb>
-                        <Breadcrumb.Item href="/">
-                            <HomeOutlined />
+                        <Breadcrumb.Item>
+                            <Link to={'/'}>
+                                <HomeOutlined />
+                            </Link>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
                             <CalendarOutlined />
@@ -58,8 +75,13 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                     </Breadcrumb>
                 }
                 title={
-                    rootStore.companyStore.companies.find((comp) => comp.id === rootStore.calendarStore.activeCompanyId)
-                        ?.name
+                    <div data-testid="header-company-name">
+                        {
+                            rootStore.companyStore.companies.find(
+                                (comp) => comp.id === rootStore.calendarStore.activeCompanyId,
+                            )?.name
+                        }
+                    </div>
                 }
                 //subTitle={moment(rootStore.shiftStore.shift?.date).format('MMMM Do YYYY')}
                 //tags={<Tag color="blue">{rootStore.shiftStore.shift?.time}</Tag>}
@@ -74,7 +96,11 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                 // ]}
             />
             <div style={{ padding: '1.5%' }}></div>
-            <Calendar dateFullCellRender={getCalendarDateCell} onSelect={selectDateHandler} />
+            <Calendar
+                data-testid="shift-calendar"
+                dateFullCellRender={getCalendarDateCell}
+                onSelect={selectDateHandler}
+            />
             <CalendarModal store={rootStore.calendarStore}>
                 {!rootStore.calendarStore.isEditOpen ? (
                     <List
@@ -90,6 +116,7 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                     />
                 ) : (
                     <List
+                        data-testid="create-shift-list"
                         locale={{
                             emptyText: (
                                 <Empty description="Replace this text" image="https://joeschmoe.io/api/v1/random" />

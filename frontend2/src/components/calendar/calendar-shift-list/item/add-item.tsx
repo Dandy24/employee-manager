@@ -18,6 +18,7 @@ export const CalendarShiftListItemAdd: React.FC<CalendarShiftListItemAddProps> =
         const { item, rootStore, companyId } = props;
 
         const onLinkClick = () => {
+            rootStore.shiftStore.setIsShiftSubmitted(false);
             rootStore.shiftStore.addShift(item[1], parseInt(companyId));
             rootStore.calendarStore.setShiftEditOpen(false);
             rootStore.calendarStore.setShiftSelectOpen(false);
@@ -31,16 +32,18 @@ export const CalendarShiftListItemAdd: React.FC<CalendarShiftListItemAddProps> =
                     ) ? (
                         <Col span={20} flex="auto">
                             <Title level={5}>
-                                <Text disabled>{item[0]}</Text>
+                                <Text data-testid={`new-shift-${item[0]}`} disabled>
+                                    {item[0]}
+                                </Text>
                             </Title>
                         </Col>
                     ) : (
                         <Col span={20} flex="auto">
-                            <Title level={5}>
-                                <Link to={`/shift-manager`} onClick={onLinkClick}>
+                            <Link to={`/shift-manager`} data-testid={`new-shift-${item[0]}`} onClick={onLinkClick}>
+                                <Title style={{ color: '#1890ff' }} level={5}>
                                     {item[0]}
-                                </Link>
-                            </Title>
+                                </Title>
+                            </Link>
                         </Col>
                     )}
                 </Row>

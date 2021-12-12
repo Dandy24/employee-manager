@@ -5,7 +5,7 @@ import { RootStore } from '../stores/root-store';
 import { DragDropContext, DropResult, ResponderProvided } from 'react-beautiful-dnd';
 import { EmpTable } from './tables/employee-table';
 import { ShiftTable } from './tables/shift-table';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { dragEndHandler } from '../services/drag-end-handler';
 import { CalendarOutlined, ExclamationCircleOutlined, HomeOutlined, SwapOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -66,15 +66,23 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
             <div>
                 <PageHeader
                     breadcrumb={
-                        <Breadcrumb>
-                            <Breadcrumb.Item href="/">
-                                <HomeOutlined />
+                        <Breadcrumb data-testid="shift-manager-header-breadcrumb">
+                            <Breadcrumb.Item>
+                                <Link to={'/'}>
+                                    <HomeOutlined />
+                                </Link>
                             </Breadcrumb.Item>
-                            <Breadcrumb.Item href={`/shift-calendar/${rootStore.calendarStore.activeCompanyId}`}>
-                                <CalendarOutlined />
-                                <span>{`Kalendar smen`}</span>
+                            <Breadcrumb.Item>
+                                <Link to={`/shift-calendar/${rootStore.calendarStore.activeCompanyId}`}>
+                                    <CalendarOutlined />
+                                    <span>{`Kalendar smen`}</span>
+                                </Link>
                             </Breadcrumb.Item>
-                            <Breadcrumb.Item>{`Smena c. ${rootStore.shiftStore.shift?.id}`}</Breadcrumb.Item>
+                            <Breadcrumb.Item>
+                                {rootStore.shiftStore.shift?.id
+                                    ? 'Smena c. ' + rootStore.shiftStore.shift.id
+                                    : 'Nová směna'}
+                            </Breadcrumb.Item>
                         </Breadcrumb>
                     }
                     title={
@@ -82,14 +90,31 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                             (comp) => comp.id === rootStore.calendarStore.activeCompanyId,
                         )?.name
                     }
+                    data-testid="shift-manager-header"
                     subTitle={moment(rootStore.shiftStore.shift?.date).format('MMMM Do YYYY')}
                     tags={<Tag color="blue">{rootStore.shiftStore.shift?.time}</Tag>}
                     ghost={false}
                     extra={[
-                        <Button onClick={saveShift} type="primary" disabled={rootStore.shiftStore.isSubmitted}>
+                        <Button
+                            key={'submit-shift-button'}
+                            onClick={saveShift}
+                            data-testid={'submit-shift-button'}
+                            type="primary"
+                            disabled={
+                                (rootStore.shiftStore.isSubmitted &&
+                                    rootStore.shiftStore.shiftEditResult === 'success') ||
+                                rootStore.shiftStore.shiftEmployees.length === 0
+                            }
+                        >
                             Uložit
                         </Button>,
-                        <Button onClick={handleDelete} danger type="primary">
+                        <Button
+                            key={'delete-shift-button'}
+                            data-testid={'delete-shift-button'}
+                            onClick={handleDelete}
+                            danger
+                            type="primary"
+                        >
                             Smazat
                         </Button>,
                     ]}

@@ -19,17 +19,26 @@ export const ShiftSubmitResult: React.FC<ShiftSubmitResultProps> = observer((pro
             <Result
                 status={store.shiftEditResult}
                 title={
-                    store.shiftEditResult === 'success'
-                        ? `Směnu se podařilo úspěšně vytvořit.`
-                        : `Směnu se nepodařilo vytvořit.`
+                    <div data-testid={'shift-submit-result-title'}>
+                        {store.shiftEditResult === 'success'
+                            ? `Směnu se podařilo úspěšně vytvořit.`
+                            : `Směnu se nepodařilo vytvořit.`}
+                    </div>
                 }
                 subTitle={
-                    store.shiftEditResult === 'success'
-                        ? `Směna je naplánována na ${store.shift.date} ${store.shift.time}`
-                        : `Zkontrolujte prosím zda nebyly hlášeny chyby`
+                    <div data-testid={'shift-submit-result-subtitle'}>
+                        {store.shiftEditResult === 'success'
+                            ? `Směna je naplánována na ${store.shift.date} ${store.shift.time}`
+                            : `Zkontrolujte prosím zda nebyly hlášeny chyby`}
+                    </div>
                 }
                 extra={[
-                    <Button type="primary" key="calendar" onClick={handleRedirect}>
+                    <Button
+                        data-testid={'back-to-calendar-button'}
+                        type="primary"
+                        key="calendar"
+                        onClick={handleRedirect}
+                    >
                         Vrátit se zpět na kalendář
                     </Button>,
                     // <Button key="buy">Buy Again</Button>,

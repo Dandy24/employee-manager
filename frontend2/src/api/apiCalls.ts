@@ -94,6 +94,14 @@ export function getCompanyList(): Promise<CompanyEntity[]> {
         });
 }
 
+export function getCompanyById(companyId: number): Promise<CompanyEntity[]> {
+    return fetch(`http://localhost:8000/api/company-detail/${companyId}`)
+        .then((response) => response.json())
+        .then((data) => {
+            return data;
+        });
+}
+
 export function createCompany(company: CompanyDto): Promise<CompanyEntity> {
     return fetch(`http://localhost:8000/api/company-create`, {
         method: 'POST',
@@ -187,6 +195,15 @@ export async function getShiftListForCompany(companyId: number): Promise<ShiftEn
 
 export async function deleteCompanyTable(): Promise<Response> {
     return fetch(`http://localhost:8000/api/company-table-delete`, {
+        method: 'DELETE',
+        headers: {
+            'Content-type': 'application/json',
+        },
+    });
+}
+
+export async function deleteAllShifts(): Promise<void> {
+    await fetch(`http://localhost:8000/api/delete-shift-table`, {
         method: 'DELETE',
         headers: {
             'Content-type': 'application/json',

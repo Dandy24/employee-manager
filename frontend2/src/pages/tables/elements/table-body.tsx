@@ -2,7 +2,6 @@ import { observer } from 'mobx-react-lite';
 import { Draggable, DroppableProvided } from 'react-beautiful-dnd';
 import React from 'react';
 import { Row } from 'react-table';
-import { EmployeeEntity } from '../../../models/entities/employee-entity';
 
 export interface TableBodyProps {
     // providedDraggable: DraggableProvided;
@@ -18,12 +17,16 @@ export const TableBody: React.FC<TableBodyProps> = observer((props: TableBodyPro
 
     /** TODO spread to more logical independent components **/
 
+    /** FIXME table height style -- table must have height for d&d tests to work **/
+
     return (
         <tbody
             {...tableBodyProps}
             ref={providedDroppable.innerRef}
             {...providedDroppable.droppableProps}
             className="ant-table-tbody"
+            data-testid={`${type}-body`} /** TODO make variable after merging to one component with shift table **/
+            style={{ height: type === 'shift-table' ? '300px' : null }}
         >
             {rows.map((row, index) => {
                 prepareRow(row);
@@ -38,6 +41,7 @@ export const TableBody: React.FC<TableBodyProps> = observer((props: TableBodyPro
                                     {...provided.dragHandleProps}
                                     ref={provided.innerRef}
                                     className="ant-table-row ant-table-row-level-0"
+                                    data-testid={`${type}-row-${index}`}
                                 >
                                     {row.cells.map((cell, index) => {
                                         return (

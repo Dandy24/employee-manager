@@ -114,6 +114,12 @@ export class ShiftStore {
     }
 
     async saveShift(updatedShift: ShiftEntity): Promise<void> {
+        if (this.shiftEmployees.length < 1) {
+            message.error(`Smena nema zadne zamestnance`);
+            this.setShiftEditResult('error');
+            this.setIsShiftSubmitted(true);
+            return;
+        }
         if (this.shift.id) {
             const employeeIDs = this.shiftEmployees.map((emp) => emp.id);
             const shift: ShiftDto = { ...updatedShift, employeeIDs };
@@ -164,7 +170,10 @@ export class ShiftStore {
 
     async loadAvailableEmployees(): Promise<void> {
         await this.rootStore.employeeStore.fetchAllEmployees(this.shift.companyID);
-        this.setEmployees([...this.rootStore.employeeStore.employees]);
+        /** DONT SHOW EMPLOYEES THAT ARE ALREADY IN THE CURRENTLY EDITED SHIFT **/
+        this.setEmployees(
+            [...this.rootStore.employeeStore.employees].filter((emp) => !this.shift.employeeIDs?.includes(emp.id)),
+        );
     }
 
     async deleteShift(shiftId: number, companyId: number): Promise<void> {
@@ -179,6 +188,7 @@ export class ShiftStore {
     }
 
     addShift(time: ShiftTypeEnum, companyId: number): void {
+        this.shiftEmployees = [];
         this.shift.time = time;
         this.shift.date = this.rootStore.calendarStore.stringDate;
         this.shift.companyID = companyId;
