@@ -96,6 +96,7 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                     ghost={false}
                     extra={[
                         <Button
+                            key={'submit-shift-button'}
                             onClick={saveShift}
                             data-testid={'submit-shift-button'}
                             type="primary"
@@ -107,7 +108,13 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                         >
                             Uložit
                         </Button>,
-                        <Button data-testid={'delete-shift-button'} onClick={handleDelete} danger type="primary">
+                        <Button
+                            key={'delete-shift-button'}
+                            data-testid={'delete-shift-button'}
+                            onClick={handleDelete}
+                            danger
+                            type="primary"
+                        >
                             Smazat
                         </Button>,
                     ]}
