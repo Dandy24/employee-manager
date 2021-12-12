@@ -35,9 +35,7 @@ describe('shift validation', () => {
         cy.get('[data-testid=new-shift-Odpoledne]').click();
 
         cy.dragAndDrop('[data-testid=employee-table-row-4]', '[data-testid=shift-table-body]');
-        // eslint-disable-next-line testing-library/await-async-utils,cypress/no-unnecessary-waiting
-
-        cy.get('[data-testid=shift-table-body]', { timeout: 500 }).find('tr').should('have.length', 1);
+        cy.waitUntil(() => cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 1));
 
         cy.get('[data-testid=submit-shift-button]').click();
 
@@ -106,27 +104,31 @@ describe('shift validation', () => {
 
         cy.get('[data-testid=employee-table-body]').find('tr').contains('43');
 
-        cy.get('[data-testid=submit-shift-button]').click();
+        cy.get('[data-testid=submit-shift-button]').should('be.disabled');
+        // .click();
 
-        cy.get('.ant-result-error').should('be.visible');
-        cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se nepodařilo vytvořit.');
-        cy.get('[data-testid=shift-submit-result-subtitle]').should(
-            'have.text',
-            'Zkontrolujte prosím zda nebyly hlášeny chyby',
-        );
+        /** WONT SHOW, BECAUSE SUBMIT BUTTON IS NOW DISABLED IF SHIFT IS INVALID **/
 
-        cy.get('[data-testid=back-to-calendar-button]').click();
+        // cy.get('.ant-result-error').should('be.visible');
+        // cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se nepodařilo vytvořit.');
+        // cy.get('[data-testid=shift-submit-result-subtitle]').should(
+        //     'have.text',
+        //     'Zkontrolujte prosím zda nebyly hlášeny chyby',
+        // );
 
-        cy.get('[title="2021-12-15"] > .ant-picker-cell-inner > .ant-picker-calendar-date-content').should(
-            'not.contain.text',
-            'odpoledne',
-        );
+        // cy.get('[data-testid=back-to-calendar-button]').click();
+        //
+        // cy.get('[title="2021-12-15"] > .ant-picker-cell-inner > .ant-picker-calendar-date-content').should(
+        //     'not.contain.text',
+        //     'odpoledne',
+        // );
     });
 
     /** FIXME PUT API call is currently broken **/
     /** Open existing shift and save without changing anything **/
     it('check submitting existing shift without changing anything', () => {
-        cy.get('[data-testid=shift-ranni]').find('a').click();
+        cy.waitUntil(() => cy.get('[data-testid=shift-ranni]').should('be.visible'));
+        cy.get('[data-testid=shift-ranni]').click();
 
         // cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 5);
         //
@@ -159,7 +161,8 @@ describe('shift validation', () => {
     /** FIXME PUT API call is currently broken **/
     /** Open existing shift, edit, save and reopen shift to check if shift data are correct **/
     it('Check opening existing shift, editing, saving and reopening shift to check if shift data are correct', () => {
-        cy.get('[data-testid=shift-vecer]').find('a').click();
+        cy.waitUntil(() => cy.get('[data-testid=shift-vecer]').should('be.visible'));
+        cy.get('[data-testid=shift-vecer]').click();
 
         cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 4).and('not.contain.text', 19);
         cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 2).and('contain.text', 19);
@@ -198,7 +201,8 @@ describe('shift validation', () => {
         );
 
         cy.get('[title="2021-12-15"]').dblclick();
-        cy.get('[data-testid=shift-vecer]').find('a').click();
+        cy.waitUntil(() => cy.get('[data-testid=shift-vecer]').should('be.visible'));
+        cy.get('[data-testid=shift-vecer]').click();
 
         /** Verify that both tables are the same as before exiting the manager   **/
         cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 4).and('contain.text', 19);
@@ -212,7 +216,8 @@ describe('shift validation', () => {
     /** FIXME SHIFTS NOT LOADING UNLESS CLICKED ON CALENDAR (ShiftCalendarPage useEffect commented line) **/
     /** Open existing shift and delete it **/
     it('checks delete existing shift from shift manager', () => {
-        cy.get('[data-testid=shift-ranni]').find('a').click();
+        cy.waitUntil(() => cy.get('[data-testid=shift-ranni]').should('be.visible'));
+        cy.get('[data-testid=shift-ranni]').click();
 
         cy.get('[data-testid=delete-shift-button]').click();
 
