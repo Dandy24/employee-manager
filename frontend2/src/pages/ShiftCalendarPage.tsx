@@ -15,6 +15,7 @@ export interface ShiftCalendarPageProps {
 }
 
 /** TODO REFACTOR !!! **/
+/** FIX loading shifts in useEffect - now its causing infinite re-render loop :) **/
 
 export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((props: ShiftCalendarPageProps) => {
     const { companyId } = useParams<{ companyId: string }>();
@@ -28,7 +29,8 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
         (async () => {
             await rootStore.shiftStore.loadShiftList(rootStore.calendarStore.activeCompanyId);
         })();
-    }, [rootStore.shiftStore.shiftList]);
+    }, []);
+    //[rootStore.shiftStore.shiftList]
 
     const selectShiftHandler = (date): void => {
         rootStore.shiftStore.setShiftsForDate(date);
