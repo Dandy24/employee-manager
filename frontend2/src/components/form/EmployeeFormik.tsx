@@ -30,7 +30,12 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
     const { initialValues, onSubmit } = props;
 
     return (
-        <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={EmployeeValidationSchema}>
+        <Formik
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+            validationSchema={EmployeeValidationSchema}
+            enableReinitialize
+        >
             {props.children}
         </Formik>
     );

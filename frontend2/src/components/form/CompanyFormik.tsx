@@ -30,7 +30,12 @@ export const CompanyFormik: React.FC<CompanyFormikProps> = observer((props: Comp
     const { initialValues, onSubmit } = props;
 
     return (
-        <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={CompanyValidationSchema}>
+        <Formik
+            initialValues={initialValues}
+            enableReinitialize
+            onSubmit={onSubmit}
+            validationSchema={CompanyValidationSchema}
+        >
             {props.children}
         </Formik>
     );
