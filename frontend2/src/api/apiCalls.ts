@@ -5,8 +5,10 @@ import { EmployeeDto } from '../models/dtos/employee-dto';
 import { ShiftDto } from '../models/dtos/shift-dto';
 import { ShiftEntity } from '../models/entities/shift-entity';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export async function getEmployeeList(): Promise<EmployeeEntity[]> {
-    const response = await fetch(`http://localhost:8000/api/employee-list`);
+    const response = await fetch(`${API_URL}/employee-list`);
     if (response.ok) {
         return await response.json();
     } else {
@@ -16,7 +18,7 @@ export async function getEmployeeList(): Promise<EmployeeEntity[]> {
 }
 
 export async function getEmployeeListForCompany(companyId: number): Promise<EmployeeEntity[]> {
-    const response = await fetch(`http://localhost:8000/api/employee-list/${companyId}`);
+    const response = await fetch(`${API_URL}/employee-list/${companyId}`);
     if (response.ok) {
         return await response.json();
     } else {
@@ -26,7 +28,7 @@ export async function getEmployeeListForCompany(companyId: number): Promise<Empl
 }
 
 export async function getEmployeeListForShift(shiftId: number): Promise<EmployeeEntity[]> {
-    const response = await fetch(`http://localhost:8000/api/employee-list-shift/${shiftId}`);
+    const response = await fetch(`${API_URL}/employee-list-shift/${shiftId}`);
     if (response.ok) {
         return await response.json();
     } else {
@@ -38,7 +40,7 @@ export async function getEmployeeListForShift(shiftId: number): Promise<Employee
 //Employee detail
 
 export async function createEmployee(employee: EmployeeDto): Promise<EmployeeEntity> {
-    const response = await fetch(`http://localhost:8000/api/employee-create`, {
+    const response = await fetch(`${API_URL}/employee-create`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
@@ -56,7 +58,7 @@ export async function createEmployee(employee: EmployeeDto): Promise<EmployeeEnt
 export async function updateEmployee(editedID: number, updatedEmployee: EmployeeDto): Promise<EmployeeEntity> {
     //TODO fix editedID
 
-    const response = await fetch(`http://localhost:8000/api/employee-update/${editedID}`, {
+    const response = await fetch(`${API_URL}/employee-update/${editedID}`, {
         method: 'PUT',
         headers: {
             'Content-type': 'application/json',
@@ -72,7 +74,7 @@ export async function updateEmployee(editedID: number, updatedEmployee: Employee
 }
 
 export async function deleteEmployee(id: number): Promise<Response> {
-    const response = await fetch(`http://localhost:8000/api/employee-delete/${id}`, {
+    const response = await fetch(`${API_URL}/employee-delete/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-type': 'application/json',
@@ -86,64 +88,73 @@ export async function deleteEmployee(id: number): Promise<Response> {
     }
 }
 
-export function getCompanyList(): Promise<CompanyEntity[]> {
-    return fetch(`http://localhost:8000/api/company-list`)
-        .then((response) => response.json())
-        .then((data) => {
-            return data;
-        });
+export async function getCompanyList(): Promise<CompanyEntity[]> {
+    const response = await fetch(`${API_URL}/company-list`);
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error('Unable to load companies');
+        return Promise.reject(error);
+    }
 }
 
 export function getCompanyById(companyId: number): Promise<CompanyEntity[]> {
-    return fetch(`http://localhost:8000/api/company-detail/${companyId}`)
+    return fetch(`${API_URL}/company-detail/${companyId}`)
         .then((response) => response.json())
         .then((data) => {
             return data;
         });
 }
 
-export function createCompany(company: CompanyDto): Promise<CompanyEntity> {
-    return fetch(`http://localhost:8000/api/company-create`, {
+export async function createCompany(company: CompanyDto): Promise<CompanyEntity> {
+    const response = await fetch(`${API_URL}/company-create`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
         },
         body: JSON.stringify(company),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            return data;
-        });
+    });
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error('Unable to create company');
+        return Promise.reject(error);
+    }
 }
 
-export function updateCompany(updatedCompany: CompanyDto, updatedID: number): Promise<CompanyEntity> {
-    return fetch(`http://localhost:8000/api/company-update/${updatedID}`, {
+export async function updateCompany(updatedCompany: CompanyDto, updatedID: number): Promise<CompanyEntity> {
+    const response = await fetch(`${API_URL}/company-update/${updatedID}`, {
         method: 'PUT',
         headers: {
             'Content-type': 'application/json',
         },
         body: JSON.stringify(updatedCompany),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            return data;
-        });
+    });
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error('Unable to update company');
+        return Promise.reject(error);
+    }
 }
 
-export function deleteCompany(id: number): Promise<Response> {
-    return fetch(`http://localhost:8000/api/company-delete/${id}`, {
+export async function deleteCompany(id: number): Promise<Response> {
+    const response = await fetch(`${API_URL}/company-delete/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-type': 'application/json',
         },
     });
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error('Unable to delete company');
+        return Promise.reject(error);
+    }
 }
 
 export async function createShift(shift: ShiftDto): Promise<ShiftEntity> {
-    console.log(shift);
-    const response = await fetch(`http://localhost:8000/api/shift-create`, {
+    const response = await fetch(`${API_URL}/shift-create`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
@@ -159,7 +170,7 @@ export async function createShift(shift: ShiftDto): Promise<ShiftEntity> {
 }
 
 export async function updateShift(shiftID: number, updatedShift: ShiftDto): Promise<ShiftEntity> {
-    const response = await fetch(`http://localhost:8000/api/shift-update/${shiftID}`, {
+    const response = await fetch(`${API_URL}/shift-update/${shiftID}`, {
         method: 'PUT',
         headers: {
             'Content-type': 'application/json',
@@ -175,7 +186,7 @@ export async function updateShift(shiftID: number, updatedShift: ShiftDto): Prom
 }
 
 export function deleteShift(shiftId: number): Promise<Response> {
-    return fetch(`http://localhost:8000/api/shift-delete/${shiftId}`, {
+    return fetch(`${API_URL}/shift-delete/${shiftId}`, {
         method: 'DELETE',
         headers: {
             'Content-type': 'application/json',
@@ -184,7 +195,7 @@ export function deleteShift(shiftId: number): Promise<Response> {
 }
 
 export async function getShiftListForCompany(companyId: number): Promise<ShiftEntity[]> {
-    const response = await fetch(`http://localhost:8000/api/shift-list-company/${companyId}`);
+    const response = await fetch(`${API_URL}/shift-list-company/${companyId}`);
     if (response.ok) {
         return await response.json();
     } else {
@@ -194,7 +205,7 @@ export async function getShiftListForCompany(companyId: number): Promise<ShiftEn
 }
 
 export async function deleteCompanyTable(): Promise<Response> {
-    return fetch(`http://localhost:8000/api/company-table-delete`, {
+    return fetch(`${API_URL}/company-table-delete`, {
         method: 'DELETE',
         headers: {
             'Content-type': 'application/json',
@@ -203,7 +214,7 @@ export async function deleteCompanyTable(): Promise<Response> {
 }
 
 export async function deleteAllShifts(): Promise<void> {
-    await fetch(`http://localhost:8000/api/delete-shift-table`, {
+    await fetch(`${API_URL}/delete-shift-table`, {
         method: 'DELETE',
         headers: {
             'Content-type': 'application/json',

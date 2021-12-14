@@ -41,23 +41,27 @@ export class EmployeeStore {
             this.loadingEmployees = true;
             this.employees = [];
         });
-        if (companyId) {
-            await getEmployeeListForCompany(companyId).then((data) =>
-                runInAction(() => {
-                    this.employees = data;
-                }),
-            );
-        } else {
-            await getEmployeeList().then((data) =>
-                runInAction(() => {
-                    this.employees = data;
-                }),
-            );
+        try {
+            if (companyId) {
+                await getEmployeeListForCompany(companyId).then((data) =>
+                    runInAction(() => {
+                        this.employees = data;
+                    }),
+                );
+            } else {
+                await getEmployeeList().then((data) =>
+                    runInAction(() => {
+                        this.employees = data;
+                    }),
+                );
+            }
+        } catch (e) {
+            message.error('Failed to load employees from database');
+        } finally {
+            runInAction(() => {
+                this.loadingEmployees = false;
+            });
         }
-
-        runInAction(() => {
-            this.loadingEmployees = false;
-        });
     }
 
     closeModal(): void {

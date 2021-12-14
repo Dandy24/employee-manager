@@ -38,31 +38,37 @@ export class CompanyStore {
             this.companies = [];
         });
 
-        const companies = await getCompanyList();
+        try {
+            const companies = await getCompanyList();
 
-        let filteredCompanies;
+            let filteredCompanies;
 
-        if (filter) {
-            filteredCompanies = companies.filter(
-                (comp) =>
-                    filter.toLowerCase().includes(comp.name.toLowerCase()) ||
-                    comp.name.toLowerCase().includes(filter.toLowerCase()) ||
-                    filter.toLowerCase().includes(comp.address.toLowerCase()) ||
-                    comp.address.toLowerCase().includes(filter.toLowerCase()) ||
-                    filter.includes(comp.phone.toString()),
-            );
+            if (filter) {
+                filteredCompanies = companies.filter(
+                    (comp) =>
+                        filter.toLowerCase().includes(comp.name.toLowerCase()) ||
+                        comp.name.toLowerCase().includes(filter.toLowerCase()) ||
+                        filter.toLowerCase().includes(comp.address.toLowerCase()) ||
+                        comp.address.toLowerCase().includes(filter.toLowerCase()) ||
+                        filter.includes(comp.phone.toString()),
+                );
+            }
+
+            if (selected?.company) {
+                filteredCompanies = companies.filter(
+                    (comp) => comp.name === selected.company.name || comp.address === selected.company.address,
+                );
+            }
+            runInAction(() => {
+                this.companies = filteredCompanies ? filteredCompanies : companies;
+            });
+        } catch (e) {
+            message.error('Failed to load companies from database');
+        } finally {
+            runInAction(() => {
+                this.loadingCompanies = false;
+            });
         }
-
-        if (selected?.company) {
-            filteredCompanies = companies.filter(
-                (comp) => comp.name === selected.company.name || comp.address === selected.company.address,
-            );
-        }
-
-        runInAction(() => {
-            this.loadingCompanies = false;
-            this.companies = filteredCompanies ? filteredCompanies : companies;
-        });
     }
 
     closeModal(): void {
