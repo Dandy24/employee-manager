@@ -1,8 +1,8 @@
 import { Button, Space } from 'antd';
 import React from 'react';
 import { ColumnsType } from 'antd/lib/table/interface';
-import { CompanyStore } from '../../stores/company-store';
-import { CompanyEntity } from '../../models/entities/company-entity';
+import { CompanyStore } from '../../../stores/company-store';
+import { CompanyEntity } from '../../../models/entities/company-entity';
 import { Link } from 'react-router-dom';
 
 export function CompanyTableColumns(

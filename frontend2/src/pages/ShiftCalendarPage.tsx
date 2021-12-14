@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { Link, useParams } from 'react-router-dom';
-import { Breadcrumb, Button, Calendar, Empty, List, Modal, PageHeader, Tag } from 'antd';
+import { Breadcrumb, Calendar, Empty, List, Modal, PageHeader } from 'antd';
 import React, { useEffect } from 'react';
 import { RootStore } from '../stores/root-store';
 import moment from 'moment';
@@ -10,7 +10,6 @@ import { CalendarShiftListItemEdit } from '../components/calendar/calendar-shift
 import { CalendarShiftListItemAdd } from '../components/calendar/calendar-shift-list/item/add-item';
 import { CalendarModal } from '../components/calendar/modal/calendar-modal';
 import { CalendarOutlined, ExclamationCircleOutlined, HomeOutlined } from '@ant-design/icons';
-import { CompanyEntity } from '../models/entities/company-entity';
 export interface ShiftCalendarPageProps {
     rootStore: RootStore;
 }

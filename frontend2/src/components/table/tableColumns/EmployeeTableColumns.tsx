@@ -1,10 +1,10 @@
 import { ColumnsType } from 'antd/lib/table/interface';
-import { EmployeeStore } from '../../stores/employee-store';
+import { EmployeeStore } from '../../../stores/employee-store';
 import { Button, Space, Tag } from 'antd';
 import { Link } from 'react-router-dom';
 import React from 'react';
-import { CompanyStore } from '../../stores/company-store';
-import { EmployeeEntity } from '../../models/entities/employee-entity';
+import { CompanyStore } from '../../../stores/company-store';
+import { EmployeeEntity } from '../../../models/entities/employee-entity';
 import { Column, ColumnGroup } from 'react-table';
 
 export function EmployeeTableColumns(

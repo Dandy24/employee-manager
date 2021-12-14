@@ -19,7 +19,7 @@ const App: React.FC = observer(() => {
 
     return (
         <>
-            <Layout>
+            <Layout style={{ height: '100%' }}>
                 <MainNavigation />
                 <Content style={{ padding: '35px 50px' }}>
                     <Switch>

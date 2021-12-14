@@ -5,6 +5,7 @@ import App from './App';
 import { RootStoreProvider } from './stores/root-store-provider';
 import { RootStore } from './stores/root-store';
 import { BrowserRouter } from 'react-router-dom';
+import './styles.css';
 
 ReactDOM.render(
     <RootStoreProvider rootStore={new RootStore()}>

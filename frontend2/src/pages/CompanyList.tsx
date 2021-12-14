@@ -6,11 +6,12 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { EditDrawer } from '../components/EditDrawer';
 import { RootStore } from '../stores/root-store';
 import { observer } from 'mobx-react-lite';
-import { CompanyTableColumns } from '../components/tableColumns/CompanyTableColumns';
+import { CompanyTableColumns } from '../components/table/tableColumns/CompanyTableColumns';
 import { CompanyEntity } from '../models/entities/company-entity';
 import { CompanyDto } from '../models/dtos/company-dto';
 import { SearchComponent } from '../components/search/search-component';
 import { toJS } from 'mobx';
+import { EmptyTable } from '../components/table/empty-table';
 
 interface CompanyListProps {
     rootStore: RootStore;
@@ -75,6 +76,7 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
                 columns={columns}
                 dataSource={companyStore.companies}
                 data-testid="company-table"
+                locale={{ emptyText: <EmptyTable type="company" loading={companyStore.loadingCompanies} /> }}
             />
 
             <EditDrawer

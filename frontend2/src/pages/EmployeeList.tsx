@@ -6,9 +6,10 @@ import { EmployeeFormik } from '../components/form/EmployeeFormik';
 import { EmployeeForm } from '../components/form/EmployeeForm';
 import moment from 'moment';
 import { RootStore } from '../stores/root-store';
-import { EmployeeTableColumns } from '../components/tableColumns/EmployeeTableColumns';
+import { EmployeeTableColumns } from '../components/table/tableColumns/EmployeeTableColumns';
 import { observer } from 'mobx-react-lite';
 import { EmployeeDto } from '../models/dtos/employee-dto';
+import { EmptyTable } from '../components/table/empty-table';
 
 interface EmployeeListPageProps {
     rootStore: RootStore;
@@ -78,6 +79,7 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                     columns={columns}
                     dataSource={employeeStore.employees}
                     data-testid="employee-list-table"
+                    locale={{ emptyText: <EmptyTable type={'employee'} loading={employeeStore.loadingEmployees} /> }}
                 />
 
                 <EditDrawer
