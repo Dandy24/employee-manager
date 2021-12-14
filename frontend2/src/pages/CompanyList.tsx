@@ -58,10 +58,6 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
         })();
     }, []);
 
-    // if (companyStore.loadingCompanies) {
-    //     return <LoadingSpinner text="Načítá se seznam firem" />;
-    // }
-
     return (
         <>
             <Row justify="center" style={{ marginTop: '1%', marginBottom: '2%' }}>
@@ -77,6 +73,12 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
                 dataSource={companyStore.companies}
                 data-testid="company-table"
                 locale={{ emptyText: <EmptyTable type="company" loading={companyStore.loadingCompanies} /> }}
+                pagination={{
+                    hideOnSinglePage: true,
+                    showSizeChanger: companyStore.companies.length > 10,
+                    pageSizeOptions: ['10', '20', '30', '50'],
+                    position: ['bottomCenter'],
+                }}
             />
 
             <EditDrawer

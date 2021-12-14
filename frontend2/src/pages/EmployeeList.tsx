@@ -10,6 +10,7 @@ import { EmployeeTableColumns } from '../components/table/tableColumns/EmployeeT
 import { observer } from 'mobx-react-lite';
 import { EmployeeDto } from '../models/dtos/employee-dto';
 import { EmptyTable } from '../components/table/empty-table';
+import '../styles.css';
 
 interface EmployeeListPageProps {
     rootStore: RootStore;
@@ -67,10 +68,6 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
             })();
         }, []); // was [isLoading]
 
-        // if (employeeStore.loadingEmployees) {
-        //     return <LoadingSpinner text="Načítá se seznam zaměstnanců" />;
-        // }
-
         return (
             <>
                 <Table
@@ -80,6 +77,13 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                     dataSource={employeeStore.employees}
                     data-testid="employee-list-table"
                     locale={{ emptyText: <EmptyTable type={'employee'} loading={employeeStore.loadingEmployees} /> }}
+                    pagination={{
+                        hideOnSinglePage: true,
+                        showSizeChanger: employeeStore.employees.length > 10,
+                        pageSizeOptions: ['10', '20', '30', '50'],
+                        position: ['bottomCenter'],
+                    }}
+                    // scroll={{ y: 1000 }}
                 />
 
                 <EditDrawer
