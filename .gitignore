@@ -149,7 +149,7 @@ chrome-user-data
 /.pnp
 .pnp.js
 
-.env.local
+.env
 .env.development.local
 .env.test.local
 .env.production.local
