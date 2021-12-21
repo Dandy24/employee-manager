@@ -30,6 +30,29 @@ class Employee(models.Model):
         return self.first_name + self.last_name
 
 
+class MonthlyOutput(models.Model):
+    working_hours = models.DecimalField(max_digits=3, decimal_places=1)
+    sick_hours = models.DecimalField(max_digits=3, decimal_places=1)
+    vacation_hours = models.DecimalField(max_digits=3, decimal_places=1)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    employee = models.ForeignKey(
+        'Employee',
+        on_delete=models.SET_NULL,
+        null=True
+    )
+
+
+class Comment(models.Model):
+    text = models.TextField()
+    created_at = models.DateField()
+    monthly_output = models.ForeignKey(
+        'MonthlyOutput',
+        on_delete=models.SET_NULL,
+        null=True
+    )
+
+
 class Shift(models.Model):
     date = models.DateField()
     time = models.TextField(max_length=50)
