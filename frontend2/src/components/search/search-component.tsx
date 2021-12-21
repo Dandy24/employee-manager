@@ -4,7 +4,6 @@ import { AutoComplete, Input } from 'antd';
 import { SearchableCompanyEntity } from '../../models/entities/searchable-company-entity';
 import { EmptyResults } from './empty-results';
 import { useRootStore } from '../../stores/root-store-provider';
-import { CloseCircleOutlined } from '@ant-design/icons';
 
 export interface SearchComponentProps {
     options: SearchableCompanyEntity[]; // | SearchableEmployeeEntity[];

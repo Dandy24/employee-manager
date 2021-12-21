@@ -3,10 +3,6 @@ import React from 'react';
 import { CompanyEntity } from '../../models/entities/company-entity';
 import Title from 'antd/lib/typography/Title';
 
-// export interface SearchResultItemProps {
-//     row: CompanyEntity; //| EmployeeEntity;
-// }
-
 export const SearchResultItem = (row: CompanyEntity, index: number): JSX.Element => {
     return (
         <Row data-testid={`search-item-${index}`}>

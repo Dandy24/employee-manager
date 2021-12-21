@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { ResponsivePie } from '@nivo/pie';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, Col, Progress, Row, Statistic, Typography } from 'antd';
 import {
     Area,
@@ -31,6 +31,13 @@ interface DashboardProps {
 
 export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardProps) => {
     const { rootStore } = props;
+
+    useEffect(() => {
+        (async () => {
+            await rootStore.companyStore.fetchAllCompanies();
+            rootStore.searchStore.createSearchableCompanies();
+        })();
+    }, []);
 
     const data = [
         {
@@ -77,7 +84,11 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
 
     return (
         <>
-            <SearchComponent options={toJS(rootStore.searchStore.searchableCompanies)} />
+            <Row justify="center" style={{ marginBottom: '2%' }}>
+                <Col>
+                    <SearchComponent options={toJS(rootStore.searchStore.searchableCompanies)} />
+                </Col>
+            </Row>
             <Card title="Obecny prehled" headStyle={{ textAlign: 'center', fontSize: '22px' }}>
                 <Row style={{ marginBottom: '3%' }}>
                     <Col span={3} offset={1}>

@@ -1,4 +1,3 @@
-import { CompanyEntity } from '../models/entities/company-entity';
 import { RootStore } from './root-store';
 import { action, makeObservable, observable } from 'mobx';
 import { SearchResultItem } from '../components/search/search-result';
@@ -25,11 +24,12 @@ export class SearchStore {
         this.searchableCompanies = companies;
     }
 
-    createSearchableCompanies = (companies: CompanyEntity[]): void => {
-        const searchable = companies.map((company, index) => ({
+    createSearchableCompanies = (): void => {
+        const searchable = this.rootStore.companyStore.companies.map((company, index) => ({
             company,
             value: `${company.name} | ${company.phone} | ${company.address}`,
             label: SearchResultItem(company, index),
+            key: `company-${company.id}`,
         }));
         this.setSearchableCompanies(searchable);
     };

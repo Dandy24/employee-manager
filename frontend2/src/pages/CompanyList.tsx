@@ -54,7 +54,7 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
     useEffect(() => {
         (async () => {
             await companyStore.fetchAllCompanies();
-            rootStore.searchStore.createSearchableCompanies(companyStore.companies);
+            rootStore.searchStore.createSearchableCompanies();
         })();
     }, []);
 
