@@ -8,7 +8,7 @@ import { CompanyEntity } from '../../models/entities/company-entity';
 
 export interface MyTableProps {
     loading: boolean;
-    columns: ColumnsType<any>; //| ColumnsType<EmployeeEntity>;
+    columns: ColumnsType<EmployeeEntity | CompanyEntity>;
     rows: CompanyEntity[] | EmployeeEntity[];
     type: 'employee' | 'company';
 }
@@ -25,7 +25,6 @@ export const MyTable: React.FC<MyTableProps> = observer((props: MyTableProps) =>
             data-testid={`${type}-table`}
             locale={{ emptyText: <EmptyTable type={type} loading={loading} /> }}
             pagination={{
-                // hideOnSinglePage: true,
                 showSizeChanger: rows.length > 10,
                 pageSizeOptions: ['15', '30', '50'],
                 position: ['bottomCenter'],
