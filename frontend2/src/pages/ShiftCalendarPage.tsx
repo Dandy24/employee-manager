@@ -99,7 +99,7 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
             <div style={{ padding: '1.5%' }}></div>
             <Calendar
                 data-testid="shift-calendar"
-                dateFullCellRender={getCalendarDateCell}
+                dateFullCellRender={rootStore.shiftStore.shiftList ? getCalendarDateCell : null}
                 onSelect={selectDateHandler}
             />
             <CalendarModal store={rootStore.calendarStore}>

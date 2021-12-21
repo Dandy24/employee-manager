@@ -12,6 +12,7 @@ import { CompanyDto } from '../models/dtos/company-dto';
 import { SearchComponent } from '../components/search/search-component';
 import { toJS } from 'mobx';
 import { EmptyTable } from '../components/table/empty-table';
+import { MyTable } from '../components/table/table';
 
 interface CompanyListProps {
     rootStore: RootStore;
@@ -66,19 +67,11 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
                 </Col>
             </Row>
 
-            <Table
-                rowKey="id"
+            <MyTable
                 loading={companyStore.loadingCompanies}
                 columns={columns}
-                dataSource={companyStore.companies}
-                data-testid="company-table"
-                locale={{ emptyText: <EmptyTable type="company" loading={companyStore.loadingCompanies} /> }}
-                pagination={{
-                    hideOnSinglePage: true,
-                    showSizeChanger: companyStore.companies.length > 10,
-                    pageSizeOptions: ['10', '20', '30', '50'],
-                    position: ['bottomCenter'],
-                }}
+                rows={companyStore.companies}
+                type="company"
             />
 
             <EditDrawer
