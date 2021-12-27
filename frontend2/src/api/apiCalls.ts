@@ -224,7 +224,7 @@ export async function deleteAllShifts(): Promise<void> {
     });
 }
 
-export async function getEmployeeMonthlyOutput(employeeId: number): Promise<MonthlyOutputEntity> {
+export async function getEmployeeMonthlyOutput(employeeId: number): Promise<MonthlyOutputEntity[]> {
     const response = await fetch(`${API_URL}/employee-monthly-output/${employeeId}`);
     if (response.ok) {
         return await response.json();
@@ -233,6 +233,16 @@ export async function getEmployeeMonthlyOutput(employeeId: number): Promise<Mont
         return Promise.reject(error);
     }
 }
+
+// export async function getEmployeeMonthlyOutputHistory(employeeId: number): Promise<MonthlyOutputEntity[]> {
+//     const response = await fetch(`${API_URL}/employee-monthly-output/${employeeId}`);
+//     if (response.ok) {
+//         return await response.json();
+//     } else {
+//         const error = new Error(`Unable to load monthly output for employee ${employeeId}`);
+//         return Promise.reject(error);
+//     }
+// }
 
 export async function createMonthlyOutput(output: MonthlyOutputDto): Promise<MonthlyOutputEntity> {
     const response = await fetch(`${API_URL}/employee-monthly-output-create`, {

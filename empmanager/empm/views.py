@@ -279,6 +279,14 @@ def employeeMonthlyOutput(request, employeeID):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
+def employeeMonthlyOutputHistory(request, employeeID):
+    employees = MonthlyOutput.objects.filter(employee_id=employeeID).order_by('-start_date')
+    serializer = MonthlyOutputSerializer(employees[:6], many=True)
+
+    return Response(serializer.data)
+
+
 # TODO dont create new output if one with the same month already exist
 @swagger_auto_schema(methods=['post'], request_body=MonthlyOutputSerializer)
 @api_view(['POST'])

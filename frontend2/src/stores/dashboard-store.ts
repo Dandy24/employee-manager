@@ -8,7 +8,7 @@ import { message } from 'antd';
 import { EmployeeEntity } from '../models/entities/employee-entity';
 
 export class DashboardStore {
-    employeeOutput: MonthlyOutputEntity;
+    employeeOutput: MonthlyOutputEntity[];
     private rootStore: RootStore;
 
     constructor(rootStore: RootStore) {
@@ -17,16 +17,18 @@ export class DashboardStore {
         makeObservable(this, {
             employeeOutput: observable,
             loadEmployeeOutput: action,
+
+            workingDaysGraphData: computed,
         });
     }
 
     async loadEmployeeOutput(id: number): Promise<void> {
         runInAction(() => {
             // this.loadingCompanies = true;
-            this.employeeOutput = null;
+            this.employeeOutput = [];
         });
 
-        let output = null;
+        let output = [];
 
         try {
             output = await getEmployeeMonthlyOutput(id);
@@ -36,5 +38,29 @@ export class DashboardStore {
             // this.loadingCompanies = false;
             this.employeeOutput = output;
         }
+    }
+
+    get workingDaysGraphData() {
+        return this.employeeOutput.map((output) => ({
+            name: output.start_date,
+            work: output.working_hours,
+            vac: output.vacation_hours,
+        }));
+    }
+
+    get effectivityGraphData() {
+        return this.employeeOutput.map((output) => ({
+            name: output.start_date,
+            effectivity: output.effectivity,
+        }));
+    }
+
+    get hoursDistributionGraphData() {
+        return [
+            { name: 'Hours worked', hours: this.employeeOutput[0]?.working_hours },
+            { name: 'Hours vacation', hours: this.employeeOutput[0]?.vacation_hours },
+            { name: 'Hours sick', hours: this.employeeOutput[0]?.sick_hours },
+            { name: 'Hours overtime', hours: this.employeeOutput[0]?.overtime },
+        ];
     }
 }
