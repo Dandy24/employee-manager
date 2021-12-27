@@ -31,9 +31,9 @@ class Employee(models.Model):
 
 
 class MonthlyOutput(models.Model):
-    working_hours = models.DecimalField(max_digits=3, decimal_places=1)
-    sick_hours = models.DecimalField(max_digits=3, decimal_places=1)
-    vacation_hours = models.DecimalField(max_digits=3, decimal_places=1)
+    working_hours = models.DecimalField(max_digits=4, decimal_places=1)
+    sick_hours = models.DecimalField(max_digits=4, decimal_places=1)
+    vacation_hours = models.DecimalField(max_digits=4, decimal_places=1)
     start_date = models.DateField()
     end_date = models.DateField()
     employee = models.ForeignKey(

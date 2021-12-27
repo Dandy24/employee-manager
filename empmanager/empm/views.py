@@ -1,15 +1,12 @@
 from copy import copy
 
+from django.db import connection
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from drf_yasg.utils import swagger_auto_schema
-from django.db import connection
-from rest_framework.test import APIRequestFactory
 
-from .models import Company, Employee, Shift
-from .serializers import CompanySerializer, EmployeeSerializer, ShiftSerializer
-
-from django.db import connection
+from .models import Company, Employee, Shift, MonthlyOutput
+from .serializers import CompanySerializer, EmployeeSerializer, ShiftSerializer, MonthlyOutputSerializer
 
 
 @api_view(['GET'])
@@ -263,6 +260,7 @@ def deleteShiftTable(request):
 
     return Response('All shifts were deleted')
 
+
 @api_view(['DELETE'])
 def deleteEmployeeTable(request):
     cursor = connection.cursor()
@@ -271,3 +269,25 @@ def deleteEmployeeTable(request):
     cursor.execute("delete from sqlite_sequence where name='empm_employee'")
 
     return Response('All employees were deleted')
+
+
+@api_view(['GET'])
+def employeeMonthlyOutput(request, employeeID):
+    employee = MonthlyOutput.objects.get(employee_id=employeeID)
+    serializer = MonthlyOutputSerializer(employee, many=False)
+
+    return Response(serializer.data)
+
+
+# TODO dont create new output if one with the same month already exist
+@swagger_auto_schema(methods=['post'], request_body=MonthlyOutputSerializer)
+@api_view(['POST'])
+def monthlyOutputCreate(request):
+    serializer = MonthlyOutputSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        print(serializer.errors)
+        raise ValueError
