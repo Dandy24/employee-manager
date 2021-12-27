@@ -9,7 +9,6 @@ export interface PieChartProps {
     data: any;
     dataKey: string;
     dataName: string;
-    // xAxisKey: string;
     colors: string[];
 }
 

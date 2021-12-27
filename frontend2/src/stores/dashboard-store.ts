@@ -1,12 +1,8 @@
 import { RootStore } from './root-store';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
-import moment from 'moment';
-import { ShiftEntity } from '../models/entities/shift-entity';
 import { MonthlyOutputEntity } from '../models/entities/monthly-output-entity';
-import { getCompanyList, getEmployeeMonthlyOutput } from '../api/apiCalls';
+import { getEmployeeMonthlyOutput } from '../api/apiCalls';
 import { message } from 'antd';
-import { EmployeeEntity } from '../models/entities/employee-entity';
-
 export class DashboardStore {
     employeeOutput: MonthlyOutputEntity[];
     private rootStore: RootStore;
