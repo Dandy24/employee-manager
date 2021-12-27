@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite';
-import { ResponsivePie } from '@nivo/pie';
 import React, { useEffect } from 'react';
 import { Card, Col, Progress, Row, Statistic, Typography } from 'antd';
 import {
@@ -24,6 +23,8 @@ import Title from 'antd/lib/typography/Title';
 import { SearchComponent } from '../components/search/search-component';
 import { toJS } from 'mobx';
 import { RootStore } from '../stores/root-store';
+import { createMonthlyOutput, getEmployeeMonthlyOutput } from '../api/apiCalls';
+import { DashboardOverview } from '../components/dashboard/dashboard-overview';
 
 interface DashboardProps {
     rootStore: RootStore;
@@ -36,6 +37,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
         (async () => {
             await rootStore.companyStore.fetchAllCompanies();
             rootStore.searchStore.createSearchableCompanies();
+            await rootStore.dashboardStore.loadEmployeeOutput(34);
         })();
     }, []);
 
@@ -90,41 +92,42 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                 </Col>
             </Row>
             <Card title="Obecny prehled" headStyle={{ textAlign: 'center', fontSize: '22px' }}>
-                <Row style={{ marginBottom: '3%' }}>
-                    <Col span={3} offset={1}>
-                        <Statistic title="Pocet zamestnancu" value={112} style={{ marginTop: '20%' }} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic title="Pocet firem" value={12} style={{ marginTop: '20%' }} />
-                    </Col>
-                    <Col span={3}>
-                        <Statistic
-                            title="Pocet hodin"
-                            value={1687}
-                            valueStyle={{ color: '#3f8600' }}
-                            prefix={<ArrowUpOutlined />}
-                            style={{ marginTop: '20%' }}
-                        />
-                    </Col>
-                    <Col span={3} offset={5}>
-                        <Title level={5} style={{ textAlign: 'center' }}>
-                            Efektivita zamestnancu
-                        </Title>
-                        <Progress type="circle" percent={75} strokeColor="green" />
-                    </Col>
-                    <Col span={3}>
-                        <Title level={5} style={{ textAlign: 'center' }}>
-                            Kapacita ubytovny
-                        </Title>
-                        <Progress type="circle" percent={65} strokeColor="orange" />
-                    </Col>
-                    <Col span={3}>
-                        <Title level={5} style={{ textAlign: 'center' }}>
-                            Kapacita ubytovny
-                        </Title>
-                        <Progress type="circle" percent={15} strokeColor="red" />
-                    </Col>
-                </Row>
+                <DashboardOverview type={'general'} data={rootStore.dashboardStore.employeeOutput} />
+                {/*<Row style={{ marginBottom: '3%' }}>*/}
+                {/*    <Col span={3} offset={1}>*/}
+                {/*        <Statistic title="Pocet zamestnancu" value={112} style={{ marginTop: '20%' }} />*/}
+                {/*    </Col>*/}
+                {/*    <Col span={3}>*/}
+                {/*        <Statistic title="Pocet firem" value={12} style={{ marginTop: '20%' }} />*/}
+                {/*    </Col>*/}
+                {/*    <Col span={3}>*/}
+                {/*        <Statistic*/}
+                {/*            title="Pocet hodin"*/}
+                {/*            value={1687}*/}
+                {/*            valueStyle={{ color: '#3f8600' }}*/}
+                {/*            prefix={<ArrowUpOutlined />}*/}
+                {/*            style={{ marginTop: '20%' }}*/}
+                {/*        />*/}
+                {/*    </Col>*/}
+                {/*    <Col span={3} offset={5}>*/}
+                {/*        <Title level={5} style={{ textAlign: 'center' }}>*/}
+                {/*            Efektivita zamestnancu*/}
+                {/*        </Title>*/}
+                {/*        <Progress type="circle" percent={75} strokeColor="green" />*/}
+                {/*    </Col>*/}
+                {/*    <Col span={3}>*/}
+                {/*        <Title level={5} style={{ textAlign: 'center' }}>*/}
+                {/*            Kapacita ubytovny*/}
+                {/*        </Title>*/}
+                {/*        <Progress type="circle" percent={65} strokeColor="orange" />*/}
+                {/*    </Col>*/}
+                {/*    <Col span={3}>*/}
+                {/*        <Title level={5} style={{ textAlign: 'center' }}>*/}
+                {/*            Kapacita ubytovny*/}
+                {/*        </Title>*/}
+                {/*        <Progress type="circle" percent={15} strokeColor="red" />*/}
+                {/*    </Col>*/}
+                {/*</Row>*/}
                 <Row style={{ height: '400px' }}>
                     <Col span={16} style={{ height: '90%' }}>
                         <Title level={2} style={{ textAlign: 'center' }}>

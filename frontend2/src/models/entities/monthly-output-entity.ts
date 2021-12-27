@@ -2,9 +2,9 @@ import { makeObservable, observable } from 'mobx';
 
 export class MonthlyOutputEntity {
     id: number;
-    working_hours: number;
-    sick_hours: number;
-    vacation_hours: number;
+    working_hours: string; //FixME django rest returns decimals as string in JSON
+    sick_hours: string; //FIXME find a way to store it as a number type
+    vacation_hours: string;
     start_date: string;
     end_date: string;
     effectivity: number;
