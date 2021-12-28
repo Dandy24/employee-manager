@@ -1,4 +1,4 @@
-export class MonthlyOutputDto {
+export class EmployeeMonthlyOutputDto {
     working_hours: number;
     sick_hours: number;
     vacation_hours: number;

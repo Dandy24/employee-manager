@@ -1,10 +1,21 @@
 import { RootStore } from './root-store';
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
-import { MonthlyOutputEntity } from '../models/entities/monthly-output-entity';
-import { getEmployeeMonthlyOutput } from '../api/apiCalls';
+import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
+import { EmployeeMonthlyOutputEntity } from '../models/entities/employee-monthly-output-entity';
+import { getEmployeeMonthlyOutput, getMonthlyHoursByCompany, getOverallMonthlyOutput } from '../api/apiCalls';
 import { message } from 'antd';
+import { OverallMonthlyOutputEntity } from '../models/entities/overall-monthly-output-entity';
+
+//FIXME move to own file
+export interface CompanyHours {
+    name: string;
+    hours: number;
+}
+
 export class DashboardStore {
-    employeeOutput: MonthlyOutputEntity[];
+    employeeOutput: EmployeeMonthlyOutputEntity[];
+    overallOutput: OverallMonthlyOutputEntity[];
+    employeeMode = false;
+    companyHours: CompanyHours[];
     private rootStore: RootStore;
 
     constructor(rootStore: RootStore) {
@@ -12,9 +23,15 @@ export class DashboardStore {
 
         makeObservable(this, {
             employeeOutput: observable,
+            overallOutput: observable,
             loadEmployeeOutput: action,
+            loadOverallOutput: action,
 
             workingDaysGraphData: computed,
+            effectivityGraphData: computed,
+            hoursDistributionGraphData: computed,
+            overallWorkingHours: computed,
+            overallEffectivity: computed,
         });
     }
 
@@ -33,6 +50,50 @@ export class DashboardStore {
         } finally {
             // this.loadingCompanies = false;
             this.employeeOutput = output;
+        }
+    }
+
+    async loadOverallOutput(): Promise<void> {
+        runInAction(() => {
+            // this.loadingCompanies = true;
+            this.overallOutput = [];
+        });
+
+        let output = [];
+
+        try {
+            output = await getOverallMonthlyOutput();
+        } catch (e) {
+            message.error('Failed to load overall output from database');
+        } finally {
+            // this.loadingCompanies = false;
+            this.overallOutput = output;
+            console.log(toJS(this.overallOutput));
+        }
+    }
+
+    async loadHoursByCompany(): Promise<void> {
+        runInAction(() => {
+            // this.loadingCompanies = true;
+            this.companyHours = [];
+        });
+
+        let output = [];
+        const formattedOutput = [];
+
+        try {
+            output = await getMonthlyHoursByCompany(this.overallOutput[0].start_date, this.overallOutput[0].end_date);
+
+            output.forEach((out) => {
+                const comp = { name: out[0], hours: out[1] };
+                formattedOutput.push(comp);
+            });
+        } catch (e) {
+            message.error('Failed to load overall output from database');
+        } finally {
+            // this.loadingCompanies = false;
+            this.companyHours = output;
+            console.log(toJS(formattedOutput));
         }
     }
 
@@ -58,5 +119,28 @@ export class DashboardStore {
             { name: 'Hours sick', hours: this.employeeOutput[0]?.sick_hours },
             { name: 'Hours overtime', hours: this.employeeOutput[0]?.overtime },
         ];
+    }
+
+    get overallWorkingHours() {
+        return this.employeeOutput.reduce((prevOutput, currOutput) => prevOutput + currOutput.working_hours, 0);
+    }
+
+    get overallEffectivity() {
+        return this.overallOutput.map((output) => ({
+            name: output.start_date,
+            effectivity: Math.ceil(output.effectivity),
+        }));
+    }
+
+    get housingCapacity() {
+        return Math.ceil((this.overallOutput[0]?.housing_capacity / 15) * 100);
+    }
+
+    get overallWorkingDaysGraphData() {
+        return this.overallOutput.map((output) => ({
+            name: output.start_date,
+            work: output.working_hours,
+            vac: output.vacation_hours,
+        }));
     }
 }

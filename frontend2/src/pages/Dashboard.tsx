@@ -21,8 +21,11 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
     useEffect(() => {
         (async () => {
             await rootStore.companyStore.fetchAllCompanies();
+            await rootStore.employeeStore.fetchAllEmployees();
             rootStore.searchStore.createSearchableCompanies();
             await rootStore.dashboardStore.loadEmployeeOutput(34);
+            await rootStore.dashboardStore.loadOverallOutput();
+            await rootStore.dashboardStore.loadHoursByCompany();
         })();
     }, []);
 
@@ -33,22 +36,32 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
         { name: 'Group D', uv: 200, pv: 700 },
     ];
 
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+    const COLORS = ['#0088FE', '#FFBB28', '#FF8042', '#00C49F'];
 
     return (
         <>
-            <Row justify="center" style={{ marginBottom: '2%' }}>
-                <Col>
-                    <SearchComponent options={toJS(rootStore.searchStore.searchableCompanies)} />
-                </Col>
-            </Row>
-            <Card title="Obecny prehled" headStyle={{ textAlign: 'center', fontSize: '22px' }}>
+            {!rootStore.dashboardStore.employeeMode ? (
+                <Row justify="center" style={{ marginBottom: '2%' }}>
+                    <Col>
+                        <SearchComponent options={toJS(rootStore.searchStore.searchableCompanies)} />
+                    </Col>
+                </Row>
+            ) : null}
+
+            <Card
+                title={rootStore.dashboardStore.employeeMode ? 'Mesicni prehled zamestnance' : 'Obecny mesicni prehled'}
+                headStyle={{ textAlign: 'center', fontSize: '22px' }}
+            >
                 {/*FIXME data loading*/}
-                {rootStore.dashboardStore.employeeOutput && (
-                    <DashboardOverview type={'employee'} data={rootStore.dashboardStore.employeeOutput} />
-                )}
-                {/*<DashboardOverview type={'employee'} data={rootStore.dashboardStore.employeeOutput} />*/}
+                {rootStore.dashboardStore.employeeOutput &&
+                    rootStore.dashboardStore.overallOutput &&
+                    (rootStore.dashboardStore.employeeMode ? (
+                        <DashboardOverview type={'employee'} data={rootStore.dashboardStore.employeeOutput} />
+                    ) : (
+                        <DashboardOverview type={'general'} data={rootStore.dashboardStore.employeeOutput} />
+                    ))}
                 <Row style={{ height: '400px' }}>
+                    {/*FIXME datumy grafu jsou v opacnem poradi (graf jde ze soucasnosti do minulosti)*/}
                     <MyLineChart
                         title="Vývoj pracovního nasazení"
                         data={
@@ -63,6 +76,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                         xAxisKey="name"
                     />
 
+                    {/*FIXME nefunguje zobrazeni hodin podle spolecnosti (companyHours)*/}
                     {rootStore.dashboardStore.employeeOutput && (
                         <MyPieChart
                             title="Rozlozeni hodin"

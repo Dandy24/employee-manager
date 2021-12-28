@@ -35,7 +35,7 @@ export const MyAreaChart: React.FC<AreaChartProps> = observer((props: AreaChartP
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey={xAxisKey} />
                     <YAxis />
-                    <Tooltip />
+                    <Tooltip formatter={(value, name) => `${value}%`} />
                     <Area type="monotone" dataKey={dataKey1} name={dataName1} stroke="#8884d8" fill="#8884d8" />
                 </AreaChart>
             </ResponsiveContainer>
