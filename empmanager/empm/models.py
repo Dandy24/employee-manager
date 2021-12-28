@@ -34,13 +34,22 @@ class MonthlyOutput(models.Model):
     working_hours = models.DecimalField(max_digits=4, decimal_places=1)
     sick_hours = models.DecimalField(max_digits=4, decimal_places=1)
     vacation_hours = models.DecimalField(max_digits=4, decimal_places=1)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
     employee = models.ForeignKey(
         'Employee',
         on_delete=models.SET_NULL,
         null=True
     )
+
+
+class OverallMonthlyOutput(models.Model):
+    housing_capacity = models.IntegerField()
+    working_hours = models.DecimalField(max_digits=6, decimal_places=1)
+    sick_hours = models.DecimalField(max_digits=6, decimal_places=1)
+    vacation_hours = models.DecimalField(max_digits=6, decimal_places=1)
+    start_date = models.DateField()
+    end_date = models.DateField()
 
 
 class Comment(models.Model):

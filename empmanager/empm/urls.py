@@ -50,7 +50,8 @@ urlpatterns = [
     path('company-table-delete', views.deleteCompanyTable, name='company-table-delete'),
 
     path('employee-monthly-output/<str:employeeID>', views.employeeMonthlyOutputHistory, name='employee-monthly-output'),
-    # path('employee-monthly-output-history/<str:employeeID>', views.employeeMonthlyOutputHistory, name='employee-monthly-output-history'),
+    path('monthly-output', views.overallMonthlyOutputHistory, name='monthly-output'),
+    path('monthly-output-company/<str:start_date>&<str:end_date>', views.overallMonthlyOutputByCompany, name='monthly-output-company'),
     path('employee-monthly-output-create', views.monthlyOutputCreate, name='employee-monthly-output-create'),
-    #path('monthly-output-create', views.MonthlyOutputCreate, name='monthly-output-create'),
+    path('monthly-output-create', views.overallMonthlyOutputCreate, name='monthly-output-create'),
 ]
