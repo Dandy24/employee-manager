@@ -1,4 +1,4 @@
-https://github.com/Dandy24/employee_manager/workflows/Node.js%20CI/badge.svg
+[![Node.js CI](https://github.com/Dandy24/employee-manager/actions/workflows/node.js.yml/badge.svg)](https://github.com/Dandy24/employee-manager/actions/workflows/node.js.yml)
 
 ## INSTALLATION
 
