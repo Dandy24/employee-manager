@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { useRootStore } from '../../stores/root-store-provider';
 import { Header } from 'antd/lib/layout/layout';
 import MenuItem from 'antd/lib/menu/MenuItem';
+import { HomeOutlined } from '@ant-design/icons';
 
 export const MainNavigation: React.FC = observer((): JSX.Element => {
     const rootStore = useRootStore();
@@ -12,8 +13,13 @@ export const MainNavigation: React.FC = observer((): JSX.Element => {
     return (
         <Header data-testid="main-header">
             <Menu theme="dark" mode="horizontal" selectedKeys={[rootStore.activePage]}>
+                <MenuItem key="dashboard" data-testid="menu-dashboard-item">
+                    <Link to="/" data-testid="menu-dashboard-item-link">
+                        <HomeOutlined />
+                    </Link>
+                </MenuItem>
                 <MenuItem key="company-list" data-testid="menu-company-list-item">
-                    <Link to="/" data-testid="menu-company-list-item-link">
+                    <Link to="/company-list" data-testid="menu-company-list-item-link">
                         Seznam firem
                     </Link>
                 </MenuItem>
@@ -30,11 +36,6 @@ export const MainNavigation: React.FC = observer((): JSX.Element => {
                         Přidání nového zaměstnance
                     </Link>
                 </MenuItem>
-                {/*<MenuItem key="shift-manager" data-testid="menu-shift-manager-item">*/}
-                {/*    <Link to="/shift-manager" data-testid="menu-shift-manager-item-link">*/}
-                {/*        Plánovač směn*/}
-                {/*    </Link>*/}
-                {/*</MenuItem>*/}
             </Menu>
         </Header>
     );

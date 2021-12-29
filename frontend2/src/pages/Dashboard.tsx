@@ -18,6 +18,8 @@ interface DashboardProps {
 export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardProps) => {
     const { rootStore } = props;
 
+    rootStore.setActivePage('dashboard');
+
     //FIXME console errors [mobx] Out of bounds read:
 
     useEffect(() => {
