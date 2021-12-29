@@ -3,10 +3,11 @@ import Title from 'antd/lib/typography/Title';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Col } from 'antd';
 import React from 'react';
+import { GraphDataInterface } from '../../../models/interfaces/graph-data-interface';
 
 export interface AreaChartProps {
     title: string;
-    data: any;
+    data: GraphDataInterface[];
     dataKey1: string;
     dataName1: string;
     xAxisKey: string;

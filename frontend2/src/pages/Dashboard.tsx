@@ -18,7 +18,7 @@ interface DashboardProps {
 export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardProps) => {
     const { rootStore } = props;
 
-    //FIXME console errors
+    //FIXME console errors [mobx] Out of bounds read:
 
     useEffect(() => {
         (async () => {

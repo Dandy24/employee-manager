@@ -3,10 +3,11 @@ import Title from 'antd/lib/typography/Title';
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { Col } from 'antd';
 import React from 'react';
+import { GraphDataInterface } from '../../../models/interfaces/graph-data-interface';
 
 export interface PieChartProps {
     title: string;
-    data: any;
+    data: GraphDataInterface[];
     dataKey: string;
     dataName: string;
     colors: string[];

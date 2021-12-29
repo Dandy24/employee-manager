@@ -3,10 +3,11 @@ import Title from 'antd/lib/typography/Title';
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Col } from 'antd';
 import React from 'react';
+import { HoursTypeGraphDataInterface } from '../../../models/interfaces/graph-data-interface';
 
 export interface LineChartProps {
     title: string;
-    data: any;
+    data: HoursTypeGraphDataInterface[];
     dataKey1: string;
     dataKey2: string;
     dataName1: string;
