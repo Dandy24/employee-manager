@@ -4,9 +4,9 @@ on:
   push:
     branches:
     - master
-    - feat
-    - fix
-    - test
+    - feat/*
+    - fix/*
+    - test/*
 
 jobs:
   build:
