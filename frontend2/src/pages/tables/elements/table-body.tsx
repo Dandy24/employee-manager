@@ -7,7 +7,7 @@ export interface TableBodyProps {
     // providedDraggable: DraggableProvided;
     providedDroppable: DroppableProvided;
     tableBodyProps: any; //TableBodyProps;
-    rows: Row<object>[];
+    rows: Row<any>[];
     prepareRow: (row: Row<any>) => void;
     type: 'shift-table' | 'employee-table';
 }
@@ -16,8 +16,6 @@ export const TableBody: React.FC<TableBodyProps> = observer((props: TableBodyPro
     const { providedDroppable, tableBodyProps, rows, prepareRow, type } = props;
 
     /** TODO spread to more logical independent components **/
-
-    /** FIXME table height style -- table must have height for d&d tests to work **/
 
     return (
         <tbody
