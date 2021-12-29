@@ -108,7 +108,7 @@ export class DashboardStore {
     }
 
     get workingDaysGraphData() {
-        return this.employeeOutput.map((output) => ({
+        return this.employeeOutput?.map((output) => ({
             name: output.start_date,
             work: output.working_hours,
             vac: output.vacation_hours,

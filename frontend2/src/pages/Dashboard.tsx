@@ -18,14 +18,19 @@ interface DashboardProps {
 export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardProps) => {
     const { rootStore } = props;
 
+    //FIXME console errors
+
     useEffect(() => {
         (async () => {
-            await rootStore.companyStore.fetchAllCompanies();
-            await rootStore.employeeStore.fetchAllEmployees();
-            rootStore.searchStore.createSearchableCompanies();
-            await rootStore.dashboardStore.loadEmployeeOutput(34);
-            await rootStore.dashboardStore.loadOverallOutput();
-            await rootStore.dashboardStore.loadHoursByCompany();
+            if (rootStore.dashboardStore.employeeMode) {
+                await rootStore.dashboardStore.loadEmployeeOutput(rootStore.employeeStore.employee.id);
+            } else {
+                await rootStore.companyStore.fetchAllCompanies();
+                await rootStore.employeeStore.fetchAllEmployees();
+                rootStore.searchStore.createSearchableEmployees();
+                await rootStore.dashboardStore.loadOverallOutput();
+                await rootStore.dashboardStore.loadHoursByCompany();
+            }
         })();
     }, [rootStore.dashboardStore.employeeMode]);
 
@@ -40,21 +45,22 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
 
     return (
         <>
-            {!rootStore.dashboardStore.employeeMode ? (
-                <Row justify="center" style={{ marginBottom: '2%' }}>
-                    <Col>
-                        <SearchComponent options={toJS(rootStore.searchStore.searchableCompanies)} />
-                    </Col>
-                </Row>
-            ) : null}
-
-            <Button
-                onClick={() => {
-                    rootStore.dashboardStore.switchMode();
-                }}
-            >
-                Click
-            </Button>
+            <Row justify="center" style={{ marginBottom: '2%' }}>
+                <Col>
+                    {!rootStore.dashboardStore.employeeMode ? (
+                        <SearchComponent type="employee" options={toJS(rootStore.searchStore.searchableEmployees)} />
+                    ) : (
+                        <Button
+                            onClick={() => {
+                                rootStore.dashboardStore.switchMode();
+                            }}
+                            type="primary"
+                        >
+                            Zpet na obecny prehled
+                        </Button>
+                    )}
+                </Col>
+            </Row>
 
             <Card
                 title={rootStore.dashboardStore.employeeMode ? 'Mesicni prehled zamestnance' : 'Obecny mesicni prehled'}

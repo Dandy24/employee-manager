@@ -63,7 +63,7 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
         <>
             <Row justify="center" style={{ marginTop: '1%', marginBottom: '2%' }}>
                 <Col>
-                    <SearchComponent options={toJS(rootStore.searchStore.searchableCompanies)} />
+                    <SearchComponent type="company" options={toJS(rootStore.searchStore.searchableCompanies)} />
                 </Col>
             </Row>
 
