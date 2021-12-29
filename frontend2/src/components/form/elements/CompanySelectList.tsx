@@ -1,15 +1,13 @@
 import React from 'react';
 import { Select } from 'formik-antd';
-import { SelectProps } from 'antd/lib/select';
 import { InputWrapper } from '../../layout/form/InputWrapper';
 import { observer } from 'mobx-react-lite';
 import { CompanyEntity } from '../../../models/entities/company-entity';
 
-export interface CompanySelectListProps extends SelectProps<any> {
+export interface CompanySelectListProps {
     companies: CompanyEntity[];
     name: string;
     label: string;
-    //spacesize: SpaceSize      Obsolete
 }
 
 export const CompanySelectList: React.FC<CompanySelectListProps> = observer(

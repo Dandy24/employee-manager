@@ -1,6 +1,5 @@
 import { DatePicker } from 'formik-antd';
 import React from 'react';
-import { SpaceSize } from 'antd/es/space';
 import { InputWrapper } from '../../layout/form/InputWrapper';
 import { PickerMode } from 'rc-picker/lib/interface';
 import { observer } from 'mobx-react-lite';
@@ -8,12 +7,11 @@ import { observer } from 'mobx-react-lite';
 export interface DateSelectorProps {
     name: string;
     label: string;
-    spacesize: SpaceSize;
     picker?: Exclude<PickerMode, 'date' | 'time'>;
 }
 
 export const DateSelector: React.FC<DateSelectorProps> = observer((props: DateSelectorProps): JSX.Element => {
-    const { name, spacesize, label, picker } = props;
+    const { name, label, picker } = props;
 
     return (
         <InputWrapper>

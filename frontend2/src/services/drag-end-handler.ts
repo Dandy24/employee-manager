@@ -2,7 +2,7 @@ import { ShiftStore } from '../stores/shift-store';
 import { DropResult } from 'react-beautiful-dnd';
 import { message } from 'antd';
 
-export const isValid = (sourceDroppableId: number, destinationDroppableId: number, store: ShiftStore) => {
+export const isValid = (sourceDroppableId: number, destinationDroppableId: number, store: ShiftStore): boolean => {
     /** Check whether the employee is in the different shift on the same day **/
     if (
         store.shiftListForDay.find(
@@ -38,11 +38,7 @@ export const dragEndHandler = (event: DropResult, store: ShiftStore): void => {
         if (event.destination.droppableId !== event.source.droppableId) {
             if (event.destination.droppableId === 'shift-table' && event.source.droppableId === 'employee-table') {
                 if (isValid(event.source.index, event.destination.index, store)) {
-                    store.addToShift(
-                        store.availableEmployees[event.source.index],
-                        event.source.index,
-                        event.destination.index,
-                    );
+                    store.addToShift(store.availableEmployees[event.source.index]);
                     store.removeEmployee(event.source.index);
                 }
             } else {

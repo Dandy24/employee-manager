@@ -1,4 +1,4 @@
-import { Modal, Table } from 'antd';
+import { Modal } from 'antd';
 import React, { useEffect } from 'react';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { EditDrawer } from '../components/EditDrawer';
@@ -9,7 +9,6 @@ import { RootStore } from '../stores/root-store';
 import { EmployeeTableColumns } from '../components/table/tableColumns/EmployeeTableColumns';
 import { observer } from 'mobx-react-lite';
 import { EmployeeDto } from '../models/dtos/employee-dto';
-import { EmptyTable } from '../components/table/empty-table';
 import '../styles.css';
 import { MyTable } from '../components/table/table';
 
@@ -65,6 +64,7 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
 
         useEffect(() => {
             (async () => {
+                await rootStore.companyStore.fetchAllCompanies();
                 await employeeStore.fetchAllEmployees();
             })();
         }, []); // was [isLoading]

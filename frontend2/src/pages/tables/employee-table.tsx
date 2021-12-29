@@ -1,10 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { Droppable } from 'react-beautiful-dnd';
 import { useTable, useBlockLayout } from 'react-table';
 import { useRootStore } from '../../stores/root-store-provider';
 import { EmployeeTableColumns } from '../../components/table/tableColumns/EmployeeTableColumns';
-import { Table } from 'antd';
 import { TableHeader } from './elements/table-header';
 import { TableBody } from './elements/table-body';
 import { TableWrapper } from './elements/table-wrapper';
@@ -14,9 +13,7 @@ export const EmpTable: React.FC = observer((): JSX.Element => {
 
     const data = [...rootStore.shiftStore.availableEmployees];
 
-    const cols = EmployeeTableColumns(rootStore.employeeStore, rootStore.companyStore, null, true);
-    //.filter(
-    //(col) => col.key !== 'action',);
+    const cols = EmployeeTableColumns(rootStore.employeeStore, rootStore.companyStore, null);
 
     const columns = React.useMemo(
         () =>

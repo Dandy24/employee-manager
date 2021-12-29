@@ -25,29 +25,23 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = observer((props: Employ
         <Form>
             <Row justify="center">
                 <div>
-                    <TextInput label="Jméno" spacesize="large" name="first_name" />
+                    <TextInput label="Jméno" name="first_name" />
 
-                    <TextInput label="Příjmení" spacesize="large" name="last_name" />
+                    <TextInput label="Příjmení" name="last_name" />
 
-                    <NumberInput label="Telefon" spacesize="large" name="phone" />
+                    <NumberInput label="Telefon" name="phone" />
 
-                    <TextInput label="Email" spacesize="large" name="email" />
+                    <TextInput label="Email" name="email" />
 
-                    <CategorySelectList name="working_category" label="Kategorizace práce" spacesize="large" />
+                    <CategorySelectList name="working_category" label="Kategorizace práce" />
 
-                    <DateSelector name="med_exam_date" label="Datum vstupní prohlídky" spacesize="large" />
+                    <DateSelector name="med_exam_date" label="Datum vstupní prohlídky" />
 
-                    <DateSelector name="job_assign_date" label="Datum nástupu do práce" spacesize="large" />
+                    <DateSelector name="job_assign_date" label="Datum nástupu do práce" />
 
-                    <TextArea
-                        name="health_limitations"
-                        label="Zdravotní omezení"
-                        spacesize="large"
-                        rows={3}
-                        textareaSize="large"
-                    />
+                    <TextArea name="health_limitations" label="Zdravotní omezení" rows={3} textareaSize="large" />
 
-                    {activeEdit ? <CustomSwitch label="Aktivní" name="active" spacesize="large" /> : null}
+                    {activeEdit ? <CustomSwitch label="Aktivní" name="active" /> : null}
 
                     {employeeEdit && companiesList ? (
                         <CompanySelectList companies={companiesList} name="company" label="Firma" />

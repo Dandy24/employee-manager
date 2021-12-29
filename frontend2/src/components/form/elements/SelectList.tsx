@@ -1,19 +1,15 @@
 import { Select } from 'formik-antd';
-import { SelectProps } from 'antd/lib/select';
-import { SpaceSize } from 'antd/es/space';
-import { InputWrapper } from '../../layout/form/InputWrapper';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { WorkingCategoryEnum } from '../../../models/enums/working-category-enum';
 
-export interface SelectListProps extends SelectProps<any> {
+export interface SelectListProps {
     name: string;
     label: string;
-    spacesize: SpaceSize;
 }
 
 export const CategorySelectList: React.FC<SelectListProps> = observer((props: SelectListProps): JSX.Element => {
-    const { name, label, spacesize } = props;
+    const { name, label } = props;
 
     return (
         <div data-testid={`${name}-category-select`}>

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Input } from 'formik-antd';
-import { SpaceSize } from 'antd/es/space';
 import { SizeType } from 'antd/es/config-provider/SizeContext';
-import { InputWrapper } from '../../layout/form/InputWrapper';
 import { observer } from 'mobx-react-lite';
 import { Alert } from 'antd';
 import { useField } from 'formik';
@@ -10,14 +8,14 @@ import { useField } from 'formik';
 export interface TextAreaProps {
     name: string;
     label: string;
-    spacesize: SpaceSize;
     textareaSize: SizeType;
     rows: number;
 }
 
 export const TextArea: React.FC<TextAreaProps> = observer((props: TextAreaProps): JSX.Element => {
-    const { name, label, spacesize, rows, textareaSize } = props;
+    const { name, label, rows, textareaSize } = props;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [field, meta] = useField(props);
     const { TextArea } = Input;
 

@@ -7,7 +7,7 @@ import { useRootStore } from '../../stores/root-store-provider';
 import { SearchableEmployeeEntity } from '../../models/entities/searchable-employee-entity';
 
 export interface SearchComponentProps {
-    options: SearchableCompanyEntity[] | SearchableEmployeeEntity[]; // | SearchableEmployeeEntity[];
+    options: SearchableCompanyEntity[] | SearchableEmployeeEntity[];
     type: 'employee' | 'company';
 }
 
@@ -16,7 +16,7 @@ export const SearchComponent: React.FC<SearchComponentProps> = observer((props: 
 
     const rootStore = useRootStore();
 
-    const searchHandler = async (value, option?) => {
+    const searchHandler = async (value) => {
         //TODO make component not call BE fetch on every search. Use and filter already fetched data instead (make a copy of array and pass it as options?)
         if (type === 'company') {
             await rootStore.companyStore.fetchAllCompanies(value, undefined);

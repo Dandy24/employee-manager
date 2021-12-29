@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Col, Modal, Row, Table } from 'antd';
+import { Col, Modal, Row } from 'antd';
 import { CompanyForm } from '../components/form/CompanyForm';
 import { CompanyFormik } from '../components/form/CompanyFormik';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -11,12 +11,13 @@ import { CompanyEntity } from '../models/entities/company-entity';
 import { CompanyDto } from '../models/dtos/company-dto';
 import { SearchComponent } from '../components/search/search-component';
 import { toJS } from 'mobx';
-import { EmptyTable } from '../components/table/empty-table';
 import { MyTable } from '../components/table/table';
 
 interface CompanyListProps {
     rootStore: RootStore;
 }
+
+//FIXME company search result (missing name and address)
 
 export const CompanyListPage: React.FC<CompanyListProps> = observer((props: CompanyListProps): JSX.Element => {
     const { rootStore } = props;

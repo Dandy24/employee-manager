@@ -5,7 +5,7 @@ import { InputWrapper } from '../../layout/form/InputWrapper';
 import { observer } from 'mobx-react-lite';
 
 export const CustomSwitch: React.FC<NumberInputProps> = observer((props: NumberInputProps): JSX.Element => {
-    const { spacesize, name, label } = props;
+    const { name, label } = props;
 
     return (
         <InputWrapper>

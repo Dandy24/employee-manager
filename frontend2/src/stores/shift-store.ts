@@ -84,21 +84,8 @@ export class ShiftStore {
         }
     }
 
-    addToShift(employee: EmployeeEntity, sourceIndex?: number, destinationIndex?: number): void {
-        // if (this.shiftEmployees.length === 0) {
+    addToShift(employee: EmployeeEntity): void {
         this.shiftEmployees.push(employee);
-        // } else {
-
-        // console.log(sourceIndex, destinationIndex);
-        // const items = [...this.shiftEmployees];
-        //
-        // const [reorderedItem] = items.splice(destinationIndex, 1);
-        // items.splice(destinationIndex + 1, 0, reorderedItem);
-        //
-        // this.setShiftEmployees(items);
-        // // }
-        //
-        // console.log(this.shiftEmployees);
     }
 
     removeFromShift(index: number): void {

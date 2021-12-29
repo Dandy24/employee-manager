@@ -22,17 +22,17 @@ export const CompanyForm: React.FC<CompanyFormProps> = observer((props: CompanyF
         <Form>
             <Row justify="center">
                 <Col span={12}>
-                    <TextInput label={companyNameLabel} spacesize="large" name={companyName} />
+                    <TextInput label={companyNameLabel} name={companyName} />
                 </Col>
             </Row>
             <Row justify="center">
                 <Col span={12}>
-                    <NumberInput label={companyPhoneLabel} spacesize="large" name={companyPhone} />
+                    <NumberInput label={companyPhoneLabel} name={companyPhone} />
                 </Col>
             </Row>
             <Row justify="center">
                 <Col span={12}>
-                    <TextInput label={companyAddressLabel} spacesize="large" name={companyAddress} />
+                    <TextInput label={companyAddressLabel} name={companyAddress} />
                 </Col>
             </Row>
             <Row justify="center">

@@ -16,7 +16,7 @@ test('TextInput snapshot matches the previous one', async () => {
             }}
         >
             <Form>
-                <TextInput label="Nazev firmy" spacesize="large" name="name" />
+                <TextInput label="Nazev firmy" name="name" />
             </Form>
         </Formik>,
     );
@@ -33,18 +33,18 @@ test('Test correct value in text input after user types', async () => {
             }}
         >
             <Form>
-                <TextInput label="Nazev firmy" spacesize="large" name="name" />
+                <TextInput label="Nazev firmy" name="name" />
             </Form>
         </Formik>,
     );
 
     const textField = screen.getByTestId('text-input-field');
 
-    userEvent.type(screen.getByTestId('text-input-field'), 'kok');
+    userEvent.type(screen.getByTestId('text-input-field'), 'test');
     //fireEvent.blur(screen.getByTestId('text-input-field'));
 
     await waitFor(() => {
-        expect(textField).toHaveDisplayValue('kok');
+        expect(textField).toHaveDisplayValue('test');
         expect(screen.queryByTestId('text-input-error')).not.toBeInTheDocument();
     });
 });
@@ -58,13 +58,12 @@ test('Test missing value validation in text input', async () => {
             }}
         >
             <Form>
-                <TextInput label="Nazev firmy" spacesize="large" name="name" />
+                <TextInput label="Nazev firmy" name="name" />
             </Form>
         </Formik>,
     );
 
     userEvent.click(screen.getByTestId('text-input-field'));
-    //userEvent.type(screen.getByTestId('text-input-field'), 'kok');
     fireEvent.blur(screen.getByTestId('text-input-field'));
 
     await waitFor(() => {
@@ -82,13 +81,13 @@ test('Test valid value validation in text input', async () => {
             }}
         >
             <Form>
-                <TextInput label="Nazev firmy" spacesize="large" name="name" />
+                <TextInput label="Nazev firmy" name="name" />
             </Form>
         </Formik>,
     );
 
     userEvent.click(screen.getByTestId('text-input-field'));
-    userEvent.type(screen.getByTestId('text-input-field'), 'kok');
+    userEvent.type(screen.getByTestId('text-input-field'), 'test');
     fireEvent.blur(screen.getByTestId('text-input-field'));
 
     await waitFor(() => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { Droppable } from 'react-beautiful-dnd';
 import { useTable } from 'react-table';
 import { useRootStore } from '../../stores/root-store-provider';
 import { EmployeeTableColumns } from '../../components/table/tableColumns/EmployeeTableColumns';
