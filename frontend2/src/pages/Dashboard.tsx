@@ -66,14 +66,16 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                 title={rootStore.dashboardStore.employeeMode ? 'Mesicni prehled zamestnance' : 'Obecny mesicni prehled'}
                 headStyle={{ textAlign: 'center', fontSize: '22px' }}
             >
-                {/*FIXME data loading*/}
-                {rootStore.dashboardStore.employeeOutput &&
-                    rootStore.dashboardStore.overallOutput &&
-                    (rootStore.dashboardStore.employeeMode ? (
+                {/*/!*FIXME data loading*!/*/}
+                {rootStore.dashboardStore.overallOutput && !rootStore.dashboardStore.employeeMode ? (
+                    <DashboardOverview type={'general'} data={rootStore.dashboardStore.employeeOutput} />
+                ) : (
+                    rootStore.dashboardStore.employeeOutput &&
+                    rootStore.dashboardStore.employeeMode && (
                         <DashboardOverview type={'employee'} data={rootStore.dashboardStore.employeeOutput} />
-                    ) : (
-                        <DashboardOverview type={'general'} data={rootStore.dashboardStore.employeeOutput} />
-                    ))}
+                    )
+                )}
+
                 <Row style={{ height: '400px' }}>
                     {/*FIXME datumy grafu jsou v opacnem poradi (graf jde ze soucasnosti do minulosti)*/}
 
@@ -91,7 +93,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                         rootStore.dashboardStore.overallOutput && (
                             <MyLineChart
                                 title="Vývoj pracovního nasazení"
-                                data={rootStore.dashboardStore.overallWorkingDaysGraphData}
+                                data={rootStore.dashboardStore.overallWorkingDaysGraphData.reverse()}
                                 dataKey1="work"
                                 dataKey2="vac"
                                 dataName1="Hours worked"
@@ -101,7 +103,6 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                         )
                     )}
 
-                    {/*FIXME nefunguje zobrazeni hodin podle spolecnosti (companyHours)*/}
                     {rootStore.dashboardStore.employeeOutput && rootStore.dashboardStore.employeeMode ? (
                         <MyPieChart
                             title="Rozlozeni hodin"

@@ -25,13 +25,16 @@ export class DashboardStore {
             employeeOutput: observable,
             overallOutput: observable,
             employeeMode: observable,
+            companyHours: observable,
             loadEmployeeOutput: action,
             loadOverallOutput: action,
+            loadHoursByCompany: action,
             switchMode: action,
 
             workingDaysGraphData: computed,
             effectivityGraphData: computed,
             hoursDistributionGraphData: computed,
+            housingCapacity: computed,
             overallWorkingHours: computed,
             overallEffectivity: computed,
         });
@@ -102,24 +105,29 @@ export class DashboardStore {
         } finally {
             // this.loadingCompanies = false;
             runInAction(() => {
-                this.companyHours = output;
+                this.companyHours = formattedOutput;
             });
+            console.log(this.companyHours);
         }
     }
 
     get workingDaysGraphData() {
-        return this.employeeOutput?.map((output) => ({
-            name: output.start_date,
-            work: output.working_hours,
-            vac: output.vacation_hours,
-        }));
+        return this.employeeOutput
+            ?.map((output) => ({
+                name: output.start_date,
+                work: output.working_hours,
+                vac: output.vacation_hours,
+            }))
+            .reverse();
     }
 
     get effectivityGraphData() {
-        return this.employeeOutput.map((output) => ({
-            name: output.start_date,
-            effectivity: output.effectivity,
-        }));
+        return this.employeeOutput
+            .map((output) => ({
+                name: output.start_date,
+                effectivity: output.effectivity,
+            }))
+            .reverse();
     }
 
     get hoursDistributionGraphData() {
@@ -136,10 +144,12 @@ export class DashboardStore {
     }
 
     get overallEffectivity() {
-        return this.overallOutput.map((output) => ({
-            name: output.start_date,
-            effectivity: Math.ceil(output.effectivity),
-        }));
+        return this.overallOutput
+            .map((output) => ({
+                name: output.start_date,
+                effectivity: Math.ceil(output.effectivity),
+            }))
+            .reverse();
     }
 
     get housingCapacity() {

@@ -11,6 +11,8 @@ export interface DashboardOverviewProps {
     data: EmployeeMonthlyOutputEntity[];
 }
 
+//TODO refactor to use data prop (overallStats)
+
 export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((props: DashboardOverviewProps) => {
     const { type, data } = props;
     const rootStore = useRootStore();
@@ -67,33 +69,44 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                 ) : (
                     <Statistic
                         title={'Pocet hodin'}
-                        value={rootStore.dashboardStore.overallWorkingHours}
+                        value={rootStore.dashboardStore.overallWorkingDaysGraphData[0]?.work}
                         // valueStyle={{ color: '#3f8600' }}
                         // prefix={<ArrowUpOutlined />}
                         style={{ marginTop: '20%' }}
                     />
                 )}
             </Col>
-            <Col span={3} offset={5}>
-                <Title level={5} style={{ textAlign: 'center' }}>
-                    {type === 'general' ? 'Efektivita zamestnancu' : 'Efektivita zamestnance'}
-                </Title>
-                <Progress
-                    type="circle"
-                    percent={
-                        type === 'employee'
-                            ? data[0]?.effectivity
-                            : rootStore.dashboardStore.overallEffectivity[0]?.effectivity
-                    }
-                    strokeColor={
-                        rootStore.dashboardStore.overallEffectivity[0]?.effectivity < 50
-                            ? 'red'
-                            : rootStore.dashboardStore.overallEffectivity[0]?.effectivity < 75
-                            ? 'orange'
-                            : 'green'
-                    }
-                />
-            </Col>
+
+            {type === 'general' ? (
+                <Col span={3} offset={5}>
+                    <Title level={5} style={{ textAlign: 'center' }}>
+                        {'Efektivita zamestnancu'}
+                    </Title>
+                    <Progress
+                        type="circle"
+                        percent={rootStore.dashboardStore.overallEffectivity.at(-1)?.effectivity}
+                        strokeColor={
+                            rootStore.dashboardStore.overallEffectivity.at(-1)?.effectivity < 50
+                                ? 'red'
+                                : rootStore.dashboardStore.overallEffectivity.at(-1)?.effectivity < 75
+                                ? 'orange'
+                                : 'green'
+                        }
+                    />
+                </Col>
+            ) : (
+                <Col span={3} offset={5}>
+                    <Title level={5} style={{ textAlign: 'center' }}>
+                        {'Efektivita zamestnance'}
+                    </Title>
+                    <Progress
+                        type="circle"
+                        percent={data[0]?.effectivity}
+                        strokeColor={data[0]?.effectivity < 50 ? 'red' : data[0]?.effectivity < 75 ? 'orange' : 'green'}
+                    />
+                </Col>
+            )}
+
             <Col span={3}>
                 <Title level={5} style={{ textAlign: 'center' }}>
                     Kapacita ubytovny
