@@ -24,8 +24,10 @@ export class DashboardStore {
         makeObservable(this, {
             employeeOutput: observable,
             overallOutput: observable,
+            employeeMode: observable,
             loadEmployeeOutput: action,
             loadOverallOutput: action,
+            switchMode: action,
 
             workingDaysGraphData: computed,
             effectivityGraphData: computed,
@@ -33,6 +35,10 @@ export class DashboardStore {
             overallWorkingHours: computed,
             overallEffectivity: computed,
         });
+    }
+
+    switchMode(): void {
+        this.employeeMode = !this.employeeMode;
     }
 
     async loadEmployeeOutput(id: number): Promise<void> {
@@ -49,7 +55,9 @@ export class DashboardStore {
             message.error('Failed to load employee output from database');
         } finally {
             // this.loadingCompanies = false;
-            this.employeeOutput = output;
+            runInAction(() => {
+                this.employeeOutput = output;
+            });
         }
     }
 
@@ -67,8 +75,9 @@ export class DashboardStore {
             message.error('Failed to load overall output from database');
         } finally {
             // this.loadingCompanies = false;
-            this.overallOutput = output;
-            console.log(toJS(this.overallOutput));
+            runInAction(() => {
+                this.overallOutput = output;
+            });
         }
     }
 
@@ -92,8 +101,9 @@ export class DashboardStore {
             message.error('Failed to load overall output from database');
         } finally {
             // this.loadingCompanies = false;
-            this.companyHours = output;
-            console.log(toJS(formattedOutput));
+            runInAction(() => {
+                this.companyHours = output;
+            });
         }
     }
 

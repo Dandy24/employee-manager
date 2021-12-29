@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React, { useEffect } from 'react';
-import { Card, Col, Row } from 'antd';
+import { Button, Card, Col, Row } from 'antd';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import Title from 'antd/lib/typography/Title';
 import { SearchComponent } from '../components/search/search-component';
@@ -27,7 +27,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
             await rootStore.dashboardStore.loadOverallOutput();
             await rootStore.dashboardStore.loadHoursByCompany();
         })();
-    }, []);
+    }, [rootStore.dashboardStore.employeeMode]);
 
     const data3 = [
         { name: 'Group A', uv: 400, pv: 500 },
@@ -48,6 +48,14 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                 </Row>
             ) : null}
 
+            <Button
+                onClick={() => {
+                    rootStore.dashboardStore.switchMode();
+                }}
+            >
+                Click
+            </Button>
+
             <Card
                 title={rootStore.dashboardStore.employeeMode ? 'Mesicni prehled zamestnance' : 'Obecny mesicni prehled'}
                 headStyle={{ textAlign: 'center', fontSize: '22px' }}
@@ -62,22 +70,33 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                     ))}
                 <Row style={{ height: '400px' }}>
                     {/*FIXME datumy grafu jsou v opacnem poradi (graf jde ze soucasnosti do minulosti)*/}
-                    <MyLineChart
-                        title="Vývoj pracovního nasazení"
-                        data={
-                            rootStore.dashboardStore.employeeOutput
-                                ? rootStore.dashboardStore.workingDaysGraphData
-                                : null
-                        }
-                        dataKey1="work"
-                        dataKey2="vac"
-                        dataName1="Hours worked"
-                        dataName2="Hours out"
-                        xAxisKey="name"
-                    />
+
+                    {rootStore.dashboardStore.employeeMode ? (
+                        <MyLineChart
+                            title="Vývoj pracovního nasazení"
+                            data={rootStore.dashboardStore.workingDaysGraphData}
+                            dataKey1="work"
+                            dataKey2="vac"
+                            dataName1="Hours worked"
+                            dataName2="Hours out"
+                            xAxisKey="name"
+                        />
+                    ) : (
+                        rootStore.dashboardStore.overallOutput && (
+                            <MyLineChart
+                                title="Vývoj pracovního nasazení"
+                                data={rootStore.dashboardStore.overallWorkingDaysGraphData}
+                                dataKey1="work"
+                                dataKey2="vac"
+                                dataName1="Hours worked"
+                                dataName2="Hours out"
+                                xAxisKey="name"
+                            />
+                        )
+                    )}
 
                     {/*FIXME nefunguje zobrazeni hodin podle spolecnosti (companyHours)*/}
-                    {rootStore.dashboardStore.employeeOutput && (
+                    {rootStore.dashboardStore.employeeOutput && rootStore.dashboardStore.employeeMode ? (
                         <MyPieChart
                             title="Rozlozeni hodin"
                             data={rootStore.dashboardStore.hoursDistributionGraphData}
@@ -85,11 +104,22 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                             dataName="name"
                             colors={COLORS}
                         />
+                    ) : (
+                        rootStore.dashboardStore.overallOutput &&
+                        rootStore.dashboardStore.companyHours && (
+                            <MyPieChart
+                                title="Rozlozeni hodin"
+                                data={rootStore.dashboardStore.companyHours}
+                                dataKey="hours"
+                                dataName="name"
+                                colors={COLORS}
+                            />
+                        )
                     )}
                 </Row>
 
                 <Row style={{ height: '400px' }}>
-                    {rootStore.dashboardStore.employeeOutput && (
+                    {rootStore.dashboardStore.employeeOutput && rootStore.dashboardStore.employeeMode ? (
                         <MyAreaChart
                             data={rootStore.dashboardStore.effectivityGraphData}
                             xAxisKey="name"
@@ -97,6 +127,16 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                             dataName1="Effectivity"
                             title="Vyvoj efektivity"
                         />
+                    ) : (
+                        rootStore.dashboardStore.overallOutput && (
+                            <MyAreaChart
+                                data={rootStore.dashboardStore.overallEffectivity}
+                                xAxisKey="name"
+                                dataKey1="effectivity"
+                                dataName1="Effectivity"
+                                title="Vyvoj efektivity"
+                            />
+                        )
                     )}
 
                     <Col style={{ width: '50%', height: '108%' }}>
