@@ -4,11 +4,6 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-# router = routers.DefaultRouter()
-# router.register('api/employees', EmployeeViewSet, 'employees')
-
-# urlpatterns = router.urls
-
 schema_view = get_schema_view(
     openapi.Info(
         title="Employee Manager API",
@@ -21,7 +16,6 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
-    #path('', views.apiOverview, name='api-overview'),
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('company-list', views.companyList, name='company-list'),
     path('company-detail/<str:pk>', views.companyDetail, name='company-detail'),
@@ -49,9 +43,11 @@ urlpatterns = [
     path('delete-shift-table', views.deleteShiftTable, name='delete-shift-table'),
     path('company-table-delete', views.deleteCompanyTable, name='company-table-delete'),
 
-    path('employee-monthly-output/<str:employeeID>', views.employeeMonthlyOutputHistory, name='employee-monthly-output'),
+    path('employee-monthly-output/<str:employeeID>', views.employeeMonthlyOutputHistory,
+         name='employee-monthly-output'),
     path('monthly-output', views.overallMonthlyOutputHistory, name='monthly-output'),
-    path('monthly-output-company/<str:start_date>&<str:end_date>', views.overallMonthlyOutputByCompany, name='monthly-output-company'),
+    path('monthly-output-company/<str:start_date>&<str:end_date>', views.overallMonthlyOutputByCompany,
+         name='monthly-output-company'),
     path('employee-monthly-output-create', views.monthlyOutputCreate, name='employee-monthly-output-create'),
     path('monthly-output-create', views.overallMonthlyOutputCreate, name='monthly-output-create'),
 ]
