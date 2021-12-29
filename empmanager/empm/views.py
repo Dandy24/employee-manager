@@ -1,15 +1,14 @@
 from copy import copy
 
+from django.db import connection
+from django.db.models import Count
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from drf_yasg.utils import swagger_auto_schema
-from django.db import connection
-from rest_framework.test import APIRequestFactory
 
-from .models import Company, Employee, Shift
-from .serializers import CompanySerializer, EmployeeSerializer, ShiftSerializer
-
-from django.db import connection
+from .models import Company, Employee, Shift, MonthlyOutput, OverallMonthlyOutput
+from .serializers import CompanySerializer, EmployeeSerializer, ShiftSerializer, MonthlyOutputSerializer, \
+    OverallMonthlyOutputSerializer
 
 
 @api_view(['GET'])
@@ -263,6 +262,7 @@ def deleteShiftTable(request):
 
     return Response('All shifts were deleted')
 
+
 @api_view(['DELETE'])
 def deleteEmployeeTable(request):
     cursor = connection.cursor()
@@ -271,3 +271,67 @@ def deleteEmployeeTable(request):
     cursor.execute("delete from sqlite_sequence where name='empm_employee'")
 
     return Response('All employees were deleted')
+
+
+@api_view(['GET'])
+def employeeMonthlyOutput(request, employeeID):
+    employee = MonthlyOutput.objects.get(employee_id=employeeID)
+    serializer = MonthlyOutputSerializer(employee, many=False)
+
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def employeeMonthlyOutputHistory(request, employeeID):
+    employees = MonthlyOutput.objects.filter(employee_id=employeeID).order_by('-start_date')
+    serializer = MonthlyOutputSerializer(employees[:6], many=True)
+
+    return Response(serializer.data)
+
+
+# TODO dont create new output if one with the same month already exist
+@swagger_auto_schema(methods=['post'], request_body=MonthlyOutputSerializer)
+@api_view(['POST'])
+def monthlyOutputCreate(request):
+    serializer = MonthlyOutputSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        print(serializer.errors)
+        raise ValueError
+
+
+@api_view(['GET'])
+def overallMonthlyOutputHistory(request):
+    overalls = OverallMonthlyOutput.objects.order_by('-start_date')
+    serializer = OverallMonthlyOutputSerializer(overalls[:6], many=True)
+
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def overallMonthlyOutputByCompany(request, start_date, end_date):
+    from django.db import connection
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT ec.name as name, SUM(working_hours) as overall_hours FROM empm_monthlyoutput join empm_employee on empm_employee.id = empm_monthlyoutput.employee_id join empm_company ec on ec.id = empm_employee.company_id where start_date = %s and end_date = %s GROUP BY ec.name;", [start_date, end_date])
+    row = cursor.fetchall()
+
+    # row = Shift.objects.raw("SELECT ec.name as name, SUM(working_hours) as overall_hours FROM empm_monthlyoutput join empm_employee on empm_employee.id = empm_monthlyoutput.employee_id join empm_company ec on ec.id = empm_employee.company_id where start_date = %s and end_date = %s GROUP BY ec.name;", [start_date, end_date])
+
+    return Response(row)
+
+
+@swagger_auto_schema(methods=['post'], request_body=OverallMonthlyOutputSerializer)
+@api_view(['POST'])
+def overallMonthlyOutputCreate(request):
+    serializer = OverallMonthlyOutputSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        print(serializer.errors)
+        raise ValueError

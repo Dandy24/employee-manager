@@ -4,6 +4,8 @@ import { EmployeeEntity } from '../models/entities/employee-entity';
 import { EmployeeDto } from '../models/dtos/employee-dto';
 import { ShiftDto } from '../models/dtos/shift-dto';
 import { ShiftEntity } from '../models/entities/shift-entity';
+import { EmployeeMonthlyOutputEntity } from '../models/entities/employee-monthly-output-entity';
+import { EmployeeMonthlyOutputDto } from '../models/dtos/employee-monthly-output-dto';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -220,4 +222,71 @@ export async function deleteAllShifts(): Promise<void> {
             'Content-type': 'application/json',
         },
     });
+}
+
+export async function getEmployeeMonthlyOutput(employeeId: number): Promise<EmployeeMonthlyOutputEntity[]> {
+    const response = await fetch(`${API_URL}/employee-monthly-output/${employeeId}`);
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error(`Unable to load monthly output for employee ${employeeId}`);
+        return Promise.reject(error);
+    }
+}
+
+export async function createMonthlyOutput(output: EmployeeMonthlyOutputDto): Promise<EmployeeMonthlyOutputEntity> {
+    const response = await fetch(`${API_URL}/employee-monthly-output-create`, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(output),
+    });
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error('Unable to create monthly output');
+        return Promise.reject(error);
+    }
+}
+
+export async function getOverallMonthlyOutput(): Promise<EmployeeMonthlyOutputEntity[]> {
+    const response = await fetch(`${API_URL}/monthly-output`);
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error(`Unable to load overall monthly output`);
+        return Promise.reject(error);
+    }
+}
+
+export async function createOverallMonthlyOutput(
+    output: EmployeeMonthlyOutputDto,
+): Promise<EmployeeMonthlyOutputEntity> {
+    const response = await fetch(`${API_URL}/monthly-output-create`, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify(output),
+    });
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error('Unable to create overall monthly output');
+        return Promise.reject(error);
+    }
+}
+
+export async function getMonthlyHoursByCompany(
+    start_date: string,
+    end_date: string,
+): Promise<EmployeeMonthlyOutputEntity[]> {
+    const response = await fetch(`${API_URL}/monthly-output-company/${start_date}&${end_date}`);
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error(`Unable to load monthly hours by company`);
+        return Promise.reject(error);
+    }
 }

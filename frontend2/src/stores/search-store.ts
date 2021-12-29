@@ -1,11 +1,12 @@
-import { CompanyEntity } from '../models/entities/company-entity';
 import { RootStore } from './root-store';
 import { action, makeObservable, observable } from 'mobx';
 import { SearchResultItem } from '../components/search/search-result';
 import { SearchableCompanyEntity } from '../models/entities/searchable-company-entity';
+import { SearchableEmployeeEntity } from '../models/entities/searchable-employee-entity';
 
 export class SearchStore {
     searchableCompanies: SearchableCompanyEntity[]; // TODO Entity SearchableItem
+    searchableEmployees: SearchableEmployeeEntity[]; // TODO Entity SearchableItem
     loading = false;
     private rootStore: RootStore;
 
@@ -14,10 +15,13 @@ export class SearchStore {
 
         makeObservable(this, {
             searchableCompanies: observable,
+            searchableEmployees: observable,
             loading: observable,
 
             createSearchableCompanies: action,
             setSearchableCompanies: action,
+            createSearchableEmployees: action,
+            setSearchableEmployees: action,
         });
     }
 
@@ -25,12 +29,27 @@ export class SearchStore {
         this.searchableCompanies = companies;
     }
 
-    createSearchableCompanies = (companies: CompanyEntity[]): void => {
-        const searchable = companies.map((company, index) => ({
+    setSearchableEmployees(employees: SearchableEmployeeEntity[]): void {
+        this.searchableEmployees = employees;
+    }
+
+    createSearchableCompanies = (): void => {
+        const searchable = this.rootStore.companyStore.companies.map((company, index) => ({
             company,
             value: `${company.name} | ${company.phone} | ${company.address}`,
             label: SearchResultItem(company, index),
+            key: `company-${company.id}`,
         }));
         this.setSearchableCompanies(searchable);
+    };
+
+    createSearchableEmployees = (): void => {
+        const searchable = this.rootStore.employeeStore.employees.map((employee, index) => ({
+            employee,
+            value: `${employee.first_name} ${employee.last_name} | ${employee.phone} | ${employee.company}`,
+            label: SearchResultItem(employee, index),
+            key: `employee-${employee.id}`,
+        }));
+        this.setSearchableEmployees(searchable);
     };
 }

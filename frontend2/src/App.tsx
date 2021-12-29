@@ -13,6 +13,7 @@ import { useRootStore } from './stores/root-store-provider';
 import { observer } from 'mobx-react-lite';
 import { ShiftManagerPage } from './pages/ShiftManager';
 import { ShiftCalendarPage } from './pages/ShiftCalendarPage';
+import { Dashboard } from './pages/Dashboard';
 
 const App: React.FC = observer(() => {
     const rootStore = useRootStore();
@@ -23,7 +24,7 @@ const App: React.FC = observer(() => {
                 <MainNavigation />
                 <Content style={{ padding: '35px 50px' }}>
                     <Switch>
-                        <Route path="/" exact>
+                        <Route path="/company-list" exact>
                             <CompanyListPage rootStore={rootStore}></CompanyListPage>
                         </Route>
 
@@ -49,6 +50,10 @@ const App: React.FC = observer(() => {
 
                         <Route path="/shift-manager">
                             <ShiftManagerPage rootStore={rootStore}></ShiftManagerPage>
+                        </Route>
+
+                        <Route path="/">
+                            <Dashboard rootStore={rootStore}></Dashboard>
                         </Route>
                     </Switch>
                 </Content>

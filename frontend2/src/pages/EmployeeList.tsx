@@ -11,6 +11,7 @@ import { observer } from 'mobx-react-lite';
 import { EmployeeDto } from '../models/dtos/employee-dto';
 import { EmptyTable } from '../components/table/empty-table';
 import '../styles.css';
+import { MyTable } from '../components/table/table';
 
 interface EmployeeListPageProps {
     rootStore: RootStore;
@@ -70,20 +71,13 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
 
         return (
             <>
-                <Table
-                    rowKey="id"
+                <div style={{ paddingTop: '5.5%' }}></div>
+
+                <MyTable
                     loading={employeeStore.loadingEmployees}
                     columns={columns}
-                    dataSource={employeeStore.employees}
-                    data-testid="employee-list-table"
-                    locale={{ emptyText: <EmptyTable type={'employee'} loading={employeeStore.loadingEmployees} /> }}
-                    pagination={{
-                        hideOnSinglePage: true,
-                        showSizeChanger: employeeStore.employees.length > 10,
-                        pageSizeOptions: ['10', '20', '30', '50'],
-                        position: ['bottomCenter'],
-                    }}
-                    // scroll={{ y: 1000 }}
+                    rows={employeeStore.employees}
+                    type="employee"
                 />
 
                 <EditDrawer

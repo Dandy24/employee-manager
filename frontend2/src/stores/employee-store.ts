@@ -10,6 +10,7 @@ import {
 import { message } from 'antd';
 import { EmployeeDto } from '../models/dtos/employee-dto';
 import { EmployeeEntity } from '../models/entities/employee-entity';
+import { SearchableEmployeeEntity } from '../models/entities/searchable-employee-entity';
 
 export class EmployeeStore {
     employees: EmployeeEntity[] = [];
@@ -36,12 +37,21 @@ export class EmployeeStore {
         });
     }
 
-    async fetchAllEmployees(companyId: number = null, shiftId: number = null): Promise<void> {
+    async fetchAllEmployees(
+        companyId: number = null,
+        filter?: string,
+        selected?: SearchableEmployeeEntity,
+    ): Promise<void> {
         runInAction(() => {
             this.loadingEmployees = true;
             this.employees = [];
         });
+
         try {
+            const employees = await getEmployeeList();
+
+            let selectedEmployee;
+
             if (companyId) {
                 await getEmployeeListForCompany(companyId).then((data) =>
                     runInAction(() => {
@@ -49,11 +59,14 @@ export class EmployeeStore {
                     }),
                 );
             } else {
-                await getEmployeeList().then((data) =>
-                    runInAction(() => {
-                        this.employees = data;
-                    }),
-                );
+                if (selected?.employee) {
+                    selectedEmployee = employees.find((emp) => emp.id === selected.employee.id);
+                }
+
+                runInAction(() => {
+                    this.employees = employees;
+                    this.employee = selectedEmployee ? selectedEmployee : null;
+                });
             }
         } catch (e) {
             message.error('Failed to load employees from database');
@@ -69,7 +82,6 @@ export class EmployeeStore {
     }
 
     openToEdit(employee: EmployeeEntity): void {
-        //console.log(employee);
         const emp = this.employees.find((e) => e.id === employee.id);
         this.isEditOpen = true;
         if (emp) {

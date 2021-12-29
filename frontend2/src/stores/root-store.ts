@@ -4,6 +4,7 @@ import { action, makeObservable, observable } from 'mobx';
 import { ShiftStore } from './shift-store';
 import { SearchStore } from './search-store';
 import { CalendarStore } from './calendar-store';
+import { DashboardStore } from './dashboard-store';
 
 export class RootStore {
     employeeStore: EmployeeStore;
@@ -11,6 +12,7 @@ export class RootStore {
     shiftStore: ShiftStore;
     searchStore: SearchStore;
     calendarStore: CalendarStore;
+    dashboardStore: DashboardStore;
     activePage = 'company-list';
 
     constructor() {
@@ -19,6 +21,7 @@ export class RootStore {
         this.shiftStore = new ShiftStore(this);
         this.searchStore = new SearchStore(this);
         this.calendarStore = new CalendarStore(this);
+        this.dashboardStore = new DashboardStore(this);
 
         makeObservable(this, {
             activePage: observable,

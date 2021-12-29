@@ -12,6 +12,7 @@ import { CompanyDto } from '../models/dtos/company-dto';
 import { SearchComponent } from '../components/search/search-component';
 import { toJS } from 'mobx';
 import { EmptyTable } from '../components/table/empty-table';
+import { MyTable } from '../components/table/table';
 
 interface CompanyListProps {
     rootStore: RootStore;
@@ -54,7 +55,7 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
     useEffect(() => {
         (async () => {
             await companyStore.fetchAllCompanies();
-            rootStore.searchStore.createSearchableCompanies(companyStore.companies);
+            rootStore.searchStore.createSearchableCompanies();
         })();
     }, []);
 
@@ -62,23 +63,15 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
         <>
             <Row justify="center" style={{ marginTop: '1%', marginBottom: '2%' }}>
                 <Col>
-                    <SearchComponent options={toJS(rootStore.searchStore.searchableCompanies)} />
+                    <SearchComponent type="company" options={toJS(rootStore.searchStore.searchableCompanies)} />
                 </Col>
             </Row>
 
-            <Table
-                rowKey="id"
+            <MyTable
                 loading={companyStore.loadingCompanies}
                 columns={columns}
-                dataSource={companyStore.companies}
-                data-testid="company-table"
-                locale={{ emptyText: <EmptyTable type="company" loading={companyStore.loadingCompanies} /> }}
-                pagination={{
-                    hideOnSinglePage: true,
-                    showSizeChanger: companyStore.companies.length > 10,
-                    pageSizeOptions: ['10', '20', '30', '50'],
-                    position: ['bottomCenter'],
-                }}
+                rows={companyStore.companies}
+                type="company"
             />
 
             <EditDrawer

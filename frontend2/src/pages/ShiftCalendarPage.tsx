@@ -16,6 +16,7 @@ export interface ShiftCalendarPageProps {
 
 /** TODO REFACTOR !!! **/
 /** FIX loading shifts in useEffect - now its causing infinite re-render loop :) **/
+/** FIXME pri navratu z uspesne vytvorene smeny do kalendare zmizne page title **/
 
 export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((props: ShiftCalendarPageProps) => {
     const { companyId } = useParams<{ companyId: string }>();
@@ -99,7 +100,7 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
             <div style={{ padding: '1.5%' }}></div>
             <Calendar
                 data-testid="shift-calendar"
-                dateFullCellRender={getCalendarDateCell}
+                dateFullCellRender={rootStore.shiftStore.shiftList ? getCalendarDateCell : null}
                 onSelect={selectDateHandler}
             />
             <CalendarModal store={rootStore.calendarStore}>
