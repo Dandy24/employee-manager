@@ -1,21 +1,16 @@
 import { RootStore } from './root-store';
-import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { EmployeeMonthlyOutputEntity } from '../models/entities/employee-monthly-output-entity';
 import { getEmployeeMonthlyOutput, getMonthlyHoursByCompany, getOverallMonthlyOutput } from '../api/apiCalls';
 import { message } from 'antd';
 import { OverallMonthlyOutputEntity } from '../models/entities/overall-monthly-output-entity';
-
-//FIXME move to own file
-export interface CompanyHours {
-    name: string;
-    hours: number;
-}
+import { GraphDataInterface, HoursTypeGraphDataInterface } from '../models/interfaces/graph-data-interface';
 
 export class DashboardStore {
     employeeOutput: EmployeeMonthlyOutputEntity[];
     overallOutput: OverallMonthlyOutputEntity[];
     employeeMode = false;
-    companyHours: CompanyHours[];
+    companyHours: GraphDataInterface[];
     private rootStore: RootStore;
 
     constructor(rootStore: RootStore) {
@@ -35,7 +30,6 @@ export class DashboardStore {
             effectivityGraphData: computed,
             hoursDistributionGraphData: computed,
             housingCapacity: computed,
-            overallWorkingHours: computed,
             overallEffectivity: computed,
         });
     }
@@ -97,7 +91,7 @@ export class DashboardStore {
             output = await getMonthlyHoursByCompany(this.overallOutput[0].start_date, this.overallOutput[0].end_date);
 
             output.forEach((out) => {
-                const comp = { name: out[0], hours: out[1] };
+                const comp = { name: out[0], value: out[1] };
                 formattedOutput.push(comp);
             });
         } catch (e) {
@@ -107,11 +101,10 @@ export class DashboardStore {
             runInAction(() => {
                 this.companyHours = formattedOutput;
             });
-            console.log(this.companyHours);
         }
     }
 
-    get workingDaysGraphData() {
+    get workingDaysGraphData(): HoursTypeGraphDataInterface[] {
         return this.employeeOutput
             ?.map((output) => ({
                 name: output.start_date,
@@ -121,42 +114,38 @@ export class DashboardStore {
             .reverse();
     }
 
-    get effectivityGraphData() {
+    get effectivityGraphData(): GraphDataInterface[] {
         return this.employeeOutput
             .map((output) => ({
                 name: output.start_date,
-                effectivity: output.effectivity,
+                value: output.effectivity,
             }))
             .reverse();
     }
 
-    get hoursDistributionGraphData() {
+    get hoursDistributionGraphData(): GraphDataInterface[] {
         return [
-            { name: 'Hours worked', hours: this.employeeOutput[0]?.working_hours },
-            { name: 'Hours vacation', hours: this.employeeOutput[0]?.vacation_hours },
-            { name: 'Hours sick', hours: this.employeeOutput[0]?.sick_hours },
-            { name: 'Hours overtime', hours: this.employeeOutput[0]?.overtime },
+            { name: 'Hours worked', value: this.employeeOutput[0]?.working_hours },
+            { name: 'Hours vacation', value: this.employeeOutput[0]?.vacation_hours },
+            { name: 'Hours sick', value: this.employeeOutput[0]?.sick_hours },
+            { name: 'Hours overtime', value: this.employeeOutput[0]?.overtime },
         ];
     }
 
-    get overallWorkingHours() {
-        return this.employeeOutput.reduce((prevOutput, currOutput) => prevOutput + currOutput.working_hours, 0);
-    }
-
-    get overallEffectivity() {
+    get overallEffectivity(): GraphDataInterface[] {
         return this.overallOutput
             .map((output) => ({
                 name: output.start_date,
-                effectivity: Math.ceil(output.effectivity),
+                value: Math.ceil(output.effectivity),
             }))
             .reverse();
     }
 
-    get housingCapacity() {
+    get housingCapacity(): number {
         return Math.ceil((this.overallOutput[0]?.housing_capacity / 15) * 100);
     }
 
-    get overallWorkingDaysGraphData() {
+    get overallWorkingDaysGraphData(): HoursTypeGraphDataInterface[] {
         return this.overallOutput.map((output) => ({
             name: output.start_date,
             work: output.working_hours,

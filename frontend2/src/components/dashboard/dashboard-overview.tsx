@@ -25,8 +25,14 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                         title={'Pocet odpracovaných hodin'}
                         value={data[0]?.working_hours}
                         style={{ marginTop: '20%' }}
-                        valueStyle={{ color: '#3f8600' }}
-                        prefix={data[0]?.working_hours > data[1]?.working_hours ? <ArrowUpOutlined /> : null}
+                        valueStyle={{ color: data[0]?.working_hours > data[1]?.working_hours ? '#3f8600' : 'red' }}
+                        prefix={
+                            data[0]?.working_hours > data[1]?.working_hours ? (
+                                <ArrowUpOutlined />
+                            ) : (
+                                <ArrowDownOutlined />
+                            )
+                        }
                     />
                 ) : (
                     <Statistic
@@ -70,8 +76,21 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                     <Statistic
                         title={'Pocet hodin'}
                         value={rootStore.dashboardStore.overallWorkingDaysGraphData[0]?.work}
-                        // valueStyle={{ color: '#3f8600' }}
-                        // prefix={<ArrowUpOutlined />}
+                        valueStyle={{
+                            color:
+                                rootStore.dashboardStore.overallWorkingDaysGraphData[0]?.work >
+                                rootStore.dashboardStore.overallWorkingDaysGraphData[1]?.work
+                                    ? '#3f8600'
+                                    : 'red',
+                        }}
+                        prefix={
+                            rootStore.dashboardStore.overallWorkingDaysGraphData[0]?.work >
+                            rootStore.dashboardStore.overallWorkingDaysGraphData[1]?.work ? (
+                                <ArrowUpOutlined />
+                            ) : (
+                                <ArrowDownOutlined />
+                            )
+                        }
                         style={{ marginTop: '20%' }}
                     />
                 )}
@@ -84,11 +103,11 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                     </Title>
                     <Progress
                         type="circle"
-                        percent={rootStore.dashboardStore.overallEffectivity.at(-1)?.effectivity}
+                        percent={rootStore.dashboardStore.overallEffectivity.at(-1)?.value}
                         strokeColor={
-                            rootStore.dashboardStore.overallEffectivity.at(-1)?.effectivity < 50
+                            rootStore.dashboardStore.overallEffectivity.at(-1)?.value < 50
                                 ? 'red'
-                                : rootStore.dashboardStore.overallEffectivity.at(-1)?.effectivity < 75
+                                : rootStore.dashboardStore.overallEffectivity.at(-1)?.value < 75
                                 ? 'orange'
                                 : 'green'
                         }

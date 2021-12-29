@@ -77,8 +77,6 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                 )}
 
                 <Row style={{ height: '400px' }}>
-                    {/*FIXME datumy grafu jsou v opacnem poradi (graf jde ze soucasnosti do minulosti)*/}
-
                     {rootStore.dashboardStore.employeeMode ? (
                         <MyLineChart
                             title="Vývoj pracovního nasazení"
@@ -107,7 +105,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                         <MyPieChart
                             title="Rozlozeni hodin"
                             data={rootStore.dashboardStore.hoursDistributionGraphData}
-                            dataKey="hours"
+                            dataKey="value"
                             dataName="name"
                             colors={COLORS}
                         />
@@ -117,7 +115,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                             <MyPieChart
                                 title="Rozlozeni hodin"
                                 data={rootStore.dashboardStore.companyHours}
-                                dataKey="hours"
+                                dataKey="value"
                                 dataName="name"
                                 colors={COLORS}
                             />
@@ -130,7 +128,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                         <MyAreaChart
                             data={rootStore.dashboardStore.effectivityGraphData}
                             xAxisKey="name"
-                            dataKey1="effectivity"
+                            dataKey1="value"
                             dataName1="Effectivity"
                             title="Vyvoj efektivity"
                         />
@@ -139,7 +137,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                             <MyAreaChart
                                 data={rootStore.dashboardStore.overallEffectivity}
                                 xAxisKey="name"
-                                dataKey1="effectivity"
+                                dataKey1="value"
                                 dataName1="Effectivity"
                                 title="Vyvoj efektivity"
                             />
