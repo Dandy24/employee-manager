@@ -29,10 +29,13 @@ jobs:
         cache-dependency-path: frontend2/package-lock.json
 
     - name: Install dependencies
+      working-directory: ./frontend2
       run: npm install
 
     - name: Run the tests
+      working-directory: ./frontend2
       run: npm run test
 
     - name: Build
+      working-directory: ./frontend2
       run: npm run build
