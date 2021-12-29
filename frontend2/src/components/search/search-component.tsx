@@ -4,28 +4,42 @@ import { AutoComplete, Input } from 'antd';
 import { SearchableCompanyEntity } from '../../models/entities/searchable-company-entity';
 import { EmptyResults } from './empty-results';
 import { useRootStore } from '../../stores/root-store-provider';
+import { SearchableEmployeeEntity } from '../../models/entities/searchable-employee-entity';
 
 export interface SearchComponentProps {
-    options: SearchableCompanyEntity[]; // | SearchableEmployeeEntity[];
+    options: SearchableCompanyEntity[] | SearchableEmployeeEntity[]; // | SearchableEmployeeEntity[];
+    type: 'employee' | 'company';
 }
 
 export const SearchComponent: React.FC<SearchComponentProps> = observer((props: SearchComponentProps) => {
-    const { options } = props;
+    const { options, type } = props;
 
     const rootStore = useRootStore();
 
     const searchHandler = async (value, option?) => {
         //TODO make component not call BE fetch on every search. Use and filter already fetched data instead (make a copy of array and pass it as options?)
-        await rootStore.companyStore.fetchAllCompanies(value, undefined);
+        if (type === 'company') {
+            await rootStore.companyStore.fetchAllCompanies(value, undefined);
+        }
     };
 
     const selectHandler = async (value, option) => {
         //TODO make component not call BE fetch on every search. Use and filter already fetched data instead (make a copy of array and pass it as options?)
-        await rootStore.companyStore.fetchAllCompanies(undefined, option);
+        if (type === 'company') {
+            await rootStore.companyStore.fetchAllCompanies(undefined, option);
+        } else {
+            await rootStore.employeeStore.fetchAllEmployees(undefined, undefined, option);
+            rootStore.dashboardStore.switchMode();
+        }
     };
 
     const resetHandler = async () => {
-        await rootStore.companyStore.fetchAllCompanies();
+        if (type === 'company') {
+            await rootStore.companyStore.fetchAllCompanies();
+        } else {
+            await rootStore.employeeStore.fetchAllEmployees();
+            rootStore.dashboardStore.switchMode();
+        }
     };
 
     return (
@@ -36,7 +50,7 @@ export const SearchComponent: React.FC<SearchComponentProps> = observer((props: 
                 }}
                 data-testid="search-bar"
                 options={options}
-                notFoundContent={<EmptyResults />}
+                notFoundContent={<EmptyResults type={type} />}
                 filterOption={(inputValue, option) =>
                     option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                 }
@@ -46,7 +60,7 @@ export const SearchComponent: React.FC<SearchComponentProps> = observer((props: 
             >
                 <Input.Search
                     size="large"
-                    placeholder="Vyhledejte firmu"
+                    placeholder={type === 'company' ? `Vyhledejte firmu` : 'Vyhledejte zamestnance'}
                     onSearch={searchHandler}
                     enterButton
                     style={{ width: '108%' }}
