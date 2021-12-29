@@ -17,7 +17,7 @@ export const MyPieChart: React.FC<PieChartProps> = observer((props: PieChartProp
     const { title, data, dataKey, dataName, colors } = props;
 
     return (
-        <Col style={{ width: '30%', height: '100%' }}>
+        <Col span={8} offset={1} style={{ height: '90%' }}>
             <Title level={2} style={{ textAlign: 'center' }}>
                 {title}
             </Title>
@@ -25,7 +25,7 @@ export const MyPieChart: React.FC<PieChartProps> = observer((props: PieChartProp
                 <PieChart width={300} height={200} margin={{ top: 0, right: 0, bottom: 50, left: 0 }}>
                     <Pie
                         data={data}
-                        cy={160}
+                        cy={130}
                         innerRadius={70}
                         outerRadius={100}
                         fill="#8884d8"
@@ -37,7 +37,7 @@ export const MyPieChart: React.FC<PieChartProps> = observer((props: PieChartProp
                             <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
                         ))}
                     </Pie>
-                    <Legend />
+                    <Legend wrapperStyle={{ bottom: '8%' }} />
                     <Tooltip />
                 </PieChart>
             </ResponsiveContainer>

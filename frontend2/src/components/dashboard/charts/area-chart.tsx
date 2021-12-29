@@ -4,6 +4,7 @@ import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YA
 import { Col } from 'antd';
 import React from 'react';
 import { GraphDataInterface } from '../../../models/interfaces/graph-data-interface';
+import moment from 'moment';
 
 export interface AreaChartProps {
     title: string;
@@ -34,7 +35,11 @@ export const MyAreaChart: React.FC<AreaChartProps> = observer((props: AreaChartP
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey={xAxisKey} />
+                    <XAxis
+                        dataKey={xAxisKey}
+                        tickMargin={10}
+                        tickFormatter={(value) => moment(value).format('MMMM YYYY')}
+                    />
                     <YAxis />
                     <Tooltip formatter={(value) => `${value}%`} />
                     <Area type="monotone" dataKey={dataKey1} name={dataName1} stroke="#8884d8" fill="#8884d8" />
