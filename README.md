@@ -1,3 +1,5 @@
+https://github.com/Dandy24/employee_manager/workflows/Node.js%20CI/badge.svg
+
 ## INSTALLATION
 
 BE:
