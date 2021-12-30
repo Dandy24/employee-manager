@@ -4,8 +4,10 @@ describe('proccess of finding company through search box', () => {
     beforeEach(() => {
         /** UNCOMMENT THIS TO DELETE COMPANY TABLE IN EACH TEST RUN **/
         // deleteCompanyTable();
-        createCompany({ name: 'Company For Test', address: 'Example Address 123, Test', phone: 420123456789 });
-        cy.visit('http://localhost:3000');
+        cy.waitUntil(() =>
+            createCompany({ name: 'Company For Test', address: 'Example Address 123, Test', phone: 420123456789 }),
+        );
+        cy.visit('/company-list');
     });
 
     it('Matches the image snapshot', () => {

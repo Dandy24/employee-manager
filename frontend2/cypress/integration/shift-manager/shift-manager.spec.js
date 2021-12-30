@@ -1,13 +1,20 @@
 import { createShift, deleteAllShifts } from '../../../src/api/apiCalls';
 import { ShiftTypeEnum } from '../../../src/models/enums/shift-type-enum';
+import moment from 'moment';
+
+const testDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
+
 describe('shift validation', () => {
     beforeEach(() => {
         deleteAllShifts();
-        createShift({ date: '2021-12-15', time: ShiftTypeEnum.Rano, companyID: 59, employeeIDs: [43] });
-        createShift({ date: '2021-12-15', time: ShiftTypeEnum.Vecer, companyID: 59, employeeIDs: [46, 19] });
+        cy.waitUntil(() => createShift({ date: testDate, time: ShiftTypeEnum.Rano, companyID: 59, employeeIDs: [43] }));
+        cy.waitUntil(() =>
+            createShift({ date: testDate, time: ShiftTypeEnum.Vecer, companyID: 59, employeeIDs: [46, 19] }),
+        );
+
         cy.visit('/company-list');
         cy.get('[data-testid=company-calendar-button-59]').click();
-        cy.get('[title="2021-12-15"]').find('.ant-picker-calendar-date-content').dblclick();
+        cy.get(`[title="${testDate}"]`).find('.ant-picker-calendar-date-content').dblclick();
     });
 
     /** FIXME ADD ERROR IGNORE support/index.js **/
@@ -33,23 +40,23 @@ describe('shift validation', () => {
         cy.get('[data-testid=shift-add-button]').click();
         cy.get('[data-testid=new-shift-Odpoledne]').click();
 
-        cy.dragAndDrop('[data-testid=employee-table-row-4]', '[data-testid=shift-table-body]');
+        cy.dragAndDrop('[data-testid=employee-table-row-2]', '[data-testid=shift-table-body]');
         cy.waitUntil(() => cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 1));
 
-        cy.get('[data-testid=submit-shift-button]').click();
+        cy.waitUntil(() => cy.get('[data-testid=submit-shift-button]').click());
 
         cy.get('.ant-result-success').should('be.visible');
         cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se podařilo úspěšně vytvořit.');
         cy.get('[data-testid=shift-submit-result-subtitle]').should(
             'have.text',
-            'Směna je naplánována na 2021-12-15 odpoledne',
+            `Směna je naplánována na ${testDate} odpoledne`,
         );
 
         cy.get('[data-testid=submit-shift-button]').should('have.attr', 'disabled');
 
         cy.get('[data-testid=back-to-calendar-button]').click();
 
-        cy.get('[title="2021-12-15"] > .ant-picker-cell-inner > .ant-picker-calendar-date-content').should(
+        cy.get(`[title="${testDate}"] > .ant-picker-cell-inner > .ant-picker-calendar-date-content`).should(
             'contain.text',
             'odpoledne',
         );
@@ -62,12 +69,12 @@ describe('shift validation', () => {
 
         cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 5);
 
-        cy.dragAndDrop('[data-testid=employee-table-row-1]', '[data-testid=shift-table-body]');
+        cy.dragAndDrop('[data-testid=employee-table-row-4]', '[data-testid=shift-table-body]');
         cy.get('.ant-message-notice-content').should('be.visible').and('have.text', 'Zamestnanec je neaktivni');
 
         cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 0);
 
-        cy.get('[data-testid=employee-table-body]').find('tr').contains('37');
+        cy.get('[data-testid=employee-table-body]').find('tr').contains('46');
     });
 
     /** Employee wont be added to shift, error message is thrown and employee stays in original table **/
@@ -94,10 +101,13 @@ describe('shift validation', () => {
 
         cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 5);
 
-        cy.dragAndDrop('[data-testid=employee-table-row-2]', '[data-testid=shift-table-body]');
-        cy.get('.ant-message-notice-content')
-            .should('be.visible')
-            .and('have.text', 'Zamestnanec se v tento den jiz nachazi na smene ranni');
+        cy.waitUntil(() => cy.dragAndDrop('[data-testid=employee-table-row-2]', '[data-testid=shift-table-body]'));
+        cy.waitUntil(() =>
+            cy
+                .get('.ant-message-notice-content')
+                .should('be.visible')
+                .and('have.text', 'Zamestnanec se v tento den jiz nachazi na smene ranni'),
+        );
 
         cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 0);
 
@@ -146,12 +156,12 @@ describe('shift validation', () => {
         cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se podařilo úspěšně vytvořit.');
         cy.get('[data-testid=shift-submit-result-subtitle]').should(
             'have.text',
-            'Směna je naplánována na 2021-12-15 ranni',
+            `Směna je naplánována na ${testDate} ranni`,
         );
 
         cy.get('[data-testid=back-to-calendar-button]').click();
 
-        cy.get('[title="2021-12-15"] > .ant-picker-cell-inner > .ant-picker-calendar-date-content').should(
+        cy.get(`[title="${testDate}"] > .ant-picker-cell-inner > .ant-picker-calendar-date-content`).should(
             'contain.text',
             'ranni',
         );
@@ -194,12 +204,12 @@ describe('shift validation', () => {
 
         cy.get('[data-testid=back-to-calendar-button]').click();
 
-        cy.get('[title="2021-12-15"] > .ant-picker-cell-inner > .ant-picker-calendar-date-content').should(
+        cy.get(`[title="${testDate}"] > .ant-picker-cell-inner > .ant-picker-calendar-date-content`).should(
             'contain.text',
             'vecer',
         );
 
-        cy.get('[title="2021-12-15"]').dblclick();
+        cy.get(`[title="${testDate}"]`).dblclick();
         cy.waitUntil(() => cy.get('[data-testid=shift-vecer]').should('be.visible'));
         cy.get('[data-testid=shift-vecer]').click();
 
@@ -227,7 +237,7 @@ describe('shift validation', () => {
 
         cy.get('main > .ant-picker-calendar-full').should('exist').and('be.visible');
 
-        cy.get('[title="2021-12-15"] > .ant-picker-cell-inner > .ant-picker-calendar-date-content').should(
+        cy.get(`[title="${testDate}"] > .ant-picker-cell-inner > .ant-picker-calendar-date-content`).should(
             'not.contain.text',
             'ranni',
         );
