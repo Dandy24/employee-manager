@@ -14,7 +14,7 @@ import { SearchableEmployeeEntity } from '../models/entities/searchable-employee
 
 export class EmployeeStore {
     employees: EmployeeEntity[] = [];
-    employee: any = {};
+    employee: EmployeeEntity;
     loadingEmployees = false;
     isEditOpen = false;
     private rootStore: RootStore;

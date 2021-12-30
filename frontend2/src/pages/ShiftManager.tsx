@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Breadcrumb, Button, Col, Modal, PageHeader, Row, Tag } from 'antd';
 import { RootStore } from '../stores/root-store';
-import { DragDropContext, DropResult, ResponderProvided } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { EmpTable } from './tables/employee-table';
 import { ShiftTable } from './tables/shift-table';
 import { Link, useParams } from 'react-router-dom';
@@ -58,7 +58,7 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
             });
         };
 
-        const onDragEnd = (event: DropResult, provided: ResponderProvided) => {
+        const onDragEnd = (event: DropResult) => {
             dragEndHandler(event, rootStore.shiftStore);
         };
 

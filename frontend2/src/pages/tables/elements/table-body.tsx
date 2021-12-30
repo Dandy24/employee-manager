@@ -1,18 +1,19 @@
 import { observer } from 'mobx-react-lite';
 import { Draggable, DroppableProvided } from 'react-beautiful-dnd';
 import React from 'react';
-import { Row } from 'react-table';
+import { Row, TableBodyProps } from 'react-table';
 
-export interface TableBodyProps {
-    // providedDraggable: DraggableProvided;
+export interface MyTableBodyProps {
     providedDroppable: DroppableProvided;
-    tableBodyProps: any; //TableBodyProps;
-    rows: Row<any>[];
-    prepareRow: (row: Row<any>) => void;
+    tableBodyProps: TableBodyProps; //TableBodyProps;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    rows: Row<object>[];
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    prepareRow: (row: Row<object>) => void;
     type: 'shift-table' | 'employee-table';
 }
 
-export const TableBody: React.FC<TableBodyProps> = observer((props: TableBodyProps) => {
+export const TableBody: React.FC<MyTableBodyProps> = observer((props: MyTableBodyProps) => {
     const { providedDroppable, tableBodyProps, rows, prepareRow, type } = props;
 
     /** TODO spread to more logical independent components **/
@@ -30,7 +31,7 @@ export const TableBody: React.FC<TableBodyProps> = observer((props: TableBodyPro
                 prepareRow(row);
                 return (
                     <Draggable draggableId={`${type}-'${row.id.toString()}`} key={row.id} index={row.index}>
-                        {(provided, snapshot) => {
+                        {(provided) => {
                             return (
                                 <tr
                                     key={`${type}-tbody-tr-${index}`}

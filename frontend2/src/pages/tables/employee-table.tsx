@@ -36,7 +36,7 @@ export const EmpTable: React.FC = observer((): JSX.Element => {
                 <TableHeader headerGroups={headerGroups} type="employee-table" />
 
                 <Droppable droppableId="employee-table">
-                    {(provided, snapshot) => (
+                    {(provided) => (
                         <TableBody
                             providedDroppable={provided}
                             tableBodyProps={getTableBodyProps()}

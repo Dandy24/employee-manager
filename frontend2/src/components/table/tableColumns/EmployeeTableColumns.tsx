@@ -10,7 +10,7 @@ export function EmployeeTableColumns(
     employeeStore: EmployeeStore,
     companyStore: CompanyStore,
     onEmployeeDelete?: (arg0: number) => void,
-): ColumnsType<EmployeeEntity> | Array<any> {
+): ColumnsType<EmployeeEntity> | Array<unknown> {
     return [
         {
             title: 'ID zaměstnance',

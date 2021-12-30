@@ -3,9 +3,10 @@ import { Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import { EmployeeDto } from '../../models/dtos/employee-dto';
 import * as yup from 'yup';
+import { EmployeeEntity } from '../../models/entities/employee-entity';
 
 export interface EmployeeFormikProps {
-    initialValues: EmployeeDto;
+    initialValues: EmployeeDto | EmployeeEntity;
     onSubmit: (values: EmployeeDto) => void;
     children: React.ReactNode;
 }
