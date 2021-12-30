@@ -1,12 +1,13 @@
 import moment from 'moment';
 import { createShift, deleteAllShifts } from '../../../src/api/apiCalls';
+import { ShiftTypeEnum } from '../../../src/models/enums/shift-type-enum';
 
 describe('proccess of creating shift through company calendar', () => {
     beforeEach(() => {
         deleteAllShifts();
-        createShift({ date: '2021-11-15', time: 'ranni', companyID: 59, employeeIDs: [37, 43] });
-        createShift({ date: '2021-11-15', time: 'vecer', companyID: 59, employeeIDs: [46, 19] });
-        cy.visit('http://localhost:3000');
+        createShift({ date: '2021-11-15', time: ShiftTypeEnum.Rano, companyID: 59, employeeIDs: [37, 43] });
+        createShift({ date: '2021-11-15', time: ShiftTypeEnum.Vecer, companyID: 59, employeeIDs: [46, 19] });
+        cy.visit('/company-list');
         cy.get('[data-testid=company-calendar-button-59]').click();
     });
 

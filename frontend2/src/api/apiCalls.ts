@@ -6,11 +6,10 @@ import { ShiftDto } from '../models/dtos/shift-dto';
 import { ShiftEntity } from '../models/entities/shift-entity';
 import { EmployeeMonthlyOutputEntity } from '../models/entities/employee-monthly-output-entity';
 import { EmployeeMonthlyOutputDto } from '../models/dtos/employee-monthly-output-dto';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import config from '../config';
 
 export async function getEmployeeList(): Promise<EmployeeEntity[]> {
-    const response = await fetch(`${API_URL}/employee-list`);
+    const response = await fetch(`${config.API_URL}/employee-list`);
     if (response.ok) {
         return await response.json();
     } else {
@@ -20,7 +19,7 @@ export async function getEmployeeList(): Promise<EmployeeEntity[]> {
 }
 
 export async function getEmployeeListForCompany(companyId: number): Promise<EmployeeEntity[]> {
-    const response = await fetch(`${API_URL}/employee-list/${companyId}`);
+    const response = await fetch(`${config.API_URL}/employee-list/${companyId}`);
     if (response.ok) {
         return await response.json();
     } else {
@@ -30,7 +29,7 @@ export async function getEmployeeListForCompany(companyId: number): Promise<Empl
 }
 
 export async function getEmployeeListForShift(shiftId: number): Promise<EmployeeEntity[]> {
-    const response = await fetch(`${API_URL}/employee-list-shift/${shiftId}`);
+    const response = await fetch(`${config.API_URL}/employee-list-shift/${shiftId}`);
     if (response.ok) {
         return await response.json();
     } else {
@@ -42,7 +41,7 @@ export async function getEmployeeListForShift(shiftId: number): Promise<Employee
 //Employee detail
 
 export async function createEmployee(employee: EmployeeDto): Promise<EmployeeEntity> {
-    const response = await fetch(`${API_URL}/employee-create`, {
+    const response = await fetch(`${config.API_URL}/employee-create`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
@@ -60,7 +59,7 @@ export async function createEmployee(employee: EmployeeDto): Promise<EmployeeEnt
 export async function updateEmployee(editedID: number, updatedEmployee: EmployeeDto): Promise<EmployeeEntity> {
     //TODO fix editedID
 
-    const response = await fetch(`${API_URL}/employee-update/${editedID}`, {
+    const response = await fetch(`${config.API_URL}/employee-update/${editedID}`, {
         method: 'PUT',
         headers: {
             'Content-type': 'application/json',
@@ -76,7 +75,7 @@ export async function updateEmployee(editedID: number, updatedEmployee: Employee
 }
 
 export async function deleteEmployee(id: number): Promise<Response> {
-    const response = await fetch(`${API_URL}/employee-delete/${id}`, {
+    const response = await fetch(`${config.API_URL}/employee-delete/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-type': 'application/json',
@@ -91,7 +90,7 @@ export async function deleteEmployee(id: number): Promise<Response> {
 }
 
 export async function getCompanyList(): Promise<CompanyEntity[]> {
-    const response = await fetch(`${API_URL}/company-list`);
+    const response = await fetch(`${config.API_URL}/company-list`);
     if (response.ok) {
         return await response.json();
     } else {
@@ -101,7 +100,7 @@ export async function getCompanyList(): Promise<CompanyEntity[]> {
 }
 
 export function getCompanyById(companyId: number): Promise<CompanyEntity[]> {
-    return fetch(`${API_URL}/company-detail/${companyId}`)
+    return fetch(`${config.API_URL}/company-detail/${companyId}`)
         .then((response) => response.json())
         .then((data) => {
             return data;
@@ -109,7 +108,7 @@ export function getCompanyById(companyId: number): Promise<CompanyEntity[]> {
 }
 
 export async function createCompany(company: CompanyDto): Promise<CompanyEntity> {
-    const response = await fetch(`${API_URL}/company-create`, {
+    const response = await fetch(`${config.API_URL}/company-create`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
@@ -125,7 +124,7 @@ export async function createCompany(company: CompanyDto): Promise<CompanyEntity>
 }
 
 export async function updateCompany(updatedCompany: CompanyDto, updatedID: number): Promise<CompanyEntity> {
-    const response = await fetch(`${API_URL}/company-update/${updatedID}`, {
+    const response = await fetch(`${config.API_URL}/company-update/${updatedID}`, {
         method: 'PUT',
         headers: {
             'Content-type': 'application/json',
@@ -141,7 +140,7 @@ export async function updateCompany(updatedCompany: CompanyDto, updatedID: numbe
 }
 
 export async function deleteCompany(id: number): Promise<Response> {
-    const response = await fetch(`${API_URL}/company-delete/${id}`, {
+    const response = await fetch(`${config.API_URL}/company-delete/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-type': 'application/json',
@@ -156,7 +155,7 @@ export async function deleteCompany(id: number): Promise<Response> {
 }
 
 export async function createShift(shift: ShiftDto): Promise<ShiftEntity> {
-    const response = await fetch(`${API_URL}/shift-create`, {
+    const response = await fetch(`${config.API_URL}/shift-create`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
@@ -172,7 +171,7 @@ export async function createShift(shift: ShiftDto): Promise<ShiftEntity> {
 }
 
 export async function updateShift(shiftID: number, updatedShift: ShiftDto): Promise<ShiftEntity> {
-    const response = await fetch(`${API_URL}/shift-update/${shiftID}`, {
+    const response = await fetch(`${config.API_URL}/shift-update/${shiftID}`, {
         method: 'PUT',
         headers: {
             'Content-type': 'application/json',
@@ -188,7 +187,7 @@ export async function updateShift(shiftID: number, updatedShift: ShiftDto): Prom
 }
 
 export function deleteShift(shiftId: number): Promise<Response> {
-    return fetch(`${API_URL}/shift-delete/${shiftId}`, {
+    return fetch(`${config.API_URL}/shift-delete/${shiftId}`, {
         method: 'DELETE',
         headers: {
             'Content-type': 'application/json',
@@ -197,7 +196,7 @@ export function deleteShift(shiftId: number): Promise<Response> {
 }
 
 export async function getShiftListForCompany(companyId: number): Promise<ShiftEntity[]> {
-    const response = await fetch(`${API_URL}/shift-list-company/${companyId}`);
+    const response = await fetch(`${config.API_URL}/shift-list-company/${companyId}`);
     if (response.ok) {
         return await response.json();
     } else {
@@ -207,7 +206,7 @@ export async function getShiftListForCompany(companyId: number): Promise<ShiftEn
 }
 
 export async function deleteCompanyTable(): Promise<Response> {
-    return fetch(`${API_URL}/company-table-delete`, {
+    return fetch(`${config.API_URL}/company-table-delete`, {
         method: 'DELETE',
         headers: {
             'Content-type': 'application/json',
@@ -216,7 +215,7 @@ export async function deleteCompanyTable(): Promise<Response> {
 }
 
 export async function deleteAllShifts(): Promise<void> {
-    await fetch(`${API_URL}/delete-shift-table`, {
+    await fetch(`${config.API_URL}/delete-shift-table`, {
         method: 'DELETE',
         headers: {
             'Content-type': 'application/json',
@@ -225,7 +224,7 @@ export async function deleteAllShifts(): Promise<void> {
 }
 
 export async function getEmployeeMonthlyOutput(employeeId: number): Promise<EmployeeMonthlyOutputEntity[]> {
-    const response = await fetch(`${API_URL}/employee-monthly-output/${employeeId}`);
+    const response = await fetch(`${config.API_URL}/employee-monthly-output/${employeeId}`);
     if (response.ok) {
         return await response.json();
     } else {
@@ -235,7 +234,7 @@ export async function getEmployeeMonthlyOutput(employeeId: number): Promise<Empl
 }
 
 export async function createMonthlyOutput(output: EmployeeMonthlyOutputDto): Promise<EmployeeMonthlyOutputEntity> {
-    const response = await fetch(`${API_URL}/employee-monthly-output-create`, {
+    const response = await fetch(`${config.API_URL}/employee-monthly-output-create`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
@@ -251,7 +250,7 @@ export async function createMonthlyOutput(output: EmployeeMonthlyOutputDto): Pro
 }
 
 export async function getOverallMonthlyOutput(): Promise<EmployeeMonthlyOutputEntity[]> {
-    const response = await fetch(`${API_URL}/monthly-output`);
+    const response = await fetch(`${config.API_URL}/monthly-output`);
     if (response.ok) {
         return await response.json();
     } else {
@@ -263,7 +262,7 @@ export async function getOverallMonthlyOutput(): Promise<EmployeeMonthlyOutputEn
 export async function createOverallMonthlyOutput(
     output: EmployeeMonthlyOutputDto,
 ): Promise<EmployeeMonthlyOutputEntity> {
-    const response = await fetch(`${API_URL}/monthly-output-create`, {
+    const response = await fetch(`${config.API_URL}/monthly-output-create`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
@@ -282,7 +281,7 @@ export async function getMonthlyHoursByCompany(
     start_date: string,
     end_date: string,
 ): Promise<EmployeeMonthlyOutputEntity[]> {
-    const response = await fetch(`${API_URL}/monthly-output-company/${start_date}&${end_date}`);
+    const response = await fetch(`${config.API_URL}/monthly-output-company/${start_date}&${end_date}`);
     if (response.ok) {
         return await response.json();
     } else {

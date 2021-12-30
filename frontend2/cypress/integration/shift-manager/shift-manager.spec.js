@@ -1,12 +1,11 @@
 import { createShift, deleteAllShifts } from '../../../src/api/apiCalls';
 import { ShiftTypeEnum } from '../../../src/models/enums/shift-type-enum';
-
 describe('shift validation', () => {
     beforeEach(() => {
         deleteAllShifts();
         createShift({ date: '2021-12-15', time: ShiftTypeEnum.Rano, companyID: 59, employeeIDs: [43] });
         createShift({ date: '2021-12-15', time: ShiftTypeEnum.Vecer, companyID: 59, employeeIDs: [46, 19] });
-        cy.visit('http://localhost:3000');
+        cy.visit('/company-list');
         cy.get('[data-testid=company-calendar-button-59]').click();
         cy.get('[title="2021-12-15"]').find('.ant-picker-calendar-date-content').dblclick();
     });
