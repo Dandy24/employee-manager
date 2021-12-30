@@ -70,7 +70,7 @@ test('Get empty list of employees', async () => {
 test('Fail getting list of employees', async () => {
     fetchMock.mockReject(new Error('Unable to load list of employees'));
 
-    await expect(getEmployeeList()).rejects.toThrowError('Unable to load list of employees')
+    await expect(getEmployeeList()).rejects.toThrowError('Unable to load list of employees');
 });
 
 /* Test POSTing (creating) a new employee */
@@ -141,8 +141,7 @@ test('Fail creating employee', async () => {
     //     await expect(fetch).rejects.toThrowError('Unable to create employee');
     // }
 
-    await expect(createEmployee(employee)).rejects.toThrowError('Unable to create employee')
-
+    await expect(createEmployee(employee)).rejects.toThrowError('Unable to create employee');
 });
 
 test('Update employee', async () => {
@@ -173,7 +172,7 @@ test('Update employee', async () => {
         company: null,
     };
 
-    fetchMock.mockResponseOnce(JSON.stringify(editedEmp), { status: 200 });
+    fetchMock.mockResponseOnce(JSON.stringify(editedEmp), { status: 201 });
 
     const editedResponse = await updateEmployee(19, editedEmp);
 
@@ -187,7 +186,7 @@ test('Update employee', async () => {
     });
 
     expect(editedResponse.working_category).not.toEqual(referenceEmp.working_category);
-    //expect(editedResponse.med_exam_date).toBe(referenceEmp.med_exam_date); // TODO zkontrolovat rozdil v typech string a Date
+    expect(editedResponse.health_limitations).toEqual('Špatný zrak');
     expect(editedResponse.company).toBeNull();
-    expect(editedResponse.id).toBeDefined(); //ID se tvori na BE... Testovat zde?
+    // expect(editedResponse.id).toBeDefined(); //ID se tvori na BE... Testovat zde?
 });
