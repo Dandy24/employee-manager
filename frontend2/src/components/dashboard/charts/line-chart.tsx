@@ -30,7 +30,7 @@ export const MyLineChart: React.FC<LineChartProps> = observer((props: LineChartP
                     <XAxis
                         dataKey={xAxisKey}
                         tickMargin={10}
-                        tickFormatter={(value) => moment(value).format('MMMM YYYY')}
+                        tickFormatter={(value) => moment(value, 'YYYY-MM-DD').format('MMMM YY')}
                     />
                     <YAxis />
                     <Tooltip />

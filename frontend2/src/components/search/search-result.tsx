@@ -1,10 +1,19 @@
 import { Avatar, Divider, Image, Row } from 'antd';
 import React from 'react';
-import { CompanyEntity } from '../../models/entities/company-entity';
 import Title from 'antd/lib/typography/Title';
-import { EmployeeEntity } from '../../models/entities/employee-entity';
+import { CompanyEntity } from '../../models/entities/company-entity';
+import { RootStore } from '../../stores/root-store';
 
-export const SearchResultItem = (row: CompanyEntity | EmployeeEntity, index: number): JSX.Element => {
+interface SearchRow {
+    name?: string;
+    first_name?: string;
+    last_name?: string;
+    phone: number;
+    company?: CompanyEntity;
+    address?: string;
+}
+
+export const SearchResultItem = (row: SearchRow, index: number, rootStore: RootStore): JSX.Element => {
     return (
         <Row data-testid={`search-item-${index}`}>
             <Avatar
@@ -19,16 +28,13 @@ export const SearchResultItem = (row: CompanyEntity | EmployeeEntity, index: num
             />
             <Divider type="vertical" />
             <Title level={5}>
-                {row instanceof CompanyEntity ? (
-                    <>
-                        {row.name} <Divider type={'vertical'} /> {row.phone} <Divider type={'vertical'} /> {row.address}
-                    </>
-                ) : (
-                    <>
-                        {row.first_name} {row.last_name}
-                        <Divider type={'vertical'} /> {row.phone} <Divider type={'vertical'} /> {row.company}
-                    </>
-                )}
+                <>
+                    {row.first_name ? row.first_name : row.name} {row.last_name}
+                    <Divider type={'vertical'} /> {row.phone} <Divider type={'vertical'} />{' '}
+                    {row.company
+                        ? rootStore.companyStore.companies.find((comp) => comp.id === parseInt(row.company.name))
+                        : row.address}
+                </>
             </Title>
         </Row>
     );

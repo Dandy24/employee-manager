@@ -36,10 +36,9 @@ export function EmployeeTableColumns(
             title: 'Firma',
             dataIndex: 'company',
             key: 'company',
-            render: (row) => {
-                return <p>{row?.id && companyStore.companies[row.id] ? companyStore.companies[row.id].name : ''}</p>;
+            render: (text) => {
+                return <p>{companyStore.companies.find((comp) => comp.id === text)?.name}</p>;
             },
-            //render: (text: string, row: { company: number; }) => <p> {getCompanyName(row.company)} </p>
         },
         {
             title: 'Aktivní',

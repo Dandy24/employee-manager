@@ -37,7 +37,7 @@ export class SearchStore {
         const searchable = this.rootStore.companyStore.companies.map((company, index) => ({
             company,
             value: `${company.name} | ${company.phone} | ${company.address}`,
-            label: SearchResultItem(company, index),
+            label: SearchResultItem(company, index, this.rootStore),
             key: `company-${company.id}`,
         }));
         this.setSearchableCompanies(searchable);
@@ -47,7 +47,7 @@ export class SearchStore {
         const searchable = this.rootStore.employeeStore.employees.map((employee, index) => ({
             employee,
             value: `${employee.first_name} ${employee.last_name} | ${employee.phone} | ${employee.company}`,
-            label: SearchResultItem(employee, index),
+            label: SearchResultItem(employee, index, this.rootStore),
             key: `employee-${employee.id}`,
         }));
         this.setSearchableEmployees(searchable);
