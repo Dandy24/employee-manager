@@ -15,7 +15,6 @@ export interface ShiftCalendarPageProps {
 }
 
 /** TODO REFACTOR !!! **/
-/** FIX loading shifts in useEffect - now its causing infinite re-render loop :) **/
 /** FIXME pri navratu z uspesne vytvorene smeny do kalendare zmizne page title **/
 
 export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((props: ShiftCalendarPageProps) => {

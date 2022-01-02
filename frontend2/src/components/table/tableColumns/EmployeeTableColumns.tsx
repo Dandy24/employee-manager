@@ -38,7 +38,7 @@ export function EmployeeTableColumns(
             render: (text) => {
                 return <p>{companyStore.companies.find((comp) => comp.id === text)?.name}</p>;
             },
-            Cell: ({ value, row }) => <p>{companyStore.companies.find((comp) => comp.id === value)?.name}</p>,
+            Cell: ({ value }) => <p>{companyStore.companies.find((comp) => comp.id === value)?.name}</p>,
         },
         {
             title: 'Aktivní',
