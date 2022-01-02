@@ -44,7 +44,16 @@ export function EmployeeTableColumns(
             title: 'Aktivní',
             dataIndex: 'active',
             key: 'active',
-            render: (text: string, row: { active: boolean }) => <p> {row.active ? 'Ano' : 'Ne'} </p>,
+            // render: (text: string, row: { active: boolean }) => <p> {row.active ? 'Ano' : 'Ne'} </p>,
+            render: (value, row) => (
+                <Tag
+                    style={{ width: '75%', textAlign: 'center' }}
+                    color={value ? '#87d068' : '#f50'}
+                    data-testid={value ? `employee-${row.id}-active-tag` : `employee-${row.id}-inactive-tag`}
+                >
+                    {value ? 'Ano' : 'Ne'}
+                </Tag>
+            ),
             Cell: ({ value, row }) => (
                 <Tag
                     style={{ width: '75%', textAlign: 'center' }}
