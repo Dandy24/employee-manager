@@ -25,14 +25,13 @@ export const EmpTable: React.FC = observer((): JSX.Element => {
         {
             columns,
             data: data,
-            //initialState: rootStore.shiftStore.employees,
         },
         useBlockLayout,
     );
 
     return (
         <TableWrapper>
-            <table {...getTableProps()} style={{ tableLayout: 'auto' }}>
+            <table {...getTableProps()} data-testid={'employee-table'} style={{ tableLayout: 'auto' }}>
                 <TableHeader headerGroups={headerGroups} type="employee-table" />
 
                 <Droppable droppableId="employee-table">
