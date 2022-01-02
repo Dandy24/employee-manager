@@ -17,7 +17,9 @@ export const ShiftTable: React.FC = observer((): JSX.Element => {
 
     const columns = React.useMemo(
         () =>
-            cols.map((col) => ({ ...col, accessor: col.key, Header: col.title })).filter((col) => col.key !== 'action'),
+            cols
+                .map((col) => ({ ...col, accessor: col.key, Header: col.title }))
+                .filter((col) => col.key !== 'action' && col.key !== 'company'),
         [],
     );
 

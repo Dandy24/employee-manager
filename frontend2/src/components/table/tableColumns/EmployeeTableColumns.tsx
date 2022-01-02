@@ -1,7 +1,6 @@
 import { ColumnsType } from 'antd/lib/table/interface';
 import { EmployeeStore } from '../../../stores/employee-store';
 import { Button, Space, Tag } from 'antd';
-import { Link } from 'react-router-dom';
 import React from 'react';
 import { CompanyStore } from '../../../stores/company-store';
 import { EmployeeEntity } from '../../../models/entities/employee-entity';
@@ -39,6 +38,7 @@ export function EmployeeTableColumns(
             render: (text) => {
                 return <p>{companyStore.companies.find((comp) => comp.id === text)?.name}</p>;
             },
+            Cell: ({ value, row }) => <p>{companyStore.companies.find((comp) => comp.id === value)?.name}</p>,
         },
         {
             title: 'Aktivní',
@@ -74,9 +74,6 @@ export function EmployeeTableColumns(
                     >
                         Smazat
                     </Button>
-                    <Link to={`/monthly-output/${record.id}`}>
-                        <Button>kok</Button>
-                    </Link>
                 </Space>
             ),
         },

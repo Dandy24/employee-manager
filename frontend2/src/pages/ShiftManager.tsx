@@ -73,7 +73,13 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                                 </Link>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>
-                                <Link to={`/shift-calendar/${rootStore.calendarStore.activeCompanyId}`}>
+                                <Link
+                                    to={`/shift-calendar/${
+                                        rootStore.calendarStore.activeCompanyId
+                                            ? rootStore.calendarStore.activeCompanyId
+                                            : JSON.parse(localStorage.getItem('shift')).companyID
+                                    }`}
+                                >
                                     <CalendarOutlined />
                                     <span>{`Kalendar smen`}</span>
                                 </Link>
