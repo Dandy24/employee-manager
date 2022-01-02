@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Droppable } from 'react-beautiful-dnd';
 import { useTable } from 'react-table';
 import { useRootStore } from '../../stores/root-store-provider';
-import { EmployeeTableColumns } from '../../components/table/tableColumns/EmployeeTableColumns';
+import { EmployeeTableColumns } from './tableColumns/EmployeeTableColumns';
 import { TableHeader } from './elements/table-header';
 import { TableBody } from './elements/table-body';
 
