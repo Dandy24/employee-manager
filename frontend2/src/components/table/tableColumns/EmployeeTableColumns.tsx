@@ -1,15 +1,15 @@
-import { ColumnsType } from 'antd/lib/table/interface';
 import { EmployeeStore } from '../../../stores/employee-store';
 import { Button, Space, Tag } from 'antd';
 import React from 'react';
 import { CompanyStore } from '../../../stores/company-store';
 import { EmployeeEntity } from '../../../models/entities/employee-entity';
+import { TableColumns } from '../../../models/interfaces/table-columns';
 
 export function EmployeeTableColumns(
     employeeStore: EmployeeStore,
     companyStore: CompanyStore,
     onEmployeeDelete?: (arg0: number) => void,
-): ColumnsType<EmployeeEntity> | Array<unknown> {
+): TableColumns[] {
     return [
         {
             title: 'ID zaměstnance',
@@ -58,7 +58,7 @@ export function EmployeeTableColumns(
         {
             title: 'Akce',
             key: 'action',
-            render: (record: EmployeeEntity) => (
+            render: (text, record: EmployeeEntity) => (
                 <Space size="middle">
                     <Button
                         onClick={() => {
