@@ -252,5 +252,54 @@ describe('shift validation', () => {
         );
     });
 
+    /** TODO TEST PAGE RELOAD AND SHIFT REMAINS SAME AND CAN GO BACK TO CALENDAR AND COMPANY NAME IS CORRECT (try changing employees in shift) **/
+    it('checks if shift data integrity remains after reloading the page', () => {
+        cy.get('[data-testid=shift-vecer]').click();
+
+        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 3);
+
+        cy.get('[data-testid=shift-table-body]')
+            .find('tr')
+            .should('have.length', 2)
+            .and('contain.text', 'MartinNovak')
+            .and('contain.text', 'JanNovak');
+
+        cy.get('[data-testid=employee-table-body]').find('tr').should('contain.text', 'MarekHodny');
+
+        cy.reload();
+
+        /** TODO REFACTOR!!! dont copy **/
+
+        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 3);
+
+        cy.get('[data-testid=shift-table-body]')
+            .find('tr')
+            .should('have.length', 2)
+            .and('contain.text', 'MartinNovak')
+            .and('contain.text', 'JanNovak');
+
+        cy.get('[data-testid=employee-table-body]').find('tr').should('contain.text', 'MarekHodny');
+
+        /** **/
+
+        cy.get('[data-testid=shift-manager-header-breadcrumb]').contains('Kalendar smen').click();
+        cy.get('[data-testid=header-company-name]').should('have.text', 'Test Company123'); //FIXME
+
+        // cy.get('[data-testid=submit-shift-button]').click();
+
+        /** TODO REFACTOR!!! move to separate fucntion with variable date and shift type **/
+
+        // cy.get('.ant-result-success').should('be.visible');
+        // cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se podařilo úspěšně vytvořit.');
+        // cy.get('[data-testid=shift-submit-result-subtitle]').should(
+        //     'have.text',
+        //     `Směna je naplánována na ${testDate} vecer`,
+        // );
+        //
+        // cy.get('[data-testid=back-to-calendar-button]').click();
+
+        /** **/
+    });
+
     /** TODO test sorting and filtering - IMPLEMENT useSortBy & useGlobalFilter to react-table **/
 });
