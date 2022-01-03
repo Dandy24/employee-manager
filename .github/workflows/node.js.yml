@@ -21,21 +21,34 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+#    - name: Set up Node.js ${{ matrix.node-version }}
+#      uses: actions/setup-node@v2
+#      with:
+#        node-version: ${{ matrix.node-version }}
+#        cache: npm
+#        cache-dependency-path: frontend2/package-lock.json
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
       with:
-        node-version: ${{ matrix.node-version }}
-        cache: npm
-        cache-dependency-path: frontend2/package-lock.json
+        python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+        architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
 
-    - name: Install dependencies
-      working-directory: ./frontend2
-      run: npm install --legacy-peer-deps
+    - name: Install Python dependecies from Pipfile
+      run: pipenv install --system
 
-    - name: Run the tests
-      working-directory: ./frontend2
-      run: npm run test
+   - name: Install Python dependecies from Pipfile
+     run: python3 manage.py testserver test-data
 
-    - name: Build
-      working-directory: ./frontend2
-      run: npm run build
+
+#    - name: Install dependencies
+#      working-directory: ./frontend2
+#      run: npm install --legacy-peer-deps
+#
+#    - name: Run the tests
+#      working-directory: ./frontend2
+#      run: npm run test
+#
+#    - name: Build
+#      working-directory: ./frontend2
+#      run: npm run build
