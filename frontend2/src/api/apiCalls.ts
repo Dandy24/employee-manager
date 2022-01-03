@@ -295,3 +295,13 @@ export async function getMonthlyHoursByCompany(
         return Promise.reject(error);
     }
 }
+
+export async function getTopEmployeeOutputList(): Promise<EmployeeMonthlyOutputEntity[]> {
+    const response = await fetch(`${config.API_URL}/top-outputs-list`);
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error(`Unable to load list of top performing employees`);
+        return Promise.reject(error);
+    }
+}
