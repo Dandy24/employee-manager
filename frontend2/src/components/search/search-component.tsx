@@ -46,7 +46,7 @@ export const SearchComponent: React.FC<SearchComponentProps> = observer((props: 
         <>
             <AutoComplete
                 style={{
-                    width: 600,
+                    width: 800,
                 }}
                 data-testid="search-bar"
                 options={options}

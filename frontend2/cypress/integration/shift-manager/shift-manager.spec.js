@@ -6,18 +6,26 @@ const testDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
 
 describe('shift validation', () => {
     beforeEach(() => {
-        deleteAllShifts();
-        cy.waitUntil(() => createShift({ date: testDate, time: ShiftTypeEnum.Rano, companyID: 59, employeeIDs: [43] }));
-        cy.waitUntil(() =>
-            createShift({ date: testDate, time: ShiftTypeEnum.Vecer, companyID: 59, employeeIDs: [46, 19] }),
+        cy.waitUntil(() => deleteAllShifts());
+        cy.waitUntil(() => createShift({ date: testDate, time: ShiftTypeEnum.Rano, companyID: 1, employeeIDs: [34] })); //43
+        cy.waitUntil(
+            () => createShift({ date: testDate, time: ShiftTypeEnum.Vecer, companyID: 1, employeeIDs: [2, 19] }), //46
         );
 
         cy.visit('/company-list');
-        cy.get('[data-testid=company-calendar-button-59]').click();
+        cy.get('[data-testid=company-calendar-button-1]').click();
         cy.get(`[title="${testDate}"]`).find('.ant-picker-calendar-date-content').dblclick();
     });
 
-    /** FIXME ADD ERROR IGNORE support/index.js **/
+    it('checkes visual regression of shift manager', () => {
+        cy.get('[data-testid=shift-ranni]').click();
+
+        cy.waitUntil(() => cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 1));
+        cy.waitUntil(() => cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 4));
+
+        cy.document().toMatchImageSnapshot();
+    });
+
     // it('saving empty shift', () => {
     //     cy.get('[data-testid=shift-add-button]').click();
     //     cy.get('[data-testid=new-shift-Odpoledne]').click();
@@ -40,7 +48,7 @@ describe('shift validation', () => {
         cy.get('[data-testid=shift-add-button]').click();
         cy.get('[data-testid=new-shift-Odpoledne]').click();
 
-        cy.dragAndDrop('[data-testid=employee-table-row-2]', '[data-testid=shift-table-body]');
+        cy.dragAndDrop('[data-testid=employee-table-row-4]', '[data-testid=shift-table-body]');
         cy.waitUntil(() => cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 1));
 
         cy.waitUntil(() => cy.get('[data-testid=submit-shift-button]').click());
@@ -69,12 +77,12 @@ describe('shift validation', () => {
 
         cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 5);
 
-        cy.dragAndDrop('[data-testid=employee-table-row-4]', '[data-testid=shift-table-body]');
+        cy.dragAndDrop('[data-testid=employee-table-row-3]', '[data-testid=shift-table-body]');
         cy.get('.ant-message-notice-content').should('be.visible').and('have.text', 'Zamestnanec je neaktivni');
 
         cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 0);
 
-        cy.get('[data-testid=employee-table-body]').find('tr').contains('46');
+        cy.get('[data-testid=employee-table-body]').find('tr').contains('36');
     });
 
     /** Employee wont be added to shift, error message is thrown and employee stays in original table **/
@@ -84,14 +92,14 @@ describe('shift validation', () => {
 
         cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 5);
 
-        cy.dragAndDrop('[data-testid=employee-table-row-3]', '[data-testid=shift-table-body]');
+        cy.dragAndDrop('[data-testid=employee-table-row-1]', '[data-testid=shift-table-body]');
         cy.get('.ant-message-notice-content')
             .should('be.visible')
             .and('have.text', 'Zamestnanec se v tento den jiz nachazi na smene vecer');
 
         cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 0);
 
-        cy.get('[data-testid=employee-table-body]').find('tr').contains('46');
+        cy.get('[data-testid=employee-table-body]').find('tr').contains('19');
     });
 
     /** Shift should not be saved and error result should be visible along with some error message **/
@@ -133,7 +141,6 @@ describe('shift validation', () => {
         // );
     });
 
-    /** FIXME PUT API call is currently broken **/
     /** Open existing shift and save without changing anything **/
     it('check submitting existing shift without changing anything', () => {
         cy.waitUntil(() => cy.get('[data-testid=shift-ranni]').should('be.visible'));
@@ -167,40 +174,43 @@ describe('shift validation', () => {
         );
     });
 
-    /** FIXME PUT API call is currently broken **/
     /** Open existing shift, edit, save and reopen shift to check if shift data are correct **/
     it('Check opening existing shift, editing, saving and reopening shift to check if shift data are correct', () => {
         cy.waitUntil(() => cy.get('[data-testid=shift-vecer]').should('be.visible'));
         cy.get('[data-testid=shift-vecer]').click();
 
-        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 4).and('not.contain.text', 19);
+        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 3).and('not.contain.text', 19);
         cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 2).and('contain.text', 19);
 
-        cy.dragAndDrop('[data-testid=shift-table-row-0]', '[data-testid=employee-table-body]');
+        cy.dragAndDrop('[data-testid=shift-table-row-1]', '[data-testid=employee-table-body]');
         cy.waitUntil(() =>
-            cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 5).and('contain.text', 19),
+            cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 4).and('contain.text', 19),
         );
 
-        cy.dragAndDrop('[data-testid=employee-table-row-0]', '[data-testid=shift-table-body]');
+        cy.dragAndDrop('[data-testid=employee-table-row-2]', '[data-testid=shift-table-body]');
         cy.waitUntil(() =>
-            cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 2).and('not.contain.text', 19),
+            cy
+                .get('[data-testid=shift-table-body]')
+                .find('tr')
+                .should('have.length', 2)
+                .and('not.contain.text', 19)
+                .and('contain.text', 'Marek'),
         );
 
         cy.get('[data-testid=shift-table-body]')
             .find('tr')
             .should('have.length', 2)
             .and('not.contain.text', 19)
-            .and('contain.text', 'Godula');
+            .and('contain.text', 'Novak');
 
         cy.get('[data-testid=submit-shift-button]').click();
 
-        /** FIXME PUT API call **/
-        // cy.get('.ant-result-success').should('be.visible');
-        // cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se podařilo úspěšně vytvořit.');
-        // cy.get('[data-testid=shift-submit-result-subtitle]').should(
-        //     'have.text',
-        //     'Směna je naplánována na 2021-12-15 ranni',
-        // );
+        cy.get('.ant-result-success').should('be.visible');
+        cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se podařilo úspěšně vytvořit.');
+        cy.get('[data-testid=shift-submit-result-subtitle]').should(
+            'have.text',
+            `Směna je naplánována na ${testDate} vecer`,
+        );
 
         cy.get('[data-testid=back-to-calendar-button]').click();
 
@@ -214,15 +224,14 @@ describe('shift validation', () => {
         cy.get('[data-testid=shift-vecer]').click();
 
         /** Verify that both tables are the same as before exiting the manager   **/
-        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 4).and('contain.text', 19);
+        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 3).and('contain.text', 19);
         cy.get('[data-testid=shift-table-body]')
             .find('tr')
             .should('have.length', 2)
             .and('not.contain.text', 19)
-            .and('contain.text', 'Godula');
+            .and('contain.text', 'MarekHodny');
     });
 
-    /** FIXME SHIFTS NOT LOADING UNLESS CLICKED ON CALENDAR (ShiftCalendarPage useEffect commented line) **/
     /** Open existing shift and delete it **/
     it('checks delete existing shift from shift manager', () => {
         cy.waitUntil(() => cy.get('[data-testid=shift-ranni]').should('be.visible'));
