@@ -38,9 +38,9 @@ jobs:
       working-directory: ./empmanager
       run: pipenv install --system
 
-   - name: Install Python dependecies from Pipfile
-     working-directory: ./empmanager
-     run: python3 manage.py testserver test-data
+    - name: Install Python dependecies from Pipfile
+      working-directory: ./empmanager
+      run: python3 manage.py testserver test-data
 
 
 #    - name: Install dependencies
