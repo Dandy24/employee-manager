@@ -16,16 +16,14 @@ export interface MyTableBodyProps {
 export const TableBody: React.FC<MyTableBodyProps> = observer((props: MyTableBodyProps) => {
     const { providedDroppable, tableBodyProps, rows, prepareRow, type } = props;
 
-    /** TODO spread to more logical independent components **/
-
     return (
         <tbody
             {...tableBodyProps}
             ref={providedDroppable.innerRef}
             {...providedDroppable.droppableProps}
             className="ant-table-tbody"
-            data-testid={`${type}-body`} /** TODO make variable after merging to one component with shift table **/
-            style={{ height: type === 'shift-table' ? '300px' : null }}
+            data-testid={`${type}-body`}
+            style={{ height: type === 'shift-table' && rows.length <= 0 ? '300px' : null }}
         >
             {rows.map((row, index) => {
                 prepareRow(row);
@@ -47,11 +45,6 @@ export const TableBody: React.FC<MyTableBodyProps> = observer((props: MyTableBod
                                             <td
                                                 key={`${type}-tbody-td-${index}`}
                                                 {...cell.getCellProps()}
-                                                // style={{
-                                                //     padding: '10px',
-                                                //     border: 'solid 1px gray',
-                                                //     background: 'papayawhip',
-                                                // }}
                                                 className="ant-table-cell"
                                                 style={{ width: '100%' }}
                                             >

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Droppable } from 'react-beautiful-dnd';
 import { useTable, useBlockLayout } from 'react-table';
 import { useRootStore } from '../../stores/root-store-provider';
-import { EmployeeTableColumns } from '../../components/table/tableColumns/EmployeeTableColumns';
+import { EmployeeTableColumns } from './tableColumns/EmployeeTableColumns';
 import { TableHeader } from './elements/table-header';
 import { TableBody } from './elements/table-body';
 import { TableWrapper } from './elements/table-wrapper';
@@ -17,7 +17,9 @@ export const EmpTable: React.FC = observer((): JSX.Element => {
 
     const columns = React.useMemo(
         () =>
-            cols.map((col) => ({ ...col, accessor: col.key, Header: col.title })).filter((col) => col.key !== 'action'),
+            cols
+                .map((col) => ({ ...col, accessor: col.key, Header: col.title }))
+                .filter((col) => col.key !== 'action' && col.key !== 'company'),
         [],
     );
 
@@ -25,14 +27,13 @@ export const EmpTable: React.FC = observer((): JSX.Element => {
         {
             columns,
             data: data,
-            //initialState: rootStore.shiftStore.employees,
         },
         useBlockLayout,
     );
 
     return (
         <TableWrapper>
-            <table {...getTableProps()} style={{ tableLayout: 'auto' }}>
+            <table {...getTableProps()} data-testid={'employee-table'} style={{ tableLayout: 'auto' }}>
                 <TableHeader headerGroups={headerGroups} type="employee-table" />
 
                 <Droppable droppableId="employee-table">

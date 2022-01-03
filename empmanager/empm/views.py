@@ -204,27 +204,7 @@ def shiftCreate(request):
 def shiftUpdate(request, pk):
     shift = Shift.objects.get(id=pk)
 
-    # print(request.data)
-    requestEmployeeList = request.data['employeeIDs']
-
-    employees = []
-
-    emp = {}
-
-    for employee in requestEmployeeList:
-        emp = Employee.objects.get(id=employee)
-        employees.append(emp)
-        emp = {}
-
-    print(employees)
-
-    serializedShift = copy(request.data)
-
-    print(serializedShift)
-
-    serializedShift['employeeIDs'] = employees
-
-    serializer = EmployeeSerializer(instance=shift, data=serializedShift)
+    serializer = ShiftSerializer(instance=shift, data=request.data)
 
     if serializer.is_valid():
         serializer.save()

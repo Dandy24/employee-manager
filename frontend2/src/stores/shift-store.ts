@@ -64,7 +64,12 @@ export class ShiftStore {
     }
 
     setShift(shiftId: number): void {
-        this.shift = this.shiftList.find((shift) => shift.id === shiftId);
+        this.shift = this.shiftList?.find((shift) => shift?.id === shiftId);
+        if (this.shift) {
+            localStorage.setItem('shift', JSON.stringify(this.shift));
+        } else {
+            this.shift = JSON.parse(localStorage.getItem('shift'));
+        }
     }
 
     setShiftsForDate(date: string): void {
@@ -156,8 +161,12 @@ export class ShiftStore {
     }
 
     async loadAvailableEmployees(): Promise<void> {
-        await this.rootStore.employeeStore.fetchAllEmployees(this.shift.companyID);
-        /** DONT SHOW EMPLOYEES THAT ARE ALREADY IN THE CURRENTLY EDITED SHIFT **/
+        if (this.shift?.companyID) {
+            await this.rootStore.employeeStore.fetchAllEmployees(this.shift?.companyID);
+        } else {
+            const companyID = parseInt(localStorage.getItem('companyID'));
+            await this.rootStore.employeeStore.fetchAllEmployees(companyID);
+        }
         this.setEmployees(
             [...this.rootStore.employeeStore.employees].filter((emp) => !this.shift.employeeIDs?.includes(emp.id)),
         );

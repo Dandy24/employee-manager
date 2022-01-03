@@ -1,16 +1,15 @@
-import { ColumnsType } from 'antd/lib/table/interface';
 import { EmployeeStore } from '../../../stores/employee-store';
 import { Button, Space, Tag } from 'antd';
-import { Link } from 'react-router-dom';
 import React from 'react';
 import { CompanyStore } from '../../../stores/company-store';
 import { EmployeeEntity } from '../../../models/entities/employee-entity';
+import { TableColumns } from '../../../models/interfaces/table-columns';
 
 export function EmployeeTableColumns(
     employeeStore: EmployeeStore,
     companyStore: CompanyStore,
     onEmployeeDelete?: (arg0: number) => void,
-): ColumnsType<EmployeeEntity> | Array<unknown> {
+): TableColumns[] {
     return [
         {
             title: 'ID zaměstnance',
@@ -39,12 +38,22 @@ export function EmployeeTableColumns(
             render: (text) => {
                 return <p>{companyStore.companies.find((comp) => comp.id === text)?.name}</p>;
             },
+            Cell: ({ value }) => <p>{companyStore.companies.find((comp) => comp.id === value)?.name}</p>,
         },
         {
             title: 'Aktivní',
             dataIndex: 'active',
             key: 'active',
-            render: (text: string, row: { active: boolean }) => <p> {row.active ? 'Ano' : 'Ne'} </p>,
+            // render: (text: string, row: { active: boolean }) => <p> {row.active ? 'Ano' : 'Ne'} </p>,
+            render: (value, row) => (
+                <Tag
+                    style={{ width: '75%', textAlign: 'center' }}
+                    color={value ? '#87d068' : '#f50'}
+                    data-testid={value ? `employee-${row.id}-active-tag` : `employee-${row.id}-inactive-tag`}
+                >
+                    {value ? 'Ano' : 'Ne'}
+                </Tag>
+            ),
             Cell: ({ value, row }) => (
                 <Tag
                     style={{ width: '75%', textAlign: 'center' }}
@@ -58,7 +67,7 @@ export function EmployeeTableColumns(
         {
             title: 'Akce',
             key: 'action',
-            render: (record: EmployeeEntity) => (
+            render: (text, record: EmployeeEntity) => (
                 <Space size="middle">
                     <Button
                         onClick={() => {
@@ -74,9 +83,6 @@ export function EmployeeTableColumns(
                     >
                         Smazat
                     </Button>
-                    <Link to={`/monthly-output/${record.id}`}>
-                        <Button>kok</Button>
-                    </Link>
                 </Space>
             ),
         },

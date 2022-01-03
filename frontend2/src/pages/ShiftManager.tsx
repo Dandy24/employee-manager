@@ -3,13 +3,13 @@ import { observer } from 'mobx-react-lite';
 import { Breadcrumb, Button, Col, Modal, PageHeader, Row, Tag } from 'antd';
 import { RootStore } from '../stores/root-store';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import { EmpTable } from './tables/employee-table';
-import { ShiftTable } from './tables/shift-table';
 import { Link, useParams } from 'react-router-dom';
 import { dragEndHandler } from '../services/drag-end-handler';
 import { CalendarOutlined, ExclamationCircleOutlined, HomeOutlined, SwapOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { ShiftSubmitResult } from '../components/shift-manager/shift-submit-result';
+import { PlannerTable } from '../components/table/planner-table';
+import { EmployeeTableColumns } from '../components/table/tableColumns/EmployeeTableColumns';
 
 interface ShiftManagerPageProps {
     rootStore: RootStore;
@@ -73,7 +73,13 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                                 </Link>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>
-                                <Link to={`/shift-calendar/${rootStore.calendarStore.activeCompanyId}`}>
+                                <Link
+                                    to={`/shift-calendar/${
+                                        rootStore.calendarStore.activeCompanyId
+                                            ? rootStore.calendarStore.activeCompanyId
+                                            : JSON.parse(localStorage.getItem('shift')).companyID
+                                    }`}
+                                >
                                     <CalendarOutlined />
                                     <span>{`Kalendar smen`}</span>
                                 </Link>
@@ -123,7 +129,11 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                 <Row justify="space-between">
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Col span={11}>
-                            <EmpTable />
+                            <PlannerTable
+                                tableData={rootStore.shiftStore.availableEmployees}
+                                tableCols={EmployeeTableColumns(rootStore.employeeStore, rootStore.companyStore, null)}
+                                type="employee"
+                            />
                         </Col>
 
                         <Col style={{ marginTop: '10%' }}>
@@ -131,7 +141,11 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                         </Col>
 
                         <Col span={11}>
-                            <ShiftTable />
+                            <PlannerTable
+                                tableData={rootStore.shiftStore.shiftEmployees}
+                                tableCols={EmployeeTableColumns(rootStore.employeeStore, rootStore.companyStore)}
+                                type="shift"
+                            />
                         </Col>
                     </DragDropContext>
                 </Row>

@@ -20,12 +20,6 @@ export const TableHeader: React.FC<TableHeaderProps> = observer((props: TableHea
                         <th
                             key={`${type}-thead-th-${index}`}
                             {...column.getHeaderProps()}
-                            // style={{
-                            //     borderBottom: 'solid 3px red',
-                            //     background: 'aliceblue',
-                            //     color: 'black',
-                            //     fontWeight: 'bold',
-                            // }}
                             className="ant-table-cell"
                             style={{ border: '2px 2px solid grey' }}
                         >
