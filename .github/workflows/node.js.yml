@@ -35,9 +35,11 @@ jobs:
         architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
 
     - name: Install Python dependecies from Pipfile
+      working-directory: ./empmanager
       run: pipenv install --system
 
    - name: Install Python dependecies from Pipfile
+     working-directory: ./empmanager
      run: python3 manage.py testserver test-data
 
 
