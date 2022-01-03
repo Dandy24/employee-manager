@@ -14,6 +14,7 @@ describe('shift validation', () => {
 
         cy.visit('/company-list');
         cy.get('[data-testid=company-calendar-button-1]').click();
+        cy.waitUntil(() => cy.get('[data-testid=shift-list-for-2022-01-02]'));
         cy.get(`[title="${testDate}"]`).find('.ant-picker-calendar-date-content').dblclick();
     });
 

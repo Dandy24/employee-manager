@@ -6,7 +6,7 @@ const testDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
 
 describe('proccess of creating shift through company calendar', () => {
     beforeEach(() => {
-        deleteAllShifts();
+        cy.waitUntil(() => deleteAllShifts());
         cy.waitUntil(() =>
             createShift({ date: testDate, time: ShiftTypeEnum.Rano, companyID: 1, employeeIDs: [37, 43] }),
         );
@@ -104,7 +104,7 @@ describe('proccess of creating shift through company calendar', () => {
             .should('have.text', 'odpoledne')
             .and('be.visible');
 
-        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 3);
+        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 5);
     });
 
     /** TODO SAVE SHIFT WITH NO EMPLOYEES ????????? **/
