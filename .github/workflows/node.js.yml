@@ -34,6 +34,10 @@ jobs:
         python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
         architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
 
+    - name: Install pipenv
+#       working-directory: ./empmanager
+      run: pip install pipenv
+
     - name: Install Python dependecies from Pipfile
       working-directory: ./empmanager
       run: pipenv install --system
