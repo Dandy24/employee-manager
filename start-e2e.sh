@@ -1,3 +1,4 @@
+set -e
 cd empmanager
 source venv/bin/activate
 pipenv install
