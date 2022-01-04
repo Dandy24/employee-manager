@@ -278,7 +278,7 @@ describe('shift validation', () => {
                 .and('contain.text', 'JanNovak'),
         );
 
-        cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 3);
+        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 3);
 
         // cy.get('[data-testid=submit-shift-button]').click();
         //
