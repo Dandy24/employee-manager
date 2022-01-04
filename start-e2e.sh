@@ -1,5 +1,9 @@
 cd empmanager
 source venv/bin/activate
-python3 manage.py runserver
+pipenv install
+pipenv shell
+python3 manage.py testserver test-data &
 cd ../frontend2
-npm run test:e2e
+npm run test:e2e &
+cd ../frontend2
+npm run start
