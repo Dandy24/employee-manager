@@ -25,49 +25,45 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-#        cache: npm
-#        cache-dependency-path: frontend2/package-lock.json
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-        architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+        cache: npm
+        cache-dependency-path: frontend2/package-lock.json
 
     - name: Install Node.js dependencies
       working-directory: ./frontend2
       run: npm install --legacy-peer-deps
 
+    - name: Run the unit tests
+      working-directory: ./frontend2
+      run: npm run test
+
+    - name: Build
+      working-directory: ./frontend2
+      run: npm run build
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+        architecture: 'x64'
+
     - name: Install pipenv
-#       working-directory: ./empmanager
       run: pip install pipenv
 
     - name: Install Swagger
-        #       working-directory: ./empmanager
       run: pip install drf-yasg
 
     - name: Install DCH
-        #       working-directory: ./empmanager
       run: pip install django-cors-headers
-
 
     - name: Install Python dependecies from Pipfile
       working-directory: ./empmanager
       run: pipenv install --system
 
-    - name: Start test server, frontend and run E2E tests
+    - name: Start Django server with test DB, frontend and run E2E tests
       working-directory: ./empmanager
       run: | 
             python3 manage.py testserver test-data &
             cd ../frontend2
             npm run start &
+            sleep 25
             npm run test:e2e:ci
-
-#
-#    - name: Run the tests
-#      working-directory: ./frontend2
-#      run: npm run test
-#
-#    - name: Build
-#      working-directory: ./frontend2
-#      run: npm run build
