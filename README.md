@@ -26,10 +26,8 @@ npm run test
 ```
  - E2E
    - Using shell script start-e2e.sh
-    ```
-    TODO
-    ```
-     - Using npm command
+    
+   - Using npm command
     ```
     npm run test:e2e
     ```

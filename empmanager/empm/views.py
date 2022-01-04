@@ -1,7 +1,4 @@
-from copy import copy
-
 from django.db import connection
-from django.db.models import Count
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -176,7 +173,6 @@ def shiftListForCompany(request, companyID):
     return Response(serializer.data)
 
 
-## TODO
 @api_view(['GET'])
 def shiftListForEmployee(request, employeeID):
     shift = Shift.objects.filter(employees__shift__employees__in=employeeID)
@@ -215,7 +211,7 @@ def shiftUpdate(request, pk):
     return Response(serializer.data)
 
 
-@api_view(['DELETE'])  # ,GET ?
+@api_view(['DELETE'])
 def shiftDelete(request, pk):
     shift = Shift.objects.get(id=pk)
     shift.delete()
@@ -269,6 +265,14 @@ def employeeMonthlyOutputHistory(request, employeeID):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
+def topEmployeeOutputList(request):
+    employees = MonthlyOutput.objects.order_by('-start_date', '-working_hours', 'vacation_hours')
+    serializer = MonthlyOutputSerializer(employees[:5], many=True)
+
+    return Response(serializer.data)
+
+
 # TODO dont create new output if one with the same month already exist
 @swagger_auto_schema(methods=['post'], request_body=MonthlyOutputSerializer)
 @api_view(['POST'])
@@ -296,7 +300,9 @@ def overallMonthlyOutputByCompany(request, start_date, end_date):
     from django.db import connection
     cursor = connection.cursor()
 
-    cursor.execute("SELECT ec.name as name, SUM(working_hours) as overall_hours FROM empm_monthlyoutput join empm_employee on empm_employee.id = empm_monthlyoutput.employee_id join empm_company ec on ec.id = empm_employee.company_id where start_date = %s and end_date = %s GROUP BY ec.name;", [start_date, end_date])
+    cursor.execute(
+        "SELECT ec.name as name, SUM(working_hours) as overall_hours FROM empm_monthlyoutput join empm_employee on empm_employee.id = empm_monthlyoutput.employee_id join empm_company ec on ec.id = empm_employee.company_id where start_date = %s and end_date = %s GROUP BY ec.name;",
+        [start_date, end_date])
     row = cursor.fetchall()
 
     # row = Shift.objects.raw("SELECT ec.name as name, SUM(working_hours) as overall_hours FROM empm_monthlyoutput join empm_employee on empm_employee.id = empm_monthlyoutput.employee_id join empm_company ec on ec.id = empm_employee.company_id where start_date = %s and end_date = %s GROUP BY ec.name;", [start_date, end_date])

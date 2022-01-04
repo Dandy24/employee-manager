@@ -1,7 +1,12 @@
 import { RootStore } from './root-store';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { EmployeeMonthlyOutputEntity } from '../models/entities/employee-monthly-output-entity';
-import { getEmployeeMonthlyOutput, getMonthlyHoursByCompany, getOverallMonthlyOutput } from '../api/apiCalls';
+import {
+    getEmployeeMonthlyOutput,
+    getMonthlyHoursByCompany,
+    getOverallMonthlyOutput,
+    getTopEmployeeOutputList,
+} from '../api/apiCalls';
 import { message } from 'antd';
 import { OverallMonthlyOutputEntity } from '../models/entities/overall-monthly-output-entity';
 import { GraphDataInterface, HoursTypeGraphDataInterface } from '../models/interfaces/graph-data-interface';
@@ -9,6 +14,7 @@ import { GraphDataInterface, HoursTypeGraphDataInterface } from '../models/inter
 export class DashboardStore {
     employeeOutput: EmployeeMonthlyOutputEntity[];
     overallOutput: OverallMonthlyOutputEntity[];
+    topEmployees: EmployeeMonthlyOutputEntity[];
     employeeMode = false;
     companyHours: GraphDataInterface[];
     private rootStore: RootStore;
@@ -19,11 +25,13 @@ export class DashboardStore {
         makeObservable(this, {
             employeeOutput: observable,
             overallOutput: observable,
+            topEmployees: observable,
             employeeMode: observable,
             companyHours: observable,
             loadEmployeeOutput: action,
             loadOverallOutput: action,
             loadHoursByCompany: action,
+            loadTopEmployeesOutputList: action,
             switchMode: action,
 
             workingDaysGraphData: computed,
@@ -31,6 +39,7 @@ export class DashboardStore {
             hoursDistributionGraphData: computed,
             housingCapacity: computed,
             overallEffectivity: computed,
+            topEmployeeOutputsData: computed,
         });
     }
 
@@ -104,6 +113,26 @@ export class DashboardStore {
         }
     }
 
+    async loadTopEmployeesOutputList(): Promise<void> {
+        runInAction(() => {
+            // this.loadingCompanies = true;
+            this.topEmployees = [];
+        });
+
+        let output = [];
+
+        try {
+            output = await getTopEmployeeOutputList();
+        } catch (e) {
+            message.error('Failed to load top employees output list from database');
+        } finally {
+            // this.loadingCompanies = false;
+            runInAction(() => {
+                this.topEmployees = output;
+            });
+        }
+    }
+
     get workingDaysGraphData(): HoursTypeGraphDataInterface[] {
         return this.employeeOutput
             ?.map((output) => ({
@@ -148,6 +177,15 @@ export class DashboardStore {
     get overallWorkingDaysGraphData(): HoursTypeGraphDataInterface[] {
         return this.overallOutput.map((output) => ({
             name: output.start_date,
+            work: output.working_hours,
+            vac: output.vacation_hours,
+        }));
+    }
+
+    // FIXME first_name + last_name
+    get topEmployeeOutputsData(): HoursTypeGraphDataInterface[] {
+        return this.topEmployees?.map((output) => ({
+            name: this.rootStore.employeeStore.employees.find((emp) => emp.id === output.employee)?.last_name,
             work: output.working_hours,
             vac: output.vacation_hours,
         }));

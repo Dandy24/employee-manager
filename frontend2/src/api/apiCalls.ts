@@ -215,12 +215,18 @@ export async function deleteCompanyTable(): Promise<Response> {
 }
 
 export async function deleteAllShifts(): Promise<void> {
-    await fetch(`${config.API_URL}/delete-shift-table`, {
+    const response = await fetch(`${config.API_URL}/delete-shift-table`, {
         method: 'DELETE',
         headers: {
             'Content-type': 'application/json',
         },
     });
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error(`Unable to delete shift table`);
+        return Promise.reject(error);
+    }
 }
 
 export async function getEmployeeMonthlyOutput(employeeId: number): Promise<EmployeeMonthlyOutputEntity[]> {
@@ -286,6 +292,16 @@ export async function getMonthlyHoursByCompany(
         return await response.json();
     } else {
         const error = new Error(`Unable to load monthly hours by company`);
+        return Promise.reject(error);
+    }
+}
+
+export async function getTopEmployeeOutputList(): Promise<EmployeeMonthlyOutputEntity[]> {
+    const response = await fetch(`${config.API_URL}/top-outputs-list`);
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error(`Unable to load list of top performing employees`);
         return Promise.reject(error);
     }
 }

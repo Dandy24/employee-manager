@@ -1,8 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React, { useEffect } from 'react';
 import { Button, Card, Col, Row } from 'antd';
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import Title from 'antd/lib/typography/Title';
 import { SearchComponent } from '../components/search/search-component';
 import { toJS } from 'mobx';
 import { RootStore } from '../stores/root-store';
@@ -10,6 +8,7 @@ import { DashboardOverview } from '../components/dashboard/dashboard-overview';
 import { MyLineChart } from '../components/dashboard/charts/line-chart';
 import { MyAreaChart } from '../components/dashboard/charts/area-chart';
 import { MyPieChart } from '../components/dashboard/charts/pie-chart';
+import { MyBarChart } from '../components/dashboard/charts/bar-chart';
 
 interface DashboardProps {
     rootStore: RootStore;
@@ -32,16 +31,10 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                 rootStore.searchStore.createSearchableEmployees();
                 await rootStore.dashboardStore.loadOverallOutput();
                 await rootStore.dashboardStore.loadHoursByCompany();
+                await rootStore.dashboardStore.loadTopEmployeesOutputList();
             }
         })();
     }, [rootStore.dashboardStore.employeeMode]);
-
-    const data3 = [
-        { name: 'Group A', uv: 400, pv: 500 },
-        { name: 'Group B', uv: 300, pv: 600 },
-        { name: 'Group C', uv: 300, pv: 400 },
-        { name: 'Group D', uv: 200, pv: 700 },
-    ];
 
     const COLORS = ['#0088FE', '#FFBB28', '#FF8042', '#00C49F'];
 
@@ -146,32 +139,15 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                         )
                     )}
 
-                    <Col style={{ width: '50%', height: '108%' }}>
-                        <Title level={2} style={{ textAlign: 'center' }}>
-                            h2. Ant Design
-                        </Title>
-                        <ResponsiveContainer width="100%" height="85%">
-                            <BarChart
-                                width={500}
-                                height={300}
-                                data={data3}
-                                margin={{
-                                    top: 5,
-                                    right: 30,
-                                    left: 20,
-                                    bottom: 5,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                <Bar dataKey="pv" fill="#8884d8" />
-                                <Bar dataKey="uv" fill="#82ca9d" />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </Col>
+                    <MyBarChart
+                        title="Nejlepsi zamestnanci mesice"
+                        data={rootStore.dashboardStore.topEmployeeOutputsData}
+                        dataKey1="work"
+                        dataName1="Working hours"
+                        dataKey2="vac"
+                        dataName2="Vacation hours"
+                        xAxisKey="name"
+                    />
                 </Row>
             </Card>
         </>

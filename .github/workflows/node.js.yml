@@ -28,14 +28,42 @@ jobs:
         cache: npm
         cache-dependency-path: frontend2/package-lock.json
 
-    - name: Install dependencies
+    - name: Install Node.js dependencies
       working-directory: ./frontend2
       run: npm install --legacy-peer-deps
 
-    - name: Run the tests
+    - name: Run the unit tests
       working-directory: ./frontend2
       run: npm run test
 
     - name: Build
       working-directory: ./frontend2
       run: npm run build
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+        architecture: 'x64'
+
+    - name: Install pipenv
+      run: pip install pipenv
+
+    - name: Install Swagger
+      run: pip install drf-yasg
+
+    - name: Install DCH
+      run: pip install django-cors-headers
+
+    - name: Install Python dependecies from Pipfile
+      working-directory: ./empmanager
+      run: pipenv install --system
+
+    - name: Start Django server with test DB, frontend and run E2E tests
+      working-directory: ./empmanager
+      run: | 
+            python3 manage.py testserver test-data &
+            cd ../frontend2
+            npm run start &
+            sleep 25
+            npm run test:e2e:ci
