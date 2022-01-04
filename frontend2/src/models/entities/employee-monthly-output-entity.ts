@@ -8,7 +8,7 @@ export class EmployeeMonthlyOutputEntity {
     start_date: string;
     end_date: string;
     effectivity: number;
-    overtime: number;
+    overtime_hours: number;
     employee: number; //Entity
 
     constructor() {
@@ -20,7 +20,7 @@ export class EmployeeMonthlyOutputEntity {
             start_date: observable,
             end_date: observable,
             effectivity: observable,
-            overtime: observable,
+            overtime_hours: observable,
             employee: observable,
         });
     }

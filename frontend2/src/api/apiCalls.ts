@@ -305,3 +305,13 @@ export async function getTopEmployeeOutputList(): Promise<EmployeeMonthlyOutputE
         return Promise.reject(error);
     }
 }
+
+export async function getEmployeeTopMonthsList(employeeID: number): Promise<EmployeeMonthlyOutputEntity[]> {
+    const response = await fetch(`${config.API_URL}/employee-top-outputs-list/${employeeID}`);
+    if (response.ok) {
+        return await response.json();
+    } else {
+        const error = new Error(`Unable to load list of months for employee`);
+        return Promise.reject(error);
+    }
+}

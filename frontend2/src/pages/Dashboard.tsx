@@ -25,6 +25,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
         (async () => {
             if (rootStore.dashboardStore.employeeMode) {
                 await rootStore.dashboardStore.loadEmployeeOutput(rootStore.employeeStore.employee.id);
+                await rootStore.dashboardStore.loadEmployeesTopMonthsList(rootStore.employeeStore.employee.id);
             } else {
                 await rootStore.companyStore.fetchAllCompanies();
                 await rootStore.employeeStore.fetchAllEmployees();
@@ -139,15 +140,35 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                         )
                     )}
 
-                    <MyBarChart
-                        title="Nejlepsi zamestnanci mesice"
-                        data={rootStore.dashboardStore.topEmployeeOutputsData}
-                        dataKey1="work"
-                        dataName1="Working hours"
-                        dataKey2="vac"
-                        dataName2="Vacation hours"
-                        xAxisKey="name"
-                    />
+                    {rootStore.dashboardStore.employeeMode ? (
+                        <MyBarChart
+                            title="Nejlepsi mesice podle vykonu"
+                            data={rootStore.dashboardStore.employeeTopMonthsOutputsData}
+                            dataKey1="work"
+                            dataName1="Working hours"
+                            dataKey2="vac"
+                            dataName2="Vacation hours"
+                            dataKey3="sick"
+                            dataName3="Sick hours"
+                            dataKey4="overtime"
+                            dataName4="Overtime hours"
+                            xAxisKey="name"
+                        />
+                    ) : (
+                        <MyBarChart
+                            title="Nejlepsi zamestnanci mesice"
+                            data={rootStore.dashboardStore.topEmployeeOutputsData}
+                            dataKey1="work"
+                            dataName1="Working hours"
+                            dataKey2="vac"
+                            dataName2="Vacation hours"
+                            dataKey3="sick"
+                            dataName3="Sick hours"
+                            dataKey4="overtime"
+                            dataName4="Overtime hours"
+                            xAxisKey="name"
+                        />
+                    )}
                 </Row>
             </Card>
         </>
