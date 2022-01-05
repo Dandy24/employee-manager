@@ -24,7 +24,7 @@ export const isValid = (sourceDroppableId: number, destinationDroppableId: numbe
     }
 
     /** CHECK IF SELECTED EMPLOYEE ISNT ALREADY IN THE CURRENT SHIFT **/
-    if (store.shift.employeeIDs?.includes(store.availableEmployees[sourceDroppableId]?.id)) {
+    if (store.shiftEmployees?.includes(store.availableEmployees[sourceDroppableId])) {
         message.error(`Tento zamestnanec uz na teto smene je`);
         return false;
     }
@@ -46,6 +46,7 @@ export const dragEndHandler = (event: DropResult, store: ShiftStore): void => {
                 store.removeFromShift(event.source.index);
             }
         } else {
+            // FIXME nejsou oba ify to same? :)
             if (event.destination.droppableId === 'shift-table') {
                 const items = [...store.shiftEmployees];
 

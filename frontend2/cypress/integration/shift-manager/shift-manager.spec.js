@@ -253,6 +253,43 @@ describe('shift validation', () => {
         );
     });
 
+    it('Check removing employee from shift, then returning him back', () => {
+        cy.waitUntil(() => cy.get('[data-testid=shift-vecer]').should('be.visible'));
+        cy.get('[data-testid=shift-vecer]').click();
+
+        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 3).and('not.contain.text', 19);
+        cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 2).and('contain.text', 19);
+
+        cy.dragAndDrop('[data-testid=shift-table-row-0]', '[data-testid=employee-table-body]');
+        cy.waitUntil(() =>
+            cy
+                .get('[data-testid=employee-table-body]')
+                .find('tr')
+                .should('have.length', 4)
+                .and('contain.text', 'JanNovak'),
+        );
+
+        cy.dragAndDrop('[data-testid=employee-table-row-3]', '[data-testid=shift-table-body]');
+        cy.waitUntil(() =>
+            cy
+                .get('[data-testid=shift-table-body]')
+                .find('tr')
+                .should('have.length', 2)
+                .and('contain.text', 'JanNovak'),
+        );
+
+        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 3);
+
+        // cy.get('[data-testid=submit-shift-button]').click();
+        //
+        // cy.get('.ant-result-success').should('be.visible');
+        // cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se podařilo úspěšně vytvořit.');
+        // cy.get('[data-testid=shift-submit-result-subtitle]').should(
+        //     'have.text',
+        //     `Směna je naplánována na ${testDate} vecer`,
+        // );
+    });
+
     /** TODO TEST PAGE RELOAD AND SHIFT REMAINS SAME AND CAN GO BACK TO CALENDAR AND COMPANY NAME IS CORRECT (try changing employees in shift) **/
     it('checks if shift data integrity remains after reloading the page', () => {
         cy.get('[data-testid=shift-vecer]').click();
