@@ -37,7 +37,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
         })();
     }, [rootStore.dashboardStore.employeeMode]);
 
-    const COLORS = ['#0088FE', '#FFBB28', '#FF8042', '#00C49F'];
+    const COLORS = ['rgb(136, 132, 216)', '#FFBB28', '#FF8042', 'rgb(130, 202, 157)'];
 
     return (
         <>

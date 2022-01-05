@@ -1,5 +1,7 @@
 import { createCompany, deleteCompanyTable } from '../../../src/api/apiCalls';
 
+// TODO use image snapshot on concrete components, not just whole page
+
 describe('proccess of finding company through search box', () => {
     beforeEach(() => {
         /** UNCOMMENT THIS TO DELETE COMPANY TABLE IN EACH TEST RUN **/

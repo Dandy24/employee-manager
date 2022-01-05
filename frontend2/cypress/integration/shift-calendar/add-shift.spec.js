@@ -4,6 +4,8 @@ import { ShiftTypeEnum } from '../../../src/models/enums/shift-type-enum';
 
 const testDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
 
+// TODO use image snapshot on concrete components, not just whole page
+
 describe('proccess of creating shift through company calendar', () => {
     beforeEach(() => {
         cy.waitUntil(() => deleteAllShifts());

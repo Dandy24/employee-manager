@@ -5,5 +5,7 @@
     "**/__image_snapshots__/*"
   ],
   "chromeWebSecurity": false,
-  "baseUrl": "http://localhost:3000/"
+  "baseUrl": "http://localhost:3000/",
+  "viewportWidth": 1280,
+  "viewportHeight": 720
 }

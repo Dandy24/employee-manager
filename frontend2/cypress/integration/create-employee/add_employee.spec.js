@@ -1,3 +1,5 @@
+// TODO use image snapshot on concrete components, not just whole page
+
 describe('employee creating process', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000/new-employee');
