@@ -167,6 +167,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                             dataKey4="overtime"
                             dataName4="Overtime hours"
                             xAxisKey="name"
+                            clickable
                         />
                     )}
                 </Row>

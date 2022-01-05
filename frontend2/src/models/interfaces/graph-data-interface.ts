@@ -10,6 +10,7 @@ export interface HoursTypeGraphDataInterface {
 }
 
 export interface ExtendedHoursTypeGraphDataInterface {
+    id?: number;
     name: string;
     work: number;
     vac: number;

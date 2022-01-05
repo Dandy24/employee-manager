@@ -215,6 +215,7 @@ export class DashboardStore {
     // FIXME first_name + last_name
     get topEmployeeOutputsData(): ExtendedHoursTypeGraphDataInterface[] {
         return this.topEmployees?.map((output) => ({
+            id: output.employee,
             name: this.rootStore.employeeStore.employees.find((emp) => emp.id === output.employee)?.last_name,
             work: output.working_hours,
             vac: output.vacation_hours,

@@ -4,6 +4,7 @@ import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAx
 import { Col } from 'antd';
 import React from 'react';
 import { HoursTypeGraphDataInterface } from '../../../models/interfaces/graph-data-interface';
+import { useRootStore } from '../../../stores/root-store-provider';
 
 export interface BarChartProps {
     title: string;
@@ -17,6 +18,7 @@ export interface BarChartProps {
     dataKey4?: string;
     dataName4?: string;
     xAxisKey: string;
+    clickable?: boolean;
 }
 
 export const MyBarChart: React.FC<BarChartProps> = observer((props: BarChartProps) => {
@@ -32,7 +34,15 @@ export const MyBarChart: React.FC<BarChartProps> = observer((props: BarChartProp
         dataKey4,
         dataName4,
         xAxisKey,
+        clickable,
     } = props;
+
+    const rootStore = useRootStore();
+
+    const clickAction = async (chart) => {
+        await rootStore.employeeStore.fetchAllEmployees(undefined, undefined, chart.payload.id);
+        rootStore.dashboardStore.switchMode();
+    };
 
     return (
         <Col style={{ width: '50%', height: '108%' }}>
@@ -51,15 +61,34 @@ export const MyBarChart: React.FC<BarChartProps> = observer((props: BarChartProp
                         bottom: 5,
                     }}
                 >
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid strokeDasharray="4 4" />
                     <XAxis dataKey={xAxisKey} />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey={dataKey1} stackId="a" name={dataName1} fill="#8884d8" />
-                    <Bar dataKey={dataKey4} stackId="a" name={dataName4} fill="#ff8346" />
-                    <Bar dataKey={dataKey2} name={dataName2} fill="#82ca9d" />
-                    {dataKey3 && <Bar dataKey={dataKey3} name={dataName3} fill="#ffbd37" />}
+                    <Bar
+                        dataKey={dataKey1}
+                        stackId="a"
+                        name={dataName1}
+                        fill="#8884d8"
+                        onClick={clickable ? clickAction : null}
+                    />
+                    <Bar
+                        dataKey={dataKey4}
+                        stackId="a"
+                        name={dataName4}
+                        fill="#ff8346"
+                        onClick={clickable ? clickAction : null}
+                    />
+                    <Bar dataKey={dataKey2} name={dataName2} fill="#82ca9d" onClick={clickable ? clickAction : null} />
+                    {dataKey3 && (
+                        <Bar
+                            dataKey={dataKey3}
+                            name={dataName3}
+                            fill="#ffbd37"
+                            onClick={clickable ? clickAction : null}
+                        />
+                    )}
                 </BarChart>
             </ResponsiveContainer>
         </Col>

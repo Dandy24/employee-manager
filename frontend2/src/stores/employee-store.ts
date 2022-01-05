@@ -40,7 +40,7 @@ export class EmployeeStore {
     async fetchAllEmployees(
         companyId: number = null,
         filter?: string,
-        selected?: SearchableEmployeeEntity,
+        selected?: SearchableEmployeeEntity | number,
     ): Promise<void> {
         runInAction(() => {
             this.loadingEmployees = true;
@@ -59,8 +59,10 @@ export class EmployeeStore {
                     }),
                 );
             } else {
-                if (selected?.employee) {
+                if (selected instanceof SearchableEmployeeEntity && selected?.employee) {
                     selectedEmployee = employees.find((emp) => emp.id === selected.employee.id);
+                } else {
+                    selectedEmployee = employees.find((emp) => emp.id === selected);
                 }
 
                 runInAction(() => {
