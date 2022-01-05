@@ -64,6 +64,4 @@ jobs:
       run: | 
             python3 manage.py testserver test-data &
             cd ../frontend2
-            npm run start &
-            sleep 25
-            npm run test:e2e:ci
+            npm run ci

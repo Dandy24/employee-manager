@@ -9,6 +9,7 @@
     "test:coverage": "react-scripts test --coverage",
     "test:e2e": "./node_modules/.bin/cypress open",
     "test:e2e:ci": "./node_modules/.bin/cypress run --headless --browser chrome -s cypress/integration/shift-manager/shift-manager.spec.js",
+    "ci": "start-server-and-test start http://localhost:3000 test:e2e:ci",
     "eject": "react-scripts eject"
   },
   "browserslist": {
@@ -51,6 +52,7 @@
     "jest-fetch-mock": "^3.0.3",
     "lint-staged": "^11.0.0",
     "prettier": "^2.2.1",
+    "start-server-and-test": "^1.14.0",
     "ts-loader": "^9.2.4",
     "webpack-cli": "^4.7.2"
   },
