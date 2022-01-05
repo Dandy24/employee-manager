@@ -51,5 +51,7 @@ urlpatterns = [
     path('employee-monthly-output-create', views.monthlyOutputCreate, name='employee-monthly-output-create'),
     path('monthly-output-create', views.overallMonthlyOutputCreate, name='monthly-output-create'),
     path('top-outputs-list', views.topEmployeeOutputList, name='top-outputs-list'),
+    path('employee-top-outputs-list/<employeeID>', views.employeeTopMonthList, name='employee-top-outputs-list'),
+
 
 ]

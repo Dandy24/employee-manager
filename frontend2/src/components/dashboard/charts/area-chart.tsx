@@ -34,7 +34,7 @@ export const MyAreaChart: React.FC<AreaChartProps> = observer((props: AreaChartP
                         bottom: 0,
                     }}
                 >
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid strokeDasharray="4 4" />
                     <XAxis
                         dataKey={xAxisKey}
                         tickMargin={10}

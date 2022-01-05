@@ -3,18 +3,25 @@ import { action, computed, makeObservable, observable, runInAction } from 'mobx'
 import { EmployeeMonthlyOutputEntity } from '../models/entities/employee-monthly-output-entity';
 import {
     getEmployeeMonthlyOutput,
+    getEmployeeTopMonthsList,
     getMonthlyHoursByCompany,
     getOverallMonthlyOutput,
     getTopEmployeeOutputList,
 } from '../api/apiCalls';
 import { message } from 'antd';
 import { OverallMonthlyOutputEntity } from '../models/entities/overall-monthly-output-entity';
-import { GraphDataInterface, HoursTypeGraphDataInterface } from '../models/interfaces/graph-data-interface';
+import {
+    ExtendedHoursTypeGraphDataInterface,
+    GraphDataInterface,
+    HoursTypeGraphDataInterface,
+} from '../models/interfaces/graph-data-interface';
+import moment from 'moment';
 
 export class DashboardStore {
     employeeOutput: EmployeeMonthlyOutputEntity[];
     overallOutput: OverallMonthlyOutputEntity[];
     topEmployees: EmployeeMonthlyOutputEntity[];
+    topEmployeeMonths: EmployeeMonthlyOutputEntity[];
     employeeMode = false;
     companyHours: GraphDataInterface[];
     private rootStore: RootStore;
@@ -26,12 +33,14 @@ export class DashboardStore {
             employeeOutput: observable,
             overallOutput: observable,
             topEmployees: observable,
+            topEmployeeMonths: observable,
             employeeMode: observable,
             companyHours: observable,
             loadEmployeeOutput: action,
             loadOverallOutput: action,
             loadHoursByCompany: action,
             loadTopEmployeesOutputList: action,
+            loadEmployeesTopMonthsList: action,
             switchMode: action,
 
             workingDaysGraphData: computed,
@@ -40,6 +49,7 @@ export class DashboardStore {
             housingCapacity: computed,
             overallEffectivity: computed,
             topEmployeeOutputsData: computed,
+            employeeTopMonthsOutputsData: computed,
         });
     }
 
@@ -133,6 +143,26 @@ export class DashboardStore {
         }
     }
 
+    async loadEmployeesTopMonthsList(id: number): Promise<void> {
+        runInAction(() => {
+            // this.loadingCompanies = true;
+            this.topEmployeeMonths = [];
+        });
+
+        let output = [];
+
+        try {
+            output = await getEmployeeTopMonthsList(id);
+        } catch (e) {
+            message.error('Failed to load top employees output list from database');
+        } finally {
+            // this.loadingCompanies = false;
+            runInAction(() => {
+                this.topEmployeeMonths = output;
+            });
+        }
+    }
+
     get workingDaysGraphData(): HoursTypeGraphDataInterface[] {
         return this.employeeOutput
             ?.map((output) => ({
@@ -157,7 +187,7 @@ export class DashboardStore {
             { name: 'Hours worked', value: this.employeeOutput[0]?.working_hours },
             { name: 'Hours vacation', value: this.employeeOutput[0]?.vacation_hours },
             { name: 'Hours sick', value: this.employeeOutput[0]?.sick_hours },
-            { name: 'Hours overtime', value: this.employeeOutput[0]?.overtime },
+            { name: 'Hours overtime', value: this.employeeOutput[0]?.overtime_hours },
         ];
     }
 
@@ -183,11 +213,24 @@ export class DashboardStore {
     }
 
     // FIXME first_name + last_name
-    get topEmployeeOutputsData(): HoursTypeGraphDataInterface[] {
+    get topEmployeeOutputsData(): ExtendedHoursTypeGraphDataInterface[] {
         return this.topEmployees?.map((output) => ({
+            id: output.employee,
             name: this.rootStore.employeeStore.employees.find((emp) => emp.id === output.employee)?.last_name,
             work: output.working_hours,
             vac: output.vacation_hours,
+            sick: output.sick_hours,
+            overtime: output.overtime_hours,
+        }));
+    }
+
+    get employeeTopMonthsOutputsData(): ExtendedHoursTypeGraphDataInterface[] {
+        return this.topEmployeeMonths?.map((output) => ({
+            name: moment(output.start_date, 'YYYY-MM-DD').format('MMMM YY'),
+            work: output.working_hours,
+            vac: output.vacation_hours,
+            sick: output.sick_hours,
+            overtime: output.overtime_hours,
         }));
     }
 }

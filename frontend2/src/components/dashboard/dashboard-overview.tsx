@@ -67,7 +67,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                 {type === 'employee' ? (
                     <Statistic
                         title={'Pocet hodin prescas'}
-                        value={data[0]?.overtime}
+                        value={data[0]?.overtime_hours ? data[0]?.overtime_hours : 0}
                         // valueStyle={{ color: '#3f8600' }}
                         // prefix={<ArrowUpOutlined />}
                         style={{ marginTop: '20%' }}

@@ -8,3 +8,12 @@ export interface HoursTypeGraphDataInterface {
     work: number;
     vac: number;
 }
+
+export interface ExtendedHoursTypeGraphDataInterface {
+    id?: number;
+    name: string;
+    work: number;
+    vac: number;
+    sick: number;
+    overtime?: number;
+}

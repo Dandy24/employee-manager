@@ -26,7 +26,7 @@ export const MyLineChart: React.FC<LineChartProps> = observer((props: LineChartP
             </Title>
             <ResponsiveContainer width="100%" height="90%">
                 <LineChart width={600} height={250} data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid strokeDasharray="4 4" />
                     <XAxis
                         dataKey={xAxisKey}
                         tickMargin={10}

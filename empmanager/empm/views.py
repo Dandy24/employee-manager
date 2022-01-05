@@ -273,6 +273,16 @@ def topEmployeeOutputList(request):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
+def employeeTopMonthList(request, employeeID):
+    # TODO make sure it wont show outputs older than 1 year
+    employees = MonthlyOutput.objects.filter(employee_id=employeeID).order_by('-working_hours',
+                                                                              'vacation_hours')
+    serializer = MonthlyOutputSerializer(employees[:5], many=True)
+
+    return Response(serializer.data)
+
+
 # TODO dont create new output if one with the same month already exist
 @swagger_auto_schema(methods=['post'], request_body=MonthlyOutputSerializer)
 @api_view(['POST'])
