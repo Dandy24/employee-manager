@@ -34,7 +34,9 @@ export const MyLineChart: React.FC<LineChartProps> = observer((props: LineChartP
                         tickFormatter={(value) => moment(value, 'YYYY-MM-DD').format('MMMM YY')}
                     />
                     <YAxis />
-                    <Tooltip />
+                    <Tooltip
+                        labelFormatter={(label: string) => <p>{moment(label, 'YYYY-MM-DD').format('MMMM YY')}</p>}
+                    />
                     <Legend id={'line-chart-legend'} />
                     <Line
                         type="monotone"

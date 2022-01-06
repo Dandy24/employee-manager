@@ -49,7 +49,7 @@ export const MyBarChart: React.FC<BarChartProps> = observer((props: BarChartProp
             <Title level={2} style={{ textAlign: 'center' }}>
                 {title}
             </Title>
-            <ResponsiveContainer width="100%" height="85%">
+            <ResponsiveContainer width="100%" height="85%" id={'bar-chart'}>
                 <BarChart
                     width={500}
                     height={300}
@@ -62,7 +62,7 @@ export const MyBarChart: React.FC<BarChartProps> = observer((props: BarChartProp
                     }}
                 >
                     <CartesianGrid strokeDasharray="4 4" />
-                    <XAxis dataKey={xAxisKey} />
+                    <XAxis dataKey={xAxisKey} tickFormatter={(name, place) => `${place + 1}. ${name}`} />
                     <YAxis />
                     <Tooltip />
                     <Legend />
@@ -72,6 +72,7 @@ export const MyBarChart: React.FC<BarChartProps> = observer((props: BarChartProp
                         name={dataName1}
                         fill="#8884d8"
                         onClick={clickable ? clickAction : null}
+                        role={`bar-chart-${dataKey1}-bar`}
                     />
                     <Bar
                         dataKey={dataKey4}
@@ -79,14 +80,22 @@ export const MyBarChart: React.FC<BarChartProps> = observer((props: BarChartProp
                         name={dataName4}
                         fill="#ff8346"
                         onClick={clickable ? clickAction : null}
+                        role={`bar-chart-${dataKey4}-bar`}
                     />
-                    <Bar dataKey={dataKey2} name={dataName2} fill="#82ca9d" onClick={clickable ? clickAction : null} />
+                    <Bar
+                        dataKey={dataKey2}
+                        name={dataName2}
+                        fill="#82ca9d"
+                        onClick={clickable ? clickAction : null}
+                        role={`bar-chart-${dataKey2}-bar`}
+                    />
                     {dataKey3 && (
                         <Bar
                             dataKey={dataKey3}
                             name={dataName3}
                             fill="#ffbd37"
                             onClick={clickable ? clickAction : null}
+                            role={`bar-chart-${dataKey3}-bar`}
                         />
                     )}
                 </BarChart>

@@ -19,10 +19,11 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
 
     return (
         <Row style={{ marginBottom: '3%' }}>
-            <Col span={3} offset={1}>
+            <Col span={3} offset={1} data-testid="overview-working_hours-stat">
                 {type === 'employee' ? (
                     <Statistic
                         title={'Pocet odpracovaných hodin'}
+                        data-testid="overview-working_hours-stat-marker"
                         value={data[0]?.working_hours}
                         style={{ marginTop: '20%' }}
                         valueStyle={{ color: data[0]?.working_hours > data[1]?.working_hours ? '#3f8600' : 'red' }}
@@ -37,6 +38,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                 ) : (
                     <Statistic
                         title={'Pocet zamestnancu'}
+                        data-testid={'overview-employee_count-stat'}
                         value={rootStore.employeeStore.employees.length}
                         style={{ marginTop: '20%' }}
                         // valueStyle={{ color: '#3f8600' }}
@@ -97,11 +99,12 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
             </Col>
 
             {type === 'general' ? (
-                <Col span={3} offset={5}>
+                <Col span={3} offset={5} data-testid="overview-effectivity-stat">
                     <Title level={5} style={{ textAlign: 'center' }}>
                         {'Efektivita zamestnancu'}
                     </Title>
                     <Progress
+                        data-testid="overview-effectivity-stat-circle"
                         type="circle"
                         percent={rootStore.dashboardStore.overallEffectivity.at(-1)?.value}
                         strokeColor={
@@ -114,11 +117,12 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                     />
                 </Col>
             ) : (
-                <Col span={3} offset={5}>
+                <Col span={3} offset={5} data-testid="overview-effectivity-stat">
                     <Title level={5} style={{ textAlign: 'center' }}>
                         {'Efektivita zamestnance'}
                     </Title>
                     <Progress
+                        data-testid="overview-effectivity-stat-circle"
                         type="circle"
                         percent={data[0]?.effectivity}
                         strokeColor={data[0]?.effectivity < 50 ? 'red' : data[0]?.effectivity < 75 ? 'orange' : 'green'}
