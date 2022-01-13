@@ -32,6 +32,7 @@ export const MyPieChart: React.FC<PieChartProps> = observer((props: PieChartProp
                         paddingAngle={3}
                         dataKey={dataKey}
                         nameKey={dataName}
+                        isAnimationActive={false}
                         label={({ percent }) => `${(percent * 100).toFixed(2)}%`}
                     >
                         {data.map((entry, index) => (
