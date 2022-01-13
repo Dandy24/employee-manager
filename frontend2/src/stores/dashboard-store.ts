@@ -18,12 +18,12 @@ import {
 import moment from 'moment';
 
 export class DashboardStore {
-    employeeOutput: EmployeeMonthlyOutputEntity[];
-    overallOutput: OverallMonthlyOutputEntity[];
-    topEmployees: EmployeeMonthlyOutputEntity[];
-    topEmployeeMonths: EmployeeMonthlyOutputEntity[];
+    employeeOutput: EmployeeMonthlyOutputEntity[] = [];
+    overallOutput: OverallMonthlyOutputEntity[] = [];
+    topEmployees: EmployeeMonthlyOutputEntity[] = [];
+    topEmployeeMonths: EmployeeMonthlyOutputEntity[] = [];
     employeeMode = false;
-    companyHours: GraphDataInterface[];
+    companyHours: GraphDataInterface[] = [];
     private rootStore: RootStore;
 
     constructor(rootStore: RootStore) {
@@ -47,6 +47,7 @@ export class DashboardStore {
             effectivityGraphData: computed,
             hoursDistributionGraphData: computed,
             housingCapacity: computed,
+            overallWorkingDaysGraphData: computed,
             overallEffectivity: computed,
             topEmployeeOutputsData: computed,
             employeeTopMonthsOutputsData: computed,
