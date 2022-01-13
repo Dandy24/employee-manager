@@ -26,7 +26,7 @@ describe('shift validation', () => {
         cy.waitUntil(() => cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 1));
         cy.waitUntil(() => cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 4));
 
-        cy.document().toMatchImageSnapshot();
+        cy.get('[data-testid=shift-manager]').toMatchImageSnapshot();
     });
 
     // it('saving empty shift', () => {

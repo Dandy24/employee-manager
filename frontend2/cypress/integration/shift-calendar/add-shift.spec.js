@@ -68,7 +68,7 @@ describe('proccess of creating shift through company calendar', () => {
             .should('contain.text', 'ranni')
             .and('not.contain.text', 'odpoledne');
 
-        cy.get(`[data-testid=shift-list-for-${testDate}]`).find('li').should('have.length', 2);
+        cy.waitUntil(() => cy.get(`[data-testid=shift-list-for-${testDate}]`).find('li').should('have.length', 2));
 
         cy.get('[data-testid=shift-ranni]').find('button').click();
 

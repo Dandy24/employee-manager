@@ -126,7 +126,7 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                     ]}
                 />
                 <div style={{ padding: '1.5%' }}></div>
-                <Row justify="space-between">
+                <Row justify="space-between" data-testid="shift-manager">
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Col span={11}>
                             <PlannerTable
