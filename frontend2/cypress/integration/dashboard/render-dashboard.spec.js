@@ -85,10 +85,7 @@ describe('rendering graphs and other statictics in dashboard', () => {
     it('Pie chart matches image snapshot', () => {
         cy.waitUntil(() => pieChart().find('#pie-chart-example-company-sector').should('be.visible'));
         pieChart().toMatchImageSnapshot();
-        // cy.get('#pie-chart').toMatchSnapshot();
     });
-
-    // FIXME wait for bars to have final height
 
     it('checks bar chart and its tooltip render correctly', () => {
         const barTypes = ['work', 'sick', 'overtime']; // 'vac'
