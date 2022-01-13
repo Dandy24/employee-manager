@@ -3,12 +3,12 @@ import Title from 'antd/lib/typography/Title';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Col } from 'antd';
 import React from 'react';
-import { HoursTypeGraphDataInterface } from '../../../models/interfaces/graph-data-interface';
+import { ExtendedHoursTypeGraphDataInterface } from '../../../models/interfaces/graph-data-interface';
 import { useRootStore } from '../../../stores/root-store-provider';
 
 export interface BarChartProps {
     title: string;
-    data: HoursTypeGraphDataInterface[];
+    data: ExtendedHoursTypeGraphDataInterface[];
     dataKey1: string;
     dataName1: string;
     dataKey2: string;
@@ -64,7 +64,7 @@ export const MyBarChart: React.FC<BarChartProps> = observer((props: BarChartProp
                     <CartesianGrid strokeDasharray="4 4" />
                     <XAxis dataKey={xAxisKey} tickFormatter={(name, place) => `${place + 1}. ${name}`} />
                     <YAxis />
-                    <Tooltip />
+                    <Tooltip filterNull={true} />
                     <Legend />
                     <Bar
                         dataKey={dataKey1}

@@ -218,9 +218,9 @@ export class DashboardStore {
             id: output.employee,
             name: this.rootStore.employeeStore.employees.find((emp) => emp.id === output.employee)?.last_name,
             work: output.working_hours,
-            vac: output.vacation_hours,
-            sick: output.sick_hours,
-            overtime: output.overtime_hours,
+            vac: output.vacation_hours > 0 ? output.vacation_hours : null,
+            sick: output.sick_hours > 0 ? output.sick_hours : null,
+            overtime: output.overtime_hours > 0 ? output.overtime_hours : null,
         }));
     }
 
@@ -228,9 +228,9 @@ export class DashboardStore {
         return this.topEmployeeMonths?.map((output) => ({
             name: moment(output.start_date, 'YYYY-MM-DD').format('MMMM YY'),
             work: output.working_hours,
-            vac: output.vacation_hours,
-            sick: output.sick_hours,
-            overtime: output.overtime_hours,
+            vac: output.vacation_hours > 0 ? output.vacation_hours : null,
+            sick: output.sick_hours > 0 ? output.sick_hours : null,
+            overtime: output.overtime_hours > 0 ? output.overtime_hours : null,
         }));
     }
 }

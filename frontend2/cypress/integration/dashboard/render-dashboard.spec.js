@@ -49,9 +49,6 @@ describe('rendering graphs and other statictics in dashboard', () => {
         // cy.get('#line-chart').toMatchSnapshot();
     });
 
-    //TODO test tooltip including showing correct date (for example November 21) and position (chart height and direction) ?
-
-    // TODO check if legend overlaps with graph (graph start y pos + height >= legend y pos)
     it('Pie chart is rendered correctly and tooltip works as expected', () => {
         cy.waitUntil(() => pieChart().should('be.visible'))
             .and((chart) => {
@@ -65,10 +62,9 @@ describe('rendering graphs and other statictics in dashboard', () => {
         cy.get('#pie-chart-example-company-sector').trigger('mouseover', { force: true });
 
         tooltipVisible(pieChart()).and((tooltip) =>
-            expect(tooltip).to.contain.text('Example Company').and.to.contain.text('489'),
+            expect(tooltip).to.contain.text('Example Company').and.to.contain.text('285 hours'),
         );
 
-        // FIXME doesnt disappear if mouseleave moves to tooltip area (which is logical)
         cy.get('#pie-chart-example-company-sector').trigger('mouseout', { force: true });
 
         tooltipNotVisible(pieChart());
@@ -89,6 +85,22 @@ describe('rendering graphs and other statictics in dashboard', () => {
     it('checks bar chart and its tooltip render correctly', () => {
         const barTypes = ['work', 'sick', 'overtime']; // 'vac'
 
+        const checkTooltipValues = (
+            barName,
+            chartIndex,
+            shouldHaveProp,
+            shouldHaveVal,
+            shouldNotHaveProp,
+            shouldNotHaveVal,
+        ) => {
+            barChart().find(`[role="bar-chart-${barName}-bar"]`).eq(chartIndex).trigger('mouseover', { force: true });
+
+            barChart()
+                .find('.recharts-tooltip-wrapper')
+                .should(shouldHaveProp, shouldHaveVal)
+                .and(shouldNotHaveProp, shouldNotHaveVal);
+        };
+
         cy.waitUntil(() => barChart().should('be.visible'));
         barChart()
             .find('[role="bar-chart-work-bar"]')
@@ -97,12 +109,18 @@ describe('rendering graphs and other statictics in dashboard', () => {
             .trigger('mouseover', { force: true });
 
         barTypes.forEach((bar, index) => {
-            barChart().find(`[role="bar-chart-${bar}-bar"]`).eq(index).trigger('mouseover', { force: true });
+            barChart().find(`[role="bar-chart-work-bar"]`).eq(index).trigger('mouseover', { force: true });
             tooltipVisible(barChart());
         });
 
+        /** TEST if zero values are ignored in tooltip **/
+        checkTooltipValues('work', 0, 'not.include.text', 'Sick hours', 'include.text', 'Overtime hours : 2');
+        checkTooltipValues('work', 1, 'not.include.text', 'Overtime hours', 'include.text', 'Sick hours : 12');
+
         barChart().toMatchImageSnapshot();
     });
+
+    //TODO check if overtime, then hours cannot be over 160 (currently if i.e. 165h in a month, overtime is 5h, but work_hours is still 165!)
 
     // TODO expand
     it('checks bar chart correctly redirects to employee page', () => {
@@ -110,7 +128,9 @@ describe('rendering graphs and other statictics in dashboard', () => {
         barChart().find('[role="bar-chart-work-bar"]').eq(1).click({ force: true });
 
         cy.get('[data-testid=dashboard-card-title]').should('have.text', 'Mesicni prehled zamestnance');
-        cy.get('[data-testid=overview-effectivity-stat]').should('have.text', 'Efektivita zamestnance');
+        cy.get('[data-testid=overview-effectivity-stat]').should('contain.text', 'Efektivita zamestnance');
         cy.get('[data-testid=overview-effectivity-stat-circle]').should('have.class', 'ant-progress-status-success');
     });
+
+    //    TODO test if overall hours equals summed up hours from pie graph
 });

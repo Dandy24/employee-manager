@@ -315,8 +315,6 @@ def overallMonthlyOutputByCompany(request, start_date, end_date):
         [start_date, end_date])
     row = cursor.fetchall()
 
-    # row = Shift.objects.raw("SELECT ec.name as name, SUM(working_hours) as overall_hours FROM empm_monthlyoutput join empm_employee on empm_employee.id = empm_monthlyoutput.employee_id join empm_company ec on ec.id = empm_employee.company_id where start_date = %s and end_date = %s GROUP BY ec.name;", [start_date, end_date])
-
     return Response(row)
 
 

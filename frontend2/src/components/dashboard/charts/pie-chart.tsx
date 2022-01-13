@@ -32,6 +32,7 @@ export const MyPieChart: React.FC<PieChartProps> = observer((props: PieChartProp
                         paddingAngle={3}
                         dataKey={dataKey}
                         nameKey={dataName}
+                        label={({ percent }) => `${(percent * 100).toFixed(2)}%`}
                     >
                         {data.map((entry, index) => (
                             <Cell
@@ -42,7 +43,7 @@ export const MyPieChart: React.FC<PieChartProps> = observer((props: PieChartProp
                         ))}
                     </Pie>
                     <Legend wrapperStyle={{ bottom: '8%' }} id={'pie-chart-legend'} />
-                    <Tooltip />
+                    <Tooltip formatter={(amount) => `${amount} hours`} />
                 </PieChart>
             </ResponsiveContainer>
         </Col>
