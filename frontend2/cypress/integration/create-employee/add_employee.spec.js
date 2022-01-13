@@ -1,11 +1,15 @@
+// TODO refactor, separate to multiple tests, add invalid form submission
+
+const form = () => cy.get('[data-testid=employee-form]');
+
 describe('employee creating process', () => {
     beforeEach(() => {
-        cy.visit('http://localhost:3000/new-employee');
+        cy.visit('/new-employee');
     });
 
     it('Matches the image snapshot', () => {
         /** Take page snapshot image and compare it to the previous one, to find any potencial styling changes **/
-        cy.document().toMatchImageSnapshot();
+        form().toMatchImageSnapshot();
     });
 
     it('Fill the form correctly', () => {
@@ -35,9 +39,9 @@ describe('employee creating process', () => {
         cy.get('[data-testid=number-input-field]')
             .should('have.value', '1')
             .type('{backspace}')
-            .type('75800245')
+            .type('42075800245')
             .blur();
-        cy.contains('Číslo musí mít 9 číslic');
+        cy.contains('Číslo musí mít 12 číslic');
         cy.get('[data-testid=number-input-field]').focus().type('8');
         cy.get('[data-testid=number-input-error').should('not.exist');
 

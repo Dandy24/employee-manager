@@ -20,11 +20,12 @@ export const MyLineChart: React.FC<LineChartProps> = observer((props: LineChartP
     const { title, data, dataKey1, dataName1, dataKey2, dataName2, xAxisKey } = props;
 
     return (
-        <Col span={15} style={{ height: '90%' }}>
+        <Col span={14} style={{ height: '90%' }}>
             <Title level={2} style={{ textAlign: 'center' }}>
                 {title}
             </Title>
-            <ResponsiveContainer width="100%" height="90%">
+            {/* FIXME data-testid doesnt work?????????? */}
+            <ResponsiveContainer id={'line-chart'} width="100%" height="90%">
                 <LineChart width={600} height={250} data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="4 4" />
                     <XAxis
@@ -33,10 +34,24 @@ export const MyLineChart: React.FC<LineChartProps> = observer((props: LineChartP
                         tickFormatter={(value) => moment(value, 'YYYY-MM-DD').format('MMMM YY')}
                     />
                     <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey={dataKey1} name={dataName1} stroke="#8884d8" />
-                    <Line type="monotone" dataKey={dataKey2} name={dataName2} stroke="#82ca9d" />
+                    <Tooltip
+                        labelFormatter={(label: string) => <p>{moment(label, 'YYYY-MM-DD').format('MMMM YY')}</p>}
+                    />
+                    <Legend id={'line-chart-legend'} />
+                    <Line
+                        type="monotone"
+                        dataKey={dataKey1}
+                        name={dataName1}
+                        stroke="#8884d8"
+                        id={`line-chart-${dataKey1}-line`}
+                    />
+                    <Line
+                        type="monotone"
+                        dataKey={dataKey2}
+                        name={dataName2}
+                        stroke="#82ca9d"
+                        id={`line-chart-${dataKey2}-line`}
+                    />
                 </LineChart>
             </ResponsiveContainer>
         </Col>

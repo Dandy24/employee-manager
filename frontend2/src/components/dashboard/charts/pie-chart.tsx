@@ -17,11 +17,11 @@ export const MyPieChart: React.FC<PieChartProps> = observer((props: PieChartProp
     const { title, data, dataKey, dataName, colors } = props;
 
     return (
-        <Col span={8} offset={1} style={{ height: '90%' }}>
+        <Col span={9} offset={1} style={{ height: '90%' }}>
             <Title level={2} style={{ textAlign: 'center' }}>
                 {title}
             </Title>
-            <ResponsiveContainer width="100%" height="85%">
+            <ResponsiveContainer width="100%" height="85%" id={'pie-chart'}>
                 <PieChart width={300} height={200} margin={{ top: 0, right: 0, bottom: 50, left: 0 }}>
                     <Pie
                         data={data}
@@ -32,13 +32,19 @@ export const MyPieChart: React.FC<PieChartProps> = observer((props: PieChartProp
                         paddingAngle={3}
                         dataKey={dataKey}
                         nameKey={dataName}
+                        isAnimationActive={false}
+                        label={({ percent }) => `${(percent * 100).toFixed(2)}%`}
                     >
                         {data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                            <Cell
+                                id={`pie-chart-${entry.name.toLowerCase().replace(' ', '-')}-sector`}
+                                key={`cell-${index}`}
+                                fill={colors[index % colors.length]}
+                            />
                         ))}
                     </Pie>
-                    <Legend wrapperStyle={{ bottom: '8%' }} />
-                    <Tooltip />
+                    <Legend wrapperStyle={{ bottom: '8%' }} id={'pie-chart-legend'} />
+                    <Tooltip formatter={(amount) => `${amount} hours`} />
                 </PieChart>
             </ResponsiveContainer>
         </Col>

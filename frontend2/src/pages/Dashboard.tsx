@@ -37,7 +37,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
         })();
     }, [rootStore.dashboardStore.employeeMode]);
 
-    const COLORS = ['#0088FE', '#FFBB28', '#FF8042', '#00C49F'];
+    const COLORS = ['rgb(136, 132, 216)', '#FFBB28', '#FF8042', 'rgb(130, 202, 157)'];
 
     return (
         <>
@@ -59,7 +59,13 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
             </Row>
 
             <Card
-                title={rootStore.dashboardStore.employeeMode ? 'Mesicni prehled zamestnance' : 'Obecny mesicni prehled'}
+                title={
+                    <h4 data-testid={'dashboard-card-title'} style={{ marginBottom: '0' }}>
+                        {rootStore.dashboardStore.employeeMode
+                            ? 'Mesicni prehled zamestnance'
+                            : 'Obecny mesicni prehled'}
+                    </h4>
+                }
                 headStyle={{ textAlign: 'center', fontSize: '22px' }}
             >
                 {/*/!*FIXME data loading*!/*/}

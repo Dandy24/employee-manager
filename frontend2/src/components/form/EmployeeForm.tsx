@@ -24,7 +24,7 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = observer((props: Employ
     return (
         <Form>
             <Row justify="center">
-                <div>
+                <div data-testid={'employee-form'}>
                     <TextInput label="Jméno" name="first_name" />
 
                     <TextInput label="Příjmení" name="last_name" />

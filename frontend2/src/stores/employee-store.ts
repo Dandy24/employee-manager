@@ -59,7 +59,7 @@ export class EmployeeStore {
                     }),
                 );
             } else {
-                if (selected instanceof SearchableEmployeeEntity && selected?.employee) {
+                if (typeof selected !== 'number' && selected?.employee) {
                     selectedEmployee = employees.find((emp) => emp.id === selected.employee.id);
                 } else {
                     selectedEmployee = employees.find((emp) => emp.id === selected);

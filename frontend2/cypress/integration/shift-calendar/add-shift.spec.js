@@ -4,6 +4,8 @@ import { ShiftTypeEnum } from '../../../src/models/enums/shift-type-enum';
 
 const testDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
 
+// TODO use image snapshot on concrete components, not just whole page
+
 describe('proccess of creating shift through company calendar', () => {
     beforeEach(() => {
         cy.waitUntil(() => deleteAllShifts());
@@ -66,7 +68,7 @@ describe('proccess of creating shift through company calendar', () => {
             .should('contain.text', 'ranni')
             .and('not.contain.text', 'odpoledne');
 
-        cy.get(`[data-testid=shift-list-for-${testDate}]`).find('li').should('have.length', 2);
+        cy.waitUntil(() => cy.get(`[data-testid=shift-list-for-${testDate}]`).find('li').should('have.length', 2));
 
         cy.get('[data-testid=shift-ranni]').find('button').click();
 

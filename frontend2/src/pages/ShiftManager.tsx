@@ -31,6 +31,9 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                     rootStore.shiftStore.setShift(shiftId);
                     await rootStore.shiftStore.loadShiftEmployees(shiftId);
                 }
+                if (rootStore.companyStore.companies.length < 1) {
+                    rootStore.companyStore.companies.push(JSON.parse(localStorage.getItem('company')));
+                }
 
                 await rootStore.shiftStore.loadAvailableEmployees();
             })();
@@ -92,8 +95,10 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                         </Breadcrumb>
                     }
                     title={
-                        rootStore.companyStore.companies.find(
-                            (comp) => comp.id === rootStore.calendarStore.activeCompanyId,
+                        rootStore.companyStore.companies.find((comp) =>
+                            comp.id === rootStore.calendarStore.activeCompanyId
+                                ? rootStore.calendarStore.activeCompanyId
+                                : JSON.parse(localStorage.getItem('shift')).companyID,
                         )?.name
                     }
                     data-testid="shift-manager-header"
@@ -126,7 +131,7 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                     ]}
                 />
                 <div style={{ padding: '1.5%' }}></div>
-                <Row justify="space-between">
+                <Row justify="space-between" data-testid="shift-manager">
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Col span={11}>
                             <PlannerTable
@@ -150,7 +155,7 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                     </DragDropContext>
                 </Row>
                 {rootStore.shiftStore.isSubmitted && (
-                    <Row>
+                    <Row justify="center">
                         <ShiftSubmitResult store={rootStore.shiftStore} />
                     </Row>
                 )}

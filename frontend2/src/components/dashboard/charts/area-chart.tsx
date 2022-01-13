@@ -41,7 +41,10 @@ export const MyAreaChart: React.FC<AreaChartProps> = observer((props: AreaChartP
                         tickFormatter={(value) => moment(value, 'YYYY-MM-DD').format('MMMM YY')}
                     />
                     <YAxis />
-                    <Tooltip formatter={(value) => `${value}%`} />
+                    <Tooltip
+                        formatter={(value) => `${value}%`}
+                        labelFormatter={(label: string) => <p>{moment(label, 'YYYY-MM-DD').format('MMMM YY')}</p>}
+                    />
                     <Area type="monotone" dataKey={dataKey1} name={dataName1} stroke="#8884d8" fill="#8884d8" />
                 </AreaChart>
             </ResponsiveContainer>

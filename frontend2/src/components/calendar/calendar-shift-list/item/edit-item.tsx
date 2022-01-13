@@ -25,17 +25,17 @@ export const CalendarShiftListItemEdit: React.FC<CalendarShiftListItemProps> = o
 
         return (
             <List.Item>
-                <Row justify="space-between" style={{ width: '100%' }}>
-                    <Col span={10}>
-                        <Title level={5}>
-                            <Link
-                                data-testid={`shift-${item.time}`}
-                                onClick={onLinkClick}
-                                to={`/shift-manager/${item.id}`}
-                            >
-                                {item.time}
-                            </Link>
-                        </Title>
+                <Row justify="space-between" style={{ width: '100%' }} data-testid={`shift-${item.time}`}>
+                    <Col span={21}>
+                        <Link
+                            data-testid={`shift-${item.time}-link`}
+                            onClick={onLinkClick}
+                            to={`/shift-manager/${item.id}`}
+                        >
+                            <Title level={5}>
+                                <a>{item.time}</a>
+                            </Title>
+                        </Link>
                     </Col>
                     <Col>
                         <Button

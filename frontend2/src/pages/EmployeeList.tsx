@@ -57,8 +57,6 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                 company: values.company,
             };
 
-            console.log(updatedEmployee);
-
             await employeeStore.editEmployee(updatedEmployee);
         }
 

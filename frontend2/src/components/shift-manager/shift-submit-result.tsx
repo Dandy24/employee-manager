@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite';
 import { Button, Result } from 'antd';
 import React from 'react';
 import { ShiftStore } from '../../stores/shift-store';
+import { Link } from 'react-router-dom';
 
 export interface ShiftSubmitResultProps {
     store: ShiftStore;
@@ -9,10 +10,6 @@ export interface ShiftSubmitResultProps {
 
 export const ShiftSubmitResult: React.FC<ShiftSubmitResultProps> = observer((props: ShiftSubmitResultProps) => {
     const { store } = props;
-
-    const handleRedirect = () => {
-        window.location.pathname = `/shift-calendar/${store.rootStore.calendarStore.activeCompanyId}`;
-    };
 
     return (
         <>
@@ -33,15 +30,13 @@ export const ShiftSubmitResult: React.FC<ShiftSubmitResultProps> = observer((pro
                     </div>
                 }
                 extra={[
-                    <Button
-                        data-testid={'back-to-calendar-button'}
-                        type="primary"
+                    <Link
                         key="calendar"
-                        onClick={handleRedirect}
+                        data-testid={'back-to-calendar-button'}
+                        to={`/shift-calendar/${store.rootStore.calendarStore.activeCompanyId}`}
                     >
-                        Vrátit se zpět na kalendář
-                    </Button>,
-                    // <Button key="buy">Buy Again</Button>,
+                        <Button type="primary">Vrátit se zpět na kalendář</Button>
+                    </Link>,
                 ]}
             />
         </>
