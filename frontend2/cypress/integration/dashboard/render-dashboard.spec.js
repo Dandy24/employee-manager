@@ -138,6 +138,14 @@ describe('rendering graphs and other statictics in dashboard', () => {
         cy.waitUntil(() => barChart().should('be.visible'));
         barChart().find('[role="bar-chart-work-bar"]').eq(1).click({ force: true });
 
+        cy.get('[data-testid=overview-working_hours-stat]')
+            .find('.ant-statistic-content-value')
+            .should('contain.text', 'Martin Novak');
+
+        cy.get('[data-testid=overview-company_name-stat]')
+            .find('.ant-statistic-content-value')
+            .should('contain.text', 'Test Company123');
+
         cy.get('[data-testid=dashboard-card-title]').should('have.text', 'Mesicni prehled zamestnance');
         cy.get('[data-testid=overview-effectivity-stat]').should('contain.text', 'Efektivita zamestnance');
         cy.get('[data-testid=overview-effectivity-stat-circle]').should('have.class', 'ant-progress-status-success');
