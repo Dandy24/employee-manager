@@ -26,18 +26,18 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: npm
-        cache-dependency-path: frontend2/package-lock.json
+        cache-dependency-path: frontend/package-lock.json
 
     - name: Install Node.js dependencies
-      working-directory: ./frontend2
+      working-directory: ./frontend
       run: npm install --legacy-peer-deps
 
     - name: Run the unit tests
-      working-directory: ./frontend2
+      working-directory: ./frontend
       run: npm run test
 
     - name: Build
-      working-directory: ./frontend2
+      working-directory: ./frontend
       run: npm run build
 
     - name: Set up Python
@@ -63,5 +63,5 @@ jobs:
       working-directory: ./empmanager
       run: | 
             python3 manage.py testserver test-data &
-            cd ../frontend2
+            cd ../frontend
             npm run ci

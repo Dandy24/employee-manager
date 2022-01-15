@@ -37,9 +37,14 @@ export class ShiftStore {
             shiftList: observable,
             shiftListForDay: observable,
             shift: observable,
+            shiftEditResult: observable,
+            isSubmitted: observable,
 
             setShiftsForDate: action,
+            setShift: action,
 
+            loadShiftEmployees: action,
+            loadAvailableEmployees: action,
             loadShiftList: action,
             getShiftById: action,
             addToShift: action,
@@ -54,11 +59,9 @@ export class ShiftStore {
             addEmployee: action,
             removeEmployee: action,
 
-            shiftEditResult: observable,
-            isSubmitted: observable,
+            setShiftEditResult: action,
+            setIsShiftSubmitted: action,
         });
-
-        //this.availableEmployees = [...rootStore.employeeStore.employees];
 
         this.shiftEmployees = [];
     }
