@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { Col, Modal, Row } from 'antd';
+import { Button, Col, Modal, Row } from 'antd';
 import { CompanyForm } from '../components/form/CompanyForm';
 import { CompanyFormik } from '../components/form/CompanyFormik';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { EditDrawer } from '../components/EditDrawer';
 import { RootStore } from '../stores/root-store';
 import { observer } from 'mobx-react-lite';
@@ -16,8 +16,6 @@ import { MyTable } from '../components/table/table';
 interface CompanyListProps {
     rootStore: RootStore;
 }
-
-//FIXME company search result (missing name and address)
 
 export const CompanyListPage: React.FC<CompanyListProps> = observer((props: CompanyListProps): JSX.Element => {
     const { rootStore } = props;
@@ -50,7 +48,7 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
             address: values.address,
         };
 
-        await companyStore.editCompany(updatedCompany);
+        await companyStore.saveCompany(updatedCompany);
     }
 
     useEffect(() => {
@@ -62,9 +60,19 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
 
     return (
         <>
-            <Row justify="center" style={{ marginTop: '1%', marginBottom: '2%' }}>
-                <Col>
+            <Row justify="end" style={{ marginTop: '1%', marginBottom: '2%' }}>
+                <Col offset={5} span={13}>
                     <SearchComponent type="company" options={toJS(rootStore.searchStore.searchableCompanies)} />
+                </Col>
+                <Col offset={3}>
+                    <Button
+                        type="primary"
+                        size="large"
+                        icon={<PlusOutlined />}
+                        onClick={() => rootStore.companyStore.openToAdd()}
+                    >
+                        Přidat společnost
+                    </Button>
                 </Col>
             </Row>
 
@@ -76,7 +84,7 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
             />
 
             <EditDrawer
-                title="Upravit firmu"
+                title={rootStore.companyStore.company?.id ? 'Upravit firmu' : 'Přidat firmu'}
                 onClose={() => {
                     companyStore.closeModal();
                 }}

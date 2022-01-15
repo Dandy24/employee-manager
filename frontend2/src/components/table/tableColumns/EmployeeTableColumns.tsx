@@ -5,6 +5,7 @@ import { CompanyStore } from '../../../stores/company-store';
 import { EmployeeEntity } from '../../../models/entities/employee-entity';
 import { TableColumns } from '../../../models/interfaces/table-columns';
 import { sort } from '../../../utils/table-sorter';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 export function EmployeeTableColumns(
     employeeStore: EmployeeStore,
@@ -92,6 +93,8 @@ export function EmployeeTableColumns(
             render: (text, record: EmployeeEntity) => (
                 <Space size="middle">
                     <Button
+                        type="primary"
+                        icon={<EditOutlined />}
                         onClick={() => {
                             employeeStore.openToEdit(record);
                         }}
@@ -99,6 +102,8 @@ export function EmployeeTableColumns(
                         Upravit
                     </Button>
                     <Button
+                        type="primary"
+                        icon={<DeleteOutlined />}
                         onClick={async () => {
                             await onEmployeeDelete(record.id);
                         }}

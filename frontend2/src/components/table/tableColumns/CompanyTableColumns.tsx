@@ -5,6 +5,7 @@ import { CompanyStore } from '../../../stores/company-store';
 import { CompanyEntity } from '../../../models/entities/company-entity';
 import { Link } from 'react-router-dom';
 import { sort } from '../../../utils/table-sorter';
+import { CalendarOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 export function CompanyTableColumns(
     companyStore: CompanyStore,
@@ -24,6 +25,7 @@ export function CompanyTableColumns(
             title: 'Název společnosti',
             dataIndex: 'name',
             key: 'name',
+            width: 350,
             sorter: {
                 compare: (a, b) => sort.STRING(a.name, b.name),
             },
@@ -52,6 +54,8 @@ export function CompanyTableColumns(
             render: (record: CompanyEntity) => (
                 <Space size="middle">
                     <Button
+                        type="primary"
+                        icon={<EditOutlined />}
                         onClick={() => {
                             companyStore.openToEdit(record);
                         }}
@@ -59,6 +63,8 @@ export function CompanyTableColumns(
                         Upravit
                     </Button>
                     <Button
+                        type="primary"
+                        icon={<DeleteOutlined />}
                         onClick={async () => {
                             await onCompanyDelete(record);
                         }}
@@ -66,7 +72,9 @@ export function CompanyTableColumns(
                         Smazat
                     </Button>
                     <Link data-testid={`company-calendar-button-${record.id}`} to={`/shift-calendar/${record.id}`}>
-                        <Button>Kalendář směn</Button>
+                        <Button type="primary" icon={<CalendarOutlined />}>
+                            Kalendář směn
+                        </Button>
                     </Link>
                 </Space>
             ),

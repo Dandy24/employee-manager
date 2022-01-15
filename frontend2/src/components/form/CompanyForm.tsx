@@ -36,7 +36,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = observer((props: CompanyF
                 </Col>
             </Row>
             <Row justify="center">
-                <Col span={12}>
+                <Col span={12} offset={9} style={{ marginTop: '3vh' }}>
                     <Button type="primary" htmlType="submit">
                         Uložit
                     </Button>

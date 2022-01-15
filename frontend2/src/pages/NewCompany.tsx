@@ -24,9 +24,9 @@ export const NewCompanyPage: React.FC<NewCompanyProps> = observer((props: NewCom
             address: values.address,
         };
 
-        await rootStore.companyStore.addCompany(companyData).then(() => {
-            history.replace('');
-        });
+        // await rootStore.companyStore.addCompany(companyData).then(() => {
+        //     history.replace('');
+        // });
     };
 
     return (

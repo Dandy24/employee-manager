@@ -34,9 +34,9 @@ export const NewEmployeePage: React.FC<NewEmployeePageProps> = observer((props: 
             company: null,
         };
 
-        await employeeStore.addEmployee(employeeData).then(() => {
-            history.replace('employee-list');
-        });
+        // await employeeStore.addEmployee(employeeData).then(() => {
+        //     history.replace('employee-list');
+        // });
     };
 
     return (

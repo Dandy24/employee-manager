@@ -1,6 +1,6 @@
-import { Modal } from 'antd';
+import { Button, Col, Modal, Row } from 'antd';
 import React, { useEffect } from 'react';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { EditDrawer } from '../components/EditDrawer';
 import { EmployeeFormik } from '../components/form/EmployeeFormik';
 import { EmployeeForm } from '../components/form/EmployeeForm';
@@ -11,6 +11,8 @@ import { observer } from 'mobx-react-lite';
 import { EmployeeDto } from '../models/dtos/employee-dto';
 import '../styles.css';
 import { MyTable } from '../components/table/table';
+import { SearchComponent } from '../components/search/search-component';
+import { toJS } from 'mobx';
 
 interface EmployeeListPageProps {
     rootStore: RootStore;
@@ -57,7 +59,7 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                 company: values.company,
             };
 
-            await employeeStore.editEmployee(updatedEmployee);
+            await employeeStore.saveEmployee(updatedEmployee);
         }
 
         useEffect(() => {
@@ -69,7 +71,18 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
 
         return (
             <>
-                <div style={{ paddingTop: '5.5%' }}></div>
+                <Row justify="end" style={{ marginTop: '1%', marginBottom: '2%' }}>
+                    <Col>
+                        <Button
+                            type="primary"
+                            size="large"
+                            icon={<PlusOutlined />}
+                            onClick={() => employeeStore.openToAdd()}
+                        >
+                            Přidat zaměstance
+                        </Button>
+                    </Col>
+                </Row>
 
                 <MyTable
                     loading={employeeStore.loadingEmployees}
@@ -79,7 +92,7 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                 />
 
                 <EditDrawer
-                    title="Upravení zaměstnance"
+                    title={employeeStore.employee?.id ? 'Upravit zaměstnance' : 'Přidat zaměstnance'}
                     onClose={() => {
                         employeeStore.closeModal();
                     }}
@@ -91,8 +104,8 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                 >
                     <EmployeeFormik initialValues={employeeStore.employee} onSubmit={updateHandler}>
                         <EmployeeForm
-                            activeEdit={true}
-                            employeeEdit={true}
+                            activeEdit={!!employeeStore.employee?.id}
+                            employeeEdit={!!employeeStore.employee?.id}
                             companiesList={rootStore.companyStore.companies}
                             submitText="Uložit"
                         />

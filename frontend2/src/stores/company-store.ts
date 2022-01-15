@@ -24,9 +24,9 @@ export class CompanyStore {
 
             fetchAllCompanies: action,
             closeModal: action,
+            openToAdd: action,
             openToEdit: action,
-            addCompany: action,
-            editCompany: action,
+            saveCompany: action,
             updateCompany: action,
             deleteCompany: action,
         });
@@ -75,6 +75,13 @@ export class CompanyStore {
         this.isEditOpen = false;
     }
 
+    openToAdd(): void {
+        runInAction(() => {
+            this.isEditOpen = true;
+            this.company = new CompanyEntity();
+        });
+    }
+
     openToEdit(company: CompanyEntity): void {
         const comp = this.companies.find((c) => c.id === company.id);
         this.isEditOpen = true;
@@ -87,42 +94,35 @@ export class CompanyStore {
         }
     }
 
-    async editCompany(company: CompanyDto): Promise<void> {
+    async saveCompany(company: CompanyDto): Promise<void> {
         if (this.company.id) {
-            const updatedCompany = await updateCompany(company, this.company.id)
-                .then(() => {
-                    message.warning('Údaje o společnosti byly upraveny');
-                })
-                .catch((error) => {
-                    message.error('Údaje o společnosti se nepodařilo upravit.');
-                    console.log(error);
-                }); //TODO dat to ID pryc nejak
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            if (updatedCompany) {
-                this.updateCompany(updatedCompany);
+            try {
+                const updatedCompany = await updateCompany(company, this.company.id);
+                message.warning('Údaje o společnosti byly upraveny');
+                if (updatedCompany) {
+                    this.updateCompany(updatedCompany);
+                }
+                await this.fetchAllCompanies();
+                runInAction(() => {
+                    this.closeModal();
+                });
+            } catch (e) {
+                message.error('Údaje o společnosti se nepodařilo upravit.');
+                console.log(e);
             }
-            await this.fetchAllCompanies();
-        }
-
-        runInAction(() => {
-            this.closeModal();
-        });
-    }
-
-    async addCompany(company: CompanyDto): Promise<void> {
-        await createCompany(company)
-            .then(() => {
+        } else {
+            try {
+                await createCompany(company);
                 message.success('Spolecnost byla uspesne vytvorena');
-            })
-            .catch((error) => {
+                await this.fetchAllCompanies();
+                runInAction(() => {
+                    this.closeModal();
+                });
+            } catch (e) {
                 message.error('Spolecnost se nepodarilo vytvorit');
-                console.log(error);
-            });
-        await this.fetchAllCompanies();
-        runInAction(() => {
-            this.closeModal();
-        });
+                console.log(e);
+            }
+        }
     }
 
     async deleteCompany(company: CompanyEntity): Promise<void> {

@@ -30,9 +30,9 @@ export class EmployeeStore {
 
             fetchAllEmployees: action,
             closeModal: action,
+            openToAdd: action,
             openToEdit: action,
-            addEmployee: action,
-            editEmployee: action,
+            saveEmployee: action,
             deleteEmployee: action,
         });
     }
@@ -83,6 +83,13 @@ export class EmployeeStore {
         this.isEditOpen = false;
     }
 
+    openToAdd(): void {
+        runInAction(() => {
+            this.employee = new EmployeeEntity();
+            this.isEditOpen = true;
+        });
+    }
+
     openToEdit(employee: EmployeeEntity): void {
         const emp = this.employees.find((e) => e.id === employee.id);
         this.isEditOpen = true;
@@ -95,36 +102,32 @@ export class EmployeeStore {
         }
     }
 
-    async editEmployee(employee: EmployeeDto): Promise<void> {
+    async saveEmployee(employee: EmployeeDto): Promise<void> {
         if (this.employee.id) {
-            await updateEmployee(this.employee.id, employee) //TODO dat to ID pryc nejak
-                .then(() => {
-                    message.warning('Udaje o zamestnanci byly upraveny');
-                })
-                .catch((error) => {
-                    console.log(error);
-                    message.error('Nepodařilo se upravit zaměstnance');
+            try {
+                const updatedEmployee = await updateEmployee(this.employee.id, employee);
+                message.warning('Udaje o zamestnanci byly upraveny');
+                await this.fetchAllEmployees();
+                runInAction(() => {
+                    this.closeModal();
                 });
-        }
-        await this.fetchAllEmployees();
-        runInAction(() => {
-            this.closeModal();
-        });
-    }
-
-    async addEmployee(employee: EmployeeDto): Promise<void> {
-        await createEmployee(employee)
-            .then(() => {
+            } catch (e) {
+                console.log(e);
+                message.error('Nepodařilo se upravit zaměstnance');
+            }
+        } else {
+            try {
+                await createEmployee(employee);
                 message.success('Zaměstnanec byl úspěšně přidán');
-            })
-            .catch((error) => {
-                console.log(error);
+                await this.fetchAllEmployees();
+                runInAction(() => {
+                    this.closeModal();
+                });
+            } catch (e) {
+                console.log(e);
                 message.error('Nepodařilo se vytvorit zaměstnance');
-            });
-        await this.fetchAllEmployees();
-        runInAction(() => {
-            this.closeModal();
-        });
+            }
+        }
     }
 
     async deleteEmployee(id: number): Promise<void> {
