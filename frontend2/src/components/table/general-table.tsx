@@ -6,14 +6,14 @@ import { ColumnsType } from 'antd/lib/table/interface';
 import { EmployeeEntity } from '../../models/entities/employee-entity';
 import { CompanyEntity } from '../../models/entities/company-entity';
 
-export interface MyTableProps {
+export interface GeneralTableProps {
     loading: boolean;
     columns: ColumnsType<EmployeeEntity | CompanyEntity>;
     rows: CompanyEntity[] | EmployeeEntity[];
     type: 'employee' | 'company';
 }
 
-export const MyTable: React.FC<MyTableProps> = observer((props: MyTableProps) => {
+export const GeneralTable: React.FC<GeneralTableProps> = observer((props: GeneralTableProps) => {
     const { loading, type, columns, rows } = props;
 
     return (

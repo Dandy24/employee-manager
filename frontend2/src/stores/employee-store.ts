@@ -105,7 +105,8 @@ export class EmployeeStore {
     async saveEmployee(employee: EmployeeDto): Promise<void> {
         if (this.employee.id) {
             try {
-                const updatedEmployee = await updateEmployee(this.employee.id, employee);
+                // const updatedEmployee = await updateEmployee(this.employee.id, employee);
+                await updateEmployee(this.employee.id, employee);
                 message.warning('Udaje o zamestnanci byly upraveny');
                 await this.fetchAllEmployees();
                 runInAction(() => {

@@ -4,9 +4,7 @@ import { Layout } from 'antd';
 import { Route, Switch } from 'react-router-dom';
 
 import { CompanyListPage } from './pages/CompanyList';
-import { NewCompanyPage } from './pages/NewCompany';
 import { MainNavigation } from './components/layout/MainNavigation';
-import { NewEmployeePage } from './pages/NewEmployee';
 import { EmployeeListPage } from './pages/EmployeeList';
 import { Content } from 'antd/lib/layout/layout';
 import { useRootStore } from './stores/root-store-provider';
@@ -26,14 +24,6 @@ const App: React.FC = observer(() => {
                     <Switch>
                         <Route path="/company-list" exact>
                             <CompanyListPage rootStore={rootStore}></CompanyListPage>
-                        </Route>
-
-                        <Route path="/new-company">
-                            <NewCompanyPage rootStore={rootStore}></NewCompanyPage>
-                        </Route>
-
-                        <Route path="/new-employee">
-                            <NewEmployeePage rootStore={rootStore}></NewEmployeePage>
                         </Route>
 
                         <Route path="/employee-list">

@@ -15,7 +15,6 @@ export interface ShiftCalendarPageProps {
 }
 
 /** TODO REFACTOR !!! **/
-/** FIXME pri navratu z uspesne vytvorene smeny do kalendare zmizne page title **/
 
 export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((props: ShiftCalendarPageProps) => {
     const { companyId } = useParams<{ companyId: string }>();
@@ -38,7 +37,6 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
             }
         })();
     }, []);
-    //[rootStore.shiftStore.shiftList]
 
     const selectShiftHandler = (date): void => {
         rootStore.shiftStore.setShiftsForDate(date);

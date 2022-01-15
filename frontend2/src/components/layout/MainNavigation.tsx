@@ -23,17 +23,9 @@ export const MainNavigation: React.FC = observer((): JSX.Element => {
                         Seznam firem
                     </Link>
                 </MenuItem>
-                <MenuItem key="company-create">
-                    <Link to="/new-company">Přidání nové firmy</Link>
-                </MenuItem>
                 <MenuItem key="employee-list" data-testid="menu-employee-list-item">
                     <Link to="/employee-list" data-testid="menu-employee-list-item-link">
                         Seznam zaměstnanců
-                    </Link>
-                </MenuItem>
-                <MenuItem key="employee-create" data-testid="menu-new-employee-item">
-                    <Link to="/new-employee" data-testid="menu-new-employee-item-link">
-                        Přidání nového zaměstnance
                     </Link>
                 </MenuItem>
             </Menu>

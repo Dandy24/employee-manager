@@ -10,9 +10,7 @@ import { EmployeeTableColumns } from '../components/table/tableColumns/EmployeeT
 import { observer } from 'mobx-react-lite';
 import { EmployeeDto } from '../models/dtos/employee-dto';
 import '../styles.css';
-import { MyTable } from '../components/table/table';
-import { SearchComponent } from '../components/search/search-component';
-import { toJS } from 'mobx';
+import { GeneralTable } from '../components/table/general-table';
 
 interface EmployeeListPageProps {
     rootStore: RootStore;
@@ -45,7 +43,6 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
         }
 
         async function updateHandler(values: EmployeeDto) {
-            //TODO rozsirit na zmenu firmy, pozice atd.
             const updatedEmployee = {
                 first_name: values.first_name,
                 last_name: values.last_name,
@@ -67,7 +64,7 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                 await rootStore.companyStore.fetchAllCompanies();
                 await employeeStore.fetchAllEmployees();
             })();
-        }, []); // was [isLoading]
+        }, []);
 
         return (
             <>
@@ -84,7 +81,7 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                     </Col>
                 </Row>
 
-                <MyTable
+                <GeneralTable
                     loading={employeeStore.loadingEmployees}
                     columns={columns}
                     rows={employeeStore.employees}

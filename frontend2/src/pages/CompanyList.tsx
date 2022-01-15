@@ -11,7 +11,7 @@ import { CompanyEntity } from '../models/entities/company-entity';
 import { CompanyDto } from '../models/dtos/company-dto';
 import { SearchComponent } from '../components/search/search-component';
 import { toJS } from 'mobx';
-import { MyTable } from '../components/table/table';
+import { GeneralTable } from '../components/table/general-table';
 
 interface CompanyListProps {
     rootStore: RootStore;
@@ -76,7 +76,7 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
                 </Col>
             </Row>
 
-            <MyTable
+            <GeneralTable
                 loading={companyStore.loadingCompanies}
                 columns={columns}
                 rows={companyStore.companies}
