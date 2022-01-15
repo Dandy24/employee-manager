@@ -4,6 +4,7 @@ import React from 'react';
 import { CompanyStore } from '../../../stores/company-store';
 import { EmployeeEntity } from '../../../models/entities/employee-entity';
 import { TableColumns } from '../../../models/interfaces/table-columns';
+import { sort } from '../../../utils/table-sorter';
 
 export function EmployeeTableColumns(
     employeeStore: EmployeeStore,
@@ -15,21 +16,36 @@ export function EmployeeTableColumns(
             title: 'ID zaměstnance',
             dataIndex: 'id',
             key: 'id',
+            width: 180,
+            sorter: {
+                compare: (a, b) => sort.NUMBER(a.id, b.id),
+            },
         },
         {
             title: 'Jméno',
             dataIndex: 'first_name',
             key: 'first_name',
+            sorter: {
+                compare: (a, b) => sort.STRING(a.first_name, b.first_name),
+            },
         },
         {
             title: 'Příjmení',
             dataIndex: 'last_name',
             key: 'last_name',
+            sorter: {
+                compare: (a, b) => sort.STRING(a.last_name, b.last_name),
+            },
         },
         {
             title: 'Telefon',
             dataIndex: 'phone',
             key: 'phone',
+            width: 180,
+            render: (text, record: EmployeeEntity) => <p>{`+${record.phone}`}</p>,
+            sorter: {
+                compare: (a, b) => sort.NUMBER(a.phone, b.phone),
+            },
         },
         {
             title: 'Firma',
@@ -39,12 +55,15 @@ export function EmployeeTableColumns(
                 return <p>{companyStore.companies.find((comp) => comp.id === text)?.name}</p>;
             },
             Cell: ({ value }) => <p>{companyStore.companies.find((comp) => comp.id === value)?.name}</p>,
+            // sorter: {
+            //     compare: (a, b) => sort.STRING(a.company, b.company),
+            // },
         },
         {
             title: 'Aktivní',
             dataIndex: 'active',
             key: 'active',
-            // render: (text: string, row: { active: boolean }) => <p> {row.active ? 'Ano' : 'Ne'} </p>,
+            width: 160,
             render: (value, row) => (
                 <Tag
                     style={{ width: '75%', textAlign: 'center' }}
@@ -63,6 +82,9 @@ export function EmployeeTableColumns(
                     {value ? 'Ano' : 'Ne'}
                 </Tag>
             ),
+            sorter: {
+                compare: (a, b) => sort.NUMBER(a.active, b.active),
+            },
         },
         {
             title: 'Akce',

@@ -41,6 +41,8 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = observer((props: Employ
 
                     <TextArea name="health_limitations" label="Zdravotní omezení" rows={3} textareaSize="large" />
 
+                    <div style={{ marginTop: '10%' }}></div>
+
                     {activeEdit ? <CustomSwitch label="Aktivní" name="active" /> : null}
 
                     {employeeEdit && companiesList ? (

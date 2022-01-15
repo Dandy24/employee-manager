@@ -19,7 +19,7 @@ export const NumberInput: React.FC<NumberInputProps> = observer((props: NumberIn
             <label htmlFor={name} data-testid="number-input-label">
                 {label}
             </label>
-            <InputNumber {...props} data-testid="number-input-field" />
+            <InputNumber {...props} data-testid="number-input-field" style={{ width: '100%' }} />
             {meta.touched && meta.error ? (
                 <Alert message={meta.error} type="error" showIcon data-testid="number-input-error" />
             ) : null}

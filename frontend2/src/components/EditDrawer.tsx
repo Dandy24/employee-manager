@@ -17,7 +17,7 @@ export const EditDrawer: React.FC<EditDrawerProps> = observer((props: EditDrawer
     return (
         <Drawer
             title={title}
-            width={720}
+            width={600}
             onClose={onClose}
             visible={visible}
             bodyStyle={{ paddingBottom: 80 }}

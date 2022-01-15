@@ -2,10 +2,6 @@ html, body, #root, .App {
     height: 100%;
 }
 
-.ant-table-body > table{
-    width: 97%;
-}
-
 /*.ant-table-body > table {*/
 /*    -ms-overflow-style: none;  !* Internet Explorer 10+ *!*/
 /*    scrollbar-width: none;  !* Firefox *!*/

@@ -4,7 +4,7 @@ import { Breadcrumb, Button, Col, Modal, PageHeader, Row, Tag } from 'antd';
 import { RootStore } from '../stores/root-store';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Link, useParams } from 'react-router-dom';
-import { dragEndHandler } from '../services/drag-end-handler';
+import { dragEndHandler } from '../utils/drag-end-handler';
 import { CalendarOutlined, ExclamationCircleOutlined, HomeOutlined, SwapOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { ShiftSubmitResult } from '../components/shift-manager/shift-submit-result';

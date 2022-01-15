@@ -4,6 +4,7 @@ import { ColumnsType } from 'antd/lib/table/interface';
 import { CompanyStore } from '../../../stores/company-store';
 import { CompanyEntity } from '../../../models/entities/company-entity';
 import { Link } from 'react-router-dom';
+import { sort } from '../../../utils/table-sorter';
 
 export function CompanyTableColumns(
     companyStore: CompanyStore,
@@ -14,22 +15,36 @@ export function CompanyTableColumns(
             title: 'ID společnosti',
             dataIndex: 'id',
             key: 'id',
+            width: 180,
+            sorter: {
+                compare: (a, b) => sort.NUMBER(a.id, b.id),
+            },
         },
         {
             title: 'Název společnosti',
             dataIndex: 'name',
             key: 'name',
+            sorter: {
+                compare: (a, b) => sort.STRING(a.name, b.name),
+            },
         },
         {
             title: 'Telefonní číslo',
             dataIndex: 'phone',
             key: 'phone',
+            width: 180,
             render: (text, record: CompanyEntity) => <p>{`+${record.phone}`}</p>,
+            sorter: {
+                compare: (a, b) => sort.NUMBER(a.phone, b.phone),
+            },
         },
         {
             title: 'Adresa sídla společnosti',
             dataIndex: 'address',
             key: 'address',
+            sorter: {
+                compare: (a, b) => sort.STRING(a.address, b.address),
+            },
         },
         {
             title: 'Akce',

@@ -16,7 +16,8 @@ export const CategorySelectList: React.FC<SelectListProps> = observer((props: Se
             <label htmlFor={name} data-testid="category-select-label">
                 {label}
             </label>
-            <Select name={name} style={{ width: 200 }} data-testid="category-select-input">
+            <br />
+            <Select name={name} style={{ width: '100%' }} data-testid="category-select-input">
                 <Select.Option
                     key={WorkingCategoryEnum.A}
                     value={WorkingCategoryEnum.A}
