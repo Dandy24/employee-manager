@@ -33,7 +33,7 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                     JSON.stringify(rootStore.companyStore.companies.find((comp) => comp.id === parseInt(companyId))),
                 );
             } else {
-                rootStore.companyStore.companies.push(JSON.parse(localStorage.getItem('company')));
+                rootStore.companyStore.getCompaniesFromStorage();
             }
         })();
     }, []);

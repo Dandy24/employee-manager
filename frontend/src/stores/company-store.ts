@@ -22,6 +22,8 @@ export class CompanyStore {
             loadingCompanies: observable,
             isEditOpen: observable,
 
+            getCompaniesFromStorage: action,
+
             fetchAllCompanies: action,
             closeModal: action,
             openToAdd: action,
@@ -30,6 +32,10 @@ export class CompanyStore {
             updateCompany: action,
             deleteCompany: action,
         });
+    }
+
+    getCompaniesFromStorage(): void {
+        this.companies.push(JSON.parse(localStorage.getItem('company')));
     }
 
     async fetchAllCompanies(filter?: string, selected?: SearchableCompanyEntity): Promise<void> {
