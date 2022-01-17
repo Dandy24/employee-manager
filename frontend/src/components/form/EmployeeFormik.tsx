@@ -67,7 +67,7 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
             enableReinitialize
         >
             {({ values, handleChange, setFieldValue }) => (
-                <Form>
+                <Form style={{ width: '80%', marginLeft: '9%' }}>
                     <Row justify="center">
                         <div data-testid={'employee-form'}>
                             <Row justify="center">
@@ -76,16 +76,19 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
                                         onChange={(file) => setFieldValue('profile_picture', file.file)}
                                         name="profile_picture"
                                         listType="picture-card"
-                                        className="avatar-uploader"
+                                        className={`avatar-uploader ${
+                                            initialValues?.profile_picture ? 'profile_picture' : 'profile_picture-empty'
+                                        }`}
                                         showUploadList={false}
                                         customRequest={dummyRequest}
                                         accept=".png,.jpg,.jpeg"
+                                        style={{ height: '100%', textAlign: 'center' }}
                                     >
                                         {initialValues?.profile_picture ? (
                                             <img
                                                 src={initialValues?.profile_picture}
                                                 alt="avatar"
-                                                style={{ width: '100%' }}
+                                                style={{ width: '100%', height: '100%' }}
                                             />
                                         ) : (
                                             uploadButton
@@ -94,7 +97,7 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
                                 </Col>
                             </Row>
 
-                            <div style={{ marginTop: '10%' }}></div>
+                            <div style={{ marginTop: '4.5%' }}></div>
 
                             <TextInput label="Jméno" name="first_name" />
 
@@ -134,19 +137,25 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
                             ) : null}
 
                             <Row justify="center">
+                                {initialValues?.attachment ? console.log('kok') : console.log('notkok')}
                                 <Dragger
                                     customRequest={dummyRequest}
                                     onChange={(file) => setFieldValue('attachment', file.file)}
                                     name="attachment"
                                     maxCount={1}
                                     accept=".pdf"
-                                    defaultFileList={[
-                                        {
-                                            uid: '',
-                                            url: initialValues?.attachment,
-                                            name: 'test',
-                                        },
-                                    ]}
+                                    defaultFileList={
+                                        initialValues?.attachment
+                                            ? [
+                                                  {
+                                                      uid: '',
+                                                      url: initialValues?.attachment,
+                                                      name: 'test',
+                                                  },
+                                              ]
+                                            : null
+                                    }
+                                    style={{ width: '100%' }}
                                 >
                                     <p className="ant-upload-drag-icon">
                                         <InboxOutlined />
