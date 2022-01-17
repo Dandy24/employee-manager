@@ -69,6 +69,7 @@ export class EmployeeStore {
                     this.employees = employees;
                     this.employee = selectedEmployee ? selectedEmployee : null;
                 });
+                console.log(this.employees);
             }
         } catch (e) {
             message.error('Failed to load employees from database');
@@ -81,6 +82,7 @@ export class EmployeeStore {
 
     closeModal(): void {
         this.isEditOpen = false;
+        // this.employee.attachment = null;
     }
 
     openToAdd(): void {
@@ -90,12 +92,18 @@ export class EmployeeStore {
         });
     }
 
-    openToEdit(employee: EmployeeEntity): void {
+    async openToEdit(employee: EmployeeEntity): Promise<void> {
         const emp = this.employees.find((e) => e.id === employee.id);
         this.isEditOpen = true;
         if (emp) {
-            runInAction(() => {
+            await runInAction(async () => {
                 this.employee = emp;
+                if (this.employee.attachment) {
+                    this.employee.attachment = `http://localhost:8000${this.employee.attachment.toString()}`;
+                }
+                if (this.employee.profile_picture) {
+                    this.employee.profile_picture = `http://localhost:8000${this.employee.profile_picture.toString()}`;
+                }
             });
         } else {
             throw new Error(`Zamestnanec s ID ${employee.id} nenalezen!`);

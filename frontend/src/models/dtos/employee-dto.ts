@@ -12,4 +12,6 @@ export class EmployeeDto {
     public med_exam_date: string;
     public job_assign_date: string;
     public company: CompanyEntity | null;
+    public attachment?: any;
+    public profile_picture?: any;
 }

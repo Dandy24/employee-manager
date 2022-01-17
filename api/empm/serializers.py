@@ -1,5 +1,21 @@
+import io
+
+import PyPDF2
+from drf_extra_fields.fields import Base64FileField, Base64ImageField
 from rest_framework import serializers
 from .models import Employee, Company, Shift, MonthlyOutput, OverallMonthlyOutput
+
+
+class PDFBase64File(Base64FileField):
+    ALLOWED_TYPES = ['pdf']
+
+    def get_file_extension(self, filename, decoded_file):
+        try:
+            PyPDF2.PdfFileReader(io.BytesIO(decoded_file))
+        except PyPDF2.utils.PdfReadError as e:
+            print(e)
+        else:
+            return 'pdf'
 
 
 class CompanySerializer(serializers.ModelSerializer):
@@ -9,6 +25,13 @@ class CompanySerializer(serializers.ModelSerializer):
 
 
 class EmployeeSerializer(serializers.ModelSerializer):
+    attachment = PDFBase64File(
+        max_length=None, use_url=True, required=False
+    )
+    profile_picture = Base64ImageField(
+        required=False
+    )
+
     class Meta:
         model = Employee
         fields = '__all__'

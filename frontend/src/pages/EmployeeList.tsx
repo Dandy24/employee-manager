@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { EditDrawer } from '../components/EditDrawer';
 import { EmployeeFormik } from '../components/form/EmployeeFormik';
-import { EmployeeForm } from '../components/form/EmployeeForm';
 import moment from 'moment';
 import { RootStore } from '../stores/root-store';
 import { EmployeeTableColumns } from '../components/table/tableColumns/EmployeeTableColumns';
@@ -11,6 +10,7 @@ import { observer } from 'mobx-react-lite';
 import { EmployeeDto } from '../models/dtos/employee-dto';
 import '../styles.css';
 import { GeneralTable } from '../components/table/general-table';
+import { toBase64 } from '../utils/file-to-base64';
 
 interface EmployeeListPageProps {
     rootStore: RootStore;
@@ -43,6 +43,13 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
         }
 
         async function updateHandler(values: EmployeeDto) {
+            const convertedFile = values.attachment?.originFileObj
+                ? await toBase64(values.attachment.originFileObj)
+                : undefined;
+            const convertedImage = values.profile_picture?.originFileObj
+                ? await toBase64(values.profile_picture.originFileObj)
+                : undefined;
+
             const updatedEmployee = {
                 first_name: values.first_name,
                 last_name: values.last_name,
@@ -54,6 +61,8 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                 job_assign_date: moment(values.job_assign_date).format('YYYY-MM-DD'),
                 active: values.active,
                 company: values.company,
+                attachment: convertedFile,
+                profile_picture: convertedImage,
             };
 
             await employeeStore.saveEmployee(updatedEmployee);
@@ -71,6 +80,7 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                 <Row justify="end" style={{ marginTop: '1%', marginBottom: '2%' }}>
                     <Col>
                         <Button
+                            data-testid="create-employee-button"
                             type="primary"
                             size="large"
                             icon={<PlusOutlined />}
@@ -99,14 +109,7 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                     }}
                     cancelButtonText="Zavřít okno"
                 >
-                    <EmployeeFormik initialValues={employeeStore.employee} onSubmit={updateHandler}>
-                        <EmployeeForm
-                            activeEdit={!!employeeStore.employee?.id}
-                            employeeEdit={!!employeeStore.employee?.id}
-                            companiesList={rootStore.companyStore.companies}
-                            submitText="Uložit"
-                        />
-                    </EmployeeFormik>
+                    <EmployeeFormik initialValues={employeeStore.employee} onSubmit={updateHandler} />
                 </EditDrawer>
             </>
         );

@@ -14,6 +14,8 @@ export class EmployeeEntity {
     public med_exam_date: Date;
     public job_assign_date: Date;
     public company: CompanyEntity | null;
+    public attachment?: any;
+    public profile_picture?: any;
 
     constructor() {
         makeObservable(this, {
@@ -28,6 +30,8 @@ export class EmployeeEntity {
             med_exam_date: observable,
             job_assign_date: observable,
             company: observable,
+            attachment: observable,
+            profile_picture: observable,
         });
     }
 }

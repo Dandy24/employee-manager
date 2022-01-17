@@ -20,6 +20,8 @@ class Employee(models.Model):
     working_category = models.CharField(max_length=1)
     med_exam_date = models.DateField(blank=True, null=True)
     job_assign_date = models.DateField(blank=True, null=True)
+    profile_picture = models.ImageField(blank=True, null=True, upload_to='profile_photos/')
+    attachment = models.FileField(blank=True, null=True, upload_to='attachments/')
     company = models.ForeignKey(
         'Company',
         on_delete=models.SET_NULL,

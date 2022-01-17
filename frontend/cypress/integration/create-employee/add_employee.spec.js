@@ -4,7 +4,8 @@ const form = () => cy.get('[data-testid=employee-form]');
 
 describe('employee creating process', () => {
     beforeEach(() => {
-        cy.visit('/new-employee');
+        cy.visit('/employee-list');
+        cy.get('[data-testid=create-employee-button]').click();
     });
 
     it('Matches the image snapshot', () => {
@@ -15,9 +16,9 @@ describe('employee creating process', () => {
     it('Fill the form correctly', () => {
         /** Test if correct menu tab is colored **/
 
-        cy.get('[data-testid=menu-new-employee-item]')
-            .should('have.attr', 'class')
-            .and('match', /selected/);
+        // cy.get('[data-testid=menu-new-employee-item]')
+        //     .should('have.attr', 'class')
+        //     .and('match', /selected/);
 
         /** **/
 
