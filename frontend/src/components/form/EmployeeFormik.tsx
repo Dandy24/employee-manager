@@ -66,7 +66,7 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
             validationSchema={EmployeeValidationSchema}
             enableReinitialize
         >
-            {({ values, handleChange, setFieldValue }) => (
+            {({ setFieldValue }) => (
                 <Form style={{ width: '80%', marginLeft: '9%' }}>
                     <Row justify="center">
                         <div data-testid={'employee-form'}>
@@ -137,14 +137,13 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
                             ) : null}
 
                             <Row justify="center">
-                                {initialValues?.attachment ? console.log('kok') : console.log('notkok')}
                                 <Dragger
                                     customRequest={dummyRequest}
                                     onChange={(file) => setFieldValue('attachment', file.file)}
                                     name="attachment"
                                     maxCount={1}
                                     accept=".pdf"
-                                    onRemove={(file) => (initialValues.attachment = null)}
+                                    onRemove={() => (initialValues.attachment = null)}
                                     fileList={
                                         initialValues?.attachment
                                             ? [

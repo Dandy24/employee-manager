@@ -82,7 +82,6 @@ export class EmployeeStore {
 
     closeModal(): void {
         this.isEditOpen = false;
-        // this.employee.attachment = null;
     }
 
     openToAdd(): void {

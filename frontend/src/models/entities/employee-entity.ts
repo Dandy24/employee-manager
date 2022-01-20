@@ -14,7 +14,9 @@ export class EmployeeEntity {
     public med_exam_date: Date;
     public job_assign_date: Date;
     public company: CompanyEntity | null;
+    // eslint-disable-next-line
     public attachment?: any;
+    // eslint-disable-next-line
     public profile_picture?: any;
 
     constructor() {
