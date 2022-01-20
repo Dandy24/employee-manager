@@ -61,7 +61,7 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                 job_assign_date: moment(values.job_assign_date).format('YYYY-MM-DD'),
                 active: values.active,
                 company: values.company,
-                attachment: convertedFile,
+                attachment: values.attachment?.status === 'removed' ? null : convertedFile,
                 profile_picture: convertedImage,
             };
 

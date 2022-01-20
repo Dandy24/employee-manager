@@ -99,10 +99,14 @@ export class EmployeeStore {
             await runInAction(async () => {
                 this.employee = emp;
                 if (this.employee.attachment) {
-                    this.employee.attachment = `http://localhost:8000${this.employee.attachment.toString()}`;
+                    this.employee.attachment = `${
+                        !this.employee.attachment.includes('http://localhost:8000') ? 'http://localhost:8000' : ''
+                    }${this.employee.attachment.toString()}`;
                 }
                 if (this.employee.profile_picture) {
-                    this.employee.profile_picture = `http://localhost:8000${this.employee.profile_picture.toString()}`;
+                    this.employee.profile_picture = `${
+                        !this.employee.profile_picture.includes('http://localhost:8000') ? 'http://localhost:8000' : ''
+                    }${this.employee.profile_picture.toString()}`;
                 }
             });
         } else {

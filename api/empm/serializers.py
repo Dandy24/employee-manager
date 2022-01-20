@@ -26,7 +26,7 @@ class CompanySerializer(serializers.ModelSerializer):
 
 class EmployeeSerializer(serializers.ModelSerializer):
     attachment = PDFBase64File(
-        max_length=None, use_url=True, required=False
+        required=False, allow_null=True
     )
     profile_picture = Base64ImageField(
         required=False

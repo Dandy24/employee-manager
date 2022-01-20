@@ -144,7 +144,8 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
                                     name="attachment"
                                     maxCount={1}
                                     accept=".pdf"
-                                    defaultFileList={
+                                    onRemove={(file) => (initialValues.attachment = null)}
+                                    fileList={
                                         initialValues?.attachment
                                             ? [
                                                   {
