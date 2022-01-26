@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { EmployeeDto } from '../../models/dtos/employee-dto';
 import * as yup from 'yup';
 import { EmployeeEntity } from '../../models/entities/employee-entity';
-import { Button, Col, Row, Upload } from 'antd';
+import { Alert, Button, Col, Row, Upload } from 'antd';
 import { TextInput } from './elements/TextInput';
 import { NumberInput } from './elements/NumberInput';
 import { CategorySelectList } from './elements/SelectList';
@@ -21,6 +21,8 @@ export interface EmployeeFormikProps {
     onSubmit: (values: EmployeeDto) => void;
 }
 
+export const SUPPORTED_FORMATS = ['application/pdf'];
+
 export const EmployeeValidationSchema = yup.object({
     first_name: yup.string().required('Pole musí být vyplněné'),
     last_name: yup.string().required('Pole musí být vyplněné'),
@@ -35,6 +37,9 @@ export const EmployeeValidationSchema = yup.object({
     med_exam_date: yup.date(),
     job_assign_date: yup.date(),
     health_limitations: yup.string().max(100, 'Překročena maximální délka poznámky'),
+    attachment: yup
+        .mixed()
+        .test('fileType', 'Podporovany je pouze format PDF', (value) => SUPPORTED_FORMATS.includes(value.type)),
 });
 
 export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: EmployeeFormikProps): JSX.Element => {
@@ -66,7 +71,7 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
             validationSchema={EmployeeValidationSchema}
             enableReinitialize
         >
-            {({ setFieldValue }) => (
+            {({ setFieldValue, errors, touched }) => (
                 <Form style={{ width: '80%', marginLeft: '9%' }}>
                     <Row justify="center">
                         <div data-testid={'employee-form'}>
@@ -136,13 +141,14 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
                                 </div>
                             ) : null}
 
-                            <Row justify="center">
+                            <Row justify="center" data-testid={'attachments-dropzone'}>
                                 <Dragger
                                     customRequest={dummyRequest}
                                     onChange={(file) => setFieldValue('attachment', file.file)}
                                     name="attachment"
                                     maxCount={1}
                                     accept=".pdf"
+                                    data-testid={'attachments-dropzone-input'}
                                     onRemove={() => (initialValues.attachment = null)}
                                     fileList={
                                         initialValues?.attachment
@@ -166,6 +172,15 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
                                     </p>
                                     <p className="ant-upload-hint">Pouze pro dokumenty formátu PDF</p>
                                 </Dragger>
+                                {errors.attachment ? (
+                                    <Alert
+                                        style={{ width: '98%', marginTop: '5%' }}
+                                        message={errors.attachment}
+                                        type="error"
+                                        showIcon
+                                        data-testid="attachment-input-error"
+                                    />
+                                ) : null}
                             </Row>
 
                             <Col span={12} offset={9} style={{ marginTop: '3vh' }}>
