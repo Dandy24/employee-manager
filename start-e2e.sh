@@ -1,5 +1,5 @@
 set -e
-cd empmanager
+cd api
 source venv/bin/activate
 pipenv install
 pipenv shell

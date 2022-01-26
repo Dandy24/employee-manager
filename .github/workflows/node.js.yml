@@ -56,11 +56,11 @@ jobs:
       run: pip install django-cors-headers
 
     - name: Install Python dependecies from Pipfile
-      working-directory: ./empmanager
+      working-directory: ./api
       run: pipenv install --system
 
     - name: Start Django server with test DB, frontend and run E2E tests
-      working-directory: ./empmanager
+      working-directory: ./api
       run: | 
             python3 manage.py testserver test-data &
             cd ../frontend

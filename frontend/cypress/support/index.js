@@ -17,6 +17,7 @@
 import './commands';
 import '@percy/cypress';
 import 'cypress-plugin-snapshots/commands';
+import '@cypress/code-coverage/support';
 
 // Cypress.on('uncaught:exception', (err, runnable) => {
 //     // returning false here prevents Cypress from
