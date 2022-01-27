@@ -102,7 +102,7 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
                                         }`}
                                         showUploadList={false}
                                         customRequest={dummyRequest}
-                                        beforeUpload={async (kok, kok2) => setProfile_pic(await toBase64(kok))}
+                                        beforeUpload={async (file) => setProfile_pic(await toBase64(file))}
                                         accept=".png,.jpg,.jpeg"
                                         style={{ height: '100%', textAlign: 'center' }}
                                     >
