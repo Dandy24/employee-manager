@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import { EmployeeDto } from '../../models/dtos/employee-dto';
@@ -15,6 +15,7 @@ import { CompanySelectList } from './elements/CompanySelectList';
 import Dragger from 'antd/lib/upload/Dragger';
 import { InboxOutlined, PlusOutlined } from '@ant-design/icons';
 import { useRootStore } from '../../stores/root-store-provider';
+import { toBase64 } from '../../utils/file-to-base64';
 
 export interface EmployeeFormikProps {
     initialValues: EmployeeDto | EmployeeEntity;
@@ -59,6 +60,8 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
 
     const rootStore = useRootStore();
 
+    const [profile_pic, setProfile_pic] = useState(null);
+
     const { companyStore } = rootStore;
 
     const dummyRequest = (options) => {
@@ -99,12 +102,19 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
                                         }`}
                                         showUploadList={false}
                                         customRequest={dummyRequest}
+                                        beforeUpload={async (kok, kok2) => setProfile_pic(await toBase64(kok))}
                                         accept=".png,.jpg,.jpeg"
                                         style={{ height: '100%', textAlign: 'center' }}
                                     >
-                                        {initialValues?.profile_picture ? (
+                                        {values?.profile_picture && typeof values?.profile_picture === 'string' ? (
                                             <img
                                                 src={initialValues?.profile_picture}
+                                                alt="avatar"
+                                                style={{ width: '100%', height: '100%' }}
+                                            />
+                                        ) : profile_pic ? (
+                                            <img
+                                                src={profile_pic}
                                                 alt="avatar"
                                                 style={{ width: '100%', height: '100%' }}
                                             />
@@ -173,7 +183,15 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
                                                   {
                                                       uid: '',
                                                       url: initialValues?.attachment,
-                                                      name: 'test',
+                                                      name: 'attachment',
+                                                  },
+                                              ]
+                                            : values?.attachment?.name && values?.attachment?.originFileObj
+                                            ? [
+                                                  {
+                                                      uid: '',
+                                                      url: '',
+                                                      name: values?.attachment?.name,
                                                   },
                                               ]
                                             : null
