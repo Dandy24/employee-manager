@@ -21,7 +21,8 @@ export interface EmployeeFormikProps {
     onSubmit: (values: EmployeeDto) => void;
 }
 
-export const SUPPORTED_FORMATS = ['application/pdf'];
+export const SUPPORTED_ATTACHMENT_FORMATS = ['application/pdf'];
+export const SUPPORTED_PICTURE_FORMATS = ['image/jpeg', 'image/jpg', 'image/png'];
 
 export const EmployeeValidationSchema = yup.object({
     first_name: yup.string().required('Pole musí být vyplněné'),
@@ -39,7 +40,18 @@ export const EmployeeValidationSchema = yup.object({
     health_limitations: yup.string().max(100, 'Překročena maximální délka poznámky'),
     attachment: yup
         .mixed()
-        .test('fileType', 'Podporovany je pouze format PDF', (value) => SUPPORTED_FORMATS.includes(value.type)),
+        .test('fileType', 'Podporovany je pouze format PDF', (value) =>
+            !value || value?.status === 'removed' || typeof value === 'string'
+                ? true
+                : SUPPORTED_ATTACHMENT_FORMATS.includes(value?.type),
+        ),
+    profile_picture: yup
+        .mixed()
+        .test('fileType', 'Podporovany jsou pouze obrazky', (value) =>
+            !value || value?.status === 'removed' || typeof value === 'string'
+                ? true
+                : SUPPORTED_PICTURE_FORMATS.includes(value?.type),
+        ),
 });
 
 export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: EmployeeFormikProps): JSX.Element => {
@@ -71,13 +83,14 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
             validationSchema={EmployeeValidationSchema}
             enableReinitialize
         >
-            {({ setFieldValue, errors, touched }) => (
+            {({ setFieldValue, errors, values, touched }) => (
                 <Form style={{ width: '80%', marginLeft: '9%' }}>
                     <Row justify="center">
                         <div data-testid={'employee-form'}>
                             <Row justify="center">
-                                <Col>
+                                <Col data-testid={'profile-picture'}>
                                     <Upload
+                                        data-testid={'profile-picture-input'}
                                         onChange={(file) => setFieldValue('profile_picture', file.file)}
                                         name="profile_picture"
                                         listType="picture-card"
@@ -149,7 +162,11 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
                                     maxCount={1}
                                     accept=".pdf"
                                     data-testid={'attachments-dropzone-input'}
-                                    onRemove={() => (initialValues.attachment = null)}
+                                    onRemove={() => {
+                                        setFieldValue('attachment', null);
+                                        initialValues.attachment = null;
+                                        values.attachment = null;
+                                    }}
                                     fileList={
                                         initialValues?.attachment
                                             ? [
@@ -172,7 +189,7 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
                                     </p>
                                     <p className="ant-upload-hint">Pouze pro dokumenty formátu PDF</p>
                                 </Dragger>
-                                {errors.attachment ? (
+                                {errors.attachment && values.attachment ? (
                                     <Alert
                                         style={{ width: '98%', marginTop: '5%' }}
                                         message={errors.attachment}

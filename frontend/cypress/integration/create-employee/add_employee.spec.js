@@ -1,10 +1,13 @@
 // TODO refactor, separate to multiple tests, add invalid form submission
 
 const form = () => cy.get('[data-testid=employee-form]');
+const table = () => cy.get('[data-testid=employee-table]');
+const tableRows = () => table().find('.ant-table-body').find('tr');
 
 describe('employee creating process', () => {
     beforeEach(() => {
         cy.visit('/employee-list');
+        cy.waitUntil(() => tableRows().should('have.length', 16), { timeout: 8000 });
         cy.get('[data-testid=create-employee-button]').click();
     });
 
@@ -21,6 +24,8 @@ describe('employee creating process', () => {
         //     .and('match', /selected/);
 
         /** **/
+
+        // cy.get('[data-testid="profile-picture-input"]').attachFile('test-image.png', {});
 
         /** Test validation and filling in information **/
 
@@ -53,7 +58,7 @@ describe('employee creating process', () => {
         /** Test selecting category **/
 
         cy.get('[data-testid=category-select-input]').click();
-        cy.get('#rc_select_0_list')
+        cy.get('#rc_select_1_list')
             .children()
             .should('contain', 'A')
             .and('contain', 'B')
@@ -74,7 +79,26 @@ describe('employee creating process', () => {
 
         cy.get('[data-testid=health_limitations-text-area] > [data-testid=text-area-error]').should('not.exist');
 
-        /** **/
+        /** FILES - Currently there is unfortunately no support for PDF files in Cypress **/
+
+        // cy.get('[data-testid="attachments-dropzone-input"]').attachFile({
+        //     filePath: `pdf-test.pdf`,
+        //     // encoding: 'base64',
+        //     encoding: 'utf-8',
+        // });
+
+        // cy.get('[data-testid="attachments-dropzone-input"]').selectFile(cy.fixture('/cypress/fixtures/pdf-test.pdf'), {
+        //     action: 'drag-drop',
+        // });
+
+        // const fileName = 'pdf-test.pdf';
+        //
+        // cy.fixture(fileName).then((fileContent) => {
+        //     cy.get('[data-testid="attachments-dropzone-input"]').attachFile(
+        //         { fileContent, fileName, mimeType: 'application/pdf' },
+        //         { subjectType: 'input' },
+        //     );
+        // });
 
         cy.get('[data-testid=submit-button]').click();
 
@@ -86,8 +110,28 @@ describe('employee creating process', () => {
             .should('have.attr', 'class')
             .and('match', /selected/);
 
+        form().should('not.be.visible');
+
+        cy.get('.ant-pagination-next').click();
+
+        table()
+            .contains('td', 'something') // gives you the cell
+            .siblings() // gives you all the other cells in the row
+            .get('[data-testid=employee-58-edit-button]') // finds the delete button
+            .click();
+
+        cy.get('[data-testid="profile-picture"]').find('img');
+
+        cy.get('[data-testid="profile-picture"]').toMatchImageSnapshot();
+
         /** **/
 
         /** TODO Test invalid form submission, while raising error message and not letting it contact API and continue further **/
     });
+
+    // it('checkes attachment upload', () => {
+    //     cy.get('[data-testid=attachments-dropzone]').trigger('dragenter');
+    //     cy.waitUntil(() => cy.dropFile('pdf-test.pdf'));
+    //     cy.get('[data-testid=submit-button]').click();
+    // });
 });

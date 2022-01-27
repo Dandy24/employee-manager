@@ -98,6 +98,7 @@ export function EmployeeTableColumns(
                         onClick={() => {
                             employeeStore.openToEdit(record);
                         }}
+                        data-testid={`employee-${record.id}-edit-button`}
                     >
                         Upravit
                     </Button>
