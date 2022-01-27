@@ -160,3 +160,5 @@ yarn-error.log*
 
 frontend/cypress/integration/docs/
 frontend/cypress/videos/
+
+frontend/.nyc_output/out.json
