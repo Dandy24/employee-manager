@@ -83,7 +83,7 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
             validationSchema={EmployeeValidationSchema}
             enableReinitialize
         >
-            {({ setFieldValue, errors, values, touched }) => (
+            {({ setFieldValue, errors, values }) => (
                 <Form style={{ width: '80%', marginLeft: '9%' }}>
                     <Row justify="center">
                         <div data-testid={'employee-form'}>
