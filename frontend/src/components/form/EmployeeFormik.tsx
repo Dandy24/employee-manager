@@ -108,12 +108,14 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
                                     >
                                         {values?.profile_picture && typeof values?.profile_picture === 'string' ? (
                                             <img
+                                                data-testid={'profile-picture'}
                                                 src={initialValues?.profile_picture}
                                                 alt="avatar"
                                                 style={{ width: '100%', height: '100%' }}
                                             />
                                         ) : profile_pic ? (
                                             <img
+                                                data-testid={'profile-picture'}
                                                 src={profile_pic}
                                                 alt="avatar"
                                                 style={{ width: '100%', height: '100%' }}

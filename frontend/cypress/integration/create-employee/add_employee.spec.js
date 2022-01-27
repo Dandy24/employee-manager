@@ -16,16 +16,56 @@ describe('employee creating process', () => {
         form().toMatchImageSnapshot();
     });
 
+    /** Currently there is unfortunately no support for PDF files in Cypress **/
+
+    // it('checks attachment upload via drag & drop', () => {
+    //     cy.get('[data-testid="attachments-dropzone"]').selectFile(cy.fixture('/cypress/fixtures/pdf-test.pdf'), {
+    //         action: 'drag-drop',
+    //     });
+    //     cy.get('.ant-upload-list ').find('.ant-upload-list-item').find('a').should('contain.text', 'test');
+    // });
+    //
+    // it('checks attachment upload via clicking on input', () => {
+    //     cy.get('[data-testid="attachments-dropzone"]').selectFile(cy.fixture('/cypress/fixtures/pdf-test.pdf'));
+    //     cy.get('.ant-upload-list ').find('.ant-upload-list-item').find('a').should('contain.text', 'test');
+    // });
+
+    /////*/*/*/*/*/*/*/*/
+
+    it('checks profile picture upload', () => {
+        cy.get('[data-testid="profile-picture-input"]').attachFile('test-image.png', {});
+        cy.waitUntil(() => cy.get('[data-testid="profile-picture"] img').should('be.visible'));
+        cy.waitUntil(() => cy.get('[data-testid="profile-picture"] img').toMatchImageSnapshot());
+    });
+
+    it('checks profile picture change', () => {
+        cy.get('[data-testid="drawer-close-button"]').click();
+        cy.get('[data-testid="employee-2-edit-button"]').click();
+        cy.waitUntil(() => cy.get('[data-testid="profile-picture"]').should('be.visible'));
+
+        cy.get('[data-testid="profile-picture"] img')
+            .invoke('attr', 'src')
+            .then((firstSrc) => {
+                const src1 = firstSrc;
+
+                cy.get('[data-testid="profile-picture-input"]').attachFile('test-image2.png', {});
+
+                /* FIXME waitUntil */
+
+                cy.wait(1000);
+
+                cy.get('[data-testid="profile-picture"] img')
+                    .invoke('attr', 'src')
+                    .then((nextSrc) => {
+                        expect(nextSrc).to.not.equal(src1);
+                    });
+            });
+    });
+
+    /**  **/
+
     it('Fill the form correctly', () => {
-        /** Test if correct menu tab is colored **/
-
-        // cy.get('[data-testid=menu-new-employee-item]')
-        //     .should('have.attr', 'class')
-        //     .and('match', /selected/);
-
-        /** **/
-
-        // cy.get('[data-testid="profile-picture-input"]').attachFile('test-image.png', {});
+        cy.get('[data-testid="profile-picture-input"]').attachFile('test-image.png', {});
 
         /** Test validation and filling in information **/
 
@@ -122,16 +162,10 @@ describe('employee creating process', () => {
 
         cy.get('[data-testid="profile-picture"]').find('img');
 
-        cy.get('[data-testid="profile-picture"]').toMatchImageSnapshot();
+        cy.get('[data-testid="profile-picture"]').find('img').toMatchImageSnapshot();
 
         /** **/
 
         /** TODO Test invalid form submission, while raising error message and not letting it contact API and continue further **/
     });
-
-    // it('checkes attachment upload', () => {
-    //     cy.get('[data-testid=attachments-dropzone]').trigger('dragenter');
-    //     cy.waitUntil(() => cy.dropFile('pdf-test.pdf'));
-    //     cy.get('[data-testid=submit-button]').click();
-    // });
 });

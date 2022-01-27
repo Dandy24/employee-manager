@@ -27,7 +27,7 @@ export const EditDrawer: React.FC<EditDrawerProps> = observer((props: EditDrawer
                         textAlign: 'right',
                     }}
                 >
-                    <Button onClick={cancelOnClick} style={{ marginRight: 8 }}>
+                    <Button onClick={cancelOnClick} style={{ marginRight: 8 }} data-testid={'drawer-close-button'}>
                         {cancelButtonText}
                     </Button>
                 </div>
