@@ -1,6 +1,6 @@
 import { EmployeeStore } from '../../../stores/employee-store';
-import { Button, Space, Tag } from 'antd';
-import React from 'react';
+import { Avatar, Button, Space, Tag, Image } from 'antd';
+import React, { useMemo } from 'react';
 import { CompanyStore } from '../../../stores/company-store';
 import { EmployeeEntity } from '../../../models/entities/employee-entity';
 import { TableColumns } from '../../../models/interfaces/table-columns';
@@ -13,6 +13,50 @@ export function EmployeeTableColumns(
     onEmployeeDelete?: (arg0: number) => void,
 ): TableColumns[] {
     return [
+        {
+            title: '',
+            dataIndex: 'profile_picture',
+            key: 'profile_picture',
+            width: 65,
+            render: (text, record: EmployeeEntity) => {
+                return record.profile_picture?.length > 1 ? (
+                    <Avatar
+                        src={
+                            <Image
+                                src={useMemo(() => `http://localhost:8000${record.profile_picture}`, [])}
+                                style={{
+                                    width: 32,
+                                }}
+                            />
+                        }
+                    />
+                ) : (
+                    <Avatar>
+                        {record.first_name.charAt(0)}
+                        {record.last_name.charAt(0)}
+                    </Avatar>
+                );
+            },
+            Cell: ({ row }) => {
+                return row.values.profile_picture?.length > 1 ? (
+                    <Avatar
+                        src={
+                            <Image
+                                src={useMemo(() => `http://localhost:8000${row.values.profile_picture}`, [])}
+                                style={{
+                                    width: 32,
+                                }}
+                            />
+                        }
+                    />
+                ) : (
+                    <Avatar>
+                        {row.values.first_name.charAt(0)}
+                        {row.values.last_name.charAt(0)}
+                    </Avatar>
+                );
+            },
+        },
         {
             title: 'ID zaměstnance',
             dataIndex: 'id',
