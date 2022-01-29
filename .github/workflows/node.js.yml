@@ -55,9 +55,9 @@ jobs:
 #    - name: Install DCH
 #      run: pip install django-cors-headers
 
-    - name: Enable Pipenv shell
-      working-directory: ./api
-      run: pipenv shell
+#    - name: Enable Pipenv shell
+#      working-directory: ./api
+#      run: pipenv shell
 
     - name: Install Python dependecies from Pipfile
       working-directory: ./api
