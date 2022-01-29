@@ -49,11 +49,15 @@ jobs:
     - name: Install pipenv
       run: pip install pipenv
 
-    - name: Install Swagger
-      run: pip install drf-yasg
+#    - name: Install Swagger
+#      run: pip install drf-yasg
+#
+#    - name: Install DCH
+#      run: pip install django-cors-headers
 
-    - name: Install DCH
-      run: pip install django-cors-headers
+    - name: Enable Pipenv shell
+      working-directory: ./api
+      run: pipenv shell
 
     - name: Install Python dependecies from Pipfile
       working-directory: ./api
@@ -61,7 +65,7 @@ jobs:
 
     - name: Start Django server with test DB, frontend and run E2E tests
       working-directory: ./api
-      run: | 
-            python3 manage.py testserver test-data &
+      run: |
+            pipenv run python manage.py testserver test-data &
             cd ../frontend
             npm run ci

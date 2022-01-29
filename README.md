@@ -4,10 +4,10 @@
 
 BE:
 ```
-pipenv install
 pipenv shell
-python3 manage.py migrate
-python3 manage.py runserver
+pipenv install
+pipenv run python manage.py migrate
+pipenv run python manage.py runserver
 ```
 
 

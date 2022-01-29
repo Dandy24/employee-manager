@@ -1,7 +1,6 @@
 from django.conf import settings
-from django.conf.urls import url
 from django.views.static import serve
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -61,7 +60,7 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += [
-        url(r'^media/(?P<path>.*)$', serve, {
+        re_path(r'^media/(?P<path>.*)$', serve, {
             'document_root': settings.MEDIA_ROOT
         })
     ]
