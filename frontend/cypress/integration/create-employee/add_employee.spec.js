@@ -40,7 +40,7 @@ describe('employee creating process', () => {
 
     it('checks profile picture change', () => {
         cy.get('[data-testid="drawer-close-button"]').click();
-        cy.get('[data-testid="employee-2-edit-button"]').click();
+        cy.waitUntil(() => cy.get('[data-testid="employee-2-edit-button"]').click());
         cy.waitUntil(() => cy.get('[data-testid="profile-picture"]').should('be.visible'));
 
         cy.get('[data-testid="profile-picture"] img')
@@ -144,13 +144,13 @@ describe('employee creating process', () => {
 
         /** Test if page was redirected, message was shown and menu tab was colored properly **/
 
-        cy.location('pathname').should('include', 'employee-list');
+        // cy.location('pathname').should('include', 'employee-list');
 
         cy.get('[data-testid=menu-employee-list-item]')
             .should('have.attr', 'class')
             .and('match', /selected/);
 
-        form().should('not.be.visible');
+        cy.waitUntil(() => form().should('not.be.visible'));
 
         cy.get('.ant-pagination-next').click();
 
