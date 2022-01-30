@@ -17,7 +17,7 @@ export const MyPieChart: React.FC<PieChartProps> = observer((props: PieChartProp
     const { title, data, dataKey, dataName, colors } = props;
 
     return (
-        <Col span={9} offset={1} style={{ height: '90%' }}>
+        <Col span={10} offset={1} style={{ height: '90%' }}>
             <Title level={2} style={{ textAlign: 'center' }}>
                 {title}
             </Title>

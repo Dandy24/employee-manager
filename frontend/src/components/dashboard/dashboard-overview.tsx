@@ -5,6 +5,7 @@ import Title from 'antd/lib/typography/Title';
 import React from 'react';
 import { EmployeeMonthlyOutputEntity } from '../../models/entities/employee-monthly-output-entity';
 import { useRootStore } from '../../stores/root-store-provider';
+import config from '../../config';
 
 export interface DashboardOverviewProps {
     type: 'general' | 'employee';
@@ -16,6 +17,10 @@ export interface DashboardOverviewProps {
 export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((props: DashboardOverviewProps) => {
     const { type, data } = props;
     const rootStore = useRootStore();
+
+    const hoursTargetPercent = Math.ceil(
+        (rootStore.dashboardStore.overallOutput[0]?.working_hours / config.targets.overallMonthHours) * 100,
+    );
 
     return (
         <Row style={{ marginBottom: '3%' }}>
@@ -125,10 +130,11 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
             </Col>
 
             {type === 'general' ? (
-                <Col span={3} offset={3} data-testid="overview-effectivity-stat" style={{ textAlign: 'center' }}>
+                <Col span={3} offset={2} data-testid="overview-effectivity-stat" style={{ textAlign: 'center' }}>
                     <Title level={5} style={{ textAlign: 'center' }}>
                         {'Efektivita zamestnancu'}
                     </Title>
+                    <br />
                     <Progress
                         data-testid="overview-effectivity-stat-circle"
                         type="circle"
@@ -143,10 +149,17 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                     />
                 </Col>
             ) : (
-                <Col span={3} offset={3} data-testid="overview-effectivity-stat" style={{ textAlign: 'center' }}>
+                <Col
+                    // span={3}
+                    offset={0}
+                    flex={'auto'}
+                    data-testid="overview-effectivity-stat"
+                    style={{ textAlign: 'center' }}
+                >
                     <Title level={5} style={{ textAlign: 'center' }}>
                         {'Efektivita zamestnance'}
                     </Title>
+                    <br />
                     <Progress
                         data-testid="overview-effectivity-stat-circle"
                         type="circle"
@@ -155,29 +168,38 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                     />
                 </Col>
             )}
+            {type === 'general' && (
+                <>
+                    <Col span={3} style={{ textAlign: 'center' }}>
+                        <Title level={5} style={{ textAlign: 'center' }}>
+                            Kapacita ubytovny
+                        </Title>
+                        <br />
+                        <Progress
+                            type="circle"
+                            percent={rootStore.dashboardStore.housingCapacity}
+                            strokeColor={
+                                rootStore.dashboardStore.housingCapacity < 60
+                                    ? 'green'
+                                    : rootStore.dashboardStore.housingCapacity < 80
+                                    ? 'orange'
+                                    : 'red'
+                            }
+                        />
+                    </Col>
 
-            <Col span={3} style={{ textAlign: 'center' }}>
-                <Title level={5} style={{ textAlign: 'center' }}>
-                    Kapacita ubytovny
-                </Title>
-                <Progress
-                    type="circle"
-                    percent={rootStore.dashboardStore.housingCapacity}
-                    strokeColor={
-                        rootStore.dashboardStore.housingCapacity < 60
-                            ? 'green'
-                            : rootStore.dashboardStore.housingCapacity < 80
-                            ? 'orange'
-                            : 'red'
-                    }
-                />
-            </Col>
-            <Col span={3} style={{ textAlign: 'center' }}>
-                <Title level={5} style={{ textAlign: 'center' }}>
-                    TODO
-                </Title>
-                <Progress type="circle" percent={15} strokeColor="red" />
-            </Col>
+                    <Col span={3} style={{ textAlign: 'center' }}>
+                        <Title level={5} style={{ textAlign: 'center' }}>
+                            Odpracovaných hodin z cíle
+                        </Title>
+                        <Progress
+                            type="circle"
+                            percent={hoursTargetPercent}
+                            strokeColor={hoursTargetPercent < 50 ? 'red' : hoursTargetPercent < 80 ? 'orange' : 'green'}
+                        />
+                    </Col>
+                </>
+            )}
         </Row>
     );
 });

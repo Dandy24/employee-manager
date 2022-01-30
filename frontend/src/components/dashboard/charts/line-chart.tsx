@@ -20,7 +20,7 @@ export const MyLineChart: React.FC<LineChartProps> = observer((props: LineChartP
     const { title, data, dataKey1, dataName1, dataKey2, dataName2, xAxisKey } = props;
 
     return (
-        <Col span={14} style={{ height: '90%' }}>
+        <Col span={12} style={{ height: '90%' }}>
             <Title level={2} style={{ textAlign: 'center' }}>
                 {title}
             </Title>
