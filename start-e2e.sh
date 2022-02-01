@@ -1,8 +1,7 @@
 set -e
-cd empmanager
-source venv/bin/activate
+cd api
+#pipenv shell
 pipenv install
-pipenv shell
-python3 manage.py testserver test-data &
-cd ../frontend2
+pipenv run python manage.py testserver test-data &
+cd ../frontend
 npm run ci

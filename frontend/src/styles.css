@@ -1,0 +1,24 @@
+html, body, #root, .App {
+    height: 100%;
+}
+.profile_picture div{
+    width: 50%!important;
+    height: 100%!important;
+}
+
+.profile_picture-empty div{
+    width: 260px!important;
+    height: 150px!important;
+}
+
+.profile_picture{
+    text-align: center;
+}
+
+/*.ant-table-body > table {*/
+/*    -ms-overflow-style: none;  !* Internet Explorer 10+ *!*/
+/*    scrollbar-width: none;  !* Firefox *!*/
+/*}*/
+/*.ant-table-body > table::-webkit-scrollbar {*/
+/*    display: none;  !* Safari and Chrome *!*/
+/*}*/

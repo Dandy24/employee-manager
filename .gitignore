@@ -158,5 +158,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-frontend2/cypress/integration/docs/
-frontend2/cypress/videos/
+frontend/cypress/integration/docs/
+frontend/cypress/videos/
+
+frontend/.nyc_output/out.json
