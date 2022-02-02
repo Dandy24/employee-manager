@@ -4,6 +4,7 @@ import { Form, Formik } from 'formik';
 import userEvent from '@testing-library/user-event';
 import { CompanyValidationSchema } from '../../CompanyFormik';
 import { NumberInput } from '../NumberInput';
+import { act } from 'react-dom/test-utils';
 
 test('Test typing words into number input', async () => {
     const { getByTestId, getByLabelText, findByTestId } = render(
@@ -19,12 +20,14 @@ test('Test typing words into number input', async () => {
         </Formik>,
     );
 
-    userEvent.click(screen.getByTestId('number-input-field'));
-    userEvent.type(screen.getByTestId('number-input-field'), '123test123');
-    fireEvent.blur(screen.getByTestId('number-input-field'));
+    await act(async () => {
+        userEvent.click(screen.getByTestId('phone-number-input-field'));
+        userEvent.type(screen.getByTestId('phone-number-input-field'), '123test123');
+        fireEvent.blur(screen.getByTestId('phone-number-input-field'));
+    });
 
     await waitFor(() => {
-        expect(screen.getByTestId('number-input-field')).toBeEmpty();
+        expect(screen.getByTestId('phone-number-input-field')).toBeEmptyDOMElement();
     });
 });
 
@@ -42,13 +45,13 @@ test('Test typing number with invalid length', async () => {
         </Formik>,
     );
 
-    userEvent.click(screen.getByTestId('number-input-field'));
-    userEvent.type(screen.getByTestId('number-input-field'), '123456789');
-    fireEvent.blur(screen.getByTestId('number-input-field'));
+    userEvent.click(screen.getByTestId('phone-number-input-field'));
+    userEvent.type(screen.getByTestId('phone-number-input-field'), '123456789');
+    fireEvent.blur(screen.getByTestId('phone-number-input-field'));
 
     await waitFor(() => {
-        expect(screen.getByTestId('number-input-field')).toHaveValue('123456789');
-        expect(screen.getByTestId('number-input-error')).toBeInTheDocument();
+        expect(screen.getByTestId('phone-number-input-field')).toHaveValue('123456789');
+        expect(screen.getByTestId('phone-number-input-error')).toBeInTheDocument();
         expect(screen.getByText('Číslo musí mít 12 číslic')).toBeInTheDocument();
     });
 });

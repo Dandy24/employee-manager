@@ -16,12 +16,12 @@ export const NumberInput: React.FC<NumberInputProps> = observer((props: NumberIn
 
     return (
         <div data-testid={`${name}-number-input`}>
-            <label htmlFor={name} data-testid="number-input-label">
+            <label htmlFor={name} data-testid={`${name}-number-input-label`}>
                 {label}
             </label>
-            <InputNumber {...props} data-testid="number-input-field" style={{ width: '100%' }} />
+            <InputNumber id={name} {...props} data-testid={`${name}-number-input-field`} style={{ width: '100%' }} />
             {meta.touched && meta.error ? (
-                <Alert message={meta.error} type="error" showIcon data-testid="number-input-error" />
+                <Alert message={meta.error} type="error" data-testid={`${name}-number-input-error`} />
             ) : null}
         </div>
     );

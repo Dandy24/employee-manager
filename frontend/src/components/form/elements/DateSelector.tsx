@@ -18,9 +18,9 @@ export const DateSelector: React.FC<DateSelectorProps> = observer((props: DateSe
             <label htmlFor={name}>{label}</label>
             <br />
             {picker ? (
-                <DatePicker name={name} picker={picker} style={{ width: '100%' }} />
+                <DatePicker id={name} name={name} picker={picker} style={{ width: '100%' }} />
             ) : (
-                <DatePicker name={name} style={{ width: '100%' }} />
+                <DatePicker id={name} name={name} style={{ width: '100%' }} />
             )}
         </InputWrapper>
     );

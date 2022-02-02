@@ -26,8 +26,8 @@ export const SUPPORTED_ATTACHMENT_FORMATS = ['application/pdf'];
 export const SUPPORTED_PICTURE_FORMATS = ['image/jpeg', 'image/jpg', 'image/png'];
 
 export const EmployeeValidationSchema = yup.object({
-    first_name: yup.string().required('Pole musí být vyplněné'),
-    last_name: yup.string().required('Pole musí být vyplněné'),
+    first_name: yup.string().required('Pole musí být vyplněné').min(3, 'Prilis kratke'),
+    last_name: yup.string().required('Pole musí být vyplněné').min(3, 'Prilis kratke'),
     phone: yup
         .string()
         .typeError('Musi byt vyplneno')
@@ -36,6 +36,7 @@ export const EmployeeValidationSchema = yup.object({
         .min(12, 'Číslo musí mít 12 číslic')
         .max(12, 'Číslo musí mít 12 číslic'),
     email: yup.string().email('Neplatný formát emailu'),
+    working_category: yup.string().required('Kategorie musí být vyplněna'),
     med_exam_date: yup.date(),
     job_assign_date: yup.date(),
     health_limitations: yup.string().max(100, 'Překročena maximální délka poznámky'),
@@ -86,8 +87,18 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
             validationSchema={EmployeeValidationSchema}
             enableReinitialize
         >
-            {({ setFieldValue, errors, values }) => (
-                <Form style={{ width: '80%', marginLeft: '9%' }}>
+            {({ setFieldValue, errors, values, submitCount, isValid }) => (
+                <Form style={{ width: '80%', marginLeft: '9%' }} data-testid="employee-form-form">
+                    {!isValid && submitCount > 0 && (
+                        <Alert
+                            type={'error'}
+                            message={'Ve formuláři jsou chyby. Opravte je a zkuste to prosím znovu.'}
+                            style={{ marginBottom: '10%' }}
+                            showIcon
+                            data-testid={'invalid-form-error'}
+                        />
+                    )}
+
                     <Row justify="center">
                         <div data-testid={'employee-form'}>
                             <Row justify="center">
