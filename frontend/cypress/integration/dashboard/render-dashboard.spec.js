@@ -34,6 +34,8 @@ describe('rendering graphs and other statictics in dashboard', () => {
             .find('.recharts-line')
             .should('have.length', 2);
 
+        cy.waitUntil(() => lineChart().should('contain.text', 'prosinec 21'));
+
         cy.get('#line-chart-work-line').should('have.css', 'stroke', purple);
         cy.get('#line-chart-vac-line').should('have.css', 'stroke', green);
 
@@ -46,12 +48,11 @@ describe('rendering graphs and other statictics in dashboard', () => {
     });
 
     // FIXME wait for lines to be aligned properly
-    // it('Line chart matches image snapshot', () => {
-    //
-    //     cy.waitUntil(() => lineChart().should('contain.text', 'December 21'));
-    //     lineChart().toMatchImageSnapshot();
-    //     // cy.get('#line-chart').toMatchSnapshot();
-    // });
+    it('Line chart matches image snapshot', () => {
+        cy.waitUntil(() => lineChart().should('not.contain.text', 'Invalid date'));
+        lineChart().toMatchImageSnapshot();
+        // cy.get('#line-chart').toMatchSnapshot();
+    });
 
     it('Pie chart is rendered correctly and tooltip works as expected', () => {
         cy.waitUntil(() => pieChart().should('be.visible'))

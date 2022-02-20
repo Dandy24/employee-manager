@@ -23,11 +23,11 @@ describe('proccess of finding company through search box', () => {
         searchBar().find('.ant-input-search').toMatchImageSnapshot();
     });
 
-    it('Searchbar list matches the image snapshot', () => {
-        /** Take component image snapshot and compare it to the previous one, to find any potential styling changes **/
-        searchBar().click();
-        cy.get('.ant-select-dropdown').toMatchImageSnapshot();
-    });
+    // it('Searchbar list matches the image snapshot', () => {
+    //     /** Take component image snapshot and compare it to the previous one, to find any potential styling changes **/
+    //     searchBar().click();
+    //     cy.get('.ant-select-dropdown').toMatchImageSnapshot();
+    // });
 
     it('opens search box, type concrete record and select', () => {
         tableRows().should('have.length', 16);

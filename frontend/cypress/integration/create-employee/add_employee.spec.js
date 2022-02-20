@@ -160,9 +160,10 @@ describe('employee creating process', () => {
             .get('[data-testid=employee-58-edit-button]') // finds the delete button
             .click();
 
-        cy.get('[data-testid="profile-picture"]').find('img');
+        cy.waitUntil(() => cy.get('.ant-drawer-body').scrollTo('top'));
+        cy.waitUntil(() => cy.get('[data-testid="profile-picture"] img').should('be.visible'));
 
-        cy.get('[data-testid="profile-picture"]').find('img').toMatchImageSnapshot();
+        cy.waitUntil(() => cy.get('[data-testid="profile-picture"]').find('img').toMatchImageSnapshot());
 
         /** **/
 
