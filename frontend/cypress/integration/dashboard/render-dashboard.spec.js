@@ -146,8 +146,8 @@ describe('rendering graphs and other statictics in dashboard', () => {
             .find('.ant-statistic-content-value')
             .should('contain.text', 'Test Company123');
 
-        cy.get('[data-testid=dashboard-card-title]').should('have.text', 'Mesicni prehled zamestnance');
-        cy.get('[data-testid=overview-effectivity-stat]').should('contain.text', 'Efektivita zamestnance');
+        cy.get('[data-testid=dashboard-card-title]').should('have.text', 'Měsíční přehled zaměstnance');
+        cy.get('[data-testid=overview-effectivity-stat]').should('contain.text', 'Efektivita zaměstnance');
         cy.get('[data-testid=overview-effectivity-stat-circle]').should('have.class', 'ant-progress-status-success');
     });
 

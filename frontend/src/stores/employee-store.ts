@@ -12,6 +12,11 @@ import { EmployeeDto } from '../models/dtos/employee-dto';
 import { EmployeeEntity } from '../models/entities/employee-entity';
 import { SearchableEmployeeEntity } from '../models/entities/searchable-employee-entity';
 
+import 'moment/locale/cs';
+import moment from 'moment';
+
+moment.locale('cs');
+
 export class EmployeeStore {
     employees: EmployeeEntity[] = [];
     employee: EmployeeEntity;

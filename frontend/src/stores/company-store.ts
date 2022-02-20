@@ -6,6 +6,11 @@ import { CompanyEntity } from '../models/entities/company-entity';
 import { CompanyDto } from '../models/dtos/company-dto';
 import { SearchableCompanyEntity } from '../models/entities/searchable-company-entity';
 
+import 'moment/locale/cs';
+import moment from 'moment';
+
+moment.locale('cs');
+
 export class CompanyStore {
     companies: CompanyEntity[] = [];
     company: CompanyEntity;

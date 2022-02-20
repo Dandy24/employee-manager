@@ -49,7 +49,7 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
 
     const handleDelete = async (shiftId: number) => {
         confirm({
-            title: 'Opravdu chcete smazat tuto smenu?',
+            title: 'Opravdu chcete smazat tuto směnu?',
             icon: <ExclamationCircleOutlined />,
             content: 'Tuto akci nelze vrátit zpět',
             okText: 'Ano',
@@ -77,7 +77,7 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
                             <CalendarOutlined />
-                            <span>{`Kalendar smen`}</span>
+                            <span>{`Kalendář směn`}</span>
                         </Breadcrumb.Item>
                     </Breadcrumb>
                 }

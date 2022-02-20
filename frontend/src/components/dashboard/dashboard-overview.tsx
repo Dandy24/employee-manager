@@ -34,7 +34,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                             style={{ marginTop: '5%' }}
                         />
                         <Statistic
-                            title={'Pocet odpracovaných hodin'}
+                            title={'Počet odpracovaných hodin'}
                             data-testid="overview-working_hours-stat-marker"
                             value={data[0]?.working_hours}
                             style={{ marginTop: '10%' }}
@@ -50,7 +50,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                     </>
                 ) : (
                     <Statistic
-                        title={'Pocet zamestnancu'}
+                        title={'Počet zaměstnanců'}
                         data-testid={'overview-employee_count-stat'}
                         value={rootStore.employeeStore.employees.length}
                         style={{ marginTop: '20%' }}
@@ -79,14 +79,14 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                             style={{ marginTop: '5%' }}
                         />
                         <Statistic
-                            title={'Pocet nepracovanych hodin'}
+                            title={'Počet neodpracovaných hodin'}
                             value={data[0]?.sick_hours + data[0]?.vacation_hours}
                             style={{ marginTop: '10%' }}
                         />
                     </>
                 ) : (
                     <Statistic
-                        title={'Pocet firem'}
+                        title={'Počet firem'}
                         value={rootStore.companyStore.companies.length}
                         style={{ marginTop: '20%' }}
                     />
@@ -98,7 +98,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                         <div style={{ marginTop: '20%' }}></div>
 
                         <Statistic
-                            title={'Pocet hodin prescas'}
+                            title={'Počet hodin přesčas'}
                             value={data[0]?.overtime_hours ? data[0]?.overtime_hours : 0}
                             // valueStyle={{ color: '#3f8600' }}
                             // prefix={<ArrowUpOutlined />}
@@ -107,7 +107,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                     </>
                 ) : (
                     <Statistic
-                        title={'Pocet hodin'}
+                        title={'Počet hodin'}
                         value={rootStore.dashboardStore.overallWorkingDaysGraphData[0]?.work}
                         valueStyle={{
                             color:
@@ -132,7 +132,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
             {type === 'general' ? (
                 <Col span={3} offset={2} data-testid="overview-effectivity-stat" style={{ textAlign: 'center' }}>
                     <Title level={5} style={{ textAlign: 'center' }}>
-                        {'Efektivita zamestnancu'}
+                        {'Efektivita zaměstnanců'}
                     </Title>
                     <br />
                     <Progress
@@ -157,7 +157,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                     style={{ textAlign: 'center' }}
                 >
                     <Title level={5} style={{ textAlign: 'center' }}>
-                        {'Efektivita zamestnance'}
+                        {'Efektivita zaměstnance'}
                     </Title>
                     <br />
                     <Progress

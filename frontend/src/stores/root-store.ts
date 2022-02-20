@@ -6,6 +6,11 @@ import { SearchStore } from './search-store';
 import { CalendarStore } from './calendar-store';
 import { DashboardStore } from './dashboard-store';
 
+import 'moment/locale/cs';
+import moment from 'moment';
+
+moment.locale('cs');
+
 export class RootStore {
     employeeStore: EmployeeStore;
     companyStore: CompanyStore;

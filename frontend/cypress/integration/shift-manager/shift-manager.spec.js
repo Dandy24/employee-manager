@@ -16,7 +16,7 @@ describe('shift validation', () => {
 
         cy.visit('/company-list');
         cy.get('[data-testid=company-calendar-button-1]').click();
-        cy.waitUntil(() => cy.get('[data-testid=shift-list-for-2022-01-02]'));
+        cy.waitUntil(() => cy.get('[data-testid=shift-list-for-2022-02-02]'));
         cy.get(`[title="${testDate}"]`).find('.ant-picker-calendar-date-content').dblclick();
     });
 
@@ -60,7 +60,7 @@ describe('shift validation', () => {
         cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se podařilo úspěšně vytvořit.');
         cy.get('[data-testid=shift-submit-result-subtitle]').should(
             'have.text',
-            `Směna je naplánována na ${testDate} odpoledne`,
+            `Směna je naplánována na ${testDate} odpoledne.`,
         );
 
         cy.get('[data-testid=submit-shift-button]').should('have.attr', 'disabled');
@@ -81,7 +81,7 @@ describe('shift validation', () => {
         cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 5);
 
         cy.dragAndDrop('[data-testid=employee-table-row-3]', '[data-testid=shift-table-body]');
-        cy.get('.ant-message-notice-content').should('be.visible').and('have.text', 'Zamestnanec je neaktivni');
+        cy.get('.ant-message-notice-content').should('be.visible').and('have.text', 'Zaměstnanec je neaktivní');
 
         cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 0);
 
@@ -98,7 +98,7 @@ describe('shift validation', () => {
         cy.dragAndDrop('[data-testid=employee-table-row-1]', '[data-testid=shift-table-body]');
         cy.get('.ant-message-notice-content')
             .should('be.visible')
-            .and('have.text', 'Zamestnanec se v tento den jiz nachazi na smene vecer');
+            .and('have.text', 'Zaměstnanec se v tento den již nachází na směně vecer');
 
         cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 0);
 
@@ -117,7 +117,7 @@ describe('shift validation', () => {
             cy
                 .get('.ant-message-notice-content')
                 .should('be.visible')
-                .and('have.text', 'Zamestnanec se v tento den jiz nachazi na smene ranni'),
+                .and('have.text', 'Zaměstnanec se v tento den již nachází na směně ranni'),
         );
 
         cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 0);
@@ -166,7 +166,7 @@ describe('shift validation', () => {
         cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se podařilo úspěšně vytvořit.');
         cy.get('[data-testid=shift-submit-result-subtitle]').should(
             'have.text',
-            `Směna je naplánována na ${testDate} ranni`,
+            `Směna je naplánována na ${testDate} ranni.`,
         );
 
         cy.get('[data-testid=back-to-calendar-button]').click();
@@ -249,7 +249,7 @@ describe('shift validation', () => {
         cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se podařilo úspěšně vytvořit.');
         cy.get('[data-testid=shift-submit-result-subtitle]').should(
             'have.text',
-            `Směna je naplánována na ${testDate} vecer`,
+            `Směna je naplánována na ${testDate} vecer.`,
         );
 
         cy.get('[data-testid=back-to-calendar-button]').click();
@@ -302,7 +302,7 @@ describe('shift validation', () => {
 
         /** **/
 
-        cy.get('[data-testid=shift-manager-header-breadcrumb]').contains('Kalendar smen').click();
+        cy.get('[data-testid=shift-manager-header-breadcrumb]').contains('Kalendář směn').click();
         cy.get('[data-testid=header-company-name]').should('have.text', 'Test Company123'); //FIXME
 
         // cy.get('[data-testid=submit-shift-button]').click();
@@ -329,7 +329,7 @@ describe('shift validation', () => {
         cy.get('[data-testid=delete-shift-button]').click();
 
         cy.get('.ant-modal-body').should('be.visible');
-        cy.get('.ant-modal-confirm-title').should('have.text', 'Opravdu chcete smazat tuto smenu?');
+        cy.get('.ant-modal-confirm-title').should('have.text', 'Opravdu chcete smazat tuto směnu?');
 
         cy.get('.ant-modal-confirm-btns > .ant-btn-dangerous').click();
 

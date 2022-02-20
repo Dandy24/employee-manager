@@ -52,6 +52,6 @@ test('Test typing number with invalid length', async () => {
     await waitFor(() => {
         expect(screen.getByTestId('phone-number-input-field')).toHaveValue('123456789');
         expect(screen.getByTestId('phone-number-input-error')).toBeInTheDocument();
-        expect(screen.getByText('Číslo musí mít 12 číslic')).toBeInTheDocument();
+        expect(screen.getByText('Číslo musí mít přesně 12 číslic')).toBeInTheDocument();
     });
 });

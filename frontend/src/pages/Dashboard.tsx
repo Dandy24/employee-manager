@@ -52,7 +52,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                             }}
                             type="primary"
                         >
-                            Zpet na obecny prehled
+                            Zpět na obecný přehled
                         </Button>
                     )}
                 </Col>
@@ -62,8 +62,8 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                 title={
                     <h4 data-testid={'dashboard-card-title'} style={{ marginBottom: '0' }}>
                         {rootStore.dashboardStore.employeeMode
-                            ? 'Mesicni prehled zamestnance'
-                            : 'Obecny mesicni prehled'}
+                            ? 'Měsíční přehled zaměstnance'
+                            : 'Obecný měsíční přehled'}
                     </h4>
                 }
                 headStyle={{ textAlign: 'center', fontSize: '22px' }}
@@ -105,7 +105,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
 
                     {rootStore.dashboardStore.employeeOutput && rootStore.dashboardStore.employeeMode ? (
                         <MyPieChart
-                            title="Rozlozeni hodin"
+                            title="Rozložení hodin"
                             data={rootStore.dashboardStore.hoursDistributionGraphData}
                             dataKey="value"
                             dataName="name"
@@ -115,7 +115,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                         rootStore.dashboardStore.overallOutput &&
                         rootStore.dashboardStore.companyHours && (
                             <MyPieChart
-                                title="Rozlozeni hodin"
+                                title="Rozložení hodin"
                                 data={rootStore.dashboardStore.companyHours}
                                 dataKey="value"
                                 dataName="name"
@@ -132,7 +132,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                             xAxisKey="name"
                             dataKey1="value"
                             dataName1="Effectivity"
-                            title="Vyvoj efektivity"
+                            title="Vývoj efektivity"
                         />
                     ) : (
                         rootStore.dashboardStore.overallOutput && (
@@ -141,14 +141,14 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                                 xAxisKey="name"
                                 dataKey1="value"
                                 dataName1="Effectivity"
-                                title="Vyvoj efektivity"
+                                title="Vývoj efektivity"
                             />
                         )
                     )}
 
                     {rootStore.dashboardStore.employeeMode ? (
                         <MyBarChart
-                            title="Nejlepsi mesice podle vykonu"
+                            title="Nejlepší měsíce podle výkonu"
                             data={rootStore.dashboardStore.employeeTopMonthsOutputsData}
                             dataKey1="work"
                             dataName1="Working hours"
@@ -162,7 +162,7 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                         />
                     ) : (
                         <MyBarChart
-                            title="Nejlepsi zamestnanci mesice"
+                            title="Nejlepší zaměstnanci měsíce"
                             data={rootStore.dashboardStore.topEmployeeOutputsData}
                             dataKey1="work"
                             dataName1="Working hours"

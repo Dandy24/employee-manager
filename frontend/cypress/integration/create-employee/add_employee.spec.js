@@ -82,14 +82,14 @@ describe('employee creating process', () => {
         cy.get('[data-testid=last_name-text-input] > [data-testid=text-input-field]').type('else');
 
         cy.get('.ant-input-number-handler-up').should('have.value', '').click();
-        cy.get('[data-testid=number-input-field]')
+        cy.get('[data-testid=phone-number-input-field]')
             .should('have.value', '1')
             .type('{backspace}')
             .type('42075800245')
             .blur();
-        cy.contains('Číslo musí mít 12 číslic');
-        cy.get('[data-testid=number-input-field]').focus().type('8');
-        cy.get('[data-testid=number-input-error').should('not.exist');
+        cy.contains('Číslo musí mít přesně 12 číslic');
+        cy.get('[data-testid=phone-number-input-field]').focus().type('8');
+        cy.get('[data-testid=phone-number-input-error').should('not.exist');
 
         /** **/
 
@@ -98,11 +98,11 @@ describe('employee creating process', () => {
         /** Test selecting category **/
 
         cy.get('[data-testid=category-select-input]').click();
-        cy.get('#rc_select_1_list')
+        cy.get('.ant-select-dropdown')
             .children()
             .should('contain', 'A')
             .and('contain', 'B')
-            //.and('contain', 'C')
+            .and('contain', 'C')
             .get('[data-testid=category-select-option-B]')
             .click();
 

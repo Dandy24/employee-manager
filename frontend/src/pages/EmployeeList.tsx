@@ -30,7 +30,7 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
 
         async function onEmployeeDelete(id: number) {
             confirm({
-                title: 'Opravdu chcete smazat toho zaměstnance?',
+                title: 'Opravdu chcete smazat tohoto zaměstnance?',
                 icon: <ExclamationCircleOutlined />,
                 content: 'Tuto akci nelze vrátit zpět',
                 okText: 'Ano',

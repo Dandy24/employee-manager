@@ -25,8 +25,8 @@ export const ShiftSubmitResult: React.FC<ShiftSubmitResultProps> = observer((pro
                 subTitle={
                     <div data-testid={'shift-submit-result-subtitle'}>
                         {store.shiftEditResult === 'success'
-                            ? `Směna je naplánována na ${store.shift.date} ${store.shift.time}`
-                            : `Zkontrolujte prosím zda nebyly hlášeny chyby`}
+                            ? `Směna je naplánována na ${store.shift.date} ${store.shift.time}.`
+                            : `Zkontrolujte prosím, zda nebyly hlášeny chyby.`}
                     </div>
                 }
                 extra={[

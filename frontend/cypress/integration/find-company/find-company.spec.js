@@ -36,7 +36,7 @@ describe('proccess of finding company through search box', () => {
         cy.get('[data-testid=search-item-0]').should('not.be.empty');
 
         /** Check length of search options list **/
-        searchList().find('[data-testid^=search-item-]').should('have.length', 8);
+        searchList().find('[data-testid^=search-item-]').should('have.length', 5);
 
         /** Check correct value in input after selecting record **/
         searchList().contains('Test Company123').click();
@@ -73,7 +73,7 @@ describe('proccess of finding company through search box', () => {
         searchBar().type('company');
 
         /** Check lenght of search options list **/
-        searchList().find('[data-testid^=search-item-]').should('have.length', 8); //FIXME remove few companies in test-data and change amount?
+        searchList().find('[data-testid^=search-item-]').should('have.length', 5); //FIXME remove few companies in test-data and change amount?
 
         /** Check lenght of search options list **/
         searchList().find('[data-testid^=search-item-] > h5').should('include.text', 'Company');

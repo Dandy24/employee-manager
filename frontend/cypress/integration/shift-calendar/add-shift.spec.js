@@ -1,6 +1,10 @@
-import moment from 'moment';
 import { createShift, deleteAllShifts } from '../../../src/api/apiCalls';
 import { ShiftTypeEnum } from '../../../src/models/enums/shift-type-enum';
+
+import 'moment/locale/cs';
+import moment from 'moment';
+
+moment.locale('cs');
 
 const testDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
 

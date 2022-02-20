@@ -93,6 +93,6 @@ test('Test valid value validation in text input', async () => {
 
     await waitFor(() => {
         expect(screen.getByTestId('text-input-error')).toBeInTheDocument();
-        expect(screen.getByText('Maximalni povolena delka prekrocena')).toBeInTheDocument();
+        expect(screen.getByText('Maximální povolená délka překročena')).toBeInTheDocument();
     });
 });

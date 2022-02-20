@@ -13,17 +13,17 @@ export interface CompanyFormikProps {
 export const CompanyValidationSchema = yup.object({
     name: yup
         .string()
-        .typeError('Spatne zadane jmeno')
+        .typeError('Špatný formát jména')
         .required('Pole musí být vyplněné')
-        .max(50, 'Maximalni povolena delka prekrocena'),
+        .max(50, 'Maximální povolená délka překročena'),
     phone: yup
         .string()
         .typeError('Pole musí být vyplněné')
         .required('Pole musí být vyplněné')
         .matches(/^[0-9]+$/, 'Povoleny jsou pouze číslice')
-        .min(12, 'Číslo musí mít 12 číslic')
-        .max(12, 'Číslo musí mít 12 číslic'),
-    address: yup.string().typeError('Spatna adresa').required('Pole musí být vyplněné'),
+        .min(12, 'Číslo musí mít přesně 12 číslic')
+        .max(12, 'Číslo musí mít přesně 12 číslic'),
+    address: yup.string().typeError('Špatný formát adresy').required('Pole musí být vyplněné'),
 });
 
 export const CompanyFormik: React.FC<CompanyFormikProps> = observer((props: CompanyFormikProps): JSX.Element => {

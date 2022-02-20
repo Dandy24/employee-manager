@@ -45,7 +45,7 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
 
         const handleDelete = async () => {
             confirm({
-                title: 'Opravdu chcete smazat tuto smenu?',
+                title: 'Opravdu chcete smazat tuto směnu?',
                 icon: <ExclamationCircleOutlined />,
                 content: 'Tuto akci nelze vrátit zpět',
                 okText: 'Ano',
@@ -84,12 +84,12 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                                     }`}
                                 >
                                     <CalendarOutlined />
-                                    <span>{`Kalendar smen`}</span>
+                                    <span>{`Kalendář směn`}</span>
                                 </Link>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>
                                 {rootStore.shiftStore.shift?.id
-                                    ? 'Smena c. ' + rootStore.shiftStore.shift.id
+                                    ? 'Směna č. ' + rootStore.shiftStore.shift.id
                                     : 'Nová směna'}
                             </Breadcrumb.Item>
                         </Breadcrumb>

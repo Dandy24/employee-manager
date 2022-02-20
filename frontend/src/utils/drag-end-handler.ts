@@ -14,18 +14,18 @@ export const isValid = (sourceDroppableId: number, destinationDroppableId: numbe
         const employee = store.shiftListForDay.find((shift) =>
             shift.employeeIDs.includes(store.availableEmployees[sourceDroppableId]?.id),
         );
-        message.error(`Zamestnanec se v tento den jiz nachazi na smene ${employee.time}`);
+        message.error(`Zaměstnanec se v tento den již nachází na směně ${employee.time}`);
         return false;
     }
     /** Check whether the selected employee isnt inactive **/
     if (!store.availableEmployees[sourceDroppableId]?.active) {
-        message.error(`Zamestnanec je neaktivni`);
+        message.error(`Zaměstnanec je neaktivní`);
         return false;
     }
 
     /** CHECK IF SELECTED EMPLOYEE ISNT ALREADY IN THE CURRENT SHIFT **/
     if (store.shiftEmployees?.includes(store.availableEmployees[sourceDroppableId])) {
-        message.error(`Tento zamestnanec uz na teto smene je`);
+        message.error(`Tento zaměstnanec už na této směně je`);
         return false;
     }
     /** TODO IF IS MAXIMUM SHIFT CAPATITY REACHED???? CONSIDER ADDING ATTRIBUTE TO THE TABLE **/

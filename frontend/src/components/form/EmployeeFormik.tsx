@@ -30,11 +30,11 @@ export const EmployeeValidationSchema = yup.object({
     last_name: yup.string().required('Pole musí být vyplněné').min(3, 'Prilis kratke'),
     phone: yup
         .string()
-        .typeError('Musi byt vyplneno')
-        .required('Musi byt vyplneno')
+        .typeError('Špatný formát čísla')
+        .required('Pole musí být vyplněno')
         .matches(/^[0-9]+$/, 'Povoleny jsou pouze číslice')
-        .min(12, 'Číslo musí mít 12 číslic')
-        .max(12, 'Číslo musí mít 12 číslic'),
+        .min(12, 'Číslo musí mít přesně 12 číslic')
+        .max(12, 'Číslo musí mít přesně 12 číslic'),
     email: yup.string().email('Neplatný formát emailu'),
     working_category: yup.string().required('Kategorie musí být vyplněna'),
     med_exam_date: yup.date(),
@@ -42,14 +42,14 @@ export const EmployeeValidationSchema = yup.object({
     health_limitations: yup.string().max(100, 'Překročena maximální délka poznámky'),
     attachment: yup
         .mixed()
-        .test('fileType', 'Podporovany je pouze format PDF', (value) =>
+        .test('fileType', 'Podporován je pouze formát PDF', (value) =>
             !value || value?.status === 'removed' || typeof value === 'string'
                 ? true
                 : SUPPORTED_ATTACHMENT_FORMATS.includes(value?.type),
         ),
     profile_picture: yup
         .mixed()
-        .test('fileType', 'Podporovany jsou pouze obrazky', (value) =>
+        .test('fileType', 'Podporovány jsou pouze obrázky', (value) =>
             !value || value?.status === 'removed' || typeof value === 'string'
                 ? true
                 : SUPPORTED_PICTURE_FORMATS.includes(value?.type),
@@ -76,7 +76,7 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
         <div>
             {/*{loading ? <LoadingOutlined /> : <PlusOutlined />}*/}
             {<PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Upload</div>
+            <div style={{ marginTop: 8 }}>Nahrát fotku</div>
         </div>
     );
 
@@ -214,7 +214,9 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
                                     <p className="ant-upload-drag-icon">
                                         <InboxOutlined />
                                     </p>
-                                    <p className="ant-upload-text">Klikněte nebo přetáhněte soubor ze počítače</p>
+                                    <p className="ant-upload-text">
+                                        Klikněte do vyznačené zóny nebo přetáhněte soubor z počítače pro jeho nahrání
+                                    </p>
                                     <p className="ant-upload-hint">
                                         Zde můžete nahrát například pracovní smlouvy, lékařské zprávy atd.
                                     </p>
@@ -233,7 +235,7 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
 
                             <Col span={12} offset={9} style={{ marginTop: '3vh' }}>
                                 <Button type="primary" htmlType="submit" data-testid="submit-button">
-                                    Submit
+                                    Uložit
                                 </Button>
                             </Col>
                         </div>

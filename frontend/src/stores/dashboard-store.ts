@@ -15,7 +15,11 @@ import {
     GraphDataInterface,
     HoursTypeGraphDataInterface,
 } from '../models/interfaces/graph-data-interface';
+
+import 'moment/locale/cs';
 import moment from 'moment';
+
+moment.locale('cs');
 
 export class DashboardStore {
     employeeOutput: EmployeeMonthlyOutputEntity[] = [];

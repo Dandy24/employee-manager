@@ -13,6 +13,11 @@ import { ShiftDto } from '../models/dtos/shift-dto';
 import { message } from 'antd';
 import { ShiftTypeEnum } from '../models/enums/shift-type-enum';
 
+import 'moment/locale/cs';
+import moment from 'moment';
+
+moment.locale('cs');
+
 /** TODO REFACTOR !!! **/
 
 export class ShiftStore {
