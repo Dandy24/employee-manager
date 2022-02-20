@@ -44,7 +44,7 @@ export const MyPieChart: React.FC<PieChartProps> = observer((props: PieChartProp
                         ))}
                     </Pie>
                     <Legend wrapperStyle={{ bottom: '8%' }} id={'pie-chart-legend'} />
-                    <Tooltip formatter={(amount) => `${amount} hours`} />
+                    <Tooltip formatter={(amount) => `${amount} hodin`} />
                 </PieChart>
             </ResponsiveContainer>
         </Col>

@@ -64,7 +64,7 @@ export const MyBarChart: React.FC<BarChartProps> = observer((props: BarChartProp
                     <CartesianGrid strokeDasharray="4 4" />
                     <XAxis dataKey={xAxisKey} tickFormatter={(name, place) => `${place + 1}. ${name}`} />
                     <YAxis />
-                    <Tooltip filterNull={true} />
+                    <Tooltip filterNull={true} formatter={(amount) => `${amount} hod`} />
                     <Legend />
                     <Bar
                         dataKey={dataKey1}

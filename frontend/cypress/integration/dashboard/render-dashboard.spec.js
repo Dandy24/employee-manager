@@ -41,7 +41,7 @@ describe('rendering graphs and other statictics in dashboard', () => {
             .find('.recharts-legend-wrapper')
             .should('be.visible')
             .and((legend) => {
-                expect(legend).to.contain.text('Hours worked').and.to.contain.text('Hours out');
+                expect(legend).to.contain.text('V práci').and.to.contain.text('Dovolená');
             });
     });
 
@@ -66,7 +66,7 @@ describe('rendering graphs and other statictics in dashboard', () => {
         cy.get('#pie-chart-example-company-sector').trigger('mouseover', { force: true });
 
         tooltipVisible(pieChart()).and((tooltip) =>
-            expect(tooltip).to.contain.text('Example Company').and.to.contain.text('285 hours'),
+            expect(tooltip).to.contain.text('Example Company').and.to.contain.text('285 hodin'),
         );
 
         cy.get('#pie-chart-example-company-sector').trigger('mouseout', { force: true });
@@ -119,8 +119,8 @@ describe('rendering graphs and other statictics in dashboard', () => {
         });
 
         /** TEST if zero values are ignored in tooltip **/
-        checkTooltipValues('work', 0, 'not.include.text', 'Sick hours', 'include.text', 'Overtime hours : 2');
-        checkTooltipValues('work', 1, 'not.include.text', 'Overtime hours', 'include.text', 'Sick hours : 12');
+        checkTooltipValues('work', 0, 'not.include.text', 'Nemocenská', 'include.text', 'Přesčas : 2');
+        checkTooltipValues('work', 1, 'not.include.text', 'Přesčas', 'include.text', 'Nemocenská : 12');
 
         /** Matches image snapshot with opened tooltip **/
         barChart().toMatchImageSnapshot();

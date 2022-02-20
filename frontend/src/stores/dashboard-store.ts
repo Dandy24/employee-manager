@@ -172,7 +172,7 @@ export class DashboardStore {
         return this.employeeOutput
             ?.map((output) => ({
                 name: output.start_date,
-                work: output.working_hours,
+                work: output.working_hours + output.overtime_hours,
                 vac: output.vacation_hours,
             }))
             .reverse();

@@ -36,7 +36,8 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = observer((pro
                         <Statistic
                             title={'Počet odpracovaných hodin'}
                             data-testid="overview-working_hours-stat-marker"
-                            value={data[0]?.working_hours}
+                            //value={data[0]?.working_hours}
+                            value={rootStore.dashboardStore.workingDaysGraphData.at(-1)?.work}
                             style={{ marginTop: '10%' }}
                             valueStyle={{ color: data[0]?.working_hours > data[1]?.working_hours ? '#3f8600' : 'red' }}
                             prefix={
