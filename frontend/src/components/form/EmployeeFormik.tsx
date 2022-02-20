@@ -26,8 +26,8 @@ export const SUPPORTED_ATTACHMENT_FORMATS = ['application/pdf'];
 export const SUPPORTED_PICTURE_FORMATS = ['image/jpeg', 'image/jpg', 'image/png'];
 
 export const EmployeeValidationSchema = yup.object({
-    first_name: yup.string().required('Pole musí být vyplněné').min(3, 'Prilis kratke'),
-    last_name: yup.string().required('Pole musí být vyplněné').min(3, 'Prilis kratke'),
+    first_name: yup.string().required('Pole musí být vyplněné').min(3, 'Jméno je příliš krátké'),
+    last_name: yup.string().required('Pole musí být vyplněné').min(3, 'Příjmení je příliš krátké'),
     phone: yup
         .string()
         .typeError('Špatný formát čísla')
@@ -135,6 +135,15 @@ export const EmployeeFormik: React.FC<EmployeeFormikProps> = observer((props: Em
                                             uploadButton
                                         )}
                                     </Upload>
+                                    {errors.profile_picture && values.profile_picture ? (
+                                        <Alert
+                                            style={{ width: '98%', marginTop: '5%' }}
+                                            message={errors.profile_picture}
+                                            type="error"
+                                            showIcon
+                                            data-testid="profile_picture-input-error"
+                                        />
+                                    ) : null}
                                 </Col>
                             </Row>
 

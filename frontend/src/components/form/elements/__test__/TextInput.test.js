@@ -1,4 +1,4 @@
-import { findByTestId, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { TextInput } from '../TextInput';
 import React from 'react';
 import { Form, Formik } from 'formik';
@@ -23,7 +23,7 @@ test('TextInput snapshot matches the previous one', async () => {
 });
 
 test('Test correct value in text input after user types', async () => {
-    const { getByTestId, getByLabelText, findByTestId } = render(
+    render(
         <Formik
             validationSchema={CompanyValidationSchema}
             initialValues={{
@@ -36,10 +36,10 @@ test('Test correct value in text input after user types', async () => {
         </Formik>,
     );
 
-    const textField = screen.getByTestId('text-input-field');
+    const textField = await screen.findByTestId('text-input-field');
 
-    userEvent.type(screen.getByTestId('text-input-field'), 'test');
-    fireEvent.blur(screen.getByTestId('text-input-field'));
+    userEvent.type(await screen.findByTestId('text-input-field'), 'test');
+    fireEvent.blur(await screen.findByTestId('text-input-field'));
 
     await waitFor(() => {
         expect(textField).toHaveDisplayValue('test');
@@ -48,7 +48,7 @@ test('Test correct value in text input after user types', async () => {
 });
 
 test('Test missing value validation in text input', async () => {
-    const { getByTestId, getByLabelText, findByTestId } = render(
+    render(
         <Formik
             validationSchema={CompanyValidationSchema}
             initialValues={{
@@ -61,17 +61,17 @@ test('Test missing value validation in text input', async () => {
         </Formik>,
     );
 
-    userEvent.click(screen.getByTestId('text-input-field'));
-    fireEvent.blur(screen.getByTestId('text-input-field'));
+    userEvent.click(await screen.findByTestId('text-input-field'));
+    fireEvent.blur(await screen.findByTestId('text-input-field'));
 
-    await waitFor(() => {
-        expect(screen.getByTestId('text-input-error')).toBeInTheDocument();
-        expect(screen.getByText('Pole musí být vyplněné')).toBeInTheDocument();
+    await waitFor(async () => {
+        expect(await screen.findByTestId('text-input-error')).toBeInTheDocument();
+        expect(await screen.findByText('Pole musí být vyplněné')).toBeInTheDocument();
     });
 });
 
 test('Test valid value validation in text input', async () => {
-    const { getByTestId, getByLabelText, findByTestId } = render(
+    render(
         <Formik
             validationSchema={CompanyValidationSchema}
             initialValues={{
@@ -84,15 +84,15 @@ test('Test valid value validation in text input', async () => {
         </Formik>,
     );
 
-    userEvent.click(screen.getByTestId('text-input-field'));
+    userEvent.click(await screen.findByTestId('text-input-field'));
     userEvent.type(
-        screen.getByTestId('text-input-field'),
+        await screen.findByTestId('text-input-field'),
         'This text is longer than 50 characters.................................................',
     );
-    fireEvent.blur(screen.getByTestId('text-input-field'));
+    fireEvent.blur(await screen.findByTestId('text-input-field'));
 
-    await waitFor(() => {
-        expect(screen.getByTestId('text-input-error')).toBeInTheDocument();
-        expect(screen.getByText('Maximální povolená délka překročena')).toBeInTheDocument();
+    await waitFor(async () => {
+        expect(await screen.findByTestId('text-input-error')).toBeInTheDocument();
+        expect(await screen.findByText('Maximální povolená délka překročena')).toBeInTheDocument();
     });
 });

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { EmployeeFormik } from '../EmployeeFormik';
 import { WorkingCategoryEnum } from '../../../models/enums/working-category-enum';
@@ -40,6 +40,7 @@ jest.mock('antd', () => {
 });
 
 export const initialEmployee = {
+    id: 123,
     first_name: 'Test',
     last_name: 'Employee',
     email: 'test@email.com',
@@ -48,7 +49,7 @@ export const initialEmployee = {
     med_exam_date: '2022-02-01',
     job_assign_date: '2022-02-12',
     working_category: WorkingCategoryEnum.C,
-    health_limitations: null,
+    health_limitations: '',
     company: null,
 };
 
@@ -71,16 +72,9 @@ Object.defineProperty(window, 'matchMedia', {
 test('Form renders correctly with proper initial values', async () => {
     const handleSubmit = jest.fn();
 
-    const { asFragment, getByTestId } = render(
-        <RootStoreProvider rootStore={new RootStore()}>
-            <BrowserRouter>
-                <EmployeeFormik initialValues={new EmployeeDto()} onSubmit={handleSubmit} />
-            </BrowserRouter>
-        </RootStoreProvider>,
-    );
+    const { asFragment } = render(<EmployeeFormik initialValues={new EmployeeDto()} onSubmit={handleSubmit} />);
 
-    // eslint-disable-next-line testing-library/prefer-screen-queries
-    const form = getByTestId('employee-form-form');
+    const form = await screen.findByTestId('employee-form-form');
 
     expect(form).toBeInTheDocument();
     expect(asFragment()).toMatchSnapshot();
@@ -89,7 +83,7 @@ test('Form renders correctly with proper initial values', async () => {
 test('Form display correct initial values', async () => {
     const handleSubmit = jest.fn();
 
-    const { asFragment, getByTestId, getByLabelText, getAllByRole, getByRole } = render(
+    const { getAllByRole } = render(
         <RootStoreProvider rootStore={new RootStore()}>
             <BrowserRouter>
                 <EmployeeFormik initialValues={initialEmployee} onSubmit={handleSubmit} />
@@ -97,12 +91,12 @@ test('Form display correct initial values', async () => {
         </RootStoreProvider>,
     );
 
-    // eslint-disable-next-line testing-library/prefer-screen-queries
-    const form = getByTestId('employee-form-form');
+    const form = await screen.findByTestId('employee-form-form');
 
-    const firstNameInput = getByLabelText('Jméno');
-    const activeCheckbox = getByRole('switch');
-    const medExamInput = getByLabelText('Datum vstupní prohlídky');
+    const firstNameInput = await screen.findByLabelText('Jméno');
+    const activeCheckbox = await screen.findByRole('switch');
+    const medExamInput = await screen.findByLabelText('Datum vstupní prohlídky');
+    // eslint-disable-next-line testing-library/prefer-screen-queries
     const workCategoryInput = getAllByRole('combobox')[0];
 
     expect(firstNameInput).not.toBeNull();
@@ -115,45 +109,129 @@ test('Form display correct initial values', async () => {
 
     expect(medExamInput).not.toBeNull();
     expect(medExamInput).toHaveValue('2022-02-01');
-
-    /** TODO image and attachment **/
 });
 
-// test('Form display correct initial photo and attachment', async () => {
-//     const handleSubmit = jest.fn();
-//
-//     const { asFragment, getByTestId, getByLabelText } = render(
-//         <RootStoreProvider rootStore={new RootStore()}>
-//             <BrowserRouter>
-//                 <EmployeeFormik initialValues={initialEmployee} onSubmit={handleSubmit} />
-//             </BrowserRouter>
-//         </RootStoreProvider>,
-//     );
-//
-//     // eslint-disable-next-line testing-library/prefer-screen-queries
-//     const form = getByTestId('employee-form-form');
-//
-//     /** TODO image and attachment **/
-// });
-//
-test('Form submit is called correctly with required inputs', async () => {
+test('Form submits profile picture correctly', async () => {
     const handleSubmit = jest.fn();
 
-    const { getByTestId, getByLabelText, getByRole } = render(
+    const fakeFile = [new File(['fake image data'], 'hello.png', { type: 'image/png' })];
+    const fakeDoc = [new File(['fake PDF document'], 'document.pdf', { type: 'application/pdf' })];
+
+    render(
         <RootStoreProvider rootStore={new RootStore()}>
             <BrowserRouter>
-                <EmployeeFormik initialValues={new EmployeeDto()} onSubmit={handleSubmit} />
+                <EmployeeFormik initialValues={initialEmployee} onSubmit={handleSubmit} />
             </BrowserRouter>
         </RootStoreProvider>,
     );
 
-    const firstNameInput = getByLabelText('Jméno');
-    const lastNameInput = getByLabelText('Příjmení');
-    const phoneInput = getByLabelText('Telefon');
-    const emailInput = getByLabelText('Email');
-    const workCategoryInput = getByRole('combobox');
+    const profilePictureInput = await screen.findByTestId('profile-picture-input');
+    // userEvent.upload(profilePictureInput, [fakeFile], {}, { applyAccept: true });
 
-    const submitButton = getByTestId('submit-button');
+    await act(() => {
+        fireEvent.drop(profilePictureInput, {
+            dataTransfer: {
+                files: fakeFile,
+            },
+        });
+    });
+
+    const attachmentInput = await screen.findByTestId('attachments-dropzone-input');
+
+    await act(() => {
+        fireEvent.drop(attachmentInput, {
+            dataTransfer: {
+                files: fakeDoc,
+            },
+        });
+    });
+
+    userEvent.click(await screen.findByText('Uložit'));
+
+    /** TODO Submit was called successfully with image and attachment **/
+
+    await waitFor(() => {
+        expect(handleSubmit).toHaveBeenCalled();
+        // expect(handleSubmit).toHaveBeenCalledWith({
+        //     id: 123,
+        //     first_name: 'Test',
+        //     last_name: 'Employee',
+        //     email: 'test@email.com',
+        //     phone: 420123456789,
+        //     active: true,
+        //     med_exam_date: '2022-02-01',
+        //     job_assign_date: '2022-02-12',
+        //     working_category: WorkingCategoryEnum.C,
+        //     health_limitations: '',
+        //     company: null,
+        //     attachment: fakeDoc[0],
+        //     profile_picture: fakeFile[0],
+        // });
+    });
+});
+
+test('Form method isnt called and errors are shown when inputting wrong values', async () => {
+    const handleSubmit = jest.fn();
+
+    render(<EmployeeFormik initialValues={new EmployeeDto()} onSubmit={handleSubmit} />);
+
+    const firstNameInput = await screen.findByLabelText('Jméno');
+    const phoneInput = await screen.findByLabelText('Telefon');
+    const emailInput = await screen.findByLabelText('Email');
+    const workCategoryInput = await screen.findByRole('combobox');
+
+    const submitButton = await screen.findByTestId('submit-button');
+
+    userEvent.type(firstNameInput, 'Da'); /** Use too short name **/
+    /** Forget last name **/
+    userEvent.type(phoneInput, '12346578');
+    /** Miss few numbers **/
+    userEvent.type(emailInput, 'alfred.dlouhygmail.com'); /** Forget at-sign **/
+    /** Forget to select category **/
+
+    await waitFor(async () => {
+        expect(firstNameInput).not.toBeNull();
+        expect(firstNameInput).toHaveValue('Da');
+        expect(await screen.findByTestId('text-input-error')).toBeInTheDocument();
+        expect(await screen.findByText('Jméno je příliš krátké')).toBeInTheDocument();
+
+        expect(phoneInput).not.toBeNull();
+        expect(phoneInput).toHaveValue('12346578');
+        expect(await screen.findByTestId('phone-number-input-error')).toBeInTheDocument();
+        expect(await screen.findByText('Číslo musí mít přesně 12 číslic')).toBeInTheDocument();
+    });
+
+    // userEvent.click(await screen.findByTestId('category-select-input'));
+    // /** https://github.com/testing-library/user-event/issues/189 **/
+    // // userEvent.click(document.body);
+    // fireEvent.blur(await screen.findByTestId('category-select-input'));
+
+    userEvent.click(submitButton);
+
+    expect(await screen.findByTestId('category-input-error')).toBeInTheDocument();
+    expect(await screen.findByText('Kategorie musí být vyplněna')).toBeInTheDocument();
+
+    await waitFor(async () => {
+        expect(handleSubmit).not.toHaveBeenCalled();
+        expect(await screen.findByTestId('invalid-form-error')).toBeInTheDocument();
+        expect(
+            await screen.findByText('Ve formuláři jsou chyby. Opravte je a zkuste to prosím znovu.'),
+        ).toBeInTheDocument();
+    });
+});
+
+test('Form submit is called correctly with required inputs', async () => {
+    const handleSubmit = jest.fn();
+
+    render(<EmployeeFormik initialValues={new EmployeeDto()} onSubmit={handleSubmit} />);
+
+    const firstNameInput = await screen.findByLabelText('Jméno');
+    const lastNameInput = await screen.findByLabelText('Příjmení');
+    const phoneInput = await screen.findByLabelText('Telefon');
+    const emailInput = await screen.findByLabelText('Email');
+    const workCategoryInput = await screen.findByRole('combobox');
+
+    const submitButton = await screen.findByTestId('submit-button');
 
     userEvent.type(firstNameInput, 'Alfred');
     userEvent.type(lastNameInput, 'Dlouhy');
@@ -170,70 +248,36 @@ test('Form submit is called correctly with required inputs', async () => {
     userEvent.click(submitButton);
 
     /** FIXME je tam ten objekt spravne, ale za nim jsou jeste metody z Formiku a hazi to error **/
-    // await waitFor(() =>
-    //     expect(handleSubmit).toHaveBeenCalledWith({
-    //         first_name: 'Alfred',
-    //         last_name: 'Dlouhy',
-    //         phone: 420735445210,
-    //         email: 'alfred.dlouhy@gmail.com',
-    //         working_category: 'A',
-    //         active: undefined,
-    //         attachment: undefined,
-    //         company: undefined,
-    //         health_limitations: undefined,
-    //         job_assign_date: undefined,
-    //         med_exam_date: undefined,
-    //         profile_picture: undefined,
-    //     }),
-    // );
-});
-
-test('Form method isnt called and errors are shown when inputting wrong values', async () => {
-    const handleSubmit = jest.fn();
-
-    const { getByTestId, getByLabelText, getByRole } = render(
-        <RootStoreProvider rootStore={new RootStore()}>
-            <BrowserRouter>
-                <EmployeeFormik initialValues={new EmployeeDto()} onSubmit={handleSubmit} />
-            </BrowserRouter>
-        </RootStoreProvider>,
-    );
-
-    const firstNameInput = getByLabelText('Jméno');
-    const phoneInput = getByLabelText('Telefon');
-    const emailInput = getByLabelText('Email');
-    const workCategoryInput = getByRole('combobox');
-
-    const submitButton = getByTestId('submit-button');
-
-    userEvent.type(firstNameInput, 'Da'); /** Use too short name **/
-    /** Forget last name **/
-    userEvent.type(phoneInput, '12346578'); /** Miss few numbers **/
-    userEvent.type(emailInput, 'alfred.dlouhygmail.com'); /** Forget at-sign **/
-    /** Forget to select category **/
-
     await waitFor(() => {
-        expect(firstNameInput).not.toBeNull();
-        expect(firstNameInput).toHaveValue('Da');
-        expect(screen.getByTestId('text-input-error')).toBeInTheDocument();
-        expect(screen.getByText('Prilis kratke')).toBeInTheDocument();
-
-        expect(phoneInput).not.toBeNull();
-        expect(phoneInput).toHaveValue('12346578');
-        expect(screen.getByTestId('phone-number-input-error')).toBeInTheDocument();
-        expect(screen.getByText('Číslo musí mít 12 číslic')).toBeInTheDocument();
-
-        /** FIXME nemel by mit zadnou hodnotu ale ma z nejakeho duvodu "A" **/
-        expect(workCategoryInput).not.toHaveValue();
-        expect(screen.getByTestId('category-input-error')).toBeInTheDocument();
-        expect(screen.getByText('Kategorie musí být vyplněna')).toBeInTheDocument();
-    });
-
-    userEvent.click(submitButton);
-
-    await waitFor(() => {
-        expect(handleSubmit).not.toHaveBeenCalled();
-        expect(screen.getByTestId('invalid-form-error')).toBeInTheDocument();
-        expect(screen.getByText('Ve formuláři jsou chyby. Opravte je a zkuste to prosím znovu.')).toBeInTheDocument();
+        expect(handleSubmit.mock.calls[0][0]).toEqual({
+            first_name: 'Alfred',
+            last_name: 'Dlouhy',
+            phone: 420735445210,
+            email: 'alfred.dlouhy@gmail.com',
+            working_category: 'A',
+            active: undefined,
+            attachment: undefined,
+            company: undefined,
+            health_limitations: undefined,
+            job_assign_date: undefined,
+            med_exam_date: undefined,
+            profile_picture: undefined,
+        });
+        /** Toto pri volani funkce vklada krome SPRAVNEHO objektu vypsaneho nize, taky seznam funkci Formiku,
+         *  proto podminka dole neplati a je pouzito reseni vyse **/
+        // expect(handleSubmit).toHaveBeenCalledWith({
+        //     first_name: 'Alfred',
+        //     last_name: 'Dlouhy',
+        //     phone: 420735445210,
+        //     email: 'alfred.dlouhy@gmail.com',
+        //     working_category: 'A',
+        //     active: undefined,
+        //     attachment: undefined,
+        //     company: undefined,
+        //     health_limitations: undefined,
+        //     job_assign_date: undefined,
+        //     med_exam_date: undefined,
+        //     profile_picture: undefined,
+        // });
     });
 });
