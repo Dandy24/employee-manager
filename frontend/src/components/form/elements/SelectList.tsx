@@ -12,6 +12,7 @@ export interface SelectListProps {
 
 export const CategorySelectList: React.FC<SelectListProps> = observer((props: SelectListProps): JSX.Element => {
     const { name, label } = props;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [field, meta] = useField(props);
 
     return (

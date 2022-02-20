@@ -91,18 +91,15 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                         />
                     ) : (
                         rootStore.dashboardStore.overallOutput && (
-                            <>
-                                {console.log(rootStore.dashboardStore.overallOutput)}
-                                <MyLineChart
-                                    title="Vývoj pracovního nasazení"
-                                    data={[...rootStore.dashboardStore.overallWorkingDaysGraphData].reverse()}
-                                    dataKey1="work"
-                                    dataKey2="vac"
-                                    dataName1="V práci"
-                                    dataName2="Dovolená"
-                                    xAxisKey="name"
-                                />
-                            </>
+                            <MyLineChart
+                                title="Vývoj pracovního nasazení"
+                                data={[...rootStore.dashboardStore.overallWorkingDaysGraphData].reverse()}
+                                dataKey1="work"
+                                dataKey2="vac"
+                                dataName1="V práci"
+                                dataName2="Dovolená"
+                                xAxisKey="name"
+                            />
                         )
                     )}
 
