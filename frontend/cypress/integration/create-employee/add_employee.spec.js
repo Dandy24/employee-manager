@@ -16,21 +16,26 @@ describe('employee creating process', () => {
         form().toMatchImageSnapshot();
     });
 
-    /** Currently there is unfortunately no support for PDF files in Cypress **/
+    it('checks profile picture upload', () => {
+        const fileName = 'test-image.png';
 
-    // it('checks attachment upload via drag & drop', () => {
-    //     cy.get('[data-testid="attachments-dropzone"]').selectFile(cy.fixture('/cypress/fixtures/pdf-test.pdf'), {
-    //         action: 'drag-drop',
-    //     });
-    //     cy.get('.ant-upload-list ').find('.ant-upload-list-item').find('a').should('contain.text', 'test');
-    // });
-    //
-    // it('checks attachment upload via clicking on input', () => {
-    //     cy.get('[data-testid="attachments-dropzone"]').selectFile(cy.fixture('/cypress/fixtures/pdf-test.pdf'));
-    //     cy.get('.ant-upload-list ').find('.ant-upload-list-item').find('a').should('contain.text', 'test');
-    // });
+        cy.get('[data-testid="profile-picture-input"]').attachFile({ filePath: fileName });
 
-    /////*/*/*/*/*/*/*/*/
+        cy.get('[data-testid="profile-picture"]').should('be.visible');
+
+        /** TODO some more image testing.... maybe if image equals the one in fixtures? **/
+    });
+
+    it('checks attachment upload via drag & drop', () => {
+        const fileName = 'pdf-test.pdf';
+
+        cy.get('[data-testid="attachments-dropzone-input"]').attachFile(
+            { filePath: fileName },
+            { subjectType: 'drag-n-drop' },
+        );
+
+        cy.get('.ant-upload-list ').find('.ant-upload-list-item').find('span').should('contain.text', fileName);
+    });
 
     it('checks profile picture upload', () => {
         cy.get('[data-testid="profile-picture-input"]').attachFile('test-image.png', {});
@@ -61,8 +66,6 @@ describe('employee creating process', () => {
                     });
             });
     });
-
-    /**  **/
 
     it('Fill the form correctly', () => {
         cy.get('[data-testid="profile-picture-input"]').attachFile('test-image.png', {});
@@ -119,27 +122,6 @@ describe('employee creating process', () => {
 
         cy.get('[data-testid=health_limitations-text-area] > [data-testid=text-area-error]').should('not.exist');
 
-        /** FILES - Currently there is unfortunately no support for PDF files in Cypress **/
-
-        // cy.get('[data-testid="attachments-dropzone-input"]').attachFile({
-        //     filePath: `pdf-test.pdf`,
-        //     // encoding: 'base64',
-        //     encoding: 'utf-8',
-        // });
-
-        // cy.get('[data-testid="attachments-dropzone-input"]').selectFile(cy.fixture('/cypress/fixtures/pdf-test.pdf'), {
-        //     action: 'drag-drop',
-        // });
-
-        // const fileName = 'pdf-test.pdf';
-        //
-        // cy.fixture(fileName).then((fileContent) => {
-        //     cy.get('[data-testid="attachments-dropzone-input"]').attachFile(
-        //         { fileContent, fileName, mimeType: 'application/pdf' },
-        //         { subjectType: 'input' },
-        //     );
-        // });
-
         cy.get('[data-testid=submit-button]').click();
 
         /** Test if page was redirected, message was shown and menu tab was colored properly **/
@@ -166,7 +148,7 @@ describe('employee creating process', () => {
         cy.waitUntil(() => cy.get('[data-testid="profile-picture"]').find('img').toMatchImageSnapshot());
 
         /** **/
-
-        /** TODO Test invalid form submission, while raising error message and not letting it contact API and continue further **/
     });
+
+    /** TODO Test invalid form submission, while raising error message and not letting it contact API and continue further **/
 });
