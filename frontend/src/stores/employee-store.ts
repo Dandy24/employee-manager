@@ -74,7 +74,6 @@ export class EmployeeStore {
                     this.employees = employees;
                     this.employee = selectedEmployee ? selectedEmployee : null;
                 });
-                console.log(this.employees);
             }
         } catch (e) {
             message.error('Failed to load employees from database');

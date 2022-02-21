@@ -40,10 +40,12 @@ export const dragEndHandler = (event: DropResult, store: ShiftStore): void => {
                 if (isValid(event.source.index, event.destination.index, store)) {
                     store.addToShift(store.availableEmployees[event.source.index]);
                     store.removeEmployee(event.source.index);
+                    store.saveShiftToLocalStorage();
                 }
             } else {
                 store.addEmployee(store.shiftEmployees[event.source.index]);
                 store.removeFromShift(event.source.index);
+                store.saveShiftToLocalStorage();
             }
         } else {
             // FIXME nejsou oba ify to same? :)

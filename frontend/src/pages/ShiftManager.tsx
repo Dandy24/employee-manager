@@ -27,10 +27,19 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
 
         useEffect(() => {
             (async () => {
+                if (!rootStore.shiftStore.isRedirected) {
+                    await rootStore.employeeStore.fetchAllEmployees();
+                }
                 if (shiftId) {
                     rootStore.shiftStore.setShift(shiftId);
                     await rootStore.shiftStore.loadShiftEmployees(shiftId);
                 }
+                if (!rootStore.shiftStore.isRedirected) {
+                    rootStore.shiftStore.setShift();
+                    await rootStore.shiftStore.loadShiftEmployees();
+                }
+                await rootStore.shiftStore.loadShiftList(rootStore.shiftStore.shift.companyID);
+                rootStore.shiftStore.setShiftsForDate(rootStore.shiftStore.shift.date);
                 if (rootStore.companyStore.companies.length < 1) {
                     rootStore.companyStore.companies.push(JSON.parse(localStorage.getItem('company')));
                 }

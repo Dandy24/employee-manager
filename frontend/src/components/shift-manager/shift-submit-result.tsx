@@ -33,7 +33,11 @@ export const ShiftSubmitResult: React.FC<ShiftSubmitResultProps> = observer((pro
                     <Link
                         key="calendar"
                         data-testid={'back-to-calendar-button'}
-                        to={`/shift-calendar/${store.rootStore.calendarStore.activeCompanyId}`}
+                        to={`/shift-calendar/${
+                            store.rootStore.calendarStore.activeCompanyId
+                                ? store.rootStore.calendarStore.activeCompanyId
+                                : JSON.parse(localStorage.getItem('shift')).companyID
+                        }`}
                     >
                         <Button type="primary">Vrátit se zpět na kalendář</Button>
                     </Link>,
