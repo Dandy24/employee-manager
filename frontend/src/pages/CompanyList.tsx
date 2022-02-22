@@ -61,10 +61,10 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
     return (
         <>
             <Row justify="end" style={{ marginTop: '1%', marginBottom: '2%' }}>
-                <Col offset={4} span={12}>
+                <Col offset={6} span={12}>
                     <SearchComponent type="company" options={toJS(rootStore.searchStore.searchableCompanies)} />
                 </Col>
-                <Col offset={3} span={2}>
+                <Col flex={'auto'} offset={3}>
                     <Button
                         type="primary"
                         size="large"

@@ -53,7 +53,7 @@ describe('employee creating process', () => {
             .then((firstSrc) => {
                 const src1 = firstSrc;
 
-                cy.get('[data-testid="profile-picture-input"]').attachFile('test-image2.png', {});
+                cy.get('[data-testid="profile-picture-input"]').selectFile('test-image2.png', { force: true });
 
                 /* FIXME waitUntil */
 
@@ -68,7 +68,7 @@ describe('employee creating process', () => {
     });
 
     it('Fill the form correctly', () => {
-        cy.get('[data-testid="profile-picture-input"]').attachFile('test-image.png', {});
+        cy.get('[data-testid="profile-picture-input"]').selectFile('test-image.png', { force: true });
 
         /** Test validation and filling in information **/
 

@@ -42,10 +42,12 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
     return (
         <>
             <Row justify="center" style={{ marginBottom: '2%' }}>
-                <Col span={13}>
-                    {!rootStore.dashboardStore.employeeMode ? (
+                {!rootStore.dashboardStore.employeeMode ? (
+                    <Col span={13}>
                         <SearchComponent type="employee" options={toJS(rootStore.searchStore.searchableEmployees)} />
-                    ) : (
+                    </Col>
+                ) : (
+                    <Col style={{ textAlign: 'center' }} span={5}>
                         <Button
                             onClick={() => {
                                 rootStore.dashboardStore.switchMode();
@@ -54,8 +56,8 @@ export const Dashboard: React.FC<DashboardProps> = observer((props: DashboardPro
                         >
                             Zpět na obecný přehled
                         </Button>
-                    )}
-                </Col>
+                    </Col>
+                )}
             </Row>
 
             <Card

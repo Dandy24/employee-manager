@@ -9,7 +9,7 @@
     "test:coverage": "react-scripts test --coverage",
     "test:e2e": "./node_modules/.bin/cypress open",
     "test:e2e:ci": "./node_modules/.bin/cypress run --headless --browser chrome",
-    "ci": "start-server-and-test start http://localhost:3000 test:e2e:ci",
+    "ci": "REACT_APP_TEST_ENV=true start-server-and-test start http://localhost:3000 test:e2e:ci",
     "eject": "react-scripts eject"
   },
   "browserslist": {

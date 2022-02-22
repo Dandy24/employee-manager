@@ -21,24 +21,33 @@ export const SearchComponent: React.FC<SearchComponentProps> = observer((props: 
         if (type === 'company') {
             await rootStore.companyStore.fetchAllCompanies(value, undefined);
         }
+        if (type === 'employee') {
+            await rootStore.employeeStore.fetchAllEmployees(undefined, value, undefined);
+        }
     };
 
     const selectHandler = async (value, option) => {
         //TODO make component not call BE fetch on every search. Use and filter already fetched data instead (make a copy of array and pass it as options?)
+        if (type === 'employee') {
+            await rootStore.employeeStore.fetchAllEmployees(undefined, undefined, option);
+            if (rootStore.activePage === 'dashboard') {
+                rootStore.dashboardStore.switchMode();
+            }
+        }
         if (type === 'company') {
             await rootStore.companyStore.fetchAllCompanies(undefined, option);
-        } else {
-            await rootStore.employeeStore.fetchAllEmployees(undefined, undefined, option);
-            rootStore.dashboardStore.switchMode();
         }
     };
 
     const resetHandler = async () => {
+        if (type === 'employee') {
+            await rootStore.employeeStore.fetchAllEmployees();
+            if (rootStore.activePage === 'dashboard') {
+                rootStore.dashboardStore.switchMode();
+            }
+        }
         if (type === 'company') {
             await rootStore.companyStore.fetchAllCompanies();
-        } else {
-            await rootStore.employeeStore.fetchAllEmployees();
-            rootStore.dashboardStore.switchMode();
         }
     };
 
