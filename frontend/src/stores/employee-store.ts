@@ -15,6 +15,8 @@ import { SearchableEmployeeEntity } from '../models/entities/searchable-employee
 import 'moment/locale/cs';
 import moment from 'moment';
 
+const { REACT_APP_TEST_ENV } = process.env;
+
 moment.locale('cs');
 
 export class EmployeeStore {
@@ -54,6 +56,15 @@ export class EmployeeStore {
 
         try {
             const employees = await getEmployeeList();
+
+            /** HOTFIX to allow downloading medias from api while running in testserver enviroment **/
+            if (REACT_APP_TEST_ENV === 'true') {
+                console.log(employees);
+                employees.forEach(
+                    (emp) => (emp.profile_picture = emp.profile_picture?.replace('/api/media', '/api/test_media')),
+                );
+            }
+            /** **/
 
             let filteredEmployees;
             let selectedEmployee;
