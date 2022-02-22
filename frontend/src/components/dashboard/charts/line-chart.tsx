@@ -36,6 +36,7 @@ export const MyLineChart: React.FC<LineChartProps> = observer((props: LineChartP
                     <YAxis />
                     <Tooltip
                         labelFormatter={(label: string) => <p>{moment(label, 'YYYY-MM-DD').format('MMMM YY')}</p>}
+                        formatter={(amount) => `${amount} hod`}
                     />
                     <Legend id={'line-chart-legend'} />
                     <Line

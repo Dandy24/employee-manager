@@ -11,21 +11,43 @@ interface SearchRow {
     phone: number;
     company?: CompanyEntity;
     address?: string;
+    profile_picture?: string;
 }
 
 export const SearchResultItem = (row: SearchRow, index: number, rootStore: RootStore): JSX.Element => {
     return (
         <Row data-testid={`search-item-${index}`}>
-            <Avatar
-                src={
-                    <Image
-                        src="https://joeschmoe.io/api/v1/random"
-                        style={{
-                            width: 32,
-                        }}
-                    />
-                }
-            />
+            {row.first_name && row.last_name ? (
+                <Avatar
+                    src={
+                        row.profile_picture ? (
+                            <Image
+                                src={`http://localhost:8000${row.profile_picture}`}
+                                style={{
+                                    width: 32,
+                                }}
+                            />
+                        ) : (
+                            <Avatar>
+                                {row.first_name.charAt(0)}
+                                {row.last_name.charAt(0)}
+                            </Avatar>
+                        )
+                    }
+                />
+            ) : (
+                <Avatar
+                    src={
+                        <Image
+                            src="https://joeschmoe.io/api/v1/random"
+                            style={{
+                                width: 32,
+                            }}
+                        />
+                    }
+                />
+            )}
+
             <Divider type="vertical" />
             <Title level={5}>
                 <>

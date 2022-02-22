@@ -20,9 +20,9 @@ export const TextInput: React.FC<TextInputProps> = observer((props: TextInputPro
             <label htmlFor={name} data-testid="text-input-label">
                 {label}
             </label>
-            <Input name={name} data-testid="text-input-field" />
+            <Input id={name} name={name} data-testid="text-input-field" />
             {meta.touched && meta.error ? (
-                <Alert message={meta.error} type="error" showIcon data-testid="text-input-error" />
+                <Alert message={meta.error} type="error" data-testid="text-input-error" />
             ) : null}
         </div>
         // </InputWrapper>

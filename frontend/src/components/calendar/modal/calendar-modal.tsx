@@ -15,7 +15,7 @@ export const CalendarModal: React.FC<CalendarModalProps> = observer((props: Cale
     return (
         <Modal
             visible={store.isShiftSelectOpen}
-            title={`Seznam smen pro ${store.formattedDate}`}
+            title={`Seznam směn pro ${store.formattedDate}`}
             centered
             footer={<ModalFooter store={store} showIcon />}
             onOk={() => store.setShiftSelectOpen(false)}

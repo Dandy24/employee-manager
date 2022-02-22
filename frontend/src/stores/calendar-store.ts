@@ -1,7 +1,11 @@
 import { RootStore } from './root-store';
 import { action, computed, makeObservable, observable } from 'mobx';
-import moment from 'moment';
 import { ShiftEntity } from '../models/entities/shift-entity';
+
+import 'moment/locale/cs';
+import moment from 'moment';
+
+moment.locale('cs');
 
 export class CalendarStore {
     selectedDate: moment.Moment;

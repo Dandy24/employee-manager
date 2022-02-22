@@ -34,6 +34,8 @@ describe('rendering graphs and other statictics in dashboard', () => {
             .find('.recharts-line')
             .should('have.length', 2);
 
+        cy.waitUntil(() => lineChart().should('contain.text', 'prosinec 21'));
+
         cy.get('#line-chart-work-line').should('have.css', 'stroke', purple);
         cy.get('#line-chart-vac-line').should('have.css', 'stroke', green);
 
@@ -41,17 +43,16 @@ describe('rendering graphs and other statictics in dashboard', () => {
             .find('.recharts-legend-wrapper')
             .should('be.visible')
             .and((legend) => {
-                expect(legend).to.contain.text('Hours worked').and.to.contain.text('Hours out');
+                expect(legend).to.contain.text('V práci').and.to.contain.text('Dovolená');
             });
     });
 
     // FIXME wait for lines to be aligned properly
-    // it('Line chart matches image snapshot', () => {
-    //
-    //     cy.waitUntil(() => lineChart().should('contain.text', 'December 21'));
-    //     lineChart().toMatchImageSnapshot();
-    //     // cy.get('#line-chart').toMatchSnapshot();
-    // });
+    it('Line chart matches image snapshot', () => {
+        cy.waitUntil(() => lineChart().should('not.contain.text', 'Invalid date'));
+        lineChart().toMatchImageSnapshot();
+        // cy.get('#line-chart').toMatchSnapshot();
+    });
 
     it('Pie chart is rendered correctly and tooltip works as expected', () => {
         cy.waitUntil(() => pieChart().should('be.visible'))
@@ -66,7 +67,7 @@ describe('rendering graphs and other statictics in dashboard', () => {
         cy.get('#pie-chart-example-company-sector').trigger('mouseover', { force: true });
 
         tooltipVisible(pieChart()).and((tooltip) =>
-            expect(tooltip).to.contain.text('Example Company').and.to.contain.text('285 hours'),
+            expect(tooltip).to.contain.text('Example Company').and.to.contain.text('285 hodin'),
         );
 
         cy.get('#pie-chart-example-company-sector').trigger('mouseout', { force: true });
@@ -119,8 +120,8 @@ describe('rendering graphs and other statictics in dashboard', () => {
         });
 
         /** TEST if zero values are ignored in tooltip **/
-        checkTooltipValues('work', 0, 'not.include.text', 'Sick hours', 'include.text', 'Overtime hours : 2');
-        checkTooltipValues('work', 1, 'not.include.text', 'Overtime hours', 'include.text', 'Sick hours : 12');
+        checkTooltipValues('work', 0, 'not.include.text', 'Nemocenská', 'include.text', 'Přesčas : 2');
+        checkTooltipValues('work', 1, 'not.include.text', 'Přesčas', 'include.text', 'Nemocenská : 12');
 
         /** Matches image snapshot with opened tooltip **/
         barChart().toMatchImageSnapshot();
@@ -146,8 +147,8 @@ describe('rendering graphs and other statictics in dashboard', () => {
             .find('.ant-statistic-content-value')
             .should('contain.text', 'Test Company123');
 
-        cy.get('[data-testid=dashboard-card-title]').should('have.text', 'Mesicni prehled zamestnance');
-        cy.get('[data-testid=overview-effectivity-stat]').should('contain.text', 'Efektivita zamestnance');
+        cy.get('[data-testid=dashboard-card-title]').should('have.text', 'Měsíční přehled zaměstnance');
+        cy.get('[data-testid=overview-effectivity-stat]').should('contain.text', 'Efektivita zaměstnance');
         cy.get('[data-testid=overview-effectivity-stat-circle]').should('have.class', 'ant-progress-status-success');
     });
 

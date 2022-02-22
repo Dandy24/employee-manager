@@ -1,0 +1,501 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Form renders correctly with proper initial values 1`] = `
+<DocumentFragment>
+  <form
+    action="#"
+    data-testid="employee-form-form"
+    style="width: 80%; margin-left: 9%;"
+  >
+    <div
+      class="ant-row ant-row-center"
+    >
+      <div
+        data-testid="employee-form"
+      >
+        <div
+          class="ant-row ant-row-center"
+        >
+          <div
+            class="ant-col"
+            data-testid="profile-picture"
+          >
+            <span
+              class="ant-upload-picture-card-wrapper avatar-uploader profile_picture-empty"
+            >
+              <div
+                class="ant-upload ant-upload-select ant-upload-select-picture-card"
+              >
+                <span
+                  class="ant-upload"
+                  role="button"
+                  tabindex="0"
+                >
+                  <input
+                    accept=".png,.jpg,.jpeg"
+                    data-testid="profile-picture-input"
+                    style="display: none;"
+                    type="file"
+                  />
+                  <div>
+                    <span
+                      aria-label="plus"
+                      class="anticon anticon-plus"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="plus"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <defs>
+                          <style />
+                        </defs>
+                        <path
+                          d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"
+                        />
+                        <path
+                          d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z"
+                        />
+                      </svg>
+                    </span>
+                    <div
+                      style="margin-top: 8px;"
+                    >
+                      Nahrát fotku
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          style="margin-top: 4.5%;"
+        />
+        <div
+          data-testid="first_name-text-input"
+        >
+          <label
+            data-testid="text-input-label"
+            for="first_name"
+          >
+            Jméno
+          </label>
+          <input
+            class="ant-input"
+            data-testid="text-input-field"
+            id="first_name"
+            name="first_name"
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          data-testid="last_name-text-input"
+        >
+          <label
+            data-testid="text-input-label"
+            for="last_name"
+          >
+            Příjmení
+          </label>
+          <input
+            class="ant-input"
+            data-testid="text-input-field"
+            id="last_name"
+            name="last_name"
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          data-testid="phone-number-input"
+        >
+          <label
+            data-testid="phone-number-input-label"
+            for="phone"
+          >
+            Telefon
+          </label>
+          <div
+            class="ant-input-number"
+            style="width: 100%;"
+          >
+            <div
+              class="ant-input-number-handler-wrap"
+            >
+              <span
+                aria-disabled="false"
+                aria-label="Increase Value"
+                class="ant-input-number-handler ant-input-number-handler-up"
+                role="button"
+                unselectable="on"
+              >
+                <span
+                  aria-label="up"
+                  class="anticon anticon-up ant-input-number-handler-up-inner"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    data-icon="up"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M890.5 755.3L537.9 269.2c-12.8-17.6-39-17.6-51.7 0L133.5 755.3A8 8 0 00140 768h75c5.1 0 9.9-2.5 12.9-6.6L512 369.8l284.1 391.6c3 4.1 7.8 6.6 12.9 6.6h75c6.5 0 10.3-7.4 6.5-12.7z"
+                    />
+                  </svg>
+                </span>
+              </span>
+              <span
+                aria-disabled="false"
+                aria-label="Decrease Value"
+                class="ant-input-number-handler ant-input-number-handler-down"
+                role="button"
+                unselectable="on"
+              >
+                <span
+                  aria-label="down"
+                  class="anticon anticon-down ant-input-number-handler-down-inner"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    data-icon="down"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="64 64 896 896"
+                    width="1em"
+                  >
+                    <path
+                      d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+                    />
+                  </svg>
+                </span>
+              </span>
+            </div>
+            <div
+              class="ant-input-number-input-wrap"
+            >
+              <input
+                autocomplete="off"
+                class="ant-input-number-input"
+                data-testid="phone-number-input-field"
+                id="phone"
+                label="Telefon"
+                name="phone"
+                role="spinbutton"
+                step="1"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          data-testid="email-text-input"
+        >
+          <label
+            data-testid="text-input-label"
+            for="email"
+          >
+            Email
+          </label>
+          <input
+            class="ant-input"
+            data-testid="text-input-field"
+            id="email"
+            name="email"
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          data-testid="working_category-category-select"
+        >
+          <label
+            data-testid="category-select-label"
+            for="working_category"
+          >
+            Kategorizace práce
+          </label>
+          <br />
+          <select
+            data-testid="category-select-input"
+          >
+            <option
+              data-testid="category-select-option-A"
+              value="A"
+            >
+              A
+            </option>
+            <option
+              data-testid="category-select-option-B"
+              value="B"
+            >
+              B
+            </option>
+            <option
+              data-testid="category-select-option-C"
+              value="C"
+            >
+              C
+            </option>
+          </select>
+        </div>
+        <div
+          style="padding: 5px 0px; width: 100%;"
+        >
+          <div
+            class="ant-space ant-space-horizontal ant-space-align-center"
+            style="width: 100%;"
+          >
+            <div
+              class="ant-space-item"
+              style="margin-right: 24px;"
+            >
+              <label
+                for="med_exam_date"
+              >
+                Datum vstupní prohlídky
+              </label>
+            </div>
+            <div
+              class="ant-space-item"
+              style="margin-right: 24px;"
+            >
+              <br />
+            </div>
+            <div
+              class="ant-space-item"
+            >
+              <div
+                class="ant-picker"
+                style="width: 100%;"
+              >
+                <div
+                  class="ant-picker-input"
+                >
+                  <input
+                    autocomplete="off"
+                    id="med_exam_date"
+                    placeholder="Select date"
+                    readonly=""
+                    size="12"
+                    title=""
+                    value=""
+                  />
+                  <span
+                    class="ant-picker-suffix"
+                  >
+                    <span
+                      aria-label="calendar"
+                      class="anticon anticon-calendar"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="calendar"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          style="padding: 5px 0px; width: 100%;"
+        >
+          <div
+            class="ant-space ant-space-horizontal ant-space-align-center"
+            style="width: 100%;"
+          >
+            <div
+              class="ant-space-item"
+              style="margin-right: 24px;"
+            >
+              <label
+                for="job_assign_date"
+              >
+                Datum nástupu do práce
+              </label>
+            </div>
+            <div
+              class="ant-space-item"
+              style="margin-right: 24px;"
+            >
+              <br />
+            </div>
+            <div
+              class="ant-space-item"
+            >
+              <div
+                class="ant-picker"
+                style="width: 100%;"
+              >
+                <div
+                  class="ant-picker-input"
+                >
+                  <input
+                    autocomplete="off"
+                    id="job_assign_date"
+                    placeholder="Select date"
+                    readonly=""
+                    size="12"
+                    title=""
+                    value=""
+                  />
+                  <span
+                    class="ant-picker-suffix"
+                  >
+                    <span
+                      aria-label="calendar"
+                      class="anticon anticon-calendar"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="calendar"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="64 64 896 896"
+                        width="1em"
+                      >
+                        <path
+                          d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          data-testid="health_limitations-text-area"
+        >
+          <label
+            data-testid="text-area-label"
+            for="health_limitations"
+          >
+            Zdravotní omezení
+          </label>
+          <textarea
+            class="ant-input ant-input-lg"
+            data-testid="text-area-input"
+            name="health_limitations"
+            rows="3"
+          />
+        </div>
+        <div
+          style="margin-top: 10%;"
+        />
+        <div
+          class="ant-row ant-row-center"
+          data-testid="attachments-dropzone"
+        >
+          <span>
+            <div
+              class="ant-upload ant-upload-drag"
+              style="width: 100%;"
+            >
+              <span
+                class="ant-upload ant-upload-btn"
+                role="button"
+                tabindex="0"
+              >
+                <input
+                  accept=".pdf"
+                  data-testid="attachments-dropzone-input"
+                  style="display: none;"
+                  type="file"
+                />
+                <div
+                  class="ant-upload-drag-container"
+                >
+                  <p
+                    class="ant-upload-drag-icon"
+                  >
+                    <span
+                      aria-label="inbox"
+                      class="anticon anticon-inbox"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="inbox"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="0 0 1024 1024"
+                        width="1em"
+                      >
+                        <path
+                          d="M885.2 446.3l-.2-.8-112.2-285.1c-5-16.1-19.9-27.2-36.8-27.2H281.2c-17 0-32.1 11.3-36.9 27.6L139.4 443l-.3.7-.2.8c-1.3 4.9-1.7 9.9-1 14.8-.1 1.6-.2 3.2-.2 4.8V830a60.9 60.9 0 0060.8 60.8h627.2c33.5 0 60.8-27.3 60.9-60.8V464.1c0-1.3 0-2.6-.1-3.7.4-4.9 0-9.6-1.3-14.1zm-295.8-43l-.3 15.7c-.8 44.9-31.8 75.1-77.1 75.1-22.1 0-41.1-7.1-54.8-20.6S436 441.2 435.6 419l-.3-15.7H229.5L309 210h399.2l81.7 193.3H589.4zm-375 76.8h157.3c24.3 57.1 76 90.8 140.4 90.8 33.7 0 65-9.4 90.3-27.2 22.2-15.6 39.5-37.4 50.7-63.6h156.5V814H214.4V480.1z"
+                        />
+                      </svg>
+                    </span>
+                  </p>
+                  <p
+                    class="ant-upload-text"
+                  >
+                    Klikněte do vyznačené zóny nebo přetáhněte soubor z počítače pro jeho nahrání
+                  </p>
+                  <p
+                    class="ant-upload-hint"
+                  >
+                    Zde můžete nahrát například pracovní smlouvy, lékařské zprávy atd.
+                  </p>
+                  <p
+                    class="ant-upload-hint"
+                  >
+                    Pouze pro dokumenty formátu PDF
+                  </p>
+                </div>
+              </span>
+            </div>
+            <div
+              class="ant-upload-list ant-upload-list-text"
+            />
+          </span>
+        </div>
+        <div
+          class="ant-col ant-col-12 ant-col-offset-9"
+          style="margin-top: 3vh;"
+        >
+          <button
+            class="ant-btn ant-btn-primary"
+            data-testid="submit-button"
+            type="submit"
+          >
+            <span>
+              Uložit
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</DocumentFragment>
+`;

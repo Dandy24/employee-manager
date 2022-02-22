@@ -15,7 +15,11 @@ import {
     GraphDataInterface,
     HoursTypeGraphDataInterface,
 } from '../models/interfaces/graph-data-interface';
+
+import 'moment/locale/cs';
 import moment from 'moment';
+
+moment.locale('cs');
 
 export class DashboardStore {
     employeeOutput: EmployeeMonthlyOutputEntity[] = [];
@@ -168,7 +172,7 @@ export class DashboardStore {
         return this.employeeOutput
             ?.map((output) => ({
                 name: output.start_date,
-                work: output.working_hours,
+                work: output.working_hours + output.overtime_hours,
                 vac: output.vacation_hours,
             }))
             .reverse();

@@ -26,7 +26,7 @@ export const TextArea: React.FC<TextAreaProps> = observer((props: TextAreaProps)
                 {label}
             </label>
             <TextArea data-testid="text-area-input" name={name} rows={rows} size={textareaSize} />
-            {meta.error ? <Alert data-testid="text-area-error" message={meta.error} type="error" showIcon /> : null}
+            {meta.error ? <Alert data-testid="text-area-error" message={meta.error} type="error" /> : null}
         </div>
         // </InputWrapper>
     );

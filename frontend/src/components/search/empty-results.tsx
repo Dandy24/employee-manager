@@ -11,7 +11,7 @@ export const EmptyResults: React.FC<EmptyResultsProps> = (props: EmptyResultsPro
     return (
         <div style={{ textAlign: 'center' }} data-testid="empty-autocomplete-list">
             <DisconnectOutlined style={{ fontSize: '3rem' }} />
-            <p>{type === 'company' ? `Firma nebyla nalezena` : 'Zameestnanec nebyl nalezen'}</p>
+            <p>{type === 'company' ? `Firma nebyla nalezena` : 'Zaměstnanec nebyl nalezen'}</p>
         </div>
     );
 };

@@ -35,18 +35,18 @@ export const ModalFooter: React.FC<ModalFooterProps> = observer((props: ModalFoo
                         onClick={handleNewShift}
                         data-testid="shift-add-button"
                     >
-                        Pridat smenu
+                        Přidat směnu
                     </Button>
                 ) : (
                     <Button icon={showIcon ? <ArrowLeftOutlined /> : null} type="primary" size="large" onClick={goBack}>
-                        Zpet
+                        Zpět
                     </Button>
                 )}
             </Col>
 
             <Col>
                 <Button size="large" onClick={handleCancel}>
-                    Zavrit
+                    Zavřít
                 </Button>
             </Col>
         </Row>

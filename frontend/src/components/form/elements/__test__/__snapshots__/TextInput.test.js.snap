@@ -17,6 +17,7 @@ exports[`TextInput snapshot matches the previous one 1`] = `
       <input
         class="ant-input"
         data-testid="text-input-field"
+        id="name"
         name="name"
         type="text"
         value=""

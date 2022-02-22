@@ -27,10 +27,19 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
 
         useEffect(() => {
             (async () => {
+                if (!rootStore.shiftStore.isRedirected) {
+                    await rootStore.employeeStore.fetchAllEmployees();
+                }
                 if (shiftId) {
                     rootStore.shiftStore.setShift(shiftId);
                     await rootStore.shiftStore.loadShiftEmployees(shiftId);
                 }
+                if (!rootStore.shiftStore.isRedirected) {
+                    rootStore.shiftStore.setShift();
+                    await rootStore.shiftStore.loadShiftEmployees();
+                }
+                await rootStore.shiftStore.loadShiftList(rootStore.shiftStore.shift.companyID);
+                rootStore.shiftStore.setShiftsForDate(rootStore.shiftStore.shift.date);
                 if (rootStore.companyStore.companies.length < 1) {
                     rootStore.companyStore.companies.push(JSON.parse(localStorage.getItem('company')));
                 }
@@ -45,7 +54,7 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
 
         const handleDelete = async () => {
             confirm({
-                title: 'Opravdu chcete smazat tuto smenu?',
+                title: 'Opravdu chcete smazat tuto směnu?',
                 icon: <ExclamationCircleOutlined />,
                 content: 'Tuto akci nelze vrátit zpět',
                 okText: 'Ano',
@@ -84,12 +93,12 @@ export const ShiftManagerPage: React.FC<ShiftManagerPageProps> = observer(
                                     }`}
                                 >
                                     <CalendarOutlined />
-                                    <span>{`Kalendar smen`}</span>
+                                    <span>{`Kalendář směn`}</span>
                                 </Link>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>
                                 {rootStore.shiftStore.shift?.id
-                                    ? 'Smena c. ' + rootStore.shiftStore.shift.id
+                                    ? 'Směna č. ' + rootStore.shiftStore.shift.id
                                     : 'Nová směna'}
                             </Breadcrumb.Item>
                         </Breadcrumb>

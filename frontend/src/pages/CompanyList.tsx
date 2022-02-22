@@ -61,17 +61,17 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
     return (
         <>
             <Row justify="end" style={{ marginTop: '1%', marginBottom: '2%' }}>
-                <Col offset={5} span={13}>
+                <Col offset={4} span={12}>
                     <SearchComponent type="company" options={toJS(rootStore.searchStore.searchableCompanies)} />
                 </Col>
-                <Col offset={3}>
+                <Col offset={3} span={2}>
                     <Button
                         type="primary"
                         size="large"
                         icon={<PlusOutlined />}
                         onClick={() => rootStore.companyStore.openToAdd()}
                     >
-                        Přidat společnost
+                        Přidat firmu
                     </Button>
                 </Col>
             </Row>

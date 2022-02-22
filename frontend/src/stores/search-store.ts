@@ -4,6 +4,11 @@ import { SearchResultItem } from '../components/search/search-result';
 import { SearchableCompanyEntity } from '../models/entities/searchable-company-entity';
 import { SearchableEmployeeEntity } from '../models/entities/searchable-employee-entity';
 
+import 'moment/locale/cs';
+import moment from 'moment';
+
+moment.locale('cs');
+
 export class SearchStore {
     searchableCompanies: SearchableCompanyEntity[]; // TODO Entity SearchableItem
     searchableEmployees: SearchableEmployeeEntity[]; // TODO Entity SearchableItem

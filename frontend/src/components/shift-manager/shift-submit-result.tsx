@@ -25,15 +25,19 @@ export const ShiftSubmitResult: React.FC<ShiftSubmitResultProps> = observer((pro
                 subTitle={
                     <div data-testid={'shift-submit-result-subtitle'}>
                         {store.shiftEditResult === 'success'
-                            ? `Směna je naplánována na ${store.shift.date} ${store.shift.time}`
-                            : `Zkontrolujte prosím zda nebyly hlášeny chyby`}
+                            ? `Směna je naplánována na ${store.shift.date} ${store.shift.time}.`
+                            : `Zkontrolujte prosím, zda nebyly hlášeny chyby.`}
                     </div>
                 }
                 extra={[
                     <Link
                         key="calendar"
                         data-testid={'back-to-calendar-button'}
-                        to={`/shift-calendar/${store.rootStore.calendarStore.activeCompanyId}`}
+                        to={`/shift-calendar/${
+                            store.rootStore.calendarStore.activeCompanyId
+                                ? store.rootStore.calendarStore.activeCompanyId
+                                : JSON.parse(localStorage.getItem('shift')).companyID
+                        }`}
                     >
                         <Button type="primary">Vrátit se zpět na kalendář</Button>
                     </Link>,

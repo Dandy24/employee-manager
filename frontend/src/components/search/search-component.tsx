@@ -46,7 +46,7 @@ export const SearchComponent: React.FC<SearchComponentProps> = observer((props: 
         <>
             <AutoComplete
                 style={{
-                    width: 800,
+                    width: '85%',
                 }}
                 data-testid="search-bar"
                 options={options}
@@ -60,7 +60,7 @@ export const SearchComponent: React.FC<SearchComponentProps> = observer((props: 
             >
                 <Input.Search
                     size="large"
-                    placeholder={type === 'company' ? `Vyhledejte firmu` : 'Vyhledejte zamestnance'}
+                    placeholder={type === 'company' ? `Vyhledejte firmu` : 'Vyhledejte zaměstnance'}
                     onSearch={searchHandler}
                     enterButton
                     style={{ width: '108%' }}

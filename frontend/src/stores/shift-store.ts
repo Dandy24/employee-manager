@@ -13,6 +13,11 @@ import { ShiftDto } from '../models/dtos/shift-dto';
 import { message } from 'antd';
 import { ShiftTypeEnum } from '../models/enums/shift-type-enum';
 
+import 'moment/locale/cs';
+import moment from 'moment';
+
+moment.locale('cs');
+
 /** TODO REFACTOR !!! **/
 
 export class ShiftStore {
@@ -24,6 +29,7 @@ export class ShiftStore {
 
     shiftEditResult?: 'success' | 'error';
     isSubmitted = false;
+    isRedirected = false;
 
     /** FIXME should probably be changed back to private, might cause errors **/
     rootStore: RootStore;
@@ -39,6 +45,7 @@ export class ShiftStore {
             shift: observable,
             shiftEditResult: observable,
             isSubmitted: observable,
+            isRedirected: observable,
 
             setShiftsForDate: action,
             setShift: action,
@@ -61,13 +68,15 @@ export class ShiftStore {
 
             setShiftEditResult: action,
             setIsShiftSubmitted: action,
+
+            saveShiftToLocalStorage: action,
         });
 
         this.shiftEmployees = [];
     }
 
-    setShift(shiftId: number): void {
-        this.shift = this.shiftList?.find((shift) => shift?.id === shiftId);
+    setShift(shiftId?: number): void {
+        this.shift = shiftId ? this.shiftList?.find((shift) => shift?.id === shiftId) : null;
         if (this.shift) {
             localStorage.setItem('shift', JSON.stringify(this.shift));
         } else {
@@ -156,8 +165,17 @@ export class ShiftStore {
         this.availableEmployees.splice(index, 1);
     }
 
-    async loadShiftEmployees(shiftId: number): Promise<void> {
-        const loadedEmployees = await getEmployeeListForShift(shiftId);
+    async loadShiftEmployees(shiftId?: number): Promise<void> {
+        let loadedEmployees = [];
+        const empIDs = JSON.parse(localStorage.getItem('shift')).employeeIDs;
+        if (this.isRedirected) {
+            loadedEmployees = shiftId
+                ? await getEmployeeListForShift(shiftId)
+                : await getEmployeeListForShift(this.shift.id);
+        } else {
+            loadedEmployees = [...this.rootStore.employeeStore.employees].filter((emp) => empIDs.includes(emp.id));
+        }
+
         runInAction(() => {
             this.shiftEmployees = loadedEmployees;
         });
@@ -187,6 +205,7 @@ export class ShiftStore {
     }
 
     addShift(time: ShiftTypeEnum, companyId: number): void {
+        this.isRedirected = true;
         this.shiftEmployees = [];
         this.shift.time = time;
         this.shift.date = this.rootStore.calendarStore.stringDate;
@@ -203,5 +222,13 @@ export class ShiftStore {
         runInAction(() => {
             this.isSubmitted = submitted;
         });
+    }
+
+    saveShiftToLocalStorage(): void {
+        const employeeIDs = this.shiftEmployees.map((emp) => emp.id);
+        const shift: ShiftDto = { ...this.shift, employeeIDs };
+        if (shift) {
+            localStorage.setItem('shift', JSON.stringify(shift));
+        }
     }
 }

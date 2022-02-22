@@ -12,6 +12,11 @@ import { EmployeeDto } from '../models/dtos/employee-dto';
 import { EmployeeEntity } from '../models/entities/employee-entity';
 import { SearchableEmployeeEntity } from '../models/entities/searchable-employee-entity';
 
+import 'moment/locale/cs';
+import moment from 'moment';
+
+moment.locale('cs');
+
 export class EmployeeStore {
     employees: EmployeeEntity[] = [];
     employee: EmployeeEntity;
@@ -69,7 +74,6 @@ export class EmployeeStore {
                     this.employees = employees;
                     this.employee = selectedEmployee ? selectedEmployee : null;
                 });
-                console.log(this.employees);
             }
         } catch (e) {
             message.error('Failed to load employees from database');
