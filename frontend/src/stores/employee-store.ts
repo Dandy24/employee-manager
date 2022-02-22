@@ -3,7 +3,6 @@ import { action, makeObservable, observable, runInAction } from 'mobx';
 import {
     createEmployee,
     deleteEmployee,
-    getCompanyList,
     getEmployeeList,
     getEmployeeListForCompany,
     updateEmployee,
@@ -15,7 +14,6 @@ import { SearchableEmployeeEntity } from '../models/entities/searchable-employee
 
 import 'moment/locale/cs';
 import moment from 'moment';
-import { SearchableCompanyEntity } from '../models/entities/searchable-company-entity';
 
 moment.locale('cs');
 
