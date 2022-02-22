@@ -59,7 +59,6 @@ export class EmployeeStore {
 
             /** HOTFIX to allow downloading medias from api while running in testserver enviroment **/
             if (REACT_APP_TEST_ENV === 'true') {
-                console.log(employees);
                 employees.forEach(
                     (emp) => (emp.profile_picture = emp.profile_picture?.replace('/api/media', '/api/test_media')),
                 );
@@ -152,6 +151,11 @@ export class EmployeeStore {
     }
 
     async saveEmployee(employee: EmployeeDto): Promise<void> {
+        /** HOTFIX to allow downloading medias from api while running in testserver enviroment **/
+        if (REACT_APP_TEST_ENV === 'true') {
+            employee.profile_picture = employee.profile_picture?.replace('/api/media', '/api/test_media');
+        }
+        /** **/
         if (this.employee.id) {
             try {
                 // const updatedEmployee = await updateEmployee(this.employee.id, employee);
