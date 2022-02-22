@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
+
+RUNNING_TESTSERVER = (len(sys.argv) > 1 and sys.argv[1] == 'testserver')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,6 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = "api/media/"
+
+TEST_MEDIA_ROOT = os.path.join(BASE_DIR, 'test_media')
+
+TEST_MEDIA_URL = "api/test_media/"
 
 FIXTURE_DIRS = (
     os.path.join(BASE_DIR, 'fixtures'),
