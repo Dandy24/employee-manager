@@ -54,7 +54,8 @@ export const SearchResultItem = (row: SearchRow, index: number, rootStore: RootS
                     {row.first_name ? row.first_name : row.name} {row.last_name}
                     <Divider type={'vertical'} /> {row.phone} <Divider type={'vertical'} />{' '}
                     {row.company
-                        ? rootStore.companyStore.companies.find((comp) => comp.id === parseInt(row.company.name))
+                        ? // @ts-ignore
+                          rootStore.companyStore.companies.find((comp) => comp.id === parseInt(row.company))?.name
                         : row.address}
                 </>
             </Title>

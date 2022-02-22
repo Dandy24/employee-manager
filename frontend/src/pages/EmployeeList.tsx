@@ -11,6 +11,8 @@ import { EmployeeDto } from '../models/dtos/employee-dto';
 import '../styles.css';
 import { GeneralTable } from '../components/table/general-table';
 import { toBase64 } from '../utils/file-to-base64';
+import { toJS } from 'mobx';
+import { SearchComponent } from '../components/search/search-component';
 
 interface EmployeeListPageProps {
     rootStore: RootStore;
@@ -72,13 +74,17 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
             (async () => {
                 await rootStore.companyStore.fetchAllCompanies();
                 await employeeStore.fetchAllEmployees();
+                await rootStore.searchStore.createSearchableEmployees();
             })();
         }, []);
 
         return (
             <>
                 <Row justify="end" style={{ marginTop: '1%', marginBottom: '2%' }}>
-                    <Col>
+                    <Col offset={6} span={12}>
+                        <SearchComponent type="employee" options={toJS(rootStore.searchStore.searchableEmployees)} />
+                    </Col>
+                    <Col flex={'auto'} offset={3}>
                         <Button
                             data-testid="create-employee-button"
                             type="primary"

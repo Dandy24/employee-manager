@@ -3,6 +3,7 @@ import { action, makeObservable, observable, runInAction } from 'mobx';
 import {
     createEmployee,
     deleteEmployee,
+    getCompanyList,
     getEmployeeList,
     getEmployeeListForCompany,
     updateEmployee,
@@ -14,6 +15,7 @@ import { SearchableEmployeeEntity } from '../models/entities/searchable-employee
 
 import 'moment/locale/cs';
 import moment from 'moment';
+import { SearchableCompanyEntity } from '../models/entities/searchable-company-entity';
 
 moment.locale('cs');
 
@@ -55,6 +57,7 @@ export class EmployeeStore {
         try {
             const employees = await getEmployeeList();
 
+            let filteredEmployees;
             let selectedEmployee;
 
             if (companyId) {
@@ -63,18 +66,40 @@ export class EmployeeStore {
                         this.employees = data;
                     }),
                 );
-            } else {
+                return;
+            }
+
+            if (filter) {
+                filteredEmployees = employees.filter(
+                    (emp) =>
+                        filter.toLowerCase().includes(emp.first_name.toLowerCase()) ||
+                        emp.first_name.toLowerCase().includes(filter.toLowerCase()) ||
+                        filter.toLowerCase().includes(emp.last_name.toLowerCase()) ||
+                        emp.last_name.toLowerCase().includes(filter.toLowerCase()) ||
+                        filter.includes(emp.phone.toString()),
+                );
+            }
+
+            if (this.rootStore.activePage === 'dashboard') {
                 if (typeof selected !== 'number' && selected?.employee) {
                     selectedEmployee = employees.find((emp) => emp.id === selected.employee.id);
                 } else {
                     selectedEmployee = employees.find((emp) => emp.id === selected);
                 }
-
-                runInAction(() => {
-                    this.employees = employees;
-                    this.employee = selectedEmployee ? selectedEmployee : null;
-                });
+            } else {
+                if (typeof selected !== 'number' && selected?.employee) {
+                    filteredEmployees = employees.filter(
+                        (emp) =>
+                            emp.first_name === selected.employee.first_name ||
+                            emp.last_name === selected.employee.last_name,
+                    );
+                }
             }
+
+            runInAction(() => {
+                this.employees = filteredEmployees ? filteredEmployees : employees;
+                this.employee = selectedEmployee ? selectedEmployee : null;
+            });
         } catch (e) {
             message.error('Failed to load employees from database');
         } finally {
