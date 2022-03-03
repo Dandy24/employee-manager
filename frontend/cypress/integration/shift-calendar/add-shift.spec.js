@@ -28,7 +28,7 @@ describe('proccess of creating shift through company calendar', () => {
         cy.document().toMatchImageSnapshot();
     });
 
-    it('tests calender and header showing correctly', () => {
+    it('tests calendar and header showing correctly', () => {
         cy.get('main > .ant-picker-calendar-full').should('exist').and('be.visible');
         cy.get('[data-testid=header-company-name]').should('have.text', 'Test Company123');
     });
