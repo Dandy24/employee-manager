@@ -18,6 +18,7 @@ export const SearchComponent: React.FC<SearchComponentProps> = observer((props: 
 
     const searchHandler = async (value) => {
         //TODO make component not call BE fetch on every search. Use and filter already fetched data instead (make a copy of array and pass it as options?)
+        // FIXME proc se tady neposila string na BE a tam se nepouziva filter (WHERE atd.) bylo by to jednodussi i efektivnejsi
         if (type === 'company') {
             await rootStore.companyStore.fetchAllCompanies(value, undefined);
         }
@@ -28,6 +29,7 @@ export const SearchComponent: React.FC<SearchComponentProps> = observer((props: 
 
     const selectHandler = async (value, option) => {
         //TODO make component not call BE fetch on every search. Use and filter already fetched data instead (make a copy of array and pass it as options?)
+        // FIXME proc se tady neposila string na BE a tam se nepouziva filter (WHERE atd.) bylo by to jednodussi i efektivnejsi
         if (type === 'employee') {
             await rootStore.employeeStore.fetchAllEmployees(undefined, undefined, option);
             if (rootStore.activePage === 'dashboard') {

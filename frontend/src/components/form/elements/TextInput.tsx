@@ -15,7 +15,6 @@ export const TextInput: React.FC<TextInputProps> = observer((props: TextInputPro
     const { label, name } = props;
 
     return (
-        // <InputWrapper data-testid="text-input">
         <div data-testid={`${name}-text-input`}>
             <label htmlFor={name} data-testid="text-input-label">
                 {label}
@@ -25,6 +24,5 @@ export const TextInput: React.FC<TextInputProps> = observer((props: TextInputPro
                 <Alert message={meta.error} type="error" data-testid="text-input-error" />
             ) : null}
         </div>
-        // </InputWrapper>
     );
 });

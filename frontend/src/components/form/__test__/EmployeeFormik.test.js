@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import { EmployeeFormik } from '../EmployeeFormik';
+import { EmployeeForm } from '../EmployeeForm';
 import { WorkingCategoryEnum } from '../../../models/enums/working-category-enum';
 import { RootStore } from '../../../stores/root-store';
 import { RootStoreProvider } from '../../../stores/root-store-provider';
@@ -72,7 +72,7 @@ Object.defineProperty(window, 'matchMedia', {
 test('Form renders correctly with proper initial values', async () => {
     const handleSubmit = jest.fn();
 
-    const { asFragment } = render(<EmployeeFormik initialValues={new EmployeeDto()} onSubmit={handleSubmit} />);
+    const { asFragment } = render(<EmployeeForm initialValues={new EmployeeDto()} onSubmit={handleSubmit} />);
 
     const form = await screen.findByTestId('employee-form-form');
 
@@ -86,7 +86,7 @@ test('Form display correct initial values', async () => {
     const { getAllByRole } = render(
         <RootStoreProvider rootStore={new RootStore()}>
             <BrowserRouter>
-                <EmployeeFormik initialValues={initialEmployee} onSubmit={handleSubmit} />
+                <EmployeeForm initialValues={initialEmployee} onSubmit={handleSubmit} />
             </BrowserRouter>
         </RootStoreProvider>,
     );
@@ -120,7 +120,7 @@ test('Form submits profile picture correctly', async () => {
     render(
         <RootStoreProvider rootStore={new RootStore()}>
             <BrowserRouter>
-                <EmployeeFormik initialValues={initialEmployee} onSubmit={handleSubmit} />
+                <EmployeeForm initialValues={initialEmployee} onSubmit={handleSubmit} />
             </BrowserRouter>
         </RootStoreProvider>,
     );
@@ -128,22 +128,18 @@ test('Form submits profile picture correctly', async () => {
     const profilePictureInput = await screen.findByTestId('profile-picture-input');
     // userEvent.upload(profilePictureInput, [fakeFile], {}, { applyAccept: true });
 
-    await act(() => {
-        fireEvent.drop(profilePictureInput, {
-            dataTransfer: {
-                files: fakeFile,
-            },
-        });
+    fireEvent.drop(profilePictureInput, {
+        dataTransfer: {
+            files: fakeFile,
+        },
     });
 
     const attachmentInput = await screen.findByTestId('attachments-dropzone-input');
 
-    await act(() => {
-        fireEvent.drop(attachmentInput, {
-            dataTransfer: {
-                files: fakeDoc,
-            },
-        });
+    fireEvent.drop(attachmentInput, {
+        dataTransfer: {
+            files: fakeDoc,
+        },
     });
 
     userEvent.click(await screen.findByText('Uložit'));
@@ -173,7 +169,7 @@ test('Form submits profile picture correctly', async () => {
 test('Form method isnt called and errors are shown when inputting wrong values', async () => {
     const handleSubmit = jest.fn();
 
-    render(<EmployeeFormik initialValues={new EmployeeDto()} onSubmit={handleSubmit} />);
+    render(<EmployeeForm initialValues={new EmployeeDto()} onSubmit={handleSubmit} />);
 
     const firstNameInput = await screen.findByLabelText('Jméno');
     const phoneInput = await screen.findByLabelText('Telefon');
@@ -223,7 +219,7 @@ test('Form method isnt called and errors are shown when inputting wrong values',
 test('Form submit is called correctly with required inputs', async () => {
     const handleSubmit = jest.fn();
 
-    render(<EmployeeFormik initialValues={new EmployeeDto()} onSubmit={handleSubmit} />);
+    render(<EmployeeForm initialValues={new EmployeeDto()} onSubmit={handleSubmit} />);
 
     const firstNameInput = await screen.findByLabelText('Jméno');
     const lastNameInput = await screen.findByLabelText('Příjmení');
@@ -247,8 +243,8 @@ test('Form submit is called correctly with required inputs', async () => {
 
     userEvent.click(submitButton);
 
-    /** FIXME je tam ten objekt spravne, ale za nim jsou jeste metody z Formiku a hazi to error **/
     await waitFor(() => {
+        expect(handleSubmit).toHaveBeenCalled();
         expect(handleSubmit.mock.calls[0][0]).toEqual({
             first_name: 'Alfred',
             last_name: 'Dlouhy',

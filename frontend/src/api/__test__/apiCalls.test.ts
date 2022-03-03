@@ -133,15 +133,15 @@ test('Fail creating employee', async () => {
         company: null,
     };
 
-    fetchMock.mockReject(new Error('Unable to create employee'));
+    fetchMock.mockRejectOnce(new Error('Unable to create employee'));
 
-    // try {
-    //     await createEmployee(employee);
-    // } catch (e) {
-    //     await expect(fetch).rejects.toThrowError('Unable to create employee');
-    // }
-
-    await expect(createEmployee(employee)).rejects.toThrowError('Unable to create employee');
+    try {
+        await createEmployee(employee);
+    } catch (e) {
+        await expect(fetch).toHaveBeenCalledTimes(1);
+        await expect(fetch).toThrowError();
+        expect(e).toEqual(Error('Unable to create employee'));
+    }
 });
 
 test('Update employee', async () => {
@@ -188,5 +188,4 @@ test('Update employee', async () => {
     expect(editedResponse.working_category).not.toEqual(referenceEmp.working_category);
     expect(editedResponse.health_limitations).toEqual('Špatný zrak');
     expect(editedResponse.company).toBeNull();
-    // expect(editedResponse.id).toBeDefined(); //ID se tvori na BE... Testovat zde?
 });

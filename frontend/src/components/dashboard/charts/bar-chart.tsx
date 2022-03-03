@@ -82,13 +82,15 @@ export const MyBarChart: React.FC<BarChartProps> = observer((props: BarChartProp
                         onClick={clickable ? clickAction : null}
                         role={`bar-chart-${dataKey4}-bar`}
                     />
-                    <Bar
-                        dataKey={dataKey2}
-                        name={dataName2}
-                        fill="#82ca9d"
-                        onClick={clickable ? clickAction : null}
-                        role={`bar-chart-${dataKey2}-bar`}
-                    />
+                    {dataKey2 && (
+                        <Bar
+                            dataKey={dataKey2}
+                            name={dataName2}
+                            fill="#82ca9d"
+                            onClick={clickable ? clickAction : null}
+                            role={`bar-chart-${dataKey2}-bar`}
+                        />
+                    )}
                     {dataKey3 && (
                         <Bar
                             dataKey={dataKey3}

@@ -2,7 +2,7 @@ import { Button, Col, Modal, Row } from 'antd';
 import React, { useEffect } from 'react';
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { EditDrawer } from '../components/EditDrawer';
-import { EmployeeFormik } from '../components/form/EmployeeFormik';
+import { EmployeeForm } from '../components/form/EmployeeForm';
 import moment from 'moment';
 import { RootStore } from '../stores/root-store';
 import { EmployeeTableColumns } from '../components/table/tableColumns/EmployeeTableColumns';
@@ -115,7 +115,7 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                     }}
                     cancelButtonText="Zavřít okno"
                 >
-                    <EmployeeFormik initialValues={employeeStore.employee} onSubmit={updateHandler} />
+                    <EmployeeForm initialValues={employeeStore.employee} onSubmit={updateHandler} />
                 </EditDrawer>
             </>
         );

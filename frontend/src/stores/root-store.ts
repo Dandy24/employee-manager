@@ -18,7 +18,7 @@ export class RootStore {
     searchStore: SearchStore;
     calendarStore: CalendarStore;
     dashboardStore: DashboardStore;
-    activePage = 'company-list';
+    activePage = 'dashboard';
 
     constructor() {
         this.employeeStore = new EmployeeStore(this);
@@ -38,13 +38,4 @@ export class RootStore {
     setActivePage(newPage: string): void {
         this.activePage = newPage;
     }
-
-    /*hydrate(): RootStoreHydration {
-        return {};
-    }
-
-    rehydrate(data: RootStoreHydration): void {
-        if (data) {
-        }
-    }*/
 }

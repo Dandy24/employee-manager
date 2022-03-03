@@ -41,24 +41,21 @@ export async function getEmployeeListForShift(shiftId: number): Promise<Employee
 //Employee detail
 
 export async function createEmployee(employee: EmployeeDto): Promise<EmployeeEntity> {
-    const response = await fetch(`${config.API_URL}/employee-create`, {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: JSON.stringify(employee),
-    });
-    if (response.ok) {
+    try {
+        const response = await fetch(`${config.API_URL}/employee-create`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(employee),
+        });
         return await response.json();
-    } else {
-        const error = new Error('Unable to create employee');
-        return Promise.reject(error);
+    } catch (e) {
+        throw new Error('Unable to create employee');
     }
 }
 
 export async function updateEmployee(editedID: number, updatedEmployee: EmployeeDto): Promise<EmployeeEntity> {
-    //TODO fix editedID
-
     const response = await fetch(`${config.API_URL}/employee-update/${editedID}`, {
         method: 'PUT',
         headers: {

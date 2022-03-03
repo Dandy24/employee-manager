@@ -43,6 +43,7 @@ export class CompanyStore {
         this.companies.push(JSON.parse(localStorage.getItem('company')));
     }
 
+    // FIXME proc se tady neposila string na BE a tam se nepouziva filter (WHERE atd.)
     async fetchAllCompanies(filter?: string, selected?: SearchableCompanyEntity): Promise<void> {
         runInAction(() => {
             this.loadingCompanies = true;

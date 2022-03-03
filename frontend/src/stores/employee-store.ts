@@ -44,6 +44,7 @@ export class EmployeeStore {
         });
     }
 
+    // FIXME proc se tady neposila string na BE a tam se nepouziva filter (WHERE atd.)
     async fetchAllEmployees(
         companyId: number = null,
         filter?: string,
@@ -185,14 +186,19 @@ export class EmployeeStore {
     }
 
     async deleteEmployee(id: number): Promise<void> {
-        await deleteEmployee(id);
-        runInAction(() => {
-            this.loadingEmployees = true;
-            message.success('Zamestnanec byl úspěšně smazán.');
-        });
-        await this.fetchAllEmployees();
-        runInAction(() => {
-            this.loadingEmployees = false;
-        });
+        try {
+            await deleteEmployee(id);
+            runInAction(() => {
+                this.loadingEmployees = true;
+                message.success('Zamestnanec byl úspěšně smazán.');
+            });
+            await this.fetchAllEmployees();
+        } catch (e) {
+            message.error('Zaměstnance se nepodařilo smazat.');
+        } finally {
+            runInAction(() => {
+                this.loadingEmployees = false;
+            });
+        }
     }
 }

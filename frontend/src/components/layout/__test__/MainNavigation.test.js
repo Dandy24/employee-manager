@@ -8,13 +8,15 @@ import { RootStoreProvider } from '../../../stores/root-store-provider';
 import { act } from '@testing-library/react';
 
 test('Menu snapshot matches the previous one', async () => {
-    const { asFragment } = render(
+    render(
         <BrowserRouter>
             <MainNavigation />
         </BrowserRouter>,
     );
 
-    expect(asFragment()).toMatchSnapshot();
+    const mainMenu = await screen.findByTestId('main-header');
+
+    expect(mainMenu).toMatchSnapshot();
 });
 
 test('Menu displays on page correctly', async () => {

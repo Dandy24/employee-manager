@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "version": "1.0.0",
+  "homepage": "./",
   "private": true,
   "scripts": {
     "start": "react-scripts -r @cypress/instrument-cra start",
@@ -43,7 +44,7 @@
     "babel-plugin-import": "^1.13.3",
     "babel-plugin-istanbul": "^6.1.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "cypress": "^9.5.0",
+    "cypress": "^9.5.1",
     "cypress-file-upload": "^6.0.0-beta.0",
     "cypress-wait-until": "^1.7.2",
     "eslint": "^7.32.0",

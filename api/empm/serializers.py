@@ -38,6 +38,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
 
 class MonthlyOutputSerializer(serializers.ModelSerializer):
+    working_hours = serializers.SerializerMethodField('cap_work_hours')
     effectivity = serializers.SerializerMethodField('calculate_effectivity')
     overtime_hours = serializers.SerializerMethodField('calculate_overtimes')
 
@@ -54,6 +55,12 @@ class MonthlyOutputSerializer(serializers.ModelSerializer):
             return overtime
         else:
             return
+
+    def cap_work_hours(self, output):
+        if output.working_hours > 160:
+            return 160
+        else:
+            return output.working_hours
 
     class Meta:
         model = MonthlyOutput

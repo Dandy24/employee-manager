@@ -147,8 +147,10 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Second address is used for deployment - modify if needed
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://localhost:63342"
 ]
 
 REST_FRAMEWORK = {
