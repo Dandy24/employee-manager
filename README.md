@@ -40,3 +40,4 @@ npm run test:coverage
 ## NOTES
 - Image regression testing in Cypress might throw image diffs errors, while running in GUI mode (npm run test:e2e).
 Ignore it, reference images are taken in headless mode in order to work in CI pipeline and unless reported faulty by CI, they are correct.
+- Image snaphshot taking in Cypress also does not work, when running All Test in batch in GUI mode.  https://github.com/cypress-io/cypress/issues/3090
