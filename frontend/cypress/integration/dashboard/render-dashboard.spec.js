@@ -2,13 +2,6 @@ const purple = 'rgb(136, 132, 216)';
 const green = 'rgb(130, 202, 157)';
 
 describe('rendering graphs and other statictics in dashboard', () => {
-    const allChartsVisible = () => {
-        cy.waitUntil(() => {
-            cy.get('#line-chart').should('be.visible');
-            cy.get('#pie-chart').should('be.visible');
-        });
-    };
-
     const tooltipNotVisible = (chart) =>
         chart.find('.recharts-tooltip-wrapper').should('have.css', 'visibility', 'hidden');
 
@@ -20,15 +13,29 @@ describe('rendering graphs and other statictics in dashboard', () => {
     const areaChart = () => cy.get('#area-chart');
     const barChart = () => cy.get('#bar-chart');
 
+    const checkBarTooltipValues = (
+        barName,
+        chartIndex,
+        shouldHaveProp,
+        shouldHaveVal,
+        shouldNotHaveProp,
+        shouldNotHaveVal,
+    ) => {
+        barChart().find(`[role="bar-chart-${barName}-bar"]`).eq(chartIndex).trigger('mouseover', { force: true });
+
+        barChart()
+            .find('.recharts-tooltip-wrapper')
+            .should(shouldHaveProp, shouldHaveVal)
+            .and(shouldNotHaveProp, shouldNotHaveVal);
+    };
+
     beforeEach(() => {
         cy.visit('/');
-        // allChartsVisible();
     });
 
     it('Line chart is rendered correctly and matches and image snapshot', () => {
         cy.waitUntil(() => lineChart().should('be.visible'))
             .and((chart) => {
-                // we can assert anything about the chart really
                 expect(chart.height()).to.be.greaterThan(200);
             })
             .find('.recharts-line')
@@ -47,11 +54,9 @@ describe('rendering graphs and other statictics in dashboard', () => {
             });
     });
 
-    // FIXME wait for lines to be aligned properly
     it('Line chart matches image snapshot', () => {
         cy.waitUntil(() => lineChart().should('not.contain.text', 'Invalid date'));
         lineChart().toMatchImageSnapshot();
-        // cy.get('#line-chart').toMatchSnapshot();
     });
 
     it('Pie chart is rendered correctly and tooltip works as expected', () => {
@@ -91,22 +96,6 @@ describe('rendering graphs and other statictics in dashboard', () => {
     it('checks bar chart and its tooltip render correctly', () => {
         const barTypes = ['work', 'sick', 'overtime']; // 'vac'
 
-        const checkTooltipValues = (
-            barName,
-            chartIndex,
-            shouldHaveProp,
-            shouldHaveVal,
-            shouldNotHaveProp,
-            shouldNotHaveVal,
-        ) => {
-            barChart().find(`[role="bar-chart-${barName}-bar"]`).eq(chartIndex).trigger('mouseover', { force: true });
-
-            barChart()
-                .find('.recharts-tooltip-wrapper')
-                .should(shouldHaveProp, shouldHaveVal)
-                .and(shouldNotHaveProp, shouldNotHaveVal);
-        };
-
         cy.waitUntil(() => barChart().should('be.visible'));
         barChart()
             .find('[role="bar-chart-work-bar"]')
@@ -120,8 +109,8 @@ describe('rendering graphs and other statictics in dashboard', () => {
         });
 
         /** TEST if zero values are ignored in tooltip **/
-        checkTooltipValues('work', 0, 'not.include.text', 'Nemocenská', 'include.text', 'Přesčas : 2');
-        checkTooltipValues('work', 1, 'not.include.text', 'Přesčas', 'include.text', 'Nemocenská : 12');
+        checkBarTooltipValues('work', 0, 'not.include.text', 'Nemocenská', 'include.text', 'Přesčas : 2');
+        checkBarTooltipValues('work', 1, 'not.include.text', 'Přesčas', 'include.text', 'Nemocenská : 12');
 
         /** Matches image snapshot with opened tooltip **/
         barChart().toMatchImageSnapshot();
@@ -133,8 +122,18 @@ describe('rendering graphs and other statictics in dashboard', () => {
     });
 
     //TODO check if overtime, then hours cannot be over 160 (currently if i.e. 165h in a month, overtime is 5h, but work_hours is still 165!)
+    // it('Check if work hours cant exceed 160, even with overtime', () => {
+    //     cy.waitUntil(() => barChart().should('be.visible'));
+    //     barChart()
+    //         .find('[role="bar-chart-work-bar"]')
+    //         .should('have.length', 5)
+    //         .eq(1)
+    //         .trigger('mouseover', { force: true });
+    //     barChart().should('great');
+    //
+    //     checkBarTooltipValues('work', 0, 'not.', 'Nemocenská', 'include.text', 'Přesčas : 2');
+    // });
 
-    // TODO expand
     it('Bar chart correctly redirects to employee page', () => {
         cy.waitUntil(() => barChart().should('be.visible'));
         barChart().find('[role="bar-chart-work-bar"]').eq(1).click({ force: true });
