@@ -80,11 +80,11 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
 
         return (
             <>
-                <Row justify="end" style={{ marginTop: '1%', marginBottom: '2%' }}>
+                <Row justify="space-between" style={{ marginTop: '1%', marginBottom: '2%' }}>
                     <Col offset={6} span={12}>
                         <SearchComponent type="employee" options={toJS(rootStore.searchStore.searchableEmployees)} />
                     </Col>
-                    <Col flex={'auto'} offset={3}>
+                    <Col>
                         <Button
                             data-testid="create-employee-button"
                             type="primary"

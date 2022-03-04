@@ -1,4 +1,4 @@
-describe('proccess of finding company through search box', () => {
+describe('process of finding company through search box', () => {
     const searchBar = () => cy.get('[data-testid=search-bar]');
     const searchList = () => cy.get('.rc-virtual-list-holder-inner');
     const companyTable = () => cy.get('[data-testid=company-table]');
@@ -69,7 +69,7 @@ describe('proccess of finding company through search box', () => {
         );
     });
 
-    it('check autocomplete multiple record with similair keywords', function () {
+    it('check autocomplete multiple record with similar keywords', function () {
         searchBar().type('company');
 
         /** Check lenght of search options list **/

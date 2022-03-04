@@ -31,7 +31,6 @@ export class ShiftStore {
     isSubmitted = false;
     isRedirected = false;
 
-    /** FIXME should probably be changed back to private, might cause errors **/
     rootStore: RootStore;
 
     constructor(rootStore: RootStore) {

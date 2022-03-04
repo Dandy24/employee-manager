@@ -24,7 +24,6 @@ export const MyLineChart: React.FC<LineChartProps> = observer((props: LineChartP
             <Title level={2} style={{ textAlign: 'center' }}>
                 {title}
             </Title>
-            {/* FIXME data-testid doesnt work?????????? */}
             <ResponsiveContainer id={'line-chart'} width="100%" height="90%">
                 <LineChart width={600} height={250} data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="4 4" />
