@@ -13,20 +13,20 @@ import os
 import sys
 from pathlib import Path
 
-RUNNING_TESTSERVER = (len(sys.argv) > 1 and sys.argv[1] == 'testserver')
+# RUNNING_TESTSERVER = (len(sys.argv) > 1 and sys.argv[1] == 'testserver')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-if RUNNING_TESTSERVER:
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'test_media')
-else:
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# if RUNNING_TESTSERVER:
+#     MEDIA_ROOT = os.path.join(BASE_DIR, 'test_media')
+# else:
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-if RUNNING_TESTSERVER:
-    MEDIA_URL = "api/test_media/"
-else:
-    MEDIA_URL = "api/media/"
+# if RUNNING_TESTSERVER:
+#     MEDIA_URL = "api/test_media/"
+# else:
+MEDIA_URL = "api/media/"
 
 FIXTURE_DIRS = (
     os.path.join(BASE_DIR, 'fixtures'),

@@ -22,6 +22,11 @@ describe('shift validation', () => {
         cy.get(`[title="${testDate}"]`).find('.ant-picker-calendar-date-content').dblclick();
     });
 
+    it('checkes visual regression of header', () => {
+        cy.get('[data-testid=shift-ranni]').click();
+        cy.get('.ant-page-header').toMatchImageSnapshot();
+    });
+
     it('checkes visual regression of shift manager', () => {
         cy.get('[data-testid=shift-ranni]').click();
 

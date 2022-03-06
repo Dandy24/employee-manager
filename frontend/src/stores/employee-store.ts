@@ -15,7 +15,7 @@ import { SearchableEmployeeEntity } from '../models/entities/searchable-employee
 import 'moment/locale/cs';
 import moment from 'moment';
 
-const { REACT_APP_TEST_ENV } = process.env;
+// const { REACT_APP_TEST_ENV } = process.env;
 
 moment.locale('cs');
 
@@ -59,11 +59,11 @@ export class EmployeeStore {
             const employees = await getEmployeeList();
 
             /** HOTFIX to allow downloading medias from api while running in testserver enviroment **/
-            if (REACT_APP_TEST_ENV === 'true') {
-                employees.forEach(
-                    (emp) => (emp.profile_picture = emp.profile_picture?.replace('/api/media', '/api/test_media')),
-                );
-            }
+            // if (REACT_APP_TEST_ENV === 'true') {
+            //     employees.forEach(
+            //         (emp) => (emp.profile_picture = emp.profile_picture?.replace('/api/media', '/api/test_media')),
+            //     );
+            // }
             /** **/
 
             let filteredEmployees;
@@ -153,9 +153,9 @@ export class EmployeeStore {
 
     async saveEmployee(employee: EmployeeDto): Promise<void> {
         /** HOTFIX to allow downloading medias from api while running in testserver enviroment **/
-        if (REACT_APP_TEST_ENV === 'true') {
-            employee.profile_picture = employee.profile_picture?.replace('/api/media', '/api/test_media');
-        }
+        // if (REACT_APP_TEST_ENV === 'true') {
+        //     employee.profile_picture = employee.profile_picture?.replace('/api/media', '/api/test_media');
+        // }
         /** **/
         if (this.employee.id) {
             try {
