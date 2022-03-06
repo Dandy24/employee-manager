@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "homepage": "./",
   "private": true,
   "scripts": {
@@ -76,6 +76,7 @@
     "antd": "^4.16.8",
     "css-loader": "^6.2.0",
     "cypress-plugin-snapshots": "^1.4.4",
+    "cypress-real-events": "^1.7.0",
     "formik": "^2.2.9",
     "formik-antd": "^2.0.1",
     "mobx": "^6.3.2",

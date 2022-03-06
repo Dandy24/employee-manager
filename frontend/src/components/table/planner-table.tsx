@@ -40,6 +40,7 @@ export const PlannerTable: React.FC<PlannerTableProps> = observer((props: Planne
             <Droppable droppableId={`${type}-table`}>
                 {(provided, snapshot) => (
                     <table
+                        ref={provided.innerRef}
                         {...getTableProps()}
                         data-testid={`${type}-table`}
                         style={{

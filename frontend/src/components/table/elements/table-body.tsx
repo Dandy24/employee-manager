@@ -2,6 +2,9 @@ import { observer } from 'mobx-react-lite';
 import { Draggable, DroppableProvided } from 'react-beautiful-dnd';
 import React from 'react';
 import { Row, TableBodyProps } from 'react-table';
+import { newIsValid, showErrorTooltip } from '../../../utils/drag-end-handler';
+import { useRootStore } from '../../../stores/root-store-provider';
+import { Tooltip } from 'antd';
 
 export interface MyTableBodyProps {
     providedDroppable: DroppableProvided;
@@ -16,6 +19,8 @@ export interface MyTableBodyProps {
 export const TableBody: React.FC<MyTableBodyProps> = observer((props: MyTableBodyProps) => {
     const { providedDroppable, tableBodyProps, rows, prepareRow, type } = props;
 
+    const { shiftStore } = useRootStore();
+
     return (
         <tbody
             {...tableBodyProps}
@@ -28,9 +33,14 @@ export const TableBody: React.FC<MyTableBodyProps> = observer((props: MyTableBod
             {rows.map((row, index) => {
                 prepareRow(row);
                 return (
-                    <Draggable draggableId={`${type}-'${row.id.toString()}`} key={row.id} index={row.index}>
+                    <Draggable
+                        draggableId={`${type}-'${row.id.toString()}`}
+                        key={row.id}
+                        index={row.index}
+                        isDragDisabled={type === 'employee-table' && !newIsValid(row.values, shiftStore)}
+                    >
                         {(provided) => {
-                            return (
+                            const content = (
                                 <tr
                                     key={`${type}-tbody-tr-${index}`}
                                     {...row.getRowProps()}
@@ -46,13 +56,30 @@ export const TableBody: React.FC<MyTableBodyProps> = observer((props: MyTableBod
                                                 key={`${type}-tbody-td-${index}`}
                                                 {...cell.getCellProps()}
                                                 className="ant-table-cell"
-                                                style={{ width: '100%' }}
+                                                style={{
+                                                    width: '100%',
+                                                    backgroundColor:
+                                                        type === 'employee-table' && !newIsValid(row.values, shiftStore)
+                                                            ? 'rgba(245, 34, 45, .4)'
+                                                            : 'white',
+                                                }}
                                             >
                                                 {cell.render('Cell')}
                                             </td>
                                         );
                                     })}
                                 </tr>
+                            );
+
+                            return type === 'employee-table' && !newIsValid(row.values, shiftStore) ? (
+                                <Tooltip
+                                    id={'invalid-message-tooltip'}
+                                    title={() => showErrorTooltip(row.values, shiftStore)}
+                                >
+                                    {content}
+                                </Tooltip>
+                            ) : (
+                                content
                             );
                         }}
                     </Draggable>

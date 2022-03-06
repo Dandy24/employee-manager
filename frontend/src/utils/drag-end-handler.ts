@@ -2,6 +2,8 @@ import { ShiftStore } from '../stores/shift-store';
 import { DropResult } from 'react-beautiful-dnd';
 import { message } from 'antd';
 
+//FIXME any u employee: Record
+
 export const isValid = (sourceDroppableId: number, destinationDroppableId: number, store: ShiftStore): boolean => {
     /** Check whether the employee is in the different shift on the same day **/
     if (
@@ -28,8 +30,47 @@ export const isValid = (sourceDroppableId: number, destinationDroppableId: numbe
         message.error(`Tento zaměstnanec už na této směně je`);
         return false;
     }
-    /** TODO IF IS MAXIMUM SHIFT CAPATITY REACHED???? CONSIDER ADDING ATTRIBUTE TO THE TABLE **/
+    /** TODO IF IS MAXIMUM SHIFT CAPATITY REACHED???? CONSIDER ADDING ATTRIBUTE TO THE DJANGO MODEL **/
+    return true;
+};
 
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
+export const showErrorTooltip = (employee: Record<string, any>, store: ShiftStore): string => {
+    /** Check whether the employee is in the different shift on the same day **/
+    if (
+        store.shiftListForDay.find(
+            (shift) => shift.employeeIDs.includes(employee.id) && shift.time !== store.shift.time,
+        )
+    ) {
+        const foundEmp = store.availableEmployees.find((emp) => emp.id === employee.id);
+
+        if (foundEmp) {
+            const employee2 = store.shiftListForDay.find((shift) => shift.employeeIDs.includes(foundEmp.id));
+            return `Zaměstnanec se v tento den již nachází na směně ${employee2.time}`;
+        }
+    }
+    /** Check whether the selected employee isnt inactive **/
+    if (store.availableEmployees.find((emp) => emp.id === employee.id && !employee.active)) {
+        return `Zaměstnanec je neaktivní`;
+    }
+    /** TODO IF IS MAXIMUM SHIFT CAPATITY REACHED???? CONSIDER ADDING ATTRIBUTE TO THE DJANGO MODEL **/
+};
+
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
+export const newIsValid = (employee: Record<string, any>, store: ShiftStore): boolean => {
+    /** Check whether the employee is in the different shift on the same day **/
+    if (
+        store.shiftListForDay.find(
+            (shift) => shift.employeeIDs.includes(employee.id) && shift.time !== store.shift.time,
+        )
+    ) {
+        return false;
+    }
+    /** Check whether the selected employee isnt inactive **/
+    if (store.availableEmployees.find((emp) => emp.id === employee.id && !employee.active)) {
+        return false;
+    }
+    /** TODO IF IS MAXIMUM SHIFT CAPACITY REACHED???? CONSIDER ADDING ATTRIBUTE TO THE DJANGO MODEL **/
     return true;
 };
 

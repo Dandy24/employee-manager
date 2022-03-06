@@ -4,6 +4,8 @@ import moment from 'moment';
 
 const testDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
 
+const inactiveColor = 'rgba(245, 34, 45, 0.4)';
+
 // TODO use image snapshot on concrete components, not just whole page
 
 describe('shift validation', () => {
@@ -73,75 +75,88 @@ describe('shift validation', () => {
         );
     });
 
-    /** Employee wont be added to shift, error message is thrown and employee stays in original table **/
-    it('check inactive employee assign', () => {
+    /** Employee will have red color and show tooltip on hover **/
+    it('check inactive employee', () => {
         cy.get('[data-testid=shift-add-button]').click();
         cy.get('[data-testid=new-shift-Odpoledne]').click();
 
         cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 5);
 
-        cy.dragAndDrop('[data-testid=employee-table-row-3]', '[data-testid=shift-table-body]');
-        cy.get('.ant-message-notice-content').should('be.visible').and('have.text', 'Zaměstnanec je neaktivní');
+        cy.get('[data-testid=employee-table-row-3]')
+            .find('td') //TODO loop through all cells, not just one
+            .eq(1)
+            .should('have.css', 'background-color', inactiveColor);
 
-        cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 0);
+        cy.get('[data-testid=employee-table-row-3]').trigger('mouseover');
 
-        cy.get('[data-testid=employee-table-body]').find('tr').contains('36');
+        cy.waitUntil(() =>
+            cy.get('#invalid-message-tooltip').should('be.visible').and('have.text', 'Zaměstnanec je neaktivní'),
+        );
     });
 
-    /** Employee wont be added to shift, error message is thrown and employee stays in original table **/
+    /** Employee won't be added to shift, error message is thrown and employee stays in original table **/
     it('check assigning employee already assigned elsewhere', () => {
         cy.get('[data-testid=shift-add-button]').click();
         cy.get('[data-testid=new-shift-Odpoledne]').click();
 
         cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 5);
 
-        cy.dragAndDrop('[data-testid=employee-table-row-1]', '[data-testid=shift-table-body]');
-        cy.get('.ant-message-notice-content')
-            .should('be.visible')
-            .and('have.text', 'Zaměstnanec se v tento den již nachází na směně vecer');
+        cy.get('[data-testid=employee-table-row-1]')
+            .find('td') //TODO loop through all cells, not just one
+            .eq(1)
+            .should('have.css', 'background-color', inactiveColor);
 
-        cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 0);
+        cy.get('[data-testid=employee-table-row-1]').trigger('mouseover');
 
-        cy.get('[data-testid=employee-table-body]').find('tr').contains('19');
+        cy.waitUntil(() =>
+            cy
+                .get('#invalid-message-tooltip')
+                .should('be.visible')
+                .and('have.text', 'Zaměstnanec se v tento den již nachází na směně vecer'),
+        );
+    });
+
+    it('checks dragging invalid employee', () => {
+        cy.get('[data-testid=shift-add-button]').click();
+        cy.get('[data-testid=new-shift-Odpoledne]').click();
+
+        cy.waitUntil(() => cy.dragAndDrop('[data-testid=employee-table-row-1]', '[data-testid=shift-table-body]'));
+
+        //FIXME Refaktorovat overovani D&D operaci HLAVNE toho overovani nize (udelat na to funkce)
+
+        cy.waitUntil(() =>
+            cy
+                .get('[data-testid=shift-table-body]')
+                .should('not.contain.html', 'tr')
+                .and('not.contain.text', 'MartinNovak'),
+        );
+
+        cy.waitUntil(() => cy.dragAndDrop('[data-testid=employee-table-row-3]', '[data-testid=shift-table-body]'));
+
+        //FIXME Refaktorovat overovani D&D operaci HLAVNE toho overovani nize (udelat na to funkce)
+
+        cy.waitUntil(() =>
+            cy
+                .get('[data-testid=shift-table-body]')
+                .should('not.contain.html', 'tr')
+                .and('not.contain.text', 'AlfonzZelinka'),
+        );
     });
 
     /** Shift should not be saved and error result should be visible along with some error message **/
-    it('check submitting invalid shift', () => {
+    it('check submitting invalid shift (without any employees in shift list)', () => {
         cy.get('[data-testid=shift-add-button]').click();
         cy.get('[data-testid=new-shift-Odpoledne]').click();
 
         cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 5);
 
         cy.waitUntil(() => cy.dragAndDrop('[data-testid=employee-table-row-2]', '[data-testid=shift-table-body]'));
-        cy.waitUntil(() =>
-            cy
-                .get('.ant-message-notice-content')
-                .should('be.visible')
-                .and('have.text', 'Zaměstnanec se v tento den již nachází na směně ranni'),
-        );
 
         cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 0);
 
         cy.get('[data-testid=employee-table-body]').find('tr').contains('43');
 
         cy.get('[data-testid=submit-shift-button]').should('be.disabled');
-        // .click();
-
-        /** WONT SHOW, BECAUSE SUBMIT BUTTON IS NOW DISABLED IF SHIFT IS INVALID **/
-
-        // cy.get('.ant-result-error').should('be.visible');
-        // cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se nepodařilo vytvořit.');
-        // cy.get('[data-testid=shift-submit-result-subtitle]').should(
-        //     'have.text',
-        //     'Zkontrolujte prosím zda nebyly hlášeny chyby',
-        // );
-
-        // cy.get('[data-testid=back-to-calendar-button]').click();
-        //
-        // cy.get('[title="2021-12-15"] > .ant-picker-cell-inner > .ant-picker-calendar-date-content').should(
-        //     'not.contain.text',
-        //     'odpoledne',
-        // );
     });
 
     /** Open existing shift and save without changing anything **/

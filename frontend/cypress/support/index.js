@@ -18,6 +18,7 @@ import './commands';
 import '@percy/cypress';
 import 'cypress-plugin-snapshots/commands';
 import '@cypress/code-coverage/support';
+import 'cypress-real-events/support';
 
 // Cypress.on('uncaught:exception', (err, runnable) => {
 //     // returning false here prevents Cypress from

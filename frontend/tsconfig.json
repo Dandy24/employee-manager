@@ -27,6 +27,7 @@
   "types": [
     "cypress",
     "@percy/cypress",
-    "cypress-file-upload"
+    "cypress-file-upload",
+    "cypress-real-events"
   ]
 }
