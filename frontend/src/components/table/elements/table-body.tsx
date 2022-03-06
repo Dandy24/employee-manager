@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import { Draggable, DroppableProvided } from 'react-beautiful-dnd';
 import React from 'react';
 import { Row, TableBodyProps } from 'react-table';
-import { newIsValid, showErrorTooltip } from '../../../utils/drag-end-handler';
+import { isInvalid } from '../../../utils/drag-end-handler';
 import { useRootStore } from '../../../stores/root-store-provider';
 import { Tooltip } from 'antd';
 
@@ -37,7 +37,7 @@ export const TableBody: React.FC<MyTableBodyProps> = observer((props: MyTableBod
                         draggableId={`${type}-'${row.id.toString()}`}
                         key={row.id}
                         index={row.index}
-                        isDragDisabled={type === 'employee-table' && !newIsValid(row.values, shiftStore)}
+                        isDragDisabled={type === 'employee-table' && !!isInvalid(row.values, shiftStore)}
                     >
                         {(provided) => {
                             const content = (
@@ -59,7 +59,7 @@ export const TableBody: React.FC<MyTableBodyProps> = observer((props: MyTableBod
                                                 style={{
                                                     width: '100%',
                                                     backgroundColor:
-                                                        type === 'employee-table' && !newIsValid(row.values, shiftStore)
+                                                        type === 'employee-table' && !!isInvalid(row.values, shiftStore)
                                                             ? 'rgba(245, 34, 45, .4)'
                                                             : 'white',
                                                 }}
@@ -71,11 +71,8 @@ export const TableBody: React.FC<MyTableBodyProps> = observer((props: MyTableBod
                                 </tr>
                             );
 
-                            return type === 'employee-table' && !newIsValid(row.values, shiftStore) ? (
-                                <Tooltip
-                                    id={'invalid-message-tooltip'}
-                                    title={() => showErrorTooltip(row.values, shiftStore)}
-                                >
+                            return type === 'employee-table' && !!isInvalid(row.values, shiftStore) ? (
+                                <Tooltip id={'invalid-message-tooltip'} title={() => isInvalid(row.values, shiftStore)}>
                                     {content}
                                 </Tooltip>
                             ) : (
