@@ -8,9 +8,27 @@ moment.locale('cs');
 
 const testDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
 
-// TODO use image snapshot on concrete components, not just whole page
+const calendar = () => cy.get('.ant-picker-calendar-full');
+const header = () => cy.get('.ant-page-header');
 
-describe('proccess of creating shift through company calendar', () => {
+const shiftManagerURLPath = '/shift-manager';
+
+const checkCorrectManagerDisplay = () => {
+    cy.get('.ant-page-header').find('.ant-page-header-heading-left').should('contain.text', 'Test Company123');
+    cy.get('.ant-page-header')
+        .find('.ant-page-header-heading-left')
+        .should('contain.text', moment().subtract(1, 'days').format('MMMM Do YYYY'));
+    cy.get('.ant-page-header')
+        .get('.ant-page-header-heading-tags > .ant-tag')
+        .should('have.text', 'odpoledne')
+        .and('be.visible');
+
+    cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 5);
+};
+
+const morningShiftColor = 'rgb(250, 173, 20)';
+
+describe('process of creating shift through company calendar', () => {
     beforeEach(() => {
         cy.waitUntil(() => deleteAllShifts());
         cy.waitUntil(() =>
@@ -23,8 +41,16 @@ describe('proccess of creating shift through company calendar', () => {
         cy.get('[data-testid=company-calendar-button-1]').click();
     });
 
-    it('Tests if the image snapshot of company calendar matches ', () => {
-        /** Take page snapshot image and compare it to the previous one, to find any potencial styling changes **/
+    it('Tests if company calendar snapshot matches', () => {
+        calendar().toMatchImageSnapshot();
+    });
+
+    it('Tests if header snapshot matches', () => {
+        header().toMatchImageSnapshot();
+    });
+
+    it('Tests if whole page snapshot matches', () => {
+        /** Take page snapshot image and compare it to the previous one, to find any potential styling changes **/
         cy.document().toMatchImageSnapshot();
     });
 
@@ -44,7 +70,7 @@ describe('proccess of creating shift through company calendar', () => {
             .should('exist')
             .and('be.visible')
             .and('have.text', moment().format('MMM'));
-        cy.get('[data-testid=header-company-name]').should('have.text', 'Test Company123');
+        //cy.get('[data-testid=header-company-name]').should('have.text', 'Test Company123');
     });
 
     it('tests shifts showing up correctly in calendar', () => {
@@ -63,7 +89,15 @@ describe('proccess of creating shift through company calendar', () => {
         cy.get(`[title="${testDate}"]`).find('.ant-badge').should('exist');
     });
 
-    //FIXME wrap whole row in clickable link, fix getting button in [data-testid=shift-ranni], its currently only on text, not whole row including button
+    it('tests shifts showing up with correctly colored dot', () => {
+        cy.waitUntil(() =>
+            cy
+                .get(`[data-testid="shift-${testDate}-ranni-badge"]`)
+                .find('span')
+                .should('have.css', 'background-color', morningShiftColor),
+        );
+    });
+
     it('deleting existing shift', () => {
         cy.get(`[title="${testDate}"]`).find('.ant-picker-calendar-date-content').dblclick();
 
@@ -92,25 +126,21 @@ describe('proccess of creating shift through company calendar', () => {
         cy.get('[data-testid=new-shift-Rano]').should('have.class', 'ant-typography ant-typography-disabled');
         cy.get('[data-testid=new-shift-Vecer]').should('have.class', 'ant-typography ant-typography-disabled');
 
-        cy.get('[data-testid=new-shift-Odpoledne]').click(); //should('have', 3); //TODO BE LINK
+        cy.get('[data-testid=new-shift-Odpoledne]').click();
+
+        cy.waitUntil(() =>
+            cy.location().should((loc) => {
+                expect(loc.pathname).to.eq(shiftManagerURLPath);
+            }),
+        );
     });
 
-    //FIXME
     it('checks if data in new shift are correct after redirect', () => {
         cy.get(`[title="${testDate}"]`).find('.ant-picker-calendar-date-content').dblclick();
         cy.get('[data-testid=shift-add-button]').click();
         cy.get('[data-testid=new-shift-Odpoledne]').click();
 
-        cy.get('.ant-page-header').find('.ant-page-header-heading-left').should('contain.text', 'Test Company123');
-        cy.get('.ant-page-header')
-            .find('.ant-page-header-heading-left')
-            .should('contain.text', moment().subtract(1, 'days').format('MMMM Do YYYY'));
-        cy.get('.ant-page-header')
-            .get('.ant-page-header-heading-tags > .ant-tag')
-            .should('have.text', 'odpoledne')
-            .and('be.visible');
-
-        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 5);
+        checkCorrectManagerDisplay();
     });
 
     /** TODO SAVE SHIFT WITH NO EMPLOYEES ????????? **/

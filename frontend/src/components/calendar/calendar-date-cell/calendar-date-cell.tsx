@@ -2,6 +2,7 @@ import moment from 'moment';
 import { Badge } from 'antd';
 import React from 'react';
 import { ShiftStore } from '../../../stores/shift-store';
+import { ShiftTypeEnum } from '../../../models/enums/shift-type-enum';
 
 export function CalendarDateCell(
     selectedDate: moment.Moment,
@@ -18,7 +19,16 @@ export function CalendarDateCell(
                 <ul style={{ listStyle: 'none' }} data-testid={`shift-list-for-${date}`}>
                     {todayShift?.map((shift) => (
                         <li key={`shift-${shift.date}-${shift.time}`}>
-                            <Badge status={'error'} />
+                            <Badge
+                                data-testid={`shift-${shift.date}-${shift.time}-badge`}
+                                status={
+                                    shift.time === ShiftTypeEnum.Rano
+                                        ? 'warning'
+                                        : shift.time === ShiftTypeEnum.Odpoledne
+                                        ? 'success'
+                                        : 'error'
+                                }
+                            />
                             {shift.time}
                         </li>
                     ))}

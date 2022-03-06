@@ -112,9 +112,7 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                 {!rootStore.calendarStore.isEditOpen ? (
                     <List
                         locale={{
-                            emptyText: (
-                                <Empty description="Replace this text" image="https://joeschmoe.io/api/v1/random" />
-                            ),
+                            emptyText: <Empty description="Na tento den nejsou naplánovány žádné směny" />,
                         }}
                         dataSource={rootStore.shiftStore.shiftListForDay}
                         renderItem={(item) => (
@@ -125,9 +123,7 @@ export const ShiftCalendarPage: React.FC<ShiftCalendarPageProps> = observer((pro
                     <List
                         data-testid="create-shift-list"
                         locale={{
-                            emptyText: (
-                                <Empty description="Replace this text" image="https://joeschmoe.io/api/v1/random" />
-                            ),
+                            emptyText: <Empty description="Na tento den nejsou naplánovány žádné směny" />,
                         }}
                         dataSource={Object.entries(ShiftTypeEnum)}
                         renderItem={(item) => (
