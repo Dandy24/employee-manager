@@ -6,7 +6,35 @@ const testDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
 
 const inactiveColor = 'rgba(245, 34, 45, 0.4)';
 
-// TODO use image snapshot on concrete components, not just whole page
+const isMoved = (table, length, text, inverse) => {
+    cy.waitUntil(() =>
+        cy
+            .get(`[data-testid=${table}-table-body]`)
+            .find('tr')
+            .should('have.length', length)
+            .and(`${inverse ? 'not.' : ''}contain.text`, text),
+    );
+};
+
+const isRecordInTable = (table, length, text1, text2, inverse1, inverse2) => {
+    cy.waitUntil(() =>
+        cy
+            .get(`[data-testid=${table}-table-body]`)
+            .find('tr')
+            .should('have.length', length)
+            .and(`${inverse1 ? 'not.' : ''}contain.text`, text1)
+            .and(`${inverse2 ? 'not.' : ''}contain.text`, text2),
+    );
+};
+
+const isHTMLInTable = (table, htmlEl, text, inverse1, inverse2) => {
+    cy.waitUntil(() =>
+        cy
+            .get(`[data-testid=${table}-table-body]`)
+            .should(`${inverse1 ? 'not.' : ''}contain.html`, htmlEl)
+            .and(`${inverse2 ? 'not.' : ''}contain.text`, text),
+    );
+};
 
 describe('shift validation', () => {
     beforeEach(() => {
@@ -99,7 +127,6 @@ describe('shift validation', () => {
         );
     });
 
-    /** Employee won't be added to shift, error message is thrown and employee stays in original table **/
     it('check assigning employee already assigned elsewhere', () => {
         cy.get('[data-testid=shift-add-button]').click();
         cy.get('[data-testid=new-shift-Odpoledne]').click();
@@ -127,25 +154,11 @@ describe('shift validation', () => {
 
         cy.waitUntil(() => cy.dragAndDrop('[data-testid=employee-table-row-1]', '[data-testid=shift-table-body]'));
 
-        //FIXME Refaktorovat overovani D&D operaci HLAVNE toho overovani nize (udelat na to funkce)
-
-        cy.waitUntil(() =>
-            cy
-                .get('[data-testid=shift-table-body]')
-                .should('not.contain.html', 'tr')
-                .and('not.contain.text', 'MartinNovak'),
-        );
+        isHTMLInTable('shift', 'tr', 'MartinNovak', true, true);
 
         cy.waitUntil(() => cy.dragAndDrop('[data-testid=employee-table-row-3]', '[data-testid=shift-table-body]'));
 
-        //FIXME Refaktorovat overovani D&D operaci HLAVNE toho overovani nize (udelat na to funkce)
-
-        cy.waitUntil(() =>
-            cy
-                .get('[data-testid=shift-table-body]')
-                .should('not.contain.html', 'tr')
-                .and('not.contain.text', 'AlfonzZelinka'),
-        );
+        isHTMLInTable('shift', 'tr', 'AlfonzZelinka', true, true);
     });
 
     /** Shift should not be saved and error result should be visible along with some error message **/
@@ -169,19 +182,8 @@ describe('shift validation', () => {
         cy.waitUntil(() => cy.get('[data-testid=shift-ranni]').should('be.visible'));
         cy.get('[data-testid=shift-ranni]').click();
 
-        // cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 5);
-        //
-        // cy.dragAndDrop('[data-testid=employee-table-row-2]', '[data-testid=shift-table-body]');
-        // cy.get('.ant-message-notice-content')
-        //     .should('be.visible')
-        //     .and('have.text', 'Zamestnanec se v tento den jiz nachazi na smene ranni');
-        //
-        // cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 0);
-        //
-        // cy.get('[data-testid=employee-table-body]').find('tr').contains('43');
-        //
         cy.get('[data-testid=submit-shift-button]').click();
-        //
+
         cy.get('.ant-result-success').should('be.visible');
         cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se podařilo úspěšně vytvořit.');
         cy.get('[data-testid=shift-submit-result-subtitle]').should(
@@ -205,33 +207,34 @@ describe('shift validation', () => {
         cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 2).and('contain.text', 19);
 
         cy.dragAndDrop('[data-testid=shift-table-row-0]', '[data-testid=employee-table-body]');
-        cy.waitUntil(() =>
-            cy
-                .get('[data-testid=employee-table-body]')
-                .find('tr')
-                .should('have.length', 4)
-                .and('contain.text', 'JanNovak'),
-        );
+
+        isMoved('employee', 4, 'JanNovak');
 
         cy.dragAndDrop('[data-testid=employee-table-row-3]', '[data-testid=shift-table-body]');
-        cy.waitUntil(() =>
-            cy
-                .get('[data-testid=shift-table-body]')
-                .find('tr')
-                .should('have.length', 2)
-                .and('contain.text', 'JanNovak'),
-        );
+
+        isMoved('shift', 2, 'JanNovak');
 
         cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 3);
+    });
 
-        // cy.get('[data-testid=submit-shift-button]').click();
-        //
-        // cy.get('.ant-result-success').should('be.visible');
-        // cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se podařilo úspěšně vytvořit.');
-        // cy.get('[data-testid=shift-submit-result-subtitle]').should(
-        //     'have.text',
-        //     `Směna je naplánována na ${testDate} vecer`,
-        // );
+    /** Open existing shift and delete it **/
+    it('checks delete existing shift from shift manager', () => {
+        cy.waitUntil(() => cy.get('[data-testid=shift-ranni]').should('be.visible'));
+        cy.get('[data-testid=shift-ranni]').click();
+
+        cy.get('[data-testid=delete-shift-button]').click();
+
+        cy.get('.ant-modal-body').should('be.visible');
+        cy.get('.ant-modal-confirm-title').should('have.text', 'Opravdu chcete smazat tuto směnu?');
+
+        cy.get('.ant-modal-confirm-btns > .ant-btn-dangerous').click();
+
+        cy.get('main > .ant-picker-calendar-full').should('exist').and('be.visible');
+
+        cy.get(`[title="${testDate}"] > .ant-picker-cell-inner > .ant-picker-calendar-date-content`).should(
+            'not.contain.text',
+            'ranni',
+        );
     });
 
     /** Open existing shift, edit, save and reopen shift to check if shift data are correct **/
@@ -239,8 +242,8 @@ describe('shift validation', () => {
         cy.waitUntil(() => cy.get('[data-testid=shift-vecer]').should('be.visible'));
         cy.get('[data-testid=shift-vecer]').click();
 
-        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 3).and('not.contain.text', 19);
-        cy.get('[data-testid=shift-table-body]').find('tr').should('have.length', 2).and('contain.text', 19);
+        isMoved('employee', 3, 19, true);
+        isMoved('shift', 2, 19);
 
         cy.dragAndDrop('[data-testid=shift-table-row-1]', '[data-testid=employee-table-body]');
         cy.waitUntil(() =>
@@ -248,20 +251,9 @@ describe('shift validation', () => {
         );
 
         cy.dragAndDrop('[data-testid=employee-table-row-2]', '[data-testid=shift-table-body]');
-        cy.waitUntil(() =>
-            cy
-                .get('[data-testid=shift-table-body]')
-                .find('tr')
-                .should('have.length', 2)
-                .and('not.contain.text', 19)
-                .and('contain.text', 'Marek'),
-        );
+        isRecordInTable('shift', 2, 19, 'Marek', true);
 
-        cy.get('[data-testid=shift-table-body]')
-            .find('tr')
-            .should('have.length', 2)
-            .and('not.contain.text', 19)
-            .and('contain.text', 'Novak');
+        isRecordInTable('shift', 2, 19, 'Novak', true);
 
         cy.get('[data-testid=submit-shift-button]').click();
 
@@ -284,81 +276,33 @@ describe('shift validation', () => {
         cy.get('[data-testid=shift-vecer]').click();
 
         /** Verify that both tables are the same as before exiting the manager   **/
-        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 3).and('contain.text', 19);
-        cy.get('[data-testid=shift-table-body]')
-            .find('tr')
-            .should('have.length', 2)
-            .and('not.contain.text', 19)
-            .and('contain.text', 'MarekHodny');
+        isMoved('employee', 3, 19);
+
+        isRecordInTable('shift', 2, 19, 'MarekHodny', true);
     });
 
-    /** TODO TEST PAGE RELOAD AND SHIFT REMAINS SAME AND CAN GO BACK TO CALENDAR AND COMPANY NAME IS CORRECT (try changing employees in shift) **/
     it('checks if shift data integrity remains after reloading the page', () => {
+        const isCorrectAmountOfRows = () =>
+            cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 3);
+
         cy.get('[data-testid=shift-vecer]').click();
 
-        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 3);
-
-        cy.get('[data-testid=shift-table-body]')
-            .find('tr')
-            .should('have.length', 2)
-            .and('contain.text', 'MartinNovak')
-            .and('contain.text', 'JanNovak');
+        isCorrectAmountOfRows();
+        isRecordInTable('shift', 2, 'MartinNovak', 'JanNovak');
 
         cy.get('[data-testid=employee-table-body]').find('tr').should('contain.text', 'MarekHodny');
 
         cy.reload();
 
-        /** TODO REFACTOR!!! dont copy **/
-
-        cy.get('[data-testid=employee-table-body]').find('tr').should('have.length', 3);
-
-        cy.get('[data-testid=shift-table-body]')
-            .find('tr')
-            .should('have.length', 2)
-            .and('contain.text', 'MartinNovak')
-            .and('contain.text', 'JanNovak');
+        isCorrectAmountOfRows();
+        isRecordInTable('shift', 2, 'MartinNovak', 'JanNovak');
 
         cy.get('[data-testid=employee-table-body]').find('tr').should('contain.text', 'MarekHodny');
 
         /** **/
 
         cy.get('[data-testid=shift-manager-header-breadcrumb]').contains('Kalendář směn').click();
-        cy.get('[data-testid=header-company-name]').should('have.text', 'Test Company123'); //FIXME
-
-        // cy.get('[data-testid=submit-shift-button]').click();
-
-        /** TODO REFACTOR!!! move to separate fucntion with variable date and shift type **/
-
-        // cy.get('.ant-result-success').should('be.visible');
-        // cy.get('[data-testid=shift-submit-result-title]').should('have.text', 'Směnu se podařilo úspěšně vytvořit.');
-        // cy.get('[data-testid=shift-submit-result-subtitle]').should(
-        //     'have.text',
-        //     `Směna je naplánována na ${testDate} vecer`,
-        // );
-        //
-        // cy.get('[data-testid=back-to-calendar-button]').click();
-
-        /** **/
-    });
-
-    /** Open existing shift and delete it **/
-    it('checks delete existing shift from shift manager', () => {
-        cy.waitUntil(() => cy.get('[data-testid=shift-ranni]').should('be.visible'));
-        cy.get('[data-testid=shift-ranni]').click();
-
-        cy.get('[data-testid=delete-shift-button]').click();
-
-        cy.get('.ant-modal-body').should('be.visible');
-        cy.get('.ant-modal-confirm-title').should('have.text', 'Opravdu chcete smazat tuto směnu?');
-
-        cy.get('.ant-modal-confirm-btns > .ant-btn-dangerous').click();
-
-        cy.get('main > .ant-picker-calendar-full').should('exist').and('be.visible');
-
-        cy.get(`[title="${testDate}"] > .ant-picker-cell-inner > .ant-picker-calendar-date-content`).should(
-            'not.contain.text',
-            'ranni',
-        );
+        cy.get('[data-testid=header-company-name]').should('have.text', 'Test Company123');
     });
 
     /** TODO test sorting and filtering - IMPLEMENT useSortBy & useGlobalFilter to react-table **/
