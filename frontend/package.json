@@ -11,6 +11,9 @@
     "test:e2e": "./node_modules/.bin/cypress open",
     "test:e2e:ci": "./node_modules/.bin/cypress run --headless --browser chrome",
     "ci": "REACT_APP_TEST_ENV=true start-server-and-test start http://localhost:3000 test:e2e:ci",
+    "lighthouse": "lighthouse http://localhost:3000/ --preset=desktop --output-path=./lighthouse-reports/lighthouse.html",
+    "lighthouse:ci": "start-server-and-test serve http://localhost:3000 lighthouse",
+    "serve": "serve -s build",
     "eject": "react-scripts eject"
   },
   "browserslist": {

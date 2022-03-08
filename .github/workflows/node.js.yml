@@ -65,3 +65,10 @@ jobs:
           python3 manage.py testserver test-data &
           cd ../frontend
           npm run ci
+
+      - name: Generate Google Lighthouse site report
+        working-directory: ./api
+        run: |
+          python3 manage.py runserver &
+          cd ../frontend
+          npm run lighthouse:ci
