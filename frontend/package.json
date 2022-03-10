@@ -6,12 +6,13 @@
   "scripts": {
     "start": "react-scripts -r @cypress/instrument-cra start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --maxWorkers=50%",
     "test:coverage": "react-scripts test --coverage",
+    "test:ci": "react-scripts test --runInBand",
     "test:e2e": "./node_modules/.bin/cypress open",
     "test:e2e:ci": "./node_modules/.bin/cypress run --headless --browser chrome",
     "ci": "REACT_APP_TEST_ENV=true start-server-and-test start http://localhost:3000 test:e2e:ci",
-    "lighthouse": "lighthouse http://localhost:3000/ --preset=desktop --output-path=./lighthouse-reports/lighthouse.html",
+    "lighthouse": "lighthouse http://localhost:3000 --preset=desktop --output-path=./lighthouse-reports/lighthouse.html",
     "lighthouse:ci": "start-server-and-test serve http://localhost:3000 lighthouse",
     "serve": "serve -s build",
     "eject": "react-scripts eject"
@@ -99,6 +100,11 @@
     "yup": "^0.32.9"
   },
   "jest": {
-    "resetMocks": false
+    "resetMocks": false,
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/build/",
+      "/src/models/"
+    ]
   }
 }
