@@ -57,7 +57,7 @@ export const TableBody: React.FC<MyTableBodyProps> = observer((props: MyTableBod
                                                 {...cell.getCellProps()}
                                                 className="ant-table-cell"
                                                 style={{
-                                                    width: '100%',
+                                                    width: '20%',
                                                     backgroundColor:
                                                         type === 'employee-table' && !!isInvalid(row.values, shiftStore)
                                                             ? 'rgba(245, 34, 45, .4)'

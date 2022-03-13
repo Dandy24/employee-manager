@@ -22,7 +22,7 @@ export const MyPieChart: React.FC<PieChartProps> = observer((props: PieChartProp
                 {title}
             </Title>
             <ResponsiveContainer width="100%" height="85%" id={'pie-chart'}>
-                <PieChart width={300} height={200} margin={{ top: 0, right: 0, bottom: 50, left: 0 }}>
+                <PieChart width={300} height={200} margin={{ top: 0, right: 0, bottom: 50, left: 0 }} id={'pie-chart'}>
                     <Pie
                         data={data}
                         cy={130}

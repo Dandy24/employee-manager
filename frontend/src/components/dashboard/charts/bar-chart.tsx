@@ -60,6 +60,7 @@ export const MyBarChart: React.FC<BarChartProps> = observer((props: BarChartProp
                         left: 20,
                         bottom: 5,
                     }}
+                    id={'bar-chart'}
                 >
                     <CartesianGrid strokeDasharray="4 4" />
                     <XAxis dataKey={xAxisKey} tickFormatter={(name, place) => `${place + 1}. ${name}`} />

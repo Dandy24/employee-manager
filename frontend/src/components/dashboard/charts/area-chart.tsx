@@ -33,6 +33,7 @@ export const MyAreaChart: React.FC<AreaChartProps> = observer((props: AreaChartP
                         left: 0,
                         bottom: 0,
                     }}
+                    id={'area-chart'}
                 >
                     <CartesianGrid strokeDasharray="4 4" />
                     <XAxis

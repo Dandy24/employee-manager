@@ -1,0 +1,263 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pie chart matches snapshot 1`] = `
+<svg
+  class="recharts-surface"
+  cx="50%"
+  cy="50%"
+  height="500"
+  id="pie-chart"
+  version="1.1"
+  viewBox="0 0 800 500"
+  width="800"
+>
+  <defs>
+    <clippath
+      id="pie-chart-clip"
+    >
+      <rect
+        height="450"
+        width="800"
+        x="0"
+        y="0"
+      />
+    </clippath>
+  </defs>
+  <g
+    class="recharts-layer recharts-pie"
+  >
+    <g
+      class="recharts-layer recharts-pie-sector"
+    >
+      <path
+        class="recharts-sector"
+        cx="400"
+        cy="130"
+        d="M 500,130
+    A 100,100,0,
+    1,0,
+    462.8940023498477,207.74538229642548
+  L 444.0258016448934,184.42176760749783
+            A 70,70,0,
+            1,1,
+            470,130 Z"
+        fill="rgb(136, 132, 216)"
+        id="pie-chart-hours-worked-sector"
+        name="Hours worked"
+        stroke="#fff"
+      />
+    </g>
+    <g
+      class="recharts-layer recharts-pie-sector"
+    >
+      <path
+        class="recharts-sector"
+        cx="400"
+        cy="130"
+        d="M 466.8766872314382,204.34721719707062
+    A 100,100,0,
+    0,0,
+    489.0462834421222,175.50559751442924
+  L 462.33239840948556,161.85391826010047
+            A 70,70,0,
+            0,1,
+            446.81368106200676,182.04305203794942 Z"
+        fill="#FFBB28"
+        id="pie-chart-hours-vacation-sector"
+        name="Hours vacation"
+        stroke="#fff"
+      />
+    </g>
+    <g
+      class="recharts-layer recharts-pie-sector"
+    >
+      <path
+        class="recharts-sector"
+        cx="400"
+        cy="130"
+        d="M 491.3058275657546,170.78291128073965
+    A 100,100,0,
+    0,0,
+    496.41156156466906,156.5482729506465
+  L 467.48809309526837,148.58379106545254
+            A 70,70,0,
+            0,1,
+            463.91407929602826,158.54803789651777 Z"
+        fill="#FF8042"
+        id="pie-chart-hours-sick-sector"
+        name="Hours sick"
+        stroke="#fff"
+      />
+    </g>
+    <g
+      class="recharts-layer recharts-pie-sector"
+    >
+      <path
+        class="recharts-sector"
+        cx="400"
+        cy="130"
+        d="M 497.6688621217582,151.46609819787912
+    A 100,100,0,
+    0,0,
+    499.8629534754574,135.23359562429442
+  L 469.90406743282017,133.6635169370061
+            A 70,70,0,
+            0,1,
+            468.3682034852307,145.02626873851537 Z"
+        fill="rgb(130, 202, 157)"
+        id="pie-chart-hours-overtime-sector"
+        name="Hours overtime"
+        stroke="#fff"
+      />
+    </g>
+    <g
+      class="recharts-layer recharts-pie-labels"
+    >
+      <g
+        class="recharts-layer"
+      >
+        <path
+          class="recharts-curve recharts-pie-label-line"
+          cx="400"
+          cy="130"
+          d="M309.75200768165314,86.926807844001L291.7024092179838,78.31216941280121"
+          fill="none"
+          id="pie-chart-hours-worked-sector"
+          name="Hours worked"
+          points="[object Object],[object Object]"
+          stroke="rgb(136, 132, 216)"
+          type="linear"
+        />
+        <text
+          alignment-baseline="middle"
+          class="recharts-text recharts-pie-label-text"
+          cx="400"
+          cy="130"
+          fill="rgb(136, 132, 216)"
+          id="pie-chart-hours-worked-sector"
+          name="Hours worked"
+          stroke="none"
+          text-anchor="end"
+          x="291.7024092179838"
+          y="78.31216941280121"
+        >
+          <tspan
+            dy="0em"
+            x="291.7024092179838"
+          >
+            88.79%
+          </tspan>
+        </text>
+      </g>
+      <g
+        class="recharts-layer"
+      >
+        <path
+          class="recharts-curve recharts-pie-label-line"
+          cx="400"
+          cy="130"
+          d="M479.28400186920766,190.94298193888676L495.14080224304917,203.1315783266641"
+          fill="none"
+          id="pie-chart-hours-vacation-sector"
+          name="Hours vacation"
+          points="[object Object],[object Object]"
+          stroke="#FFBB28"
+          type="linear"
+        />
+        <text
+          alignment-baseline="middle"
+          class="recharts-text recharts-pie-label-text"
+          cx="400"
+          cy="130"
+          fill="#FFBB28"
+          id="pie-chart-hours-vacation-sector"
+          name="Hours vacation"
+          stroke="none"
+          text-anchor="start"
+          x="495.14080224304917"
+          y="203.1315783266641"
+        >
+          <tspan
+            dy="0em"
+            x="495.14080224304917"
+          >
+            6.02%
+          </tspan>
+        </text>
+      </g>
+      <g
+        class="recharts-layer"
+      >
+        <path
+          class="recharts-curve recharts-pie-label-line"
+          cx="400"
+          cy="130"
+          d="M494.1281614480112,163.76224551799152L512.9537937376134,170.51469462158983"
+          fill="none"
+          id="pie-chart-hours-sick-sector"
+          name="Hours sick"
+          points="[object Object],[object Object]"
+          stroke="#FF8042"
+          type="linear"
+        />
+        <text
+          alignment-baseline="middle"
+          class="recharts-text recharts-pie-label-text"
+          cx="400"
+          cy="130"
+          fill="#FF8042"
+          id="pie-chart-hours-sick-sector"
+          name="Hours sick"
+          stroke="none"
+          text-anchor="start"
+          x="512.9537937376134"
+          y="170.51469462158983"
+        >
+          <tspan
+            dy="0em"
+            x="512.9537937376134"
+          >
+            2.49%
+          </tspan>
+        </text>
+      </g>
+      <g
+        class="recharts-layer"
+      >
+        <path
+          class="recharts-curve recharts-pie-label-line"
+          cx="400"
+          cy="130"
+          d="M499.09882985299805,143.39484683624812L518.9185958235976,146.07381620349776"
+          fill="none"
+          id="pie-chart-hours-overtime-sector"
+          name="Hours overtime"
+          points="[object Object],[object Object]"
+          stroke="rgb(130, 202, 157)"
+          type="linear"
+        />
+        <text
+          alignment-baseline="middle"
+          class="recharts-text recharts-pie-label-text"
+          cx="400"
+          cy="130"
+          fill="rgb(130, 202, 157)"
+          id="pie-chart-hours-overtime-sector"
+          name="Hours overtime"
+          stroke="none"
+          text-anchor="start"
+          x="518.9185958235976"
+          y="146.07381620349776"
+        >
+          <tspan
+            dy="0em"
+            x="518.9185958235976"
+          >
+            2.70%
+          </tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>
+`;
