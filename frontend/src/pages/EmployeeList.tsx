@@ -1,5 +1,5 @@
 import { Button, Col, Modal, Row } from 'antd';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { EditDrawer } from '../components/EditDrawer';
 import { EmployeeForm } from '../components/form/EmployeeForm';
@@ -21,6 +21,8 @@ interface EmployeeListPageProps {
 export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
     (props: EmployeeListPageProps): JSX.Element => {
         const { rootStore } = props;
+
+        const [profile_pic, setProfile_pic] = useState(null);
 
         const { employeeStore } = rootStore;
 
@@ -68,6 +70,7 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
             };
 
             await employeeStore.saveEmployee(updatedEmployee);
+            setProfile_pic(null);
         }
 
         useEffect(() => {
@@ -108,14 +111,21 @@ export const EmployeeListPage: React.FC<EmployeeListPageProps> = observer(
                     title={employeeStore.employee?.id ? 'Upravit zaměstnance' : 'Přidat zaměstnance'}
                     onClose={() => {
                         employeeStore.closeModal();
+                        setProfile_pic(null);
                     }}
                     visible={employeeStore.isEditOpen}
                     cancelOnClick={() => {
+                        setProfile_pic(null);
                         employeeStore.closeModal();
                     }}
                     cancelButtonText="Zavřít okno"
                 >
-                    <EmployeeForm initialValues={employeeStore.employee} onSubmit={updateHandler} />
+                    <EmployeeForm
+                        initialValues={employeeStore.employee}
+                        onSubmit={updateHandler}
+                        profile_pic={profile_pic}
+                        setProfilePic={setProfile_pic}
+                    />
                 </EditDrawer>
             </>
         );

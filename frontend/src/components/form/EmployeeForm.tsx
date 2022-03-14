@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form, Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import { EmployeeDto } from '../../models/dtos/employee-dto';
 import * as yup from 'yup';
 import { EmployeeEntity } from '../../models/entities/employee-entity';
-import { Alert, Button, Col, Row, Upload } from 'antd';
+import { Alert, Button, Col, Row } from 'antd';
 import { TextInput } from './elements/TextInput';
 import { NumberInput } from './elements/NumberInput';
 import { CategorySelectList } from './elements/SelectList';
@@ -13,13 +13,15 @@ import { TextArea } from './elements/TextArea';
 import { CustomSwitch } from './elements/CustomSwitch';
 import { CompanySelectList } from './elements/CompanySelectList';
 import Dragger from 'antd/lib/upload/Dragger';
-import { InboxOutlined, PlusOutlined } from '@ant-design/icons';
+import { InboxOutlined } from '@ant-design/icons';
 import { useRootStore } from '../../stores/root-store-provider';
-import { toBase64 } from '../../utils/file-to-base64';
+import { ImageUpload } from './elements/image-upload';
 
 export interface EmployeeFormProps {
     initialValues: EmployeeDto | EmployeeEntity;
     onSubmit: (values: EmployeeDto) => void;
+    profile_pic: string | null;
+    setProfilePic: React.Dispatch<string | ArrayBuffer>;
 }
 
 export const SUPPORTED_ATTACHMENT_FORMATS = ['application/pdf'];
@@ -57,11 +59,9 @@ export const EmployeeValidationSchema = yup.object({
 });
 
 export const EmployeeForm: React.FC<EmployeeFormProps> = observer((props: EmployeeFormProps): JSX.Element => {
-    const { initialValues, onSubmit } = props;
+    const { initialValues, onSubmit, setProfilePic, profile_pic } = props;
 
     const rootStore = useRootStore();
-
-    const [profile_pic, setProfile_pic] = useState(null);
 
     const { companyStore } = rootStore;
 
@@ -71,14 +71,6 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = observer((props: Employ
             onSuccess('ok');
         }, 0);
     };
-
-    const uploadButton = (
-        <div>
-            {/*{loading ? <LoadingOutlined /> : <PlusOutlined />}*/}
-            {<PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Nahrát fotku</div>
-        </div>
-    );
 
     return (
         <Formik
@@ -103,47 +95,15 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = observer((props: Employ
                         <div data-testid={'employee-form'}>
                             <Row justify="center">
                                 <Col data-testid={'profile-picture'}>
-                                    <Upload
-                                        data-testid={'profile-picture-input'}
-                                        onChange={(file) => setFieldValue('profile_picture', file.file)}
-                                        name="profile_picture"
-                                        listType="picture-card"
-                                        className={`avatar-uploader ${
-                                            initialValues?.profile_picture ? 'profile_picture' : 'profile_picture-empty'
-                                        }`}
-                                        showUploadList={false}
-                                        customRequest={dummyRequest}
-                                        beforeUpload={async (file) => setProfile_pic(await toBase64(file))}
-                                        accept=".png,.jpg,.jpeg"
-                                        style={{ height: '100%', textAlign: 'center' }}
-                                    >
-                                        {values?.profile_picture && typeof values?.profile_picture === 'string' ? (
-                                            <img
-                                                data-testid={'profile-picture'}
-                                                src={initialValues?.profile_picture}
-                                                alt="avatar"
-                                                style={{ width: '100%', height: '100%' }}
-                                            />
-                                        ) : profile_pic ? (
-                                            <img
-                                                data-testid={'profile-picture'}
-                                                src={profile_pic}
-                                                alt="avatar"
-                                                style={{ width: '100%', height: '100%' }}
-                                            />
-                                        ) : (
-                                            uploadButton
-                                        )}
-                                    </Upload>
-                                    {errors.profile_picture && values.profile_picture ? (
-                                        <Alert
-                                            style={{ width: '98%', marginTop: '5%' }}
-                                            message={errors.profile_picture}
-                                            type="error"
-                                            showIcon
-                                            data-testid="profile_picture-input-error"
-                                        />
-                                    ) : null}
+                                    <ImageUpload
+                                        initialValue={initialValues?.profile_picture}
+                                        value={values?.profile_picture}
+                                        error={errors?.profile_picture}
+                                        setFieldValue={setFieldValue}
+                                        name={'profile_picture'}
+                                        setProfilePic={setProfilePic}
+                                        profile_pic={profile_pic}
+                                    />
                                 </Col>
                             </Row>
 
@@ -187,6 +147,15 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = observer((props: Employ
                             ) : null}
 
                             <Row justify="center" data-testid={'attachments-dropzone'}>
+                                {/*<FileUpload*/}
+                                {/*    value={values?.attachment}*/}
+                                {/*    setFieldValue={setFieldValue}*/}
+                                {/*    initialValue={initialValues?.attachment}*/}
+                                {/*    error={errors?.attachment}*/}
+                                {/*    onClear1={(initialValues?.attachment = null)}*/}
+                                {/*    onClear2={(values?.attachment = null)}*/}
+                                {/*    name={'attachment'}*/}
+                                {/*/>*/}
                                 <Dragger
                                     customRequest={dummyRequest}
                                     onChange={(file) => setFieldValue('attachment', file.file)}
