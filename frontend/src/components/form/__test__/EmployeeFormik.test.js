@@ -125,7 +125,7 @@ test('Form submits profile picture correctly', async () => {
         </RootStoreProvider>,
     );
 
-    const profilePictureInput = await screen.findByTestId('profile-picture-input');
+    const profilePictureInput = await screen.findByTestId('profile_picture-input');
     // userEvent.upload(profilePictureInput, [fakeFile], {}, { applyAccept: true });
 
     fireEvent.drop(profilePictureInput, {
@@ -134,7 +134,7 @@ test('Form submits profile picture correctly', async () => {
         },
     });
 
-    const attachmentInput = await screen.findByTestId('attachments-dropzone-input');
+    const attachmentInput = await screen.findByTestId('attachment-dropzone-input');
 
     fireEvent.drop(attachmentInput, {
         dataTransfer: {
