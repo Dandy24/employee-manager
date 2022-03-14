@@ -19,9 +19,9 @@ describe('employee creating process', () => {
     it('checks profile picture upload', () => {
         const fileName = 'test-image.png';
 
-        cy.get('[data-testid="profile-picture-input"]').attachFile({ filePath: fileName });
+        cy.get('[data-testid="profile_picture-input"]').attachFile({ filePath: fileName });
 
-        cy.get('[data-testid="profile-picture"]').should('be.visible');
+        cy.get('[data-testid="profile_picture"]').should('be.visible');
 
         /** TODO some more image testing.... maybe if image equals the one in fixtures? **/
     });
@@ -29,7 +29,7 @@ describe('employee creating process', () => {
     it('checks attachment upload via drag & drop', () => {
         const fileName = 'pdf-test.pdf';
 
-        cy.get('[data-testid="attachments-dropzone-input"]').attachFile(
+        cy.get('[data-testid="attachment-dropzone-input"]').attachFile(
             { filePath: fileName },
             { subjectType: 'drag-n-drop' },
         );
@@ -38,28 +38,28 @@ describe('employee creating process', () => {
     });
 
     it('checks profile picture upload', () => {
-        cy.get('[data-testid="profile-picture-input"]').attachFile('test-image.png', {});
-        cy.waitUntil(() => cy.get('[data-testid="profile-picture"] img').should('be.visible'));
-        cy.waitUntil(() => cy.get('[data-testid="profile-picture"] img').toMatchImageSnapshot());
+        cy.get('[data-testid="profile_picture-input"]').attachFile('test-image.png', {});
+        cy.waitUntil(() => cy.get('[data-testid="profile_picture"]').should('be.visible'));
+        cy.waitUntil(() => cy.get('[data-testid="profile_picture"]').toMatchImageSnapshot());
     });
 
     it('checks profile picture change', () => {
         cy.get('[data-testid="drawer-close-button"]').click();
         cy.waitUntil(() => cy.get('[data-testid="employee-2-edit-button"]').click());
-        cy.waitUntil(() => cy.get('[data-testid="profile-picture"]').should('be.visible'));
+        cy.waitUntil(() => cy.get('[data-testid="profile_picture"]').should('be.visible'));
 
-        cy.get('[data-testid="profile-picture"] img')
+        cy.get('[data-testid="profile_picture"]')
             .invoke('attr', 'src')
             .then((firstSrc) => {
                 const src1 = firstSrc;
 
-                cy.get('[data-testid="profile-picture-input"]').selectFile('test-image2.png', { force: true });
+                cy.get('[data-testid="profile_picture-input"]').selectFile('test-image2.png', { force: true });
 
                 /* FIXME waitUntil */
 
                 cy.wait(1000);
 
-                cy.get('[data-testid="profile-picture"] img')
+                cy.get('[data-testid="profile_picture"]')
                     .invoke('attr', 'src')
                     .then((nextSrc) => {
                         expect(nextSrc).to.not.equal(src1);
@@ -68,7 +68,7 @@ describe('employee creating process', () => {
     });
 
     it('Fill the form correctly', () => {
-        cy.get('[data-testid="profile-picture-input"]').selectFile('test-image.png', { force: true });
+        cy.get('[data-testid="profile_picture-input"]').selectFile('test-image.png', { force: true });
 
         /** Test validation and filling in information **/
 
@@ -143,11 +143,7 @@ describe('employee creating process', () => {
             .click();
 
         cy.waitUntil(() => cy.get('.ant-drawer-body').scrollTo('top'));
-        cy.waitUntil(() => cy.get('[data-testid="profile-picture"] img').should('be.visible'));
-
-        /** FIXME causes CI 404 errors (cant find given image) **/
-
-        // cy.waitUntil(() => cy.get('[data-testid="profile-picture"]').find('img').toMatchImageSnapshot());
+        cy.waitUntil(() => cy.get('[data-testid="profile_picture"]').should('be.visible'));
 
         /** **/
     });

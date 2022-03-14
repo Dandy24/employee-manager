@@ -85,7 +85,7 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = observer((props: Employ
                     <Row justify="center">
                         <div data-testid={'employee-form'}>
                             <Row justify="center">
-                                <Col data-testid={'profile-picture'}>
+                                <Col>
                                     <ImageUpload
                                         initialValue={initialValues?.profile_picture}
                                         value={values?.profile_picture}
