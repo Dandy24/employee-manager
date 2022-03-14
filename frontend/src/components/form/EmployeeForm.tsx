@@ -12,10 +12,9 @@ import { DateSelector } from './elements/DateSelector';
 import { TextArea } from './elements/TextArea';
 import { CustomSwitch } from './elements/CustomSwitch';
 import { CompanySelectList } from './elements/CompanySelectList';
-import Dragger from 'antd/lib/upload/Dragger';
-import { InboxOutlined } from '@ant-design/icons';
 import { useRootStore } from '../../stores/root-store-provider';
 import { ImageUpload } from './elements/image-upload';
+import { FileUpload } from './elements/file-upload';
 
 export interface EmployeeFormProps {
     initialValues: EmployeeDto | EmployeeEntity;
@@ -65,13 +64,6 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = observer((props: Employ
 
     const { companyStore } = rootStore;
 
-    const dummyRequest = (options) => {
-        const { onSuccess } = options;
-        setTimeout(() => {
-            onSuccess('ok');
-        }, 0);
-    };
-
     return (
         <Formik
             initialValues={initialValues}
@@ -90,7 +82,6 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = observer((props: Employ
                             data-testid={'invalid-form-error'}
                         />
                     )}
-
                     <Row justify="center">
                         <div data-testid={'employee-form'}>
                             <Row justify="center">
@@ -147,68 +138,17 @@ export const EmployeeForm: React.FC<EmployeeFormProps> = observer((props: Employ
                             ) : null}
 
                             <Row justify="center" data-testid={'attachments-dropzone'}>
-                                {/*<FileUpload*/}
-                                {/*    value={values?.attachment}*/}
-                                {/*    setFieldValue={setFieldValue}*/}
-                                {/*    initialValue={initialValues?.attachment}*/}
-                                {/*    error={errors?.attachment}*/}
-                                {/*    onClear1={(initialValues?.attachment = null)}*/}
-                                {/*    onClear2={(values?.attachment = null)}*/}
-                                {/*    name={'attachment'}*/}
-                                {/*/>*/}
-                                <Dragger
-                                    customRequest={dummyRequest}
-                                    onChange={(file) => setFieldValue('attachment', file.file)}
-                                    name="attachment"
-                                    maxCount={1}
-                                    accept=".pdf"
-                                    data-testid={'attachments-dropzone-input'}
-                                    onRemove={() => {
-                                        setFieldValue('attachment', null);
-                                        initialValues.attachment = null;
-                                        values.attachment = null;
-                                    }}
-                                    fileList={
-                                        initialValues?.attachment
-                                            ? [
-                                                  {
-                                                      uid: '',
-                                                      url: initialValues?.attachment,
-                                                      name: 'attachment',
-                                                  },
-                                              ]
-                                            : values?.attachment?.name && values?.attachment?.originFileObj
-                                            ? [
-                                                  {
-                                                      uid: '',
-                                                      url: '',
-                                                      name: values?.attachment?.name,
-                                                  },
-                                              ]
-                                            : null
-                                    }
-                                    style={{ width: '100%' }}
-                                >
-                                    <p className="ant-upload-drag-icon">
-                                        <InboxOutlined />
-                                    </p>
-                                    <p className="ant-upload-text">
-                                        Klikněte do vyznačené zóny nebo přetáhněte soubor z počítače pro jeho nahrání
-                                    </p>
-                                    <p className="ant-upload-hint">
-                                        Zde můžete nahrát například pracovní smlouvy, lékařské zprávy atd.
-                                    </p>
-                                    <p className="ant-upload-hint">Pouze pro dokumenty formátu PDF</p>
-                                </Dragger>
-                                {errors.attachment && values.attachment ? (
-                                    <Alert
-                                        style={{ width: '98%', marginTop: '5%' }}
-                                        message={errors.attachment}
-                                        type="error"
-                                        showIcon
-                                        data-testid="attachment-input-error"
-                                    />
-                                ) : null}
+                                <FileUpload
+                                    name={'attachment'}
+                                    value={values?.attachment}
+                                    initialValue={initialValues?.attachment}
+                                    error={errors?.attachment}
+                                    hintText1={'Zde můžete nahrát například pracovní smlouvy, lékařské zprávy atd.'}
+                                    hintText2={'Pouze pro dokumenty formátu PDF'}
+                                    setFieldValue={setFieldValue}
+                                    onClear1={() => (initialValues.attachment = null)}
+                                    onClear2={() => (values.attachment = null)}
+                                />
                             </Row>
 
                             <Col span={12} offset={9} style={{ marginTop: '3vh' }}>
