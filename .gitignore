@@ -162,3 +162,6 @@ frontend/cypress/integration/docs/
 frontend/cypress/videos/
 
 frontend/.nyc_output/out.json
+
+api/media/profile_photos/016b2b17-4561-4aea-b109-1306876e8455.png
+api/media/company_profile_photos/factory-g9cfdc60b3_1280.png
