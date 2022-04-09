@@ -189,10 +189,10 @@ export class DashboardStore {
 
     get hoursDistributionGraphData(): GraphDataInterface[] {
         return [
-            { name: 'Hours worked', value: this.employeeOutput[0]?.working_hours },
-            { name: 'Hours vacation', value: this.employeeOutput[0]?.vacation_hours },
-            { name: 'Hours sick', value: this.employeeOutput[0]?.sick_hours },
-            { name: 'Hours overtime', value: this.employeeOutput[0]?.overtime_hours },
+            { name: 'Odpracované hodiny', value: this.employeeOutput[0]?.working_hours },
+            { name: 'Hodiny dovolené', value: this.employeeOutput[0]?.vacation_hours },
+            { name: 'Hodiny nemocenské', value: this.employeeOutput[0]?.sick_hours },
+            { name: 'Hodiny přesčas', value: this.employeeOutput[0]?.overtime_hours },
         ];
     }
 

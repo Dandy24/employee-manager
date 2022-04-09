@@ -100,6 +100,11 @@ export class CompanyStore {
         if (comp) {
             runInAction(() => {
                 this.company = comp;
+                if (this.company.profile_picture) {
+                    this.company.profile_picture = `${
+                        !this.company.profile_picture.includes('http://localhost:8000') ? 'http://localhost:8000' : ''
+                    }${this.company.profile_picture.toString()}`;
+                }
             });
         } else {
             throw new Error(`Spolecnost s ID ${company.id} nenalezena!`);

@@ -5,6 +5,8 @@ export class CompanyEntity {
     public name: string;
     public phone: number;
     public address: string;
+    // eslint-disable-next-line
+    public profile_picture?: any;
 
     constructor() {
         makeObservable(this, {
@@ -12,6 +14,7 @@ export class CompanyEntity {
             name: observable,
             phone: observable,
             address: observable,
+            profile_picture: observable,
         });
     }
 }

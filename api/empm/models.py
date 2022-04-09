@@ -5,6 +5,7 @@ class Company(models.Model):
     name = models.CharField(max_length=50)
     phone = models.IntegerField()
     address = models.CharField(max_length=120)
+    profile_picture = models.ImageField(blank=True, null=True, upload_to='company_profile_photos/')
 
     def __str__(self):
         return self.name
