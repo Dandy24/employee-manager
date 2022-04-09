@@ -1,5 +1,5 @@
-import { Button, Space } from 'antd';
-import React from 'react';
+import { Avatar, Button, Image, Space } from 'antd';
+import React, { useMemo } from 'react';
 import { ColumnsType } from 'antd/lib/table/interface';
 import { CompanyStore } from '../../../stores/company-store';
 import { CompanyEntity } from '../../../models/entities/company-entity';
@@ -12,6 +12,31 @@ export function CompanyTableColumns(
     onCompanyDelete: (arg0: CompanyEntity) => void,
 ): ColumnsType<CompanyEntity> {
     return [
+        {
+            title: '',
+            dataIndex: 'profile_picture',
+            key: 'profile_picture',
+            width: 65,
+            render: (text, record: CompanyEntity) => {
+                return record.profile_picture?.length > 1 ? (
+                    <Avatar
+                        src={
+                            <Image
+                                src={useMemo(() => `http://localhost:8000${record.profile_picture}`, [])}
+                                style={{
+                                    width: 32,
+                                }}
+                            />
+                        }
+                    />
+                ) : (
+                    <Avatar>
+                        {record.name.charAt(0)}
+                        {record.name.charAt(1)}
+                    </Avatar>
+                );
+            },
+        },
         {
             title: 'ID společnosti',
             dataIndex: 'id',

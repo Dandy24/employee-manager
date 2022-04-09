@@ -3,7 +3,7 @@ import { TextInput } from '../TextInput';
 import React from 'react';
 import { Form, Formik } from 'formik';
 import userEvent from '@testing-library/user-event';
-import { CompanyValidationSchema } from '../../CompanyFormik';
+import { CompanyValidationSchema } from '../../CompanyForm';
 
 test('TextInput snapshot matches the previous one', async () => {
     const { asFragment } = render(

@@ -19,6 +19,10 @@ class PDFBase64File(Base64FileField):
 
 
 class CompanySerializer(serializers.ModelSerializer):
+    profile_picture = Base64ImageField(
+        required=False
+    )
+
     class Meta:
         model = Company
         fields = '__all__'

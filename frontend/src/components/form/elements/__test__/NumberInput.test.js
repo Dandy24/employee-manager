@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { Form, Formik } from 'formik';
 import userEvent from '@testing-library/user-event';
-import { CompanyValidationSchema } from '../../CompanyFormik';
+import { CompanyValidationSchema } from '../../CompanyForm';
 import { NumberInput } from '../NumberInput';
 import { act } from 'react-dom/test-utils';
 

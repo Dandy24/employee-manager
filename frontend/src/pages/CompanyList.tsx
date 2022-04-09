@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Col, Modal, Row } from 'antd';
 import { CompanyForm } from '../components/form/CompanyForm';
-import { CompanyFormik } from '../components/form/CompanyFormik';
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { EditDrawer } from '../components/EditDrawer';
 import { RootStore } from '../stores/root-store';
@@ -12,6 +11,7 @@ import { CompanyDto } from '../models/dtos/company-dto';
 import { SearchComponent } from '../components/search/search-component';
 import { toJS } from 'mobx';
 import { GeneralTable } from '../components/table/general-table';
+import { toBase64 } from '../utils/file-to-base64';
 
 interface CompanyListProps {
     rootStore: RootStore;
@@ -20,6 +20,8 @@ interface CompanyListProps {
 export const CompanyListPage: React.FC<CompanyListProps> = observer((props: CompanyListProps): JSX.Element => {
     const { rootStore } = props;
     const { companyStore } = rootStore;
+
+    const [profile_pic, setProfile_pic] = useState(null);
 
     const { confirm } = Modal;
 
@@ -42,13 +44,19 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
     }
 
     async function updateHandler(values: CompanyDto) {
+        const convertedImage = values.profile_picture?.originFileObj
+            ? await toBase64(values.profile_picture.originFileObj)
+            : undefined;
+
         const updatedCompany = {
             name: values.name,
             phone: values.phone,
             address: values.address,
+            profile_picture: convertedImage,
         };
 
         await companyStore.saveCompany(updatedCompany);
+        setProfile_pic(null);
     }
 
     useEffect(() => {
@@ -87,23 +95,27 @@ export const CompanyListPage: React.FC<CompanyListProps> = observer((props: Comp
                 title={rootStore.companyStore.company?.id ? 'Upravit firmu' : 'Přidat firmu'}
                 onClose={() => {
                     companyStore.closeModal();
+                    setProfile_pic(null);
                 }}
                 visible={companyStore.isEditOpen}
                 cancelOnClick={() => {
+                    setProfile_pic(null);
                     companyStore.closeModal();
                 }}
                 cancelButtonText="Zavřít okno"
             >
-                <CompanyFormik onSubmit={updateHandler} initialValues={companyStore.company}>
-                    <CompanyForm
-                        companyName="name"
-                        companyPhone="phone"
-                        companyAddress="address"
-                        companyNameLabel="Název firmy"
-                        companyPhoneLabel="Telefon"
-                        companyAddressLabel="Adresa"
-                    />
-                </CompanyFormik>
+                <CompanyForm
+                    companyName="name"
+                    companyPhone="phone"
+                    companyAddress="address"
+                    companyNameLabel="Název firmy"
+                    companyPhoneLabel="Telefon"
+                    companyAddressLabel="Adresa"
+                    onSubmit={updateHandler}
+                    initialValues={companyStore.company}
+                    profile_pic={profile_pic}
+                    setProfilePic={setProfile_pic}
+                />
             </EditDrawer>
         </>
     );

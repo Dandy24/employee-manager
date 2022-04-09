@@ -1,5 +1,5 @@
 [
-  {"model": "empm.company", "pk": 1, "fields": {"name": "Test Company123", "phone": 420123456789, "address": "17. listopadu 639/244"}},
+  {"model": "empm.company", "pk": 1, "fields": {"name": "Test Company123", "phone": 420123456789, "address": "17. listopadu 639/244", "profile_picture": "company_profile_photos/factory-g9cfdc60b3_1280.png"}},
   {"model": "empm.company", "pk": 2, "fields": {"name": "Example Company", "phone": 420456789123, "address": "Pracovni 123/45, Koprivnice, 735 05"}},
   {"model": "empm.company", "pk": 3, "fields": {"name": "Realna Spolecnost s.r.o.", "phone": 420555444333, "address": "Realna adresa 48/2, Hnojnik, 739 53"}},
   {"model": "empm.company", "pk": 4, "fields": {"name": "ForExamplee Company", "phone": 420987654321, "address": "Realna adresa 254/65, Ostrava, 780 01"}},
