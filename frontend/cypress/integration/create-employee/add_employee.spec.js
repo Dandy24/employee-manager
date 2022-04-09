@@ -16,16 +16,6 @@ describe('employee creating process', () => {
         form().toMatchImageSnapshot();
     });
 
-    it('checks profile picture upload', () => {
-        const fileName = 'test-image.png';
-
-        cy.get('[data-testid="profile_picture-input"]').attachFile({ filePath: fileName });
-
-        cy.get('[data-testid="profile_picture"]').should('be.visible');
-
-        /** TODO some more image testing.... maybe if image equals the one in fixtures? **/
-    });
-
     it('checks attachment upload via drag & drop', () => {
         const fileName = 'pdf-test.pdf';
 
@@ -38,7 +28,9 @@ describe('employee creating process', () => {
     });
 
     it('checks profile picture upload', () => {
-        cy.get('[data-testid="profile_picture-input"]').attachFile('test-image.png', {});
+        const fileName = 'test-image.png';
+
+        cy.get('[data-testid="profile_picture-input"]').attachFile({ filePath: fileName });
         cy.waitUntil(() => cy.get('[data-testid="profile_picture"]').should('be.visible'));
         cy.waitUntil(() => cy.get('[data-testid="profile_picture"]').toMatchImageSnapshot());
     });
