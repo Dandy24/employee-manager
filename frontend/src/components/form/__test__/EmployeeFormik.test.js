@@ -174,7 +174,6 @@ test('Form method isnt called and errors are shown when inputting wrong values',
     const firstNameInput = await screen.findByLabelText('Jméno');
     const phoneInput = await screen.findByLabelText('Telefon');
     const emailInput = await screen.findByLabelText('Email');
-    const workCategoryInput = await screen.findByRole('combobox');
 
     const submitButton = await screen.findByTestId('submit-button');
 
@@ -196,11 +195,6 @@ test('Form method isnt called and errors are shown when inputting wrong values',
         expect(await screen.findByTestId('phone-number-input-error')).toBeInTheDocument();
         expect(await screen.findByText('Číslo musí mít přesně 12 číslic')).toBeInTheDocument();
     });
-
-    // userEvent.click(await screen.findByTestId('category-select-input'));
-    // /** https://github.com/testing-library/user-event/issues/189 **/
-    // // userEvent.click(document.body);
-    // fireEvent.blur(await screen.findByTestId('category-select-input'));
 
     userEvent.click(submitButton);
 
