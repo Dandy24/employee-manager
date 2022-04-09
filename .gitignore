@@ -7,7 +7,6 @@ node_modules
 __pycache__/
 local_settings.py
 db.sqlite3
-media
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
@@ -163,5 +162,12 @@ frontend/cypress/videos/
 
 frontend/.nyc_output/out.json
 
-api/media/profile_photos/016b2b17-4561-4aea-b109-1306876e8455.png
-api/media/company_profile_photos/factory-g9cfdc60b3_1280.png
+media/*
+!media/company_profile_photos/
+!media/profile_photos/
+media/profile_photos/*
+media/company_profile_photos/*
+media/attachments
+!media/profile_photos/016b2b17-4561-4aea-b109-1306876e8455.png
+!media/company_profile_photos/factory-g9cfdc60b3_1280.png
+
