@@ -66,9 +66,8 @@ jobs:
           cd ../frontend
           npm run ci
 
-      - name: Generate Google Lighthouse site report
-        working-directory: ./api
+      - name: run Lighthouse CI
+        working-directory: ./frontend
         run: |
-          python3 manage.py runserver &
-          cd ../frontend
-          npm run lighthouse:ci
+          npm install -g @lhci/cli@0.8.x
+          lhci autorun
